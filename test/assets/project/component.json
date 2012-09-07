@@ -1,0 +1,8 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "dependencies": {
+    "package-bootstrap": "git://github.com/fat/package-bootstrap.git#~2.0.0",
+    "jquery": "git://github.com/maccman/package-jquery.git#v1.7.2"
+  }
+}

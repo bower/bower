@@ -1,0 +1,35 @@
+{
+  "name": "bower",
+  "description": "The browser package manager.",
+  "version": "0.1.0",
+  "author": "Twitter",
+  "licenses": [ { "type": "MIT", "url": "http://opensource.org/licenses/MIT" } ],
+  "main": "lib",
+  "homepage": "http://twitter.github.com/bower",
+  "engines": { "node": ">= 0.8.0" },
+  "dependencies": {
+    "tmp"               : "latest",
+    "vows"              : "latest",
+    "glob"              : "latest",
+    "nopt"              : "latest",
+    "archy"             : "latest",
+    "async"             : "latest",
+    "colors"            : "latest",
+    "rimraf"            : "latest",
+    "mkdirp"            : "latest",
+    "semver"            : "latest",
+    "request"           : "latest",
+    "fstream"           : "latest",
+    "hogan.js"          : "latest",
+    "underscore"        : "latest",
+    "read-package-json" : "latest"
+  },
+  "scripts": {
+    "test": "mocha -R spec -t 10000"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "bin": { "bower": "bin/bower" },
+  "preferGlobal": true
+}
