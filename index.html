@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+  <!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <title>BOWER</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Favicons
+  ================================================== -->
+  <link rel="shortcut icon" type="image/x-icon" href="http://twitter.com/favicons/favicon.ico">
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" type="text/css" href="app.css">
+
+</head>
+<body>
+
+  <div class="hero">
+  	<div class="logo">
+      <div class="larry">
+        <svg
+          viewbox="0 0 2000 1625.36"
+          width="43"
+          height="43"
+          version="1.1"
+          xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="m 1999.9999,192.4 c -73.58,32.64 -152.67,54.69 -235.66,64.61 84.7,-50.78 149.77,-131.19 180.41,-227.01 -79.29,47.03 -167.1,81.17 -260.57,99.57 C 1609.3399,49.82 1502.6999,0 1384.6799,0 c -226.6,0 -410.328,183.71 -410.328,410.31 0,32.16 3.628,63.48 10.625,93.51 -341.016,-17.11 -643.368,-180.47 -845.739,-428.72 -35.324,60.6 -55.5583,131.09 -55.5583,206.29 0,142.36 72.4373,267.95 182.5433,341.53 -67.262,-2.13 -130.535,-20.59 -185.8519,-51.32 -0.039,1.71 -0.039,3.42 -0.039,5.16 0,198.803 141.441,364.635 329.145,402.342 -34.426,9.375 -70.676,14.395 -108.098,14.395 -26.441,0 -52.145,-2.578 -77.203,-7.364 52.215,163.008 203.75,281.649 383.304,284.946 -140.429,110.062 -317.351,175.66 -509.5972,175.66 -33.1211,0 -65.7851,-1.949 -97.8828,-5.738 181.586,116.4176 397.27,184.359 628.988,184.359 754.732,0 1167.462,-625.238 1167.462,-1167.47 0,-17.79 -0.41,-35.48 -1.2,-53.08 80.1799,-57.86 149.7399,-130.12 204.7499,-212.41"
+            style="fill:#000"/>
+        </svg>
+        </div>
+      <hr class="top">
+      <h3>TWITTER ENGINEERING PRESENTS</h3>
+      <h1>bower</h1>
+      <hr class="bottom">
+      <h3>THE BROWSER PACKAGE MANAGER<div class="small">html, css, and javascript</div></h3>
+      <a href="//github.com/twitter/bower" target="_blank" class="btn">github</a>
+    </div>
+  </div>
+
+  <div id="wrap">
+    <div id="wrap-inner">
+      <h1>BOWER</h1>
+
+<h3>Introduction</h3>
+
+<p>Bower is a package manager for the web. Bower lets you easily install assets such as images, CSS and JavaScript, and manages dependencies for you.</p>
+
+<p>For example, to install a package, run:</p>
+
+<pre><code>bower install jquery</code></pre>
+
+<p>This will download jQuery to <code>./components/jquery</code>. That&#39;s it. The idea is that Bower does package management and package management only.</p>
+
+<h3>Installing Bower</h3>
+
+<p>Bower is installed using <a href="http://nodejs.org/">Node</a> and <a href="http://npmjs.org/">npm</a> (oh my, how meta).</p>
+
+<pre><code>npm install bower -g</code></pre>
+
+<h3>Usage</h3>
+
+<p>Your best friend at this stage is probably <code>bower --help</code>.</p>
+
+<p>To install a package:</p>
+
+<pre><code>bower install jquery
+bower install git://github.com/maccman/package-jquery.git
+bower install http://code.jquery.com/jquery-1.7.2.js
+bower install ./repos/jquery</code></pre>
+
+<p>As you can see, packages can be installed by name, Git endpoint, URL or local path.</p>
+
+<p>To update a package, you need to reference it by name:</p>
+
+<pre><code>bower update jquery-ui</code></pre>
+
+<p>To list installed packages:</p>
+
+<pre><code>bower list</code></pre>
+
+<p>To search for packages:</p>
+
+<pre><code>bower search [name]</code></pre>
+
+<p>To list all the available packages, just call <code>bower search</code> without specifying a name.</p>
+
+<h3>Defining a package</h3>
+
+<p>You can create a <code>component.json</code> file in your project&#39;s root, specifying all of its dependencies. This is similar to Node&#39;s <code>package.json</code>, or Ruby&#39;s <code>Gemfile</code>, and is useful for locking down a project dependencies.</p>
+
+<pre><code>{
+  &quot;name&quot;: &quot;myProject&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;dependencies&quot;: {
+    &quot;jquery&quot;: &quot;~1.7.2&quot;
+  }
+}
+</code></pre>
+
+<p>Put this under your project&#39;s root, listing all of your dependencies. When you run <code>bower install</code>, bower will read this <code>component.json</code> file, resolve all the relevant dependencies and install them.</p>
+
+<h3>Installing dependencies</h3>
+
+<p>Dependencies are installed locally via the <code>bower install</code> command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local sub directory called <code>./components</code>, for example:</p>
+
+<pre><code>/component.json
+/components/jquery/index.js
+/components/jquery/component.json
+</code></pre>
+
+<p>You can also install packages one at a time <code>bower install git://my/git/thing</code></p>
+
+<p>There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.</p>
+
+<h3>Deploying</h3>
+
+<p>The easiest approach is to use bower statically, just reference the packages manually from a script tag:</p>
+
+<pre><code>&lt;script src=&quot;components/jquery/index.js&quot;&gt;&lt;/script&gt;</code></pre>
+
+<p>For more complex projects, you&#39;ll probably want to concatenate your scripts. Bower is just a package manager, but there are lots of awesome libraries out there to help you do this, such as <a href="https://github.com/sstephenson/sprockets">Sprockets</a> and <a href="http://requirejs.org/">RequireJS</a>.</p>
+
+<p>For example, to use Sprockets:</p>
+
+<pre><code>environment = Sprockets::Environment.new
+environment.append_path &#39;components&#39;
+environment.append_path &#39;public&#39;
+run environment
+</code></pre>
+
+<h3>Package Consumption</h3>
+
+<p>Bower also makes available a source mapping – this can be used by build tools to easily consume bower components.</p>
+
+<p>If you pass the option <code>--map</code> to bower&#39;s <code>list</code> command it will generate a json with dependency objects. Alternatively, you can pass the <code>--paths</code> flag to the <code>list</code> command to get a simple path to name mapping:</p>
+
+<pre><code>{
+  &quot;backbone&quot;: &quot;components/backbone/index.js&quot;,
+  &quot;jquery&quot;: &quot;components/jquery/index.js&quot;,
+  &quot;underscore&quot;: &quot;components/underscore/index.js&quot;
+}
+</code></pre>
+
+<h3>Authoring packages</h3>
+
+<p>To register a new package, it&#39;s as simple as specifying a <code>component.json</code>, pushing the package to a Git endpoint, say GitHub, and running:</p>
+
+<pre><code>bower register myawesomepackagename git://github.com/maccmans/face</code></pre>
+
+<p>There&#39;s no authentication or user management. It&#39;s on a first come, first served basis. Think of it like a URL shortener. Now anyone can run <code>bower install myawesomepackagename</code>, and get your library installed.</p>
+
+<h3>Philosophy</h3>
+
+<p>Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.</p>
+
+<p>In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn&#39;t rely on any particular transport (AMD, CommonJS, etc).</p>
+
+<p>Bower then makes available a simple programatic api which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.</p>
+
+<h3>FAQ</h3>
+
+<p><strong>What distinguishes Bower from Jam, Volo or Ender? What does it do better?</strong></p>
+
+<p>Bower is a lower level component then Jam, Volo, or Ender. These managers could consume bower as a dependency.</p>
+
+<p>Bower&#39;s aim is simply to install git paths, resolve dependencies from a component.json, check versions, and then provide an api which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management. </p>
+
+<p>Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the javascript community around transports (sprockets, commonjs, requirejs, regular script tags).</p>
+
+<p>Bower is trying to solve the problem of package management in a more generic, unopionated way. It get&#39;s away with this by exposing an api which can then be consumed by a more opinionated build stack.</p>
+
+<p><strong>Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?</strong></p>
+
+<p>Bower (being a git powered package manager) in theory should be capable of consuming most every package that volo does, with the aditional benifit of supporting internal networks and other git repositories not hosted on github.</p>
+
+<p><strong>We recently saw what happened when the NPM registry completely went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
+
+<p>There&#39;s no redundancy planned at the moment, as bower just installs git urls. It&#39;s up to the url provider to establish redundancy.</p>
+
+<p><strong>Isn&#39;t having a package.json file going to conflict with my npm&#39;s package.json? Will this be a problem?</strong></p>
+
+<p>Don&#39;t use a package.json – user component.json.</p>
+
+<p><strong>Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?</strong></p>
+
+<p>Twitter is in the process of migrating it&#39;s frontend architecture onto bower, so it&#39;s fairly safe to say it will be maintained and invested in going forward.</p>
+
+<h3>Contact</h3>
+
+<p>Have a question? Ask on our mailing list!</p>
+
+<p>twitter-bower@googlegroups.com</p>
+
+<p>http://groups.google.com/group/twitter-bower</p>
+
+<h3>Authors</h3>
+
+<ul><li><a href="http://github.com/fat">@fat</a></li><li><a href="http://github.com/maccman">@maccman</a></li></ul>
+
+<p>Thanks for assistance and contributions:</p>
+
+<ul><li><a href="http://github.com/addyosmani">@addyosmani</a></li><li><a href="http://github.com/angus-c">@angus-c</a></li><li><a href="http://github.com/borismus">@borismus</a></li><li><a href="http://github.com/chriseppstein">@chriseppstein</a></li><li><a href="http://github.com/danwrong">@danwrong</a></li><li><a href="http://github.com/desandro">@desandro</a></li><li><a href="http://github.com/isaacs">@isaacs</a></li><li><a href="http://github.com/josh">@josh</a></li><li><a href="http://github.com/jrburke">@jrburke</a></li><li><a href="http://github.com/mklabs">@mklabs</a></li><li><a href="http://github.com/paulirish">@paulirish</a></li><li><a href="http://github.com/rvagg">@rvagg</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/SlexAxton">@SlexAxton</a></li><li><a href="http://github.com/sstephenson">@sstephenson</a></li><li><a href="http://github.com/tomdale">@tomdale</a></li><li><a href="http://github.com/visionmedia">@visionmedia</a></li><li><a href="http://github.com/wagenet">@wagenet</a></li><li><a href="http://github.com/wycats">@wycats</a></li></ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p class="license">Code licensed under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+  </div>
+
+  <script>
+  /*! Normalized address bar hiding for iOS & Android (c) @scottjehl MIT License */
+    (function( win ){
+      var doc = win.document;
+
+      // If there's a hash, or addEventListener is undefined, stop here
+      if( !location.hash && win.addEventListener ){
+
+        //scroll to 1
+        window.scrollTo( 0, 1 );
+        var scrollTop = 1,
+          getScrollTop = function(){
+            return win.pageYOffset || doc.compatMode === "CSS1Compat" && doc.documentElement.scrollTop || doc.body.scrollTop || 0;
+          },
+
+          //reset to 0 on bodyready, if needed
+          bodycheck = setInterval(function(){
+            if( doc.body ){
+              clearInterval( bodycheck );
+              scrollTop = getScrollTop();
+              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+            }
+          }, 15 );
+
+        win.addEventListener( "load", function(){
+          setTimeout(function(){
+            //at load, if user hasn't scrolled more than 20 or so...
+            if( getScrollTop() < 20 ){
+              //reset to hide addr bar at onload
+              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+            }
+          }, 0);
+        } );
+      }
+    })( this );
+</script>
+
+</body>
+</html>

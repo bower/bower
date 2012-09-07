@@ -1,0 +1,207 @@
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: #fff;
+}
+
+body {
+  font: 14px/24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 2;
+  padding: 0;
+  margin: 0;
+  color: #222;
+}
+
+.logo {
+  font-family: Copperplate, Copperplate Gothic Light, sans-serif;
+  font-weight: lighter;
+  text-align: center;
+  margin-top: 100px;
+}
+
+.logo hr {
+  width: 134px;
+  border: none;
+  border-bottom: 2px dotted #000;
+}
+
+.logo .top {
+  margin-bottom: 7px;
+}
+
+.logo .bottom {
+  margin-bottom: 8px;
+}
+
+.logo h1, .logo h3 {
+  display: block;
+  font-weight: 100;
+  margin: 0;
+  margin-top: 0;
+}
+
+.logo h1 {
+  font-size: 200px;
+  line-height: 100px;
+  margin-bottom: 40px;
+  margin-top: 7px;
+}
+
+.logo h3 {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.logo .small {
+  margin-top: -8px;
+}
+
+h1 {
+  display: none;
+}
+
+h3 {
+  font-size: 1.8em;
+  margin-top: 80px;
+}
+
+a {
+  color: purple;
+}
+
+#wrap {
+  border-top: 1px solid ghostwhite;
+}
+
+#wrap-inner {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.hero {
+  display: block;
+  min-height: 100%;
+  background-color: #fff;
+}
+
+.hero .hero-inner {
+  text-align: center;
+  position: absolute;
+  display: block;
+  top: 50%;
+  margin-top: -205px;
+  left: 50%;
+  margin-left:-307px;
+}
+
+pre, code {
+  padding: 5px 10px;
+  margin-bottom: 20px;
+  overflow: auto;
+  font-family: courier;
+  background: ghostwhite;
+  border: 1px solid #ddd;
+}
+
+code {
+  padding: 2px 5px;
+}
+
+pre code {
+  padding: 0;
+  margin-bottom: 0;
+  border: 0;
+}
+
+pre:before,
+pre:after {
+  content: '';
+  display: none;
+  width: 100%;
+  position: absolute;
+  left: 0;
+
+}
+
+pre:before {
+  border-top: 1px solid hsla( 0, 0%, 100%, 1 );
+  top: 0;
+}
+
+pre:after {
+  border-top: 1px solid hsla( 0, 0%, 0%, 0.05 );
+  bottom: 0px;
+}
+
+.footer {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  border-top: 1px solid ghostwhite;
+  padding: 50px 0;
+}
+
+.btn {
+  font: 14px/24px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 0 34px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: bold;
+  line-height: 46px;
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #000;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -webkit-transition: background-color 0.3s ease-in-out;
+  -moz-transition: background-color 0.3s ease-in-out;
+  transition: background-color 0.3s ease-in-out;
+}
+.btn:hover {
+  background: purple;
+}
+
+/* #Media Queries
+================================================== */
+
+/* Mobile Landscape Size to Tablet Portrait (devices and browsers) */
+
+@media only screen and  (max-width: 767px) {
+  .hero {
+    position: relative;
+    height: auto;
+    min-height: auto;
+    min-height: 0;
+  }
+  .hero .logo {
+    margin-top: 50px;
+    margin-bottom: 50px;
+  }
+  .hero .logo h1{
+    font-size: 135px;
+    line-height: 70px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  .hero .logo h1{
+    font-size: 98px;
+    font-weight: normal;
+    margin-bottom: 24px;
+    margin-top: 10px;
+    line-height: 44px;
+  }
+}
