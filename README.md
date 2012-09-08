@@ -52,7 +52,7 @@ You can create a `component.json` file in your project's root, specifying all of
 {
   "name": "myProject",
   "version": "1.0.0",
-  "main": "./path/to/main.css"
+  "main": "./path/to/main.css",
   "dependencies": {
     "jquery": "~1.7.2"
   }
@@ -67,7 +67,7 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 {
   "name": "myProject",
   "version": "1.0.0",
-  "main": ["./path/to/app.css", "./path/to/app.js", "./path/to/sprite.img"]
+  "main": ["./path/to/app.css", "./path/to/app.js", "./path/to/sprite.img"],
   "dependencies": {
     "jquery": "~1.7.2"
   }
@@ -147,7 +147,7 @@ Bower's aim is simply to install git paths, resolve dependencies from a componen
 
 Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the javascript community around transports (sprockets, commonjs, requirejs, regular script tags).
 
-Bower offers a generic, unopionated solution to the problem of package management, while exposing an api that can be consumed by a more opinionated build stack.
+Bower offers a generic, unopinionated solution to the problem of package management, while exposing an api that can be consumed by a more opinionated build stack.
 
 **Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?**
 
