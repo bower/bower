@@ -46,7 +46,7 @@ To list all the available packages, just call `bower search` without specifying 
 
 ### Defining a package
 
-You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project dependencies.
+You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a projects' dependencies.
 
 ```json
 {
@@ -143,7 +143,7 @@ Bower then makes available a simple programatic api which exposes the package de
 
 Bower is a lower level component then Jam, Volo, or Ender. These managers could consume bower as a dependency.
 
-Bower's aim is simply to install git paths, resolve dependencies from a component.json, check versions, and then provide an api which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management. 
+Bower's aim is simply to install git paths, resolve dependencies from a component.json, check versions, and then provide an api which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
 Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the javascript community around transports (sprockets, commonjs, requirejs, regular script tags).
 
@@ -159,7 +159,7 @@ There's no redundancy planned at the moment, as bower just installs git urls. It
 
 **Isn't having a package.json file going to conflict with my npm's package.json? Will this be a problem?**
 
-Don't use a package.json – user component.json.
+Don't use a `package.json` – use a `component.json`.
 
 **Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?**
 
