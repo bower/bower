@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
 <!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
@@ -83,7 +84,7 @@ bower install ./repos/jquery</code></pre>
 
 <p>As you can see, packages can be installed by name, Git endpoint, URL or local path.</p>
 
-<p>To update a package, you need to reference it by name:</p>
+<p>To update a package, reference it by name:</p>
 
 <pre><code>bower update jquery-ui</code></pre>
 
@@ -99,22 +100,35 @@ bower install ./repos/jquery</code></pre>
 
 <h3>Defining a package</h3>
 
-<p>You can create a <code>component.json</code> file in your project&#39;s root, specifying all of its dependencies. This is similar to Node&#39;s <code>package.json</code>, or Ruby&#39;s <code>Gemfile</code>, and is useful for locking down a project dependencies.</p>
+<p>You can create a <code>component.json</code> file in your project&#39;s root, specifying all of its dependencies. This is similar to Node&#39;s <code>package.json</code>, or Ruby&#39;s <code>Gemfile</code>, and is useful for locking down a project&#39;s dependencies.</p>
 
 <pre><code>{
   &quot;name&quot;: &quot;myProject&quot;,
   &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;main&quot;: &quot;./path/to/main.css&quot;,
   &quot;dependencies&quot;: {
     &quot;jquery&quot;: &quot;~1.7.2&quot;
   }
 }
 </code></pre>
 
-<p>Put this under your project&#39;s root, listing all of your dependencies. When you run <code>bower install</code>, bower will read this <code>component.json</code> file, resolve all the relevant dependencies and install them.</p>
+<p>Put this under your project&#39;s root, listing all of your dependencies. When you run <code>bower install</code>, Bower will read this <code>component.json</code> file, resolve all the relevant dependencies and install them.</p>
+
+<p>For now, <code>name</code>, <code>version</code>, <code>main</code>, and <code>dependencies</code> are the only properties that are used by Bower. If you have several files you&#39;re distributing as part of your package, pass an array to <code>main</code> like this:</p>
+
+<pre><code>{
+  &quot;name&quot;: &quot;myProject&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;main&quot;: [&quot;./path/to/app.css&quot;, &quot;./path/to/app.js&quot;, &quot;./path/to/sprite.img&quot;],
+  &quot;dependencies&quot;: {
+    &quot;jquery&quot;: &quot;~1.7.2&quot;
+  }
+}
+</code></pre>
 
 <h3>Installing dependencies</h3>
 
-<p>Dependencies are installed locally via the <code>bower install</code> command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local sub directory called <code>./components</code>, for example:</p>
+<p>Dependencies are installed locally via the <code>bower install</code> command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local subdirectory called <code>./components</code>, for example:</p>
 
 <pre><code>/component.json
 /components/jquery/index.js
@@ -127,7 +141,7 @@ bower install ./repos/jquery</code></pre>
 
 <h3>Deploying</h3>
 
-<p>The easiest approach is to use bower statically, just reference the packages manually from a script tag:</p>
+<p>The easiest approach is to use Bower statically, just reference the packages manually from a script tag:</p>
 
 <pre><code>&lt;script src=&quot;components/jquery/index.js&quot;&gt;&lt;/script&gt;</code></pre>
 
@@ -143,9 +157,9 @@ run environment
 
 <h3>Package Consumption</h3>
 
-<p>Bower also makes available a source mapping – this can be used by build tools to easily consume bower components.</p>
+<p>Bower also makes available a source mapping – this can be used by build tools to easily consume Bower components.</p>
 
-<p>If you pass the option <code>--map</code> to bower&#39;s <code>list</code> command it will generate a json with dependency objects. Alternatively, you can pass the <code>--paths</code> flag to the <code>list</code> command to get a simple path to name mapping:</p>
+<p>If you pass the option <code>--map</code> to bower&#39;s <code>list</code> command, it will generate a JSON with dependency objects. Alternatively, you can pass the <code>--paths</code> flag to the <code>list</code> command to get a simple path to name mapping:</p>
 
 <pre><code>{
   &quot;backbone&quot;: &quot;components/backbone/index.js&quot;,
@@ -166,37 +180,37 @@ run environment
 
 <p>Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.</p>
 
-<p>In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn&#39;t rely on any particular transport (AMD, CommonJS, etc).</p>
+<p>In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn&#39;t rely on any particular transport (AMD, CommonJS, etc.).</p>
 
-<p>Bower then makes available a simple programatic api which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.</p>
+<p>Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.</p>
 
 <h3>FAQ</h3>
 
 <p><strong>What distinguishes Bower from Jam, Volo or Ender? What does it do better?</strong></p>
 
-<p>Bower is a lower level component then Jam, Volo, or Ender. These managers could consume bower as a dependency.</p>
+<p>Bower is a lower level component then Jam, Volo, or Ender. These managers could consume Bower as a dependency.</p>
 
-<p>Bower&#39;s aim is simply to install git paths, resolve dependencies from a component.json, check versions, and then provide an api which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management. </p>
+<p>Bower&#39;s aim is simply to install Git paths, resolve dependencies from a <code>component.json</code>, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.</p>
 
-<p>Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the javascript community around transports (sprockets, commonjs, requirejs, regular script tags).</p>
+<p>Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).</p>
 
-<p>Bower is trying to solve the problem of package management in a more generic, unopionated way. It get&#39;s away with this by exposing an api which can then be consumed by a more opinionated build stack.</p>
+<p>Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.</p>
 
 <p><strong>Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?</strong></p>
 
-<p>Bower (being a git powered package manager) in theory should be capable of consuming most every package that volo does, with the aditional benifit of supporting internal networks and other git repositories not hosted on github.</p>
+<p>Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.</p>
 
-<p><strong>We recently saw what happened when the NPM registry completely went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
+<p><strong>We recently saw what happened when the NPM registry went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
 
-<p>There&#39;s no redundancy planned at the moment, as bower just installs git urls. It&#39;s up to the url provider to establish redundancy.</p>
+<p>There&#39;s no redundancy planned at the moment, as Bower just installs Git URLs. It&#39;s up to the URL provider to establish redundancy.</p>
 
-<p><strong>Isn&#39;t having a package.json file going to conflict with my npm&#39;s package.json? Will this be a problem?</strong></p>
+<p><strong>Isn&#39;t having a <code>package.json</code> file going to conflict with my npm&#39;s <code>package.json</code>? Will this be a problem?</strong></p>
 
-<p>Don&#39;t use a package.json – use a component.json.</p>
+<p>Don&#39;t use a <code>package.json</code> – use a <code>component.json</code>.</p>
 
 <p><strong>Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?</strong></p>
 
-<p>Twitter is in the process of migrating it&#39;s frontend architecture onto bower, so it&#39;s fairly safe to say it will be maintained and invested in going forward.</p>
+<p>Twitter is in the process of migrating its frontend architecture onto Bower, so it&#39;s fairly safe to say it will be maintained and invested in going forward.</p>
 
 <h3>Contact</h3>
 
@@ -213,6 +227,12 @@ run environment
 <p>Thanks for assistance and contributions:</p>
 
 <ul><li><a href="http://github.com/addyosmani">@addyosmani</a></li><li><a href="http://github.com/angus-c">@angus-c</a></li><li><a href="http://github.com/borismus">@borismus</a></li><li><a href="http://github.com/chriseppstein">@chriseppstein</a></li><li><a href="http://github.com/danwrong">@danwrong</a></li><li><a href="http://github.com/desandro">@desandro</a></li><li><a href="http://github.com/isaacs">@isaacs</a></li><li><a href="http://github.com/josh">@josh</a></li><li><a href="http://github.com/jrburke">@jrburke</a></li><li><a href="http://github.com/mklabs">@mklabs</a></li><li><a href="http://github.com/paulirish">@paulirish</a></li><li><a href="http://github.com/rvagg">@rvagg</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/SlexAxton">@SlexAxton</a></li><li><a href="http://github.com/sstephenson">@sstephenson</a></li><li><a href="http://github.com/tomdale">@tomdale</a></li><li><a href="http://github.com/visionmedia">@visionmedia</a></li><li><a href="http://github.com/wagenet">@wagenet</a></li><li><a href="http://github.com/wycats">@wycats</a></li></ul>
+
+<h2>License</h2>
+
+<p>Copyright 2012 Twitter, Inc.</p>
+
+<p>Licensed under the MIT License</p>
     </div>
   </div>
 
