@@ -141,7 +141,7 @@ Bower then makes available a simple programmatic API which exposes the package d
 
 **What distinguishes Bower from Jam, Volo or Ender? What does it do better?**
 
-Bower is a lower level component then Jam, Volo, or Ender. These managers could consume Bower as a dependency.
+Bower is a lower level component than Jam, Volo, or Ender. These managers could consume Bower as a dependency.
 
 Bower's aim is simply to install Git paths, resolve dependencies from a `component.json`, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
