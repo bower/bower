@@ -46,7 +46,7 @@ To list all the available packages, just call `bower search` without specifying 
 
 ### Defining a package
 
-You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a projects' dependencies.
+You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's dependencies.
 
 ```json
 {
@@ -76,7 +76,7 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 
 ### Installing dependencies
 
-Dependencies are installed locally via the `bower install` command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local sub directory called `./components`, for example:
+Dependencies are installed locally via the `bower install` command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local subdirectory called `./components`, for example:
 
 
 ```
@@ -91,7 +91,7 @@ There are no system wide dependencies, no dependencies are shared between differ
 
 ### Deploying
 
-The easiest approach is to use bower statically, just reference the packages manually from a script tag:
+The easiest approach is to use Bower statically, just reference the packages manually from a script tag:
 
     <script src="components/jquery/index.js"></script>
 
@@ -108,9 +108,9 @@ run environment
 
 ### Package Consumption
 
-Bower also makes available a source mapping – this can be used by build tools to easily consume bower components.
+Bower also makes available a source mapping – this can be used by build tools to easily consume Bower components.
 
-If you pass the option `--map` to bower's `list` command it will generate a json with dependency objects. Alternatively, you can pass the `--paths` flag to the `list` command to get a simple path to name mapping:
+If you pass the option `--map` to bower's `list` command, it will generate a JSON with dependency objects. Alternatively, you can pass the `--paths` flag to the `list` command to get a simple path to name mapping:
 
 ```json
 {
@@ -132,38 +132,38 @@ There's no authentication or user management. It's on a first come, first served
 
 Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.
 
-In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn't rely on any particular transport (AMD, CommonJS, etc).
+In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn't rely on any particular transport (AMD, CommonJS, etc.).
 
-Bower then makes available a simple programatic api which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
+Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
 
 
 ### FAQ
 
 **What distinguishes Bower from Jam, Volo or Ender? What does it do better?**
 
-Bower is a lower level component then Jam, Volo, or Ender. These managers could consume bower as a dependency.
+Bower is a lower level component then Jam, Volo, or Ender. These managers could consume Bower as a dependency.
 
-Bower's aim is simply to install git paths, resolve dependencies from a component.json, check versions, and then provide an api which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
+Bower's aim is simply to install Git paths, resolve dependencies from a `component.json`, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
-Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the javascript community around transports (sprockets, commonjs, requirejs, regular script tags).
+Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
 
-Bower offers a generic, unopinionated solution to the problem of package management, while exposing an api that can be consumed by a more opinionated build stack.
+Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.
 
 **Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?**
 
-Bower (being a git powered package manager) should, in theory, be capable of consuming most every package that Volo does, with the additional benefit of supporting internal networks and other git repositories not hosted on github.
+Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.
 
 **We recently saw what happened when the NPM registry went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?**
 
-There's no redundancy planned at the moment, as bower just installs git urls. It's up to the url provider to establish redundancy.
+There's no redundancy planned at the moment, as Bower just installs Git URLs. It's up to the URL provider to establish redundancy.
 
-**Isn't having a package.json file going to conflict with my npm's package.json? Will this be a problem?**
+**Isn't having a `package.json` file going to conflict with my npm's `package.json`? Will this be a problem?**
 
 Don't use a `package.json` – use a `component.json`.
 
 **Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?**
 
-Twitter is in the process of migrating it's frontend architecture onto bower, so it's fairly safe to say it will be maintained and invested in going forward.
+Twitter is in the process of migrating its frontend architecture onto Bower, so it's fairly safe to say it will be maintained and invested in going forward.
 
 
 ### Contact
