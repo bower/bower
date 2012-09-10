@@ -96,7 +96,7 @@ describe('package', function () {
 
     pkg.on('resolve', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
-      assert.deepEqual(_.uniq(deps), ["package-bootstrap", "jqueryui", "jquery"]);
+      assert.deepEqual(_.uniq(deps), ["package-bootstrap", "jquery-ui", "jquery"]);
       next();
     });
 
