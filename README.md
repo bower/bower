@@ -153,7 +153,7 @@ Bower offers a generic, unopinionated solution to the problem of package managem
 
 Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.
 
-**We recently saw what happened when the NPM registry went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?**
+**We recently saw what happened when the NPM registry went down. Is this a central point of failure possible for Bower and if so, do you have redundancy planned?**
 
 There's no redundancy planned at the moment, as Bower just installs Git URLs. It's up to the URL provider to establish redundancy.
 
