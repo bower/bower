@@ -12,6 +12,13 @@ describe('info', function () {
     assert(info() instanceof events.EventEmitter);
   });
 
+  it('Should emit error event', function (next) {
+    info('no-package-found').on('error', function (error) {
+      assert(!!error);
+      next();
+    });
+  });
+
   it('Should emit end event', function (next) {
     info('jquery').on('end', function (data) {
       assert(!!data);
