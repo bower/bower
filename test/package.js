@@ -1,7 +1,7 @@
 var assert  = require('assert');
 var path    = require('path');
 var fs      = require('fs');
-var _       = require('underscore');
+var _       = require('lodash');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
