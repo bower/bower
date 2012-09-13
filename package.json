@@ -21,7 +21,7 @@
     "request"           : "latest",
     "fstream"           : "latest",
     "hogan.js"          : "latest",
-    "underscore"        : "latest",
+    "lodash"            : "latest",
     "read-package-json" : "latest"
   },
   "scripts": {
