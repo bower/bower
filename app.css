@@ -21,7 +21,7 @@ body {
   font-family: Copperplate, Copperplate Gothic Light, sans-serif;
   font-weight: lighter;
   text-align: center;
-  margin-top: 100px;
+  margin: 100px 0;
 }
 
 .logo hr {
@@ -75,7 +75,7 @@ a {
 }
 
 #wrap {
-  border-top: 1px solid ghostwhite;
+  border-top: 1px solid #eee;
 }
 
 #wrap-inner {
@@ -86,7 +86,6 @@ a {
 
 .hero {
   display: block;
-  min-height: 100%;
   background-color: #fff;
 }
 
