@@ -88,6 +88,18 @@ a {
   display: block;
   min-height: 100%;
   background-color: #fff;
+  text-align: center;
+}
+
+.hero:after {
+  content: '⬇';
+  position: absolute;
+  right: 0;
+  bottom: 20px;
+  left: 0;
+  display: block;
+  font-size: 70px;
+  color: #c7c7c7;
 }
 
 .hero .hero-inner {
