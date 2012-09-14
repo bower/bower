@@ -139,15 +139,16 @@ Bower then makes available a simple programmatic API which exposes the package d
 
 ### FAQ
 
-**What distinguishes Bower from Jam, Volo or Ender? What does it do better?**
+**What distinguishes Bower from Jam, Volo, Component, or Ender? What does it do better?**
 
-Bower is a lower level component than Jam, Volo, or Ender. These managers could consume Bower as a dependency.
+Bower is a lower level component than Jam, Volo, Component, or Ender. These managers could consume Bower as a dependency.
 
 Bower's aim is simply to install Git paths, resolve dependencies from a `component.json`, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
-Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
+Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender, Component) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
 
 Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.
+
 
 **Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?**
 
