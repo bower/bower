@@ -2,6 +2,8 @@ var assert  = require('assert');
 var path    = require('path');
 var fs      = require('fs');
 var _       = require('lodash');
+var rimraf   = require('rimraf');
+var config   = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
@@ -112,5 +114,20 @@ describe('package', function () {
     });
 
     pkg.resolve();
+  });
+
+  it('Should copy files from temp folder to local path', function (next) {
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+    pkg.on('install',function () {
+      assert(fs.existsSync(pkg.localPath));
+      rimraf(config.directory, function(err){
+        next();
+      });
+    });
+    pkg.clone();
   });
 });
