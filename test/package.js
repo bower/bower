@@ -91,6 +91,19 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
+  it('Should load correct json from package.json', function (next) {
+    var pkg = new Package('jquery', __dirname + '/assets/package-only-package-json');
+
+    pkg.on('loadJSON', function () {
+      assert(pkg.json);
+      assert.equal(pkg.json.name, 'myproject');
+      assert.equal(pkg.json.version, '1.5.23');
+      next();
+    });
+
+    pkg.loadJSON();
+  });
+
   it('Should resolve JSON dependencies', function (next) {
     var pkg = new Package('project', __dirname + '/assets/project');
 
