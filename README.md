@@ -30,6 +30,8 @@ To install a package:
 
 As you can see, packages can be installed by name, Git endpoint, URL or local path.
 
+[View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
+
 To update a package, reference it by name:
 
     bower update jquery-ui
