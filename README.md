@@ -32,6 +32,10 @@ As you can see, packages can be installed by name, Git endpoint, URL or local pa
 
 [View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
 
+During install you can have Bower add an entry to your component.json as well:
+
+    bower install --save jquery
+
 To update a package, reference it by name:
 
     bower update jquery-ui
