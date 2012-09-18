@@ -56,7 +56,7 @@ Bower can be configured by creating a ~/.bowerrc file with one or all of the fol
 }
 ```
 
-To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/KarthikDot/bower-server.
+To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.
 
 ### Defining a package
 
