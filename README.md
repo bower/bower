@@ -80,6 +80,8 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 }
 ```
 
+There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
+
 ### Installing dependencies
 
 Dependencies are installed locally via the `bower install` command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local subdirectory called `./components`, for example:
