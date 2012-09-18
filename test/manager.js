@@ -18,4 +18,17 @@ describe('manager', function () {
 
     manager.resolve()
   });
+
+  it('Should resolve nested JSON dependencies', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/other-project';
+
+    manager.on('resolve', function () {
+      assert.deepEqual(manager.dependencies["jquery"][0].version, "1.7.2");
+      assert.deepEqual(manager.dependencies["jquery-pjax"][0].version, "1.0.0");
+      next();
+    });
+
+    manager.resolve()
+  });
 });
