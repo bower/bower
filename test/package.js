@@ -103,6 +103,18 @@ describe('package', function () {
     pkg.resolve();
   });
 
+  it('Should resolve nested JSON dependencies', function (next) {
+    var pkg = new Package('project', __dirname + '/assets/other-project');
+
+    pkg.on('resolve', function () {
+      assert.deepEqual(pkg.dependencies["jquery"].version, "1.7.2");
+      assert.deepEqual(pkg.dependencies["jquery-pjax"].version, "1.0.0");
+      next();
+    });
+
+    pkg.resolve();
+  });
+
   it('Should error when copying fails from non existing path', function (next) {
     var pkg = new Package('project', __dirname + '/assets/project-non-existent');
 
