@@ -30,6 +30,12 @@ To install a package:
 
 As you can see, packages can be installed by name, Git endpoint, URL or local path.
 
+[View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
+
+During install you can have Bower add an entry to your component.json as well:
+
+    bower install --save jquery
+
 To update a package, reference it by name:
 
     bower update jquery-ui
@@ -73,6 +79,8 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
   }
 }
 ```
+
+There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
 ### Installing dependencies
 
