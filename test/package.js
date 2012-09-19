@@ -1,10 +1,10 @@
 var assert  = require('assert'),
     path    = require('path'),
     fs      = require('fs'),
-    nock    = require('nock',
+    nock    = require('nock'),
     _       = require('lodash'),
-    rimraf   = require('rimraf'),
-    config   = require('../lib/core/config'),
+    rimraf  = require('rimraf'),
+    config  = require('../lib/core/config'),
     Package = require('../lib/core/package');
 
 describe('package', function () {
@@ -134,6 +134,7 @@ describe('package', function () {
 
     pkg.resolve();
   });
+
   it('Should copy files from temp folder to local path', function (next) {
     var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
 
