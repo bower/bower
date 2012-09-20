@@ -35,8 +35,8 @@ describe('package', function () {
   });
 
   it('Should resolve url when we got redirected', function() {
-    var redirecting_url    = 'http://redirecting-url.com',
-        redirecting_to_url = 'http://redirected-to-url.com';
+    var redirecting_url    = 'http://redirecting-url.com';
+    var redirecting_to_url = 'http://redirected-to-url.com';
 
     var redirect_scope = nock(redirecting_url)
       .defaultReplyHeaders({'location': redirecting_to_url + '/jquery.zip'})
