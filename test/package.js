@@ -1,11 +1,11 @@
-var assert  = require('assert'),
-    path    = require('path'),
-    fs      = require('fs'),
-    nock    = require('nock'),
-    _       = require('lodash'),
-    rimraf  = require('rimraf'),
-    config  = require('../lib/core/config'),
-    Package = require('../lib/core/package');
+var assert  = require('assert');
+var path    = require('path');
+var fs      = require('fs');
+var nock    = require('nock');
+var _       = require('lodash');
+var rimraf  = require('rimraf');
+var config  = require('../lib/core/config');
+var Package = require('../lib/core/package');
 
 describe('package', function () {
   it('Should resolve git URLs properly', function () {
