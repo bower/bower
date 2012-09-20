@@ -28,7 +28,8 @@
     "test": "mocha -R spec -t 10000"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "nock": "latest"
   },
   "bin": { "bower": "bin/bower" },
   "preferGlobal": true
