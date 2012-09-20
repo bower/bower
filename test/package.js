@@ -1,9 +1,10 @@
 var assert  = require('assert');
 var path    = require('path');
 var fs      = require('fs');
+var nock    = require('nock');
 var _       = require('lodash');
-var rimraf   = require('rimraf');
-var config   = require('../lib/core/config');
+var rimraf  = require('rimraf');
+var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
@@ -33,9 +34,27 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
 
-  it('Should resolve paths properly', function () {
-    var pkg = new Package('jquery', '~/jquery');
-    assert.equal(pkg.path, path.resolve('~/jquery'));
+  it('Should resolve url when we got redirected', function() {
+    var redirecting_url    = 'http://redirecting-url.com';
+    var redirecting_to_url = 'http://redirected-to-url.com';
+
+    var redirect_scope = nock(redirecting_url)
+      .defaultReplyHeaders({'location': redirecting_to_url + '/jquery.zip'})
+      .get('/jquery.zip')
+      .reply(302);
+
+    var redirect_to_scope = nock(redirecting_to_url)
+      .get('/jquery.zip')
+      .reply(200, "jquery content");
+
+    var pkg = new Package('jquery', redirecting_url + '/jquery.zip');
+
+    pkg.on('resolve', function () {
+      assert(pkg.assetUrl);
+      assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.zip');
+    });
+
+    pkg.download();
   });
 
   it('Should clone git packages', function (next) {
