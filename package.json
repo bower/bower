@@ -21,15 +21,16 @@
     "request"           : "latest",
     "fstream"           : "latest",
     "hogan.js"          : "latest",
+    "underscore"        : "latest",
     "lodash"            : "latest",
-    "read-package-json" : "latest"
+    "read-package-json" : "latest",
+    "rc"                : "latest"
   },
   "scripts": {
     "test": "mocha -R spec -t 10000"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "nock": "latest"
+    "mocha": "latest"
   },
   "bin": { "bower": "bin/bower" },
   "preferGlobal": true
