@@ -162,7 +162,6 @@ describe('package', function () {
       pkg.install();
     });
     pkg.on('install',function () {
-      assert(fs.existsSync(pkg.localPath));
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
         if (err) throw new Error(err);
         assert.equal(results[0].mode, results[1].mode)
