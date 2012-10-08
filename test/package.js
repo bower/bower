@@ -4,6 +4,7 @@ var fs      = require('fs');
 var nock    = require('nock');
 var _       = require('lodash');
 var rimraf  = require('rimraf');
+var async   = require('async');
 var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
@@ -149,4 +150,29 @@ describe('package', function () {
     });
     pkg.clone();
   });
+
+  it('Should have accessible file permissions on temp folder', function (next) {
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
+    var cachePath;
+
+    pkg.on('cache', function() {
+      cachePath = pkg.path;
+    });
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+    pkg.on('install',function () {
+      assert(fs.existsSync(pkg.localPath));
+      async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
+        if (err) throw new Error(err);
+        assert.equal(results[0].mode, results[1].mode)
+        rimraf(config.directory, function(err){
+          next();
+        });
+      });
+    });
+
+    pkg.clone();
+  });
+
 });
