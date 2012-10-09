@@ -1,0 +1,8 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "dependencies": {
+    "jquery": "1.6.0",
+    "jquery-pjax": "1.0.0"
+  }
+}
