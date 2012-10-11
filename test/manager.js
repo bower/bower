@@ -36,7 +36,7 @@ describe('manager', function () {
 
   it('Should resolve nested JSON dependencies', function (next) {
     var manager = new Manager([]);
-    manager.cwd = __dirname + '/assets/other-project';
+    manager.cwd = __dirname + '/assets/project-nested';
 
     manager.on('resolve', function () {
       assert.deepEqual(manager.dependencies["jquery"][0].version, "1.7.2");
@@ -52,7 +52,7 @@ describe('manager', function () {
 
   it('Should detect unresolvable packages in nested JSON dependencies', function (next) {
     var manager = new Manager([]);
-    manager.cwd = __dirname + '/assets/conflict-project';
+    manager.cwd = __dirname + '/assets/project-nested-conflict';
 
     var detected = false;
     manager.on('error', function (err) {
