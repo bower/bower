@@ -15,7 +15,7 @@ describe('manager', function () {
         }
         done();
       });
-    }
+    } else done();
   });
 
   it('Should resolve JSON dependencies', function (next) {
@@ -38,8 +38,8 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project-nested';
 
     manager.on('resolve', function () {
-      assert.deepEqual(manager.dependencies["jquery"][0].version, "1.7.2");
-      assert.deepEqual(manager.dependencies["jquery-pjax"][0].version, "1.0.0");
+      assert.deepEqual(manager.dependencies['jquery'][0].version, '1.7.2');
+      assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
       next();
     });
 
