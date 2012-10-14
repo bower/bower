@@ -1,7 +1,6 @@
 var assert  = require('assert');
 var path    = require('path');
-// var fs      = require('fs');
-// var _       = require('lodash');
+var fs      = require('fs');
 var Manager = require('../lib/core/manager');
 var rimraf  = require('rimraf');
 var config  = require('../lib/core/config');
@@ -9,12 +8,14 @@ var semver  = require('semver');
 
 describe('manager', function () {
   beforeEach(function (done) {
-    rimraf(config.directory, function (err) {
-      if (err) {
-        throw new Error('Unable to delete local directory.');
-      }
-      done();
-    });
+    if (fs.existsSync(config.directory)) {
+      rimraf(config.directory, function (err) {
+        if (err) {
+          throw new Error('Unable to delete local directory.');
+        }
+        done();
+      });
+    }
   });
 
   it('Should resolve JSON dependencies', function (next) {
@@ -25,9 +26,7 @@ describe('manager', function () {
       assert.ok(semver.gte(manager.dependencies["jquery"][0].version, "1.8.1"));
       assert.ok(semver.gte(manager.dependencies["package-bootstrap"][0].version, "2.0.0"));
       assert.ok(semver.gte(manager.dependencies["jquery-ui"][0].version, "1.8.0"));
-      rimraf(config.directory, function (err) {
-        next();
-      });
+      next();
     });
 
     manager.resolve();
@@ -41,10 +40,7 @@ describe('manager', function () {
     manager.on('resolve', function () {
       assert.deepEqual(manager.dependencies["jquery"][0].version, "1.7.2");
       assert.deepEqual(manager.dependencies["jquery-pjax"][0].version, "1.0.0");
-
-      rimraf(config.directory, function (err) {
-        next();
-      });
+      next();
     });
 
     manager.resolve();
