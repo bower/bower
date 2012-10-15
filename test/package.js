@@ -12,19 +12,15 @@ describe('package', function () {
   beforeEach(function (done) {
     var del = 0;
 
-    if (fs.existsSync(config.directory)) {
-      rimraf(config.directory, function (err) {
-        // Ignore the error if the local directory was not actually deleted
-        if (++del >= 2) done();
-      });
-    } else if (++del >= 2) done();
+    rimraf(config.directory, function (err) {
+      // Ignore the error if the local directory was not actually deleted
+      if (++del >= 2) done();
+    });
 
-    if (fs.existsSync(config.cache)) {
-      rimraf(config.cache, function (err) {
-        // Ignore the error if the cache directory was not actually deleted
-        if (++del >= 2) done();
-      });
-    } else if (++del >= 2) done();
+    rimraf(config.cache, function (err) {
+      // Ignore the error if the cache directory was not actually deleted
+      if (++del >= 2) done();
+    });
   });
 
   it('Should resolve git URLs properly', function () {
