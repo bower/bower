@@ -9,6 +9,24 @@ var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
+  beforeEach(function (done) {
+    var del = 0;
+
+    if (fs.existsSync(config.directory)) {
+      rimraf(config.directory, function (err) {
+        // Ignore the error if the local directory was not actually deleted
+        if (++del >= 2) done();
+      });
+    } else if (++del >= 2) done();
+
+    if (fs.existsSync(config.cache)) {
+      rimraf(config.cache, function (err) {
+        // Ignore the error if the cache directory was not actually deleted
+        if (++del >= 2) done();
+      });
+    } else if (++del >= 2) done();
+  });
+
   it('Should resolve git URLs properly', function () {
     var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
     assert.equal(pkg.gitUrl, 'git://github.com/jquery/jquery.git');
@@ -35,7 +53,7 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
 
-  it('Should resolve url when we got redirected', function() {
+  it('Should resolve url when we got redirected', function (next) {
     var redirecting_url    = 'http://redirecting-url.com';
     var redirecting_to_url = 'http://redirected-to-url.com';
 
@@ -46,13 +64,19 @@ describe('package', function () {
 
     var redirect_to_scope = nock(redirecting_to_url)
       .get('/jquery.zip')
-      .reply(200, "jquery content");
+      .reply(200, 'jquery content');
 
     var pkg = new Package('jquery', redirecting_url + '/jquery.zip');
 
     pkg.on('resolve', function () {
       assert(pkg.assetUrl);
       assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.zip');
+      nock.restore();
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.download();
@@ -110,6 +134,24 @@ describe('package', function () {
       next();
     });
 
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.loadJSON();
+  });
+
+  it('Should not fallback to package.json if there is an error in the components.json', function (next) {
+    var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
+
+    pkg.on('error', function (error) {
+      if (/parse json/i.test(error)) next();
+      else throw new Error(err);
+    });
+    pkg.on('loadJSON', function () {
+      throw new Error('Should have throw an error parsing the JSON.');
+    });
+
     pkg.loadJSON();
   });
 
@@ -118,8 +160,12 @@ describe('package', function () {
 
     pkg.on('resolve', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
-      assert.deepEqual(_.uniq(deps), ["package-bootstrap", "jquery-ui", "jquery"]);
+      assert.deepEqual(_.uniq(deps), ['package-bootstrap', 'jquery-ui', 'jquery']);
       next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.resolve();
@@ -169,6 +215,10 @@ describe('package', function () {
           next();
         });
       });
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.clone();

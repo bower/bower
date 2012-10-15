@@ -11,14 +11,21 @@ var path    = require('path');
 
 describe('manager', function () {
   beforeEach(function (done) {
+    var del = 0;
+
     if (fs.existsSync(config.directory)) {
       rimraf(config.directory, function (err) {
-        if (err) {
-          throw new Error('Unable to delete local directory.');
-        }
-        done();
+        // Ignore the error if the local directory was not actually deleted
+        if (++del >= 2) done();
       });
-    } else done();
+    } else if (++del >= 2) done();
+
+    if (fs.existsSync(config.cache)) {
+      rimraf(config.cache, function (err) {
+        // Ignore the error if the cache directory was not actually deleted
+        if (++del >= 2) done();
+      });
+    } else if (++del >= 2) done();
   });
 
   it('Should resolve JSON dependencies', function (next) {
@@ -30,6 +37,10 @@ describe('manager', function () {
       assert.ok(semver.gte(manager.dependencies['package-bootstrap'][0].version, '2.0.0'));
       assert.ok(semver.gte(manager.dependencies['jquery-ui'][0].version, '1.8.0'));
       next();
+    });
+
+    manager.on('error', function (err) {
+      throw new Error(err);
     });
 
     manager.resolve();
@@ -46,6 +57,10 @@ describe('manager', function () {
       next();
     });
 
+    manager.on('error', function (err) {
+      throw new Error(err);
+    });
+
     manager.resolve();
   });
 
@@ -58,6 +73,10 @@ describe('manager', function () {
       assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
       assert.ok(fs.existsSync(path.join(manager.dependencies['jquery'][0].localPath, 'foo.js')));
       next();
+    });
+
+    manager.on('error', function (err) {
+      throw new Error(err);
     });
 
     manager.resolve();
@@ -95,6 +114,10 @@ describe('manager', function () {
     manager.on('resolve', function () {
       assert.ok(fs.existsSync(manager.opts.directory));
       next();
+    });
+
+    manager.on('error', function (err) {
+      throw new Error(err);
     });
 
     manager.resolve();
