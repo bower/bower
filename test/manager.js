@@ -1,7 +1,4 @@
 var assert  = require('assert');
-var path    = require('path');
-// var fs      = require('fs');
-// var _       = require('lodash');
 var Manager = require('../lib/core/manager');
 var rimraf  = require('rimraf');
 var config  = require('../lib/core/config');
@@ -10,6 +7,7 @@ var fs      = require('fs');
 var path    = require('path');
 
 describe('manager', function () {
+
   beforeEach(function (done) {
     var del = 0;
 
