@@ -8,6 +8,7 @@ var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
+
   beforeEach(function (done) {
     var del = 0;
 
@@ -182,4 +183,5 @@ describe('package', function () {
 
     pkg.clone();
   });
+
 });

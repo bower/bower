@@ -5,6 +5,7 @@ var config  = require('../lib/core/config');
 var semver  = require('semver');
 
 describe('manager', function () {
+
   beforeEach(function (done) {
     var del = 0;
 
@@ -70,4 +71,5 @@ describe('manager', function () {
 
     manager.resolve();
   });
+
 });
