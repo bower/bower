@@ -37,4 +37,4 @@ bower.commands[bower.command || 'help'].line(input)
   .on('error', function (err)  {
     if   (options.verbose) throw err;
     else template('error', { message: err.message }).on('data', function (d) { console.log (d); });
-  })
+  });
