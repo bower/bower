@@ -1,6 +1,4 @@
 var assert  = require('assert');
-var path    = require('path');
-var fs      = require('fs');
 var Manager = require('../lib/core/manager');
 var rimraf  = require('rimraf');
 var config  = require('../lib/core/config');
@@ -8,14 +6,17 @@ var semver  = require('semver');
 
 describe('manager', function () {
   beforeEach(function (done) {
-    if (fs.existsSync(config.directory)) {
-      rimraf(config.directory, function (err) {
-        if (err) {
-          throw new Error('Unable to delete local directory.');
-        }
-        done();
-      });
-    } else done();
+    var del = 0;
+
+    rimraf(config.directory, function (err) {
+      // Ignore the error if the local directory was not actually deleted
+      if (++del >= 2) done();
+    });
+
+    rimraf(config.cache, function (err) {
+      // Ignore the error if the cache directory was not actually deleted
+      if (++del >= 2) done();
+    });
   });
 
   it('Should resolve JSON dependencies', function (next) {
@@ -23,10 +24,14 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project';
 
     manager.on('resolve', function () {
-      assert.ok(semver.gte(manager.dependencies["jquery"][0].version, "1.8.1"));
-      assert.ok(semver.gte(manager.dependencies["package-bootstrap"][0].version, "2.0.0"));
-      assert.ok(semver.gte(manager.dependencies["jquery-ui"][0].version, "1.8.0"));
+      assert.ok(semver.gte(manager.dependencies['jquery'][0].version, '1.8.1'));
+      assert.ok(semver.gte(manager.dependencies['package-bootstrap'][0].version, '2.0.0'));
+      assert.ok(semver.gte(manager.dependencies['jquery-ui'][0].version, '1.8.0'));
       next();
+    });
+
+    manager.on('error', function (err) {
+      throw new Error(err);
     });
 
     manager.resolve();
@@ -41,6 +46,10 @@ describe('manager', function () {
       assert.deepEqual(manager.dependencies['jquery'][0].version, '1.7.2');
       assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
       next();
+    });
+
+    manager.on('error', function (err) {
+      throw new Error(err);
     });
 
     manager.resolve();

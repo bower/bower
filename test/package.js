@@ -8,6 +8,20 @@ var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
+  beforeEach(function (done) {
+    var del = 0;
+
+    rimraf(config.directory, function (err) {
+      // Ignore the error if the local directory was not actually deleted
+      if (++del >= 2) done();
+    });
+
+    rimraf(config.cache, function (err) {
+      // Ignore the error if the cache directory was not actually deleted
+      if (++del >= 2) done();
+    });
+  });
+
   it('Should resolve git URLs properly', function () {
     var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
     assert.equal(pkg.gitUrl, 'git://github.com/jquery/jquery.git');
@@ -34,7 +48,7 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
 
-  it('Should resolve url when we got redirected', function() {
+  it('Should resolve url when we got redirected', function (next) {
     var redirecting_url    = 'http://redirecting-url.com';
     var redirecting_to_url = 'http://redirected-to-url.com';
 
@@ -52,6 +66,11 @@ describe('package', function () {
     pkg.on('resolve', function () {
       assert(pkg.assetUrl);
       assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.zip');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.download();
@@ -109,6 +128,10 @@ describe('package', function () {
       next();
     });
 
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
     pkg.loadJSON();
   });
 
@@ -119,6 +142,10 @@ describe('package', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
       assert.deepEqual(_.uniq(deps), ["package-bootstrap", "jquery-ui", "jquery"]);
       next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.resolve();
@@ -141,12 +168,18 @@ describe('package', function () {
     pkg.on('resolve', function () {
       pkg.install();
     });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
     pkg.on('install',function () {
       assert(fs.existsSync(pkg.localPath));
       rimraf(config.directory, function(err){
         next();
       });
     });
+
     pkg.clone();
   });
 });
