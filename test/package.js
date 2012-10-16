@@ -185,12 +185,18 @@ describe('package', function () {
     pkg.on('resolve', function () {
       pkg.install();
     });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
     pkg.on('install',function () {
       assert(fs.existsSync(pkg.localPath));
       rimraf(config.directory, function(err){
         next();
       });
     });
+
     pkg.clone();
   });
 
@@ -201,9 +207,15 @@ describe('package', function () {
     pkg.on('cache', function() {
       cachePath = pkg.path;
     });
+
     pkg.on('resolve', function () {
       pkg.install();
     });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
     pkg.on('install',function () {
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
         if (err) throw new Error(err);
