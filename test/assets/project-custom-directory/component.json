@@ -1,8 +1,0 @@
-{
-  "name": "myproject",
-  "version": "1.0.0",
-  "componentsDirectory": "vendor",
-  "dependencies": {
-    "jquery": "test/assets/package-jquery"
-  }
-}

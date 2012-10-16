@@ -92,29 +92,4 @@ describe('manager', function () {
     manager.resolve();
   });
 
-  it('Should install components to the specified components directory', function (next) {
-    var manager = new Manager([]);
-    manager.cwd = __dirname + '/assets/project-custom-directory';
-
-    before(function (done) {
-      rimraf(manager.opts.directory, function (err) {
-        if (err) {
-          throw new Error('Unable to delete local directory.');
-        }
-        done();
-      });
-    });
-
-    manager.on('resolve', function () {
-      assert.ok(fs.existsSync(manager.opts.directory));
-      next();
-    });
-
-    manager.on('error', function (err) {
-      throw new Error(err);
-    });
-
-    manager.resolve();
-  });
-
 });
