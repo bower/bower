@@ -50,6 +50,8 @@ To search for packages:
 
 To list all the available packages, just call `bower search` without specifying a name.
 
+You can disable colors by using the `--no-color` flag.
+
 ### Defining a package
 
 You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's dependencies.
