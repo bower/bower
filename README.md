@@ -52,7 +52,7 @@ To list all the available packages, just call `bower search` without specifying 
 
 ### Defining a package
 
-You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's dependencies.
+You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, Ruby's `Gemfile` or PHP's composer.json, and is useful for locking down a project's dependencies.
 
 ```json
 {
