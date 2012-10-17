@@ -25,5 +25,5 @@ describe('help', function () {
       next();
     });
   });
-  
+
 });
