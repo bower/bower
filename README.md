@@ -162,6 +162,24 @@ In a nutshell, Bower is a generic tool which will resolve dependencies and lock 
 Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
 
 
+### Programmati API
+
+Bower provides a pretty powerful programmatic api. All commands can be accessed through the `bower.commands` object.
+
+```js
+var bower = require('bower');
+
+bower.commands
+  .install(paths, options)
+  .on('end', function (data) { 
+    data && console.log(data); 
+  });
+```
+
+All commands emit three types of events: `data`, `end`, and `error`.
+
+For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
+
 ### FAQ
 
 **What distinguishes Bower from Jam, Volo, Component, or Ender? What does it do better?**
