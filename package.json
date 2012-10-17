@@ -27,7 +27,7 @@
     "rc"                : "latest"
   },
   "scripts": {
-    "test": "mocha -R spec -t 30000"
+    "test": "mocha -R spec -t 20000"
   },
   "devDependencies": {
     "mocha": "latest",
