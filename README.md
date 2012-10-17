@@ -103,7 +103,7 @@ The easiest approach is to use Bower statically, just reference the packages man
 
     <script src="components/jquery/index.js"></script>
 
-For more complex projects, you'll probably want to concatenate your scripts. Bower is just a package manager, but there are lots of awesome libraries out there to help you do this, such as [Sprockets](https://github.com/sstephenson/sprockets) and [RequireJS](http://requirejs.org/).
+For more complex projects, you'll probably want to concatenate your scripts. Bower is just a package manager, but there are lots of awesome libraries out there to help you do this, such as [Assetic](https://github.com/kriswallsmith/Assetic), [Sprockets](https://github.com/sstephenson/sprockets) and [RequireJS](http://requirejs.org/).
 
 For example, to use Sprockets:
 
