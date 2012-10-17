@@ -52,6 +52,21 @@ To list all the available packages, just call `bower search` without specifying 
 
 You can disable colors by using the `--no-color` flag.
 
+### Bower Configuration
+
+Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
+    
+```json
+{
+  "directory" : "components",
+  "json"      : "component.json",
+  "endpoint"  : "https://bower.herokuapp.com"
+}
+```
+
+To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.
+
+
 ### Defining a package
 
 You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's dependencies.
@@ -146,6 +161,24 @@ In a nutshell, Bower is a generic tool which will resolve dependencies and lock 
 
 Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
 
+
+### Programmati API
+
+Bower provides a pretty powerful programmatic api. All commands can be accessed through the `bower.commands` object.
+
+```js
+var bower = require('bower');
+
+bower.commands
+  .install(paths, options)
+  .on('end', function (data) { 
+    data && console.log(data); 
+  });
+```
+
+All commands emit three types of events: `data`, `end`, and `error`.
+
+For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
 ### FAQ
 

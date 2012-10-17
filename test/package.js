@@ -220,9 +220,7 @@ describe('package', function () {
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
         if (err) throw new Error(err);
         assert.equal(results[0].mode, results[1].mode);
-        rimraf(config.directory, function(err){
-          next();
-        });
+        next();
       });
     });
 
