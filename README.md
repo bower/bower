@@ -52,6 +52,21 @@ To list all the available packages, just call `bower search` without specifying 
 
 You can disable colors by using the `--no-color` flag.
 
+### Bower Configuration
+
+Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
+    
+```json
+{
+  "directory" : "components",
+  "json"      : "component.json",
+  "endpoint"  : "https://bower.herokuapp.com"
+}
+```
+
+To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.
+
+
 ### Defining a package
 
 You can create a `component.json` file in your project's root, specifying all of its dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's dependencies.
