@@ -8,7 +8,7 @@ var path    = require('path');
 
 describe('manager', function () {
 
-  beforeEach(function (done) {
+  function clean(done) {
     var del = 0;
 
     rimraf(config.directory, function (err) {
@@ -20,7 +20,10 @@ describe('manager', function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) done();
     });
-  });
+  }
+
+  beforeEach(clean);
+  after(clean);
 
   it('Should resolve JSON dependencies', function (next) {
     var manager = new Manager([]);

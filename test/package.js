@@ -10,7 +10,7 @@ var Package = require('../lib/core/package');
 
 describe('package', function () {
 
-  beforeEach(function (done) {
+  function clean(done) {
     var del = 0;
 
     rimraf(config.directory, function (err) {
@@ -22,7 +22,10 @@ describe('package', function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) done();
     });
-  });
+  }
+
+  beforeEach(clean);
+  after(clean);
 
   it('Should resolve git URLs properly', function () {
     var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
