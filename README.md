@@ -162,7 +162,7 @@ In a nutshell, Bower is a generic tool which will resolve dependencies and lock 
 Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
 
 
-### Programmati API
+### Programmatic API
 
 Bower provides a pretty powerful programmatic api. All commands can be accessed through the `bower.commands` object.
 
