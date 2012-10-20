@@ -7,7 +7,7 @@ var mkdirp     = require('mkdirp');
 var config     = require('../lib/core/config');
 var cacheClean = require('../lib/commands/cache-clean');
 
-describe('package', function () {
+describe('cache-clean', function () {
   function clean(done) {
     var del = 0;
 
