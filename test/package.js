@@ -234,4 +234,40 @@ describe('package', function () {
     pkg.clone();
   });
 
+  it('Should fetch remote source if the force option is passed', function (next) {
+    function install() {
+      var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git', { force: true });
+
+      pkg.on('error', function (err) {
+        throw new Error(err);
+      });
+
+      pkg.on('resolve', function () {
+        pkg.install();
+      });
+
+      pkg.clone();
+
+      return pkg;
+    }
+
+    // We install the same package two times
+    // If there is a cached message, then throw an error..
+    var pkg = install();
+    var ok = true;
+
+    pkg.on('install', function () {
+      pkg = install();
+
+      pkg.on('data', function (data) {
+        if (/cached/.test(data)) ok = false;
+      });
+
+      pkg.on('install', function () {
+        if (!ok) throw new Error('Package is using a cached version.');
+        next();
+      });
+    });
+  });
+
 });
