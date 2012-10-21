@@ -41,7 +41,6 @@ describe('manager', function () {
     });
 
     manager.resolve();
-
   });
 
   it('Should resolve nested JSON dependencies', function (next) {
@@ -93,6 +92,42 @@ describe('manager', function () {
     });
 
     manager.resolve();
+  });
+
+  it('Should fetch remote sources if the force option is passed', function (next) {
+    this.timeout(40000);  // Increase the timeout because this one takes longer
+
+    function resolve() {
+      var manager = new Manager([], { force: true });
+      manager.cwd = __dirname + '/assets/project';
+
+      manager.on('error', function (err) {
+        throw new Error(err);
+      });
+
+      manager.resolve();
+
+      return manager;
+    }
+
+    // We install the same package two times
+    var pkg = resolve();
+    var nrCached = 0;
+    pkg.on('resolve', function () {
+      // We got the cache filled in at this time
+      // This project has only a shared dependency (jquery) so it will be erased the first time
+      // but cached the second time
+      pkg = resolve();
+
+      pkg.on('data', function (data) {
+        if (/cached/.test(data)) nrCached++;
+      });
+
+      pkg.on('resolve', function () {
+        if (nrCached > 1) throw new Error('Cached versions are being used.');
+        next();
+      });
+    });
   });
 
 });
