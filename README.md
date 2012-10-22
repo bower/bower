@@ -55,7 +55,7 @@ You can disable colors by using the `--no-color` flag.
 ### Bower Configuration
 
 Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
-    
+
 ```json
 {
   "directory" : "components",
@@ -171,8 +171,8 @@ var bower = require('bower');
 
 bower.commands
   .install(paths, options)
-  .on('end', function (data) { 
-    data && console.log(data); 
+  .on('end', function (data) {
+    data && console.log(data);
   });
 ```
 
@@ -222,6 +222,7 @@ http://groups.google.com/group/twitter-bower
 
 + [@fat](http://github.com/fat)
 + [@maccman](http://github.com/maccman)
++ [@satazor](http://github.com/satazor)
 
 Thanks for assistance and contributions:
 
