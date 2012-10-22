@@ -23,10 +23,11 @@
     "hogan.js"          : "latest",
     "lodash"            : "latest",
     "read-package-json" : "latest",
+    "stable"            : "latest",
     "rc"                : "latest"
   },
   "scripts": {
-    "test": "mocha -R spec -t 10000"
+    "test": "mocha -R spec -t 20000"
   },
   "devDependencies": {
     "mocha": "latest",
