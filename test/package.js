@@ -10,7 +10,7 @@ var Package = require('../lib/core/package');
 
 describe('package', function () {
 
-  beforeEach(function (done) {
+  function clean(done) {
     var del = 0;
 
     rimraf(config.directory, function (err) {
@@ -22,7 +22,10 @@ describe('package', function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) done();
     });
-  });
+  }
+
+  beforeEach(clean);
+  after(clean);
 
   it('Should resolve git URLs properly', function () {
     var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
@@ -61,13 +64,14 @@ describe('package', function () {
 
     var redirect_to_scope = nock(redirecting_to_url)
       .get('/jquery.zip')
-      .reply(200, "jquery content");
+      .reply(200, 'jquery content');
 
     var pkg = new Package('jquery', redirecting_url + '/jquery.zip');
 
     pkg.on('resolve', function () {
       assert(pkg.assetUrl);
       assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.zip');
+      nock.restore();
       next();
     });
 
@@ -137,12 +141,26 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
+  it('Should not fallback to package.json if there is an error in the components.json', function (next) {
+    var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
+
+    pkg.on('error', function (error) {
+      if (/parse json/i.test(error)) next();
+      else throw new Error(err);
+    });
+    pkg.on('loadJSON', function () {
+      throw new Error('Should have throw an error parsing the JSON.');
+    });
+
+    pkg.loadJSON();
+  });
+
   it('Should resolve JSON dependencies', function (next) {
     var pkg = new Package('project', __dirname + '/assets/project');
 
     pkg.on('resolve', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
-      assert.deepEqual(_.uniq(deps), ["package-bootstrap", "jquery-ui", "jquery"]);
+      assert.deepEqual(_.uniq(deps), ['package-bootstrap', 'jquery-ui', 'jquery']);
       next();
     });
 
@@ -207,6 +225,10 @@ describe('package', function () {
         assert.equal(results[0].mode, results[1].mode);
         next();
       });
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.clone();
