@@ -50,11 +50,19 @@ To search for packages:
 
 To list all the available packages, just call `bower search` without specifying a name.
 
+To clean the cache:
+
+    bower cache-clean [name]
+
+Several packages can be cleaned at the same time.
+To clean the entire cache, just call `bower cache-clean` without any names.
+Also, the install command has a `--force` flag that tells bower to bypass the cache and always fetch remote sources.
+
 You can disable colors by using the `--no-color` flag.
 
 ### Bower Configuration
 
-Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
+Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters.
 
 ```json
 {
