@@ -56,7 +56,7 @@ To clean the cache:
 
 Several packages can be cleaned at the same time.
 To clean the entire cache, just call `bower cache-clean` without any names.
-Also, the install command has a `--force` flag that tells bower to bypass the cache and always fetch remote sources.
+Also, both the install and update commands have a `--force` flag that tells bower to bypass the cache and always fetch remote sources.
 
 You can disable colors by using the `--no-color` flag.
 
