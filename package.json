@@ -3,36 +3,45 @@
   "description": "The browser package manager.",
   "version": "0.3.1",
   "author": "Twitter",
-  "licenses": [ { "type": "MIT", "url": "https://github.com/twitter/bower/blob/master/LICENSE" } ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/twitter/bower/blob/master/LICENSE"
+    }
+  ],
   "main": "lib",
   "homepage": "http://twitter.github.com/bower",
-  "engines": { "node": ">= 0.8.0" },
+  "engines": {
+    "node": ">=0.8.0"
+  },
   "dependencies": {
-    "tmp"               : "latest",
-    "vows"              : "latest",
-    "glob"              : "latest",
-    "nopt"              : "latest",
-    "archy"             : "latest",
-    "async"             : "latest",
-    "colors"            : "latest",
-    "rimraf"            : "latest",
-    "mkdirp"            : "latest",
-    "semver"            : "latest",
-    "request"           : "latest",
-    "fstream"           : "latest",
-    "hogan.js"          : "latest",
-    "lodash"            : "latest",
-    "read-package-json" : "latest",
-    "stable"            : "latest",
-    "rc"                : "latest"
+    "tmp": "~0.0.15",
+    "vows": "~0.6.4",
+    "glob": "~3.1.14",
+    "nopt": "~2.0.0",
+    "archy": "~0.0.2",
+    "async": "~0.1.22",
+    "colors": "~0.6.0-1",
+    "rimraf": "~2.0.2",
+    "mkdirp": "~0.3.4",
+    "semver": "~1.1.0",
+    "request": "~2.11.4",
+    "fstream": "~0.1.19",
+    "hogan.js": "~2.0.0",
+    "lodash": "~0.9.1",
+    "read-package-json": "~0.1.8",
+    "stable": "~0.1.2",
+    "rc": "~0.0.6"
   },
   "scripts": {
     "test": "mocha -R spec -t 20000"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "nock": "latest"
+    "mocha": "~1.6.0",
+    "nock": "~0.13.5"
   },
-  "bin": { "bower": "bin/bower" },
+  "bin": {
+    "bower": "bin/bower"
+  },
   "preferGlobal": true
 }
