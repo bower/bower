@@ -66,7 +66,6 @@ describe('manager', function () {
 
     manager.on('resolve', function () {
       assert.deepEqual(manager.dependencies['jquery'][0].version, '1.8.1');
-      assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
       assert.ok(fs.existsSync(path.join(manager.dependencies['jquery'][0].localPath, 'foo.js')));
       next();
     });
