@@ -161,6 +161,8 @@ To register a new package, it's as simple as specifying a `component.json`, push
 
 There's no authentication or user management. It's on a first come, first served basis. Think of it like a URL shortener. Now anyone can run `bower install myawesomepackagename`, and get your library installed.
 
+There is no direct way to unregister a package yet. Meanwhile you can request it [here](https://github.com/twitter/bower/issues/120).
+
 ### Philosophy
 
 Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.
