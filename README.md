@@ -50,12 +50,20 @@ To search for packages:
 
 To list all the available packages, just call `bower search` without specifying a name.
 
+To clean the cache:
+
+    bower cache-clean [name]
+
+Several packages can be cleaned at the same time.
+To clean the entire cache, just call `bower cache-clean` without any names.
+Also, both the install and update commands have a `--force` flag that tells bower to bypass the cache and always fetch remote sources.
+
 You can disable colors by using the `--no-color` flag.
 
 ### Bower Configuration
 
-Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
-    
+Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
+
 ```json
 {
   "directory" : "components",
@@ -153,6 +161,8 @@ To register a new package, it's as simple as specifying a `component.json`, push
 
 There's no authentication or user management. It's on a first come, first served basis. Think of it like a URL shortener. Now anyone can run `bower install myawesomepackagename`, and get your library installed.
 
+There is no direct way to unregister a package yet. Meanwhile you can request it [here](https://github.com/twitter/bower/issues/120).
+
 ### Philosophy
 
 Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.
@@ -171,8 +181,8 @@ var bower = require('bower');
 
 bower.commands
   .install(paths, options)
-  .on('end', function (data) { 
-    data && console.log(data); 
+  .on('end', function (data) {
+    data && console.log(data);
   });
 ```
 
@@ -222,6 +232,7 @@ http://groups.google.com/group/twitter-bower
 
 + [@fat](http://github.com/fat)
 + [@maccman](http://github.com/maccman)
++ [@satazor](http://github.com/satazor)
 
 Thanks for assistance and contributions:
 
