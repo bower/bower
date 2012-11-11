@@ -32,6 +32,17 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git://github.com/jquery/jquery.git');
   });
 
+  it('Should resolve git shorthands (username/project)', function () {
+    var pkg = new Package('jquery', 'jquery/jquery');
+    assert.equal(pkg.gitUrl, 'git://github.com/jquery/jquery.git');
+  });
+
+  it('Should resolve git shorthands (username/project) with specific tag', function () {
+    var pkg = new Package('jquery', 'jquery/jquery#1.0.0');
+    assert.equal(pkg.gitUrl, 'git://github.com/jquery/jquery.git');
+    assert.equal(pkg.tag, '1.0.0');
+  });
+
   it('Should resolve git HTTP URLs properly', function () {
     var pkg = new Package('jquery', 'git+http://example.com/project.git');
     assert.equal(pkg.gitUrl, 'http://example.com/project.git');
@@ -52,6 +63,7 @@ describe('package', function () {
     assert.equal(pkg.tag, 'v1.0.1');
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
+
 
   it('Should resolve normal HTTP URLs', function (next) {
     var pkg = new Package('bootstrap', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
