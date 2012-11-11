@@ -53,25 +53,12 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
 
-  it('Should resolve url when we got redirected', function (next) {
-    var redirecting_url    = 'http://redirecting-url.com';
-    var redirecting_to_url = 'http://redirected-to-url.com';
-
-    var redirect_scope = nock(redirecting_url)
-      .defaultReplyHeaders({'location': redirecting_to_url + '/jquery.zip'})
-      .get('/jquery.zip')
-      .reply(302);
-
-    var redirect_to_scope = nock(redirecting_to_url)
-      .get('/jquery.zip')
-      .reply(200, 'jquery content');
-
-    var pkg = new Package('jquery', redirecting_url + '/jquery.zip');
+  it('Should resolve normal HTTP URLs', function (next) {
+    var pkg = new Package('bootstrap', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
 
     pkg.on('resolve', function () {
       assert(pkg.assetUrl);
-      assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.zip');
-      nock.restore();
+      assert.equal(pkg.assetUrl, 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
       next();
     });
 
@@ -79,7 +66,39 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.download();
+    pkg.resolve();
+  });
+
+  it('Should resolve url when we got redirected', function (next) {
+    after(function () {
+      nock.cleanAll();
+    });
+
+    var redirecting_url    = 'http://redirecting-url.com';
+    var redirecting_to_url = 'http://redirected-to-url.com';
+
+    var redirect_scope = nock(redirecting_url)
+      .defaultReplyHeaders({'location': redirecting_to_url + '/jquery.js'})
+      .get('/jquery.js')
+      .reply(302);
+
+    var redirect_to_scope = nock(redirecting_to_url)
+      .get('/jquery.js')
+      .reply(200, 'jquery content');
+
+    var pkg = new Package('jquery', redirecting_url + '/jquery.js');
+
+    pkg.on('resolve', function () {
+      assert(pkg.assetUrl);
+      assert.equal(pkg.assetUrl, redirecting_to_url + '/jquery.js');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.resolve();
   });
 
   it('Should clone git packages', function (next) {
@@ -95,7 +114,19 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.clone();
+    pkg.resolve();
+  });
+
+
+  it('Should error on clone fail', function (next) {
+    var pkg = new Package('random', 'git://example.com');
+
+    pkg.on('error', function (err) {
+      assert(err);
+      next();
+    });
+
+    pkg.resolve();
   });
 
   it('Should copy path packages', function (next) {
@@ -111,18 +142,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.copy();
-  });
-
-  it('Should error on clone fail', function (next) {
-    var pkg = new Package('random', 'git://example.com');
-
-    pkg.on('error', function (err) {
-      assert(err);
-      next();
-    });
-
-    pkg.clone();
+    pkg.resolve();
   });
 
   it('Should load correct json', function (next) {
@@ -200,7 +220,7 @@ describe('package', function () {
       });
     });
 
-    pkg.clone();
+    pkg.resolve();
   });
 
   it('Should have accessible file permissions on temp folder', function (next) {
@@ -231,7 +251,82 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.clone();
+    pkg.resolve();
   });
 
+  it('Should download normal URL packages', function (next) {
+    var pkg = new Package('jquery', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.on('install',function () {
+      fs.readdir(pkg.localPath, function (err, files) {
+        if (err) throw new Error(err);
+
+        assert(files.indexOf('index.js') !== -1);
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should extract tar and zip files from normal URL packages', function (next) {
+    var pkg = new Package('jquery', 'http://github.com/satazor/SparkMD5/archive/master.zip');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.on('install',function () {
+      fs.readdir(pkg.localPath, function (err, files) {
+        if (err) throw new Error(err);
+
+        assert(files.indexOf('index.js') === -1);
+        assert(files.indexOf('master.zip') === -1);
+        assert(files.indexOf('spark-md5.js') !== -1);
+        assert(files.indexOf('spark-md5.min.js') !== -1);
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should extract tar and zip files from normal URL packages and move them if the archive only contains a folder', function (next) {
+    var pkg = new Package('jquery', 'http://twitter.github.com/bootstrap/assets/bootstrap.zip');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.on('install',function () {
+      fs.readdir(pkg.localPath, function (err, files) {
+        if (err) throw new Error(err);
+
+        assert(files.indexOf('index.js') === -1);
+        assert(files.indexOf('bootstrap.zip') === -1);
+        assert(files.indexOf('js') !== -1);
+        assert(files.indexOf('css') !== -1);
+        assert(files.indexOf('img') !== -1);
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
 });
