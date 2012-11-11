@@ -31,7 +31,9 @@
     "lodash": "~0.9.1",
     "read-package-json": "~0.1.8",
     "stable": "~0.1.2",
-    "rc": "~0.0.6"
+    "rc": "~0.0.6",
+    "unzip": "0.0.4",
+    "tar": "~0.1.13"
   },
   "scripts": {
     "test": "mocha -R spec -t 20000"
