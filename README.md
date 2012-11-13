@@ -29,7 +29,7 @@ To install a package:
     bower install http://code.jquery.com/jquery-1.7.2.js
     bower install ./repos/jquery
 
-As you can see, packages can be installed by name, Git endpoint, Github shorthand, URL or local path.
+As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
 If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
 
 [View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
