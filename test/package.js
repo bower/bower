@@ -173,7 +173,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should not fallback to package.json if there is an error in the components.json', function (next) {
+  it('Should give an error on an invalid components.json', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
 
     pkg.on('error', function (error) {
@@ -227,9 +227,40 @@ describe('package', function () {
 
     pkg.on('install',function () {
       assert(fs.existsSync(pkg.localPath));
-      rimraf(config.directory, function(err){
-        next();
-      });
+      next();
+    });
+
+    pkg.resolve();
+  });
+
+
+  it('Should treat local packages as git repositories if there is a .git', function (next) {
+    var pkg = new Package('spark-md5', __dirname + '/assets/package-repo');
+
+    pkg.on('resolve', function () {
+      assert(fs.existsSync(pkg.path + '/spark-md5.js'));
+      assert(fs.existsSync(pkg.path + '/spark-md5.min.js'));
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should treat local packages as git repositories if there is a .git (and handle versions)', function (next) {
+    var pkg = new Package('spark-md5', __dirname + '/assets/package-repo#0.0.1');
+
+    pkg.on('resolve', function () {
+      assert(fs.existsSync(pkg.path + '/spark-md5.js') === false);
+      assert(fs.existsSync(pkg.path + '/spark-md5.min.js'));
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
     });
 
     pkg.resolve();
