@@ -236,15 +236,22 @@ describe('package', function () {
 
 
   it('Should treat local packages as git repositories if there is a .git', function (next) {
-    var pkg = new Package('spark-md5', __dirname + '/assets/package-repo');
+    var dir = __dirname + '/assets/package-repo';
+
+    fs.renameSync(dir + '/git_repo', dir + '/.git');
+
+    var pkg = new Package('spark-md5', dir);
 
     pkg.on('resolve', function () {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
       assert(fs.existsSync(pkg.path + '/spark-md5.js'));
       assert(fs.existsSync(pkg.path + '/spark-md5.min.js'));
+      assert(fs.existsSync(pkg.path + '/.jshintrc'));
       next();
     });
 
     pkg.on('error', function (err) {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
       throw new Error(err);
     });
 
@@ -252,15 +259,22 @@ describe('package', function () {
   });
 
   it('Should treat local packages as git repositories if there is a .git (and handle versions)', function (next) {
-    var pkg = new Package('spark-md5', __dirname + '/assets/package-repo#0.0.1');
+    var dir = __dirname + '/assets/package-repo';
+
+    fs.renameSync(dir + '/git_repo', dir + '/.git');
+
+    var pkg = new Package('spark-md5', dir + '#0.0.1');
 
     pkg.on('resolve', function () {
-      assert(fs.existsSync(pkg.path + '/spark-md5.js') === false);
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
+      assert(fs.existsSync(pkg.path + '/spark-md5.js'));
       assert(fs.existsSync(pkg.path + '/spark-md5.min.js'));
+      assert(fs.existsSync(pkg.path + '/.jshintrc') === false);
       next();
     });
 
     pkg.on('error', function (err) {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
       throw new Error(err);
     });
 
