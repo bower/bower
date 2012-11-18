@@ -8,7 +8,7 @@
 	hideDotFiles = dotGitOnly
 [remote "origin"]
 	fetch = +refs/heads/*:refs/remotes/origin/*
-	url = git@github.com:satazor/SparkMD5.git
+	url = git://github.com/satazor/SparkMD5.git
 	puttykeyfile = C:\\Users\\satazor\\tortoise_private.ppk
 [branch "master"]
 	remote = origin
