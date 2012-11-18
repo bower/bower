@@ -1,3 +1,5 @@
+/*jshint plusplus:false*/
+
 var glob       = require('glob');
 var assert     = require('assert');
 var rimraf     = require('rimraf');
@@ -11,12 +13,12 @@ describe('cache-clean', function () {
   function clean(done) {
     var del = 0;
 
-    rimraf(config.directory, function (err) {
+    rimraf(config.directory, function () {
       // Ignore the error if the local directory was not actually deleted
       if (++del >= 2) createCache(done);
     });
 
-    rimraf(config.cache, function (err) {
+    rimraf(config.cache, function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) createCache(done);
     });

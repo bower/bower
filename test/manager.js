@@ -1,3 +1,5 @@
+/*jshint plusplus:false*/
+
 var assert  = require('assert');
 var Manager = require('../lib/core/manager');
 var rimraf  = require('rimraf');
@@ -11,12 +13,12 @@ describe('manager', function () {
   function clean(done) {
     var del = 0;
 
-    rimraf(config.directory, function (err) {
+    rimraf(config.directory, function () {
       // Ignore the error if the local directory was not actually deleted
       if (++del >= 2) done();
     });
 
-    rimraf(config.cache, function (err) {
+    rimraf(config.cache, function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) done();
     });
@@ -30,7 +32,7 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project';
 
     manager.on('resolve', function () {
-      assert.ok(semver.gte(manager.dependencies['jquery'][0].version, '1.8.1'));
+      assert.ok(semver.gte(manager.dependencies.jquery[0].version, '1.8.1'));
       assert.ok(semver.gte(manager.dependencies['package-bootstrap'][0].version, '2.0.0'));
       assert.ok(semver.gte(manager.dependencies['jquery-ui'][0].version, '1.8.0'));
       next();
@@ -48,7 +50,7 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project-nested';
 
     manager.on('resolve', function () {
-      assert.deepEqual(manager.dependencies['jquery'][0].version, '1.7.2');
+      assert.deepEqual(manager.dependencies.jquery[0].version, '1.7.2');
       assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
       next();
     });
@@ -65,8 +67,8 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project-static';
 
     manager.on('resolve', function () {
-      assert.deepEqual(manager.dependencies['jquery'][0].version, '1.8.1');
-      assert.ok(fs.existsSync(path.join(manager.dependencies['jquery'][0].localPath, 'foo.js')));
+      assert.deepEqual(manager.dependencies.jquery[0].version, '1.8.1');
+      assert.ok(fs.existsSync(path.join(manager.dependencies.jquery[0].localPath, 'foo.js')));
       next();
     });
 
@@ -82,7 +84,7 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project-nested-conflict';
 
     var detected = false;
-    manager.on('error', function (err) {
+    manager.on('error', function () {
       if (/no resolvable.* jquery$/i) detected = true;
     });
     manager.on('resolve', function () {

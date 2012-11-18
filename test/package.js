@@ -1,5 +1,6 @@
+/*jshint plusplus:false*/
+
 var assert  = require('assert');
-var path    = require('path');
 var fs      = require('fs');
 var nock    = require('nock');
 var _       = require('lodash');
@@ -13,12 +14,12 @@ describe('package', function () {
   function clean(done) {
     var del = 0;
 
-    rimraf(config.directory, function (err) {
+    rimraf(config.directory, function () {
       // Ignore the error if the local directory was not actually deleted
       if (++del >= 2) done();
     });
 
-    rimraf(config.cache, function (err) {
+    rimraf(config.cache, function () {
       // Ignore the error if the cache directory was not actually deleted
       if (++del >= 2) done();
     });
@@ -89,12 +90,12 @@ describe('package', function () {
     var redirecting_url    = 'http://redirecting-url.com';
     var redirecting_to_url = 'http://redirected-to-url.com';
 
-    var redirect_scope = nock(redirecting_url)
+    nock(redirecting_url)
       .defaultReplyHeaders({'location': redirecting_to_url + '/jquery.js'})
       .get('/jquery.js')
       .reply(302);
 
-    var redirect_to_scope = nock(redirecting_to_url)
+    nock(redirecting_to_url)
       .get('/jquery.js')
       .reply(200, 'jquery content');
 
@@ -178,7 +179,7 @@ describe('package', function () {
 
     pkg.on('error', function (error) {
       if (/parse json/i.test(error)) next();
-      else throw new Error(err);
+      else throw new Error(error);
     });
     pkg.on('loadJSON', function () {
       throw new Error('Should have throw an error parsing the JSON.');
@@ -225,7 +226,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.on('install',function () {
+    pkg.on('install', function () {
       assert(fs.existsSync(pkg.localPath));
       next();
     });
@@ -270,7 +271,7 @@ describe('package', function () {
     var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
     var cachePath;
 
-    pkg.on('cache', function() {
+    pkg.on('cache', function () {
       cachePath = pkg.path;
     });
 
@@ -282,7 +283,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.on('install',function () {
+    pkg.on('install', function () {
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
         if (err) throw new Error(err);
         assert.equal(results[0].mode, results[1].mode);
@@ -308,7 +309,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.on('install',function () {
+    pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
         if (err) throw new Error(err);
 
@@ -331,7 +332,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.on('install',function () {
+    pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
         if (err) throw new Error(err);
 
@@ -357,7 +358,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    pkg.on('install',function () {
+    pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
         if (err) throw new Error(err);
 
