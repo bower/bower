@@ -65,7 +65,6 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git@github.com:twitter/flight.git');
   });
 
-
   it('Should resolve normal HTTP URLs', function (next) {
     var pkg = new Package('bootstrap', 'http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js');
 
@@ -109,6 +108,20 @@ describe('package', function () {
 
     pkg.on('error', function (err) {
       throw new Error(err);
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should error if the HTTP status is not OK', function (next) {
+    var pkg = new Package('test', 'http://somedomainthatwillneverexistbower.com/test.js');
+
+    pkg.on('resolve', function () {
+      throw new Error('Should have given an error');
+    });
+
+    pkg.on('error', function () {
+      next();
     });
 
     pkg.resolve();
