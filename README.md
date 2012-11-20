@@ -193,6 +193,14 @@ All commands emit three types of events: `data`, `end`, and `error`.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
+### Windows users
+
+A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
+Be sure to check the option shown above, otherwise it will simply not work:
+
+![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+
+
 ### FAQ
 
 **What distinguishes Bower from Jam, Volo, Component, or Ender? What does it do better?**
