@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.1 - 2012-11-20
+- Add errors summary to the end of install/update commands
+- Add windows instructions to the README
 
 ## 0.5.0 - 2012-11-19
 
