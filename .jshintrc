@@ -13,7 +13,7 @@
     "node": true,
     "devel": true,
 
-    "bitwise": true,
+    "bitwise": false,
     "curly": false,
     "eqeqeq": true,
     "forin": false,
