@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 - 2012-11-20
+- __Add link command__ (similar to npm)
+- Fix error reporting for nested deps
+- Abort if a repository is detected when installing
+  This is useful to prevent people from loosing their work
+- Minor fixes and improvements
+
 ## 0.5.1 - 2012-11-20
 - Add errors summary to the end of install/update commands
 - Add windows instructions to the README
