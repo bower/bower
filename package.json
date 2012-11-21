@@ -36,6 +36,7 @@
     "tar": "~0.1.13"
   },
   "scripts": {
+    "preinstall": "node cleanup",
     "test": "mocha -R spec -t 20000"
   },
   "devDependencies": {
