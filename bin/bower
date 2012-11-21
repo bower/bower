@@ -32,13 +32,13 @@ if (options.version) return console.log(bower.version);
 if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift())) bower.command = command;
 
 bower.commands[bower.command || 'help'].line(input)
-  .on('data',  function (data) {
+  .on('data', function (data) {
     if (data) console.log(data);
   })
-  .on('end',   function (data) {
+  .on('end', function (data) {
     if (data) console.log(data);
   })
   .on('error', function (err)  {
-    if   (options.verbose) throw err;
+    if (options.verbose) throw err;
     else template('error', { message: err.message }).on('data', function (d) { console.log(d); });
   });
