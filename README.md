@@ -33,7 +33,7 @@ As you can see, packages can be installed by name, Git endpoint, GitHub shorthan
 If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
 Bower also works with private Git repositories. Simply reference them by their SSH endpoint:
 
-    bower install git@github.com:user/private-project.git
+    bower install git@github.com:user/private-package.git
 
 [View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
 
