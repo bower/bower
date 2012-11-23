@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1 - 2012-11-22
+- Fix uninstall when the project component.json had no deps saved ([#153](https://github.com/twitter/bower/issues/153))
+- Fix uncaught errors when using file writter
+- Fix temporaries directories not being deleted when an exception occurs ([#153](https://github.com/twitter/bower/issues/140))
+
 ## 0.6.0 - 2012-11-21
 - __Add link command__ (similar to npm)
 - Fix error reporting for nested deps
