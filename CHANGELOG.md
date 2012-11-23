@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.2 - 2012-11-23
+- Fix uninstall --save when there is no component.json
+
 ## 0.6.1 - 2012-11-22
 - Fix uninstall when the project component.json has no deps saved ([#153](https://github.com/twitter/bower/issues/153))
 - Fix uncaught errors when using file writter
