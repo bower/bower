@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.2 - 2012-11-24
+- Fix version not being correctly set for local packages ([#155](https://github.com/twitter/bower/issues/155))
+
 ## 0.6.2 - 2012-11-23
 - Fix uninstall --save when there is no component.json
 
