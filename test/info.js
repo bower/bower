@@ -28,14 +28,14 @@ describe('info', function () {
 
   it('Should emit end event with data.pkg object', function (next) {
     info('jquery').on('end', function (data) {
-      assert(typeof data.pkg == 'object');
+      assert(typeof data.pkg === 'object');
       next();
     });
   });
 
   it('Should emit end event with data.versions array', function (next) {
     info('jquery').on('end', function (data) {
-      assert(typeof data.versions == 'object');
+      assert(typeof data.versions === 'object');
       next();
     });
   });

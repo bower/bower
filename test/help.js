@@ -21,9 +21,9 @@ describe('help', function () {
 
   it('Should emit end event with data string', function (next) {
     help('install').on('end', function (data) {
-      assert(typeof data == 'string');
+      assert(typeof data === 'string');
       next();
     });
   });
-  
+
 });

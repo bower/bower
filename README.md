@@ -25,10 +25,21 @@ To install a package:
 
     bower install jquery
     bower install git://github.com/maccman/package-jquery.git
+    bower install maccman/package-jquery (same as above)
     bower install http://code.jquery.com/jquery-1.7.2.js
     bower install ./repos/jquery
 
-As you can see, packages can be installed by name, Git endpoint, URL or local path.
+As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
+If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
+Bower also works with private Git repositories. Simply reference them by their SSH endpoint:
+
+    bower install git@github.com:user/private-package.git
+
+[View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
+
+During install you can have Bower add an entry to your component.json as well:
+
+    bower install --save jquery
 
 To update a package, reference it by name:
 
@@ -44,16 +55,25 @@ To search for packages:
 
 To list all the available packages, just call `bower search` without specifying a name.
 
+To clean the cache:
+
+    bower cache-clean [name]
+
+Several packages can be cleaned at the same time.
+To clean the entire cache, just call `bower cache-clean` without any names.
+Also, both the install and update commands have a `--force` flag that tells bower to bypass the cache and always fetch remote sources.
+
+You can disable colors by using the `--no-color` flag.
+
 ### Bower Configuration
 
-Bower can be configured by creating a ~/.bowerrc file with one or all of the following configuration parameters.
-    
+Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
+
 ```json
 {
-  "directory"  : "components",
-  "json"       : "component.json",
-  "endpoint"   : "https://bower.herokuapp.com",
-  "searchpath" : [] 
+  "directory" : "components",
+  "json"      : "component.json",
+  "endpoint"  : "https://bower.herokuapp.com"
 }
 ```
 
@@ -71,8 +91,7 @@ house some components internally while still taking advantage of public Bower re
 }
 ```
 
-Bower will first look to __http://bower.mycompany.com__ while trying to find your components.  If not found, the main registry at __https://bower.herokuapp.com__ will be consulted to
-see if a copy of the resource can be retrieved.
+Bower will first look to __http://bower.mycompany.com__ while trying to find your components.  If not found, the main registry at __https://bower.herokuapp.com__ will be consulted to see if a copy of the resource can be retrieved.
 
 
 ### Defining a package
@@ -104,6 +123,9 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
   }
 }
 ```
+
+Bower only recognizes versions that follow the (semver)[http://semver.org/] specification.
+There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
 ### Installing dependencies
 
@@ -159,6 +181,8 @@ To register a new package, it's as simple as specifying a `component.json`, push
 
 There's no authentication or user management. It's on a first come, first served basis. Think of it like a URL shortener. Now anyone can run `bower install myawesomepackagename`, and get your library installed.
 
+There is no direct way to unregister a package yet. Meanwhile you can request it [here](https://github.com/twitter/bower/issues/120).
+
 ### Philosophy
 
 Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.
@@ -166,6 +190,32 @@ Currently, people are managing dependencies, such as JavaScript libraries, manua
 In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn't rely on any particular transport (AMD, CommonJS, etc.).
 
 Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.
+
+
+### Programmatic API
+
+Bower provides a pretty powerful programmatic api. All commands can be accessed through the `bower.commands` object.
+
+```js
+var bower = require('bower');
+
+bower.commands
+  .install(paths, options)
+  .on('end', function (data) {
+    data && console.log(data);
+  });
+```
+
+All commands emit three types of events: `data`, `end`, and `error`.
+
+For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
+
+### Windows users
+
+A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
+Be sure to check the option shown above, otherwise it will simply not work:
+
+![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
 
 
 ### FAQ
@@ -209,6 +259,7 @@ http://groups.google.com/group/twitter-bower
 
 + [@fat](http://github.com/fat)
 + [@maccman](http://github.com/maccman)
++ [@satazor](http://github.com/satazor)
 
 Thanks for assistance and contributions:
 
