@@ -110,7 +110,7 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 }
 ```
 
-Bower only recognizes versions that follow the (semver)[http://semver.org/] specification.
+Bower only recognizes versions that follow the [semver](http://semver.org/) specification.
 There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
 ### Installing dependencies
