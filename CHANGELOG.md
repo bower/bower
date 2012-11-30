@@ -1,9 +1,9 @@
 # Changelog
 
-## 0.6.3 - 2012-11-29
+## 0.6.4 - 2012-11-29
 - Fix permission on downloaded files ([#160](https://github.com/twitter/bower/issues/160))
 
-## 0.6.2 - 2012-11-24
+## 0.6.3 - 2012-11-24
 - Fix version not being correctly set for local packages ([#155](https://github.com/twitter/bower/issues/155))
 
 ## 0.6.2 - 2012-11-23
