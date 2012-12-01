@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5 - 2012-12-01
+- Fix error summary not being displayed in some edge cases
+- Fix bower not fetching latest commits correctly in some cases
+
 ## 0.6.4 - 2012-11-29
 - Fix permission on downloaded files ([#160](https://github.com/twitter/bower/issues/160))
 
