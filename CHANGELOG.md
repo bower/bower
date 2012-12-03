@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.6 - 2012-12-03
+- Improve error handling while reading component.json
+- Fix package name not being correctly collected in the error summary
+
 ## 0.6.5 - 2012-12-01
 - Fix error summary not being displayed in some edge cases
 - Fix bower not fetching latest commits correctly in some cases
