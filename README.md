@@ -24,13 +24,19 @@ Your best friend at this stage is probably `bower --help`.
 To install a package:
 
     bower install jquery
-    bower install git://github.com/maccman/package-jquery.git
-    bower install maccman/package-jquery (same as above)
-    bower install http://code.jquery.com/jquery-1.7.2.js
+    bower install git://github.com/components/jquery.git
+    bower install components/jquery (same as above)
+    bower install http://foo.com/jquery.awesome-plugin.js
     bower install ./repos/jquery
 
 As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
 If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
+When tags are available in the endpoint, you can specify a [semver](http://semver.org/) tag to fetch concrete versions:
+
+    bower install jquery#1.8.1
+    bower install git://github.com/components/jquery.git#~1.8.1
+    bower install components/jquery#1.8.x
+
 Bower also works with private Git repositories. Simply reference them by their SSH endpoint:
 
     bower install git@github.com:user/private-package.git
