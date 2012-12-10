@@ -2,8 +2,10 @@
 
 ## 0.6.7 - 2012-12-10
 - Fix uninstall removing all unsaved dependencies ([#178](https://github.com/twitter/bower/issues/160))
+- Fix uninstall --force flag in some cases
 - Add --silent option to the register option, to avoid questioning
 - Fix possible issues with options in some commands
+- Fix error reporting when reading invalid project component.json
 
 ## 0.6.6 - 2012-12-03
 - Improve error handling while reading component.json
