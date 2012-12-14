@@ -202,6 +202,8 @@ All commands emit three types of events: `data`, `end`, and `error`.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
+For the install command, there is an additional `package` event that is emitted for each installed/uninstalled package.
+
 ### Windows users
 
 A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
