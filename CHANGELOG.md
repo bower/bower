@@ -4,8 +4,8 @@
 - Improve list command
   - Does not fetch versions if not necessary (for --map and --paths options)
   - Add --offline option to prevent versions from being fetched
-- Fix uninstall command not fired the `end` event
-- Fix error when executing and unknown command ([#178](https://github.com/twitter/bower/issues/179))
+- Fix uninstall command not firing the `end` event
+- Fix error when executing an unknown command ([#178](https://github.com/twitter/bower/issues/179))
 - Fix help for the ls command (alias of list)
 
 ## 0.6.7 - 2012-12-10
