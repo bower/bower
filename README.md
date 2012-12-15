@@ -287,6 +287,7 @@ Thanks for assistance and contributions:
 + [@SlexAxton](http://github.com/SlexAxton)
 + [@sstephenson](http://github.com/sstephenson)
 + [@tomdale](http://github.com/tomdale)
++ [@uzquiano](http://github.com/uzquiano)
 + [@visionmedia](http://github.com/visionmedia)
 + [@wagenet](http://github.com/wagenet)
 + [@wycats](http://github.com/wycats)
