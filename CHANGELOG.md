@@ -1,6 +1,32 @@
 # Changelog
 
-## 0.6.2 - 2012-11-24
+## 0.6.8 - 2012-12-14
+- Improve list command
+  - Does not fetch versions if not necessary (for --map and --paths options)
+  - Add --offline option to prevent versions from being fetched
+- Fix uninstall command not firing the `end` event
+- Fix error when executing an unknown command ([#179](https://github.com/twitter/bower/issues/179))
+- Fix help for the ls command (alias of list)
+
+## 0.6.7 - 2012-12-10
+- Fix uninstall removing all unsaved dependencies ([#178](https://github.com/twitter/bower/issues/160))
+- Fix uninstall --force flag in some cases
+- Add --silent option to the register option, to avoid questioning
+- Fix possible issues with options in some commands
+- Fix error reporting when reading invalid project component.json
+
+## 0.6.6 - 2012-12-03
+- Improve error handling while reading component.json
+- Fix package name not being correctly collected in the error summary
+
+## 0.6.5 - 2012-12-01
+- Fix error summary not being displayed in some edge cases
+- Fix bower not fetching latest commits correctly in some cases
+
+## 0.6.4 - 2012-11-29
+- Fix permission on downloaded files ([#160](https://github.com/twitter/bower/issues/160))
+
+## 0.6.3 - 2012-11-24
 - Fix version not being correctly set for local packages ([#155](https://github.com/twitter/bower/issues/155))
 
 ## 0.6.2 - 2012-11-23

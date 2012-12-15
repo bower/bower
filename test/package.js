@@ -294,7 +294,7 @@ describe('package', function () {
     pkg.resolve();
   });
 
-  it('Should have accessible file permissions on temp folder', function (next) {
+  it('Should have accessible file permissions', function (next) {
     var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
     var cachePath;
 
@@ -313,7 +313,34 @@ describe('package', function () {
     pkg.on('install', function () {
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
         if (err) throw new Error(err);
+        var mode0777 = parseInt('0777', 8);
+        var expectedMode = mode0777 & (~process.umask());
         assert.equal(results[0].mode, results[1].mode);
+        assert((results[0].mode & expectedMode) === expectedMode || results[0].mode === 16822);  // 16822 is for windows
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should have accessible file permissions for downloaded files', function (next) {
+    var pkg = new Package('bootstrap', 'http://twitter.github.com/bootstrap/assets/bootstrap.zip');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.on('install', function () {
+      fs.stat(pkg.localPath, function (err, stat) {
+        if (err) throw new Error(err);
+        var mode0777 = parseInt('0777', 8);
+        var expectedMode = mode0777 & (~process.umask());
+        assert((stat.mode & expectedMode) === expectedMode || stat.mode === 16822);  // 16822 is for windows
         next();
       });
     });

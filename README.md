@@ -24,13 +24,19 @@ Your best friend at this stage is probably `bower --help`.
 To install a package:
 
     bower install jquery
-    bower install git://github.com/maccman/package-jquery.git
-    bower install maccman/package-jquery (same as above)
-    bower install http://code.jquery.com/jquery-1.7.2.js
+    bower install git://github.com/components/jquery.git
+    bower install components/jquery (same as above)
+    bower install http://foo.com/jquery.awesome-plugin.js
     bower install ./repos/jquery
 
 As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
 If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
+When tags are available in the endpoint, you can specify a [semver](http://semver.org/) tag to fetch concrete versions:
+
+    bower install jquery#1.8.1
+    bower install git://github.com/components/jquery.git#~1.8.1
+    bower install components/jquery#1.8.x
+
 Bower also works with private Git repositories. Simply reference them by their SSH endpoint:
 
     bower install git@github.com:user/private-package.git
@@ -124,7 +130,7 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 }
 ```
 
-Bower only recognizes versions that follow the (semver)[http://semver.org/] specification.
+Bower only recognizes versions that follow the [semver](http://semver.org/) specification.
 There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
 ### Installing dependencies
@@ -209,6 +215,8 @@ bower.commands
 All commands emit three types of events: `data`, `end`, and `error`.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
+
+For the install command, there is an additional `package` event that is emitted for each installed/uninstalled package.
 
 ### Windows users
 
