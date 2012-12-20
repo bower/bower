@@ -47,6 +47,10 @@ During install you can have Bower add an entry to your component.json as well:
 
     bower install --save jquery
 
+To use installed packages with RequireJS, this works particularly similar to `list --paths`:
+
+    bower install --require
+
 To update a package, reference it by name:
 
     bower update jquery-ui
