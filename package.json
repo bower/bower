@@ -33,7 +33,8 @@
     "stable": "~0.1.2",
     "rc": "~0.0.6",
     "unzip": "0.0.4",
-    "tar": "~0.1.13"
+    "tar": "~0.1.13",
+    "beautifier": "~0.1.7"
   },
   "scripts": {
     "postinstall": "node cleanup",
