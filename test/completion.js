@@ -5,6 +5,7 @@ var path   = require('path');
 var assert = require('assert');
 
 var complete = require('../lib/util/completion');
+var config   = require('../lib/core/config');
 var command  = require('../lib/commands/completion');
 var commands = require('../lib/commands');
 
@@ -125,5 +126,34 @@ describe('completion', function () {
     });
 
     cmd.on('end', done);
+  });
+
+
+  describe('completion cache clean', function() {
+
+    it('caches the result of <endpoint>/packages to ~/.bower/cache/__bowercompletion__', function(done) {
+      complete.log = function() {};
+
+      var cmd = command(['install', 'jquery-'], {
+        COMP_CWORD: '2',
+        COMP_LINE: 'bower install jquery-',
+        COMP_POINT: '14'
+      });
+
+      cmd.on('end', function() {
+        var cache = path.join(config.completion, 'install.json');
+        fs.stat(cache, done);
+      });
+    })
+
+    it('is cleared with cache-clean command', function(done) {
+      commands['cache-clean']().on('end', function() {
+        var cache = path.join(config.completion, 'install.json');
+        fs.stat(cache, function(err) {
+          done(err ? null : new Error('completion results wasn\'t cleaned'));
+        });
+      });
+    });
+
   });
 });
