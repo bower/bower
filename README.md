@@ -212,8 +212,11 @@ Based on the completion feature and fantastic work done in
 [npm](https://npmjs.org/doc/completion.html), bower now has an experimental
 `completion` command that works similarly.
 
-This command will output a bash / zsh script to put into your `~/.bashrc` or
-`~/.zshrc` file.
+This command will output a bash / zsh script to put into your `~/.bashrc`, `~/.bash_profile or `~/.zshrc` file.
+
+```
+bower completion >> ~./.bash_profile
+```
 
 When `COMP_CWORD`, `COMP_LINE`, and `COMP_POINT` are defined in the
 environment, npm completion acts in "plumbing mode", and outputs completions
