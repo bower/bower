@@ -78,11 +78,28 @@
 <p>To install a package:</p>
 
 <pre><code>bower install jquery
-bower install git://github.com/maccman/package-jquery.git
-bower install http://code.jquery.com/jquery-1.7.2.js
+bower install git://github.com/components/jquery.git
+bower install components/jquery (same as above)
+bower install http://foo.com/jquery.awesome-plugin.js
 bower install ./repos/jquery</code></pre>
 
-<p>As you can see, packages can be installed by name, Git endpoint, URL or local path.</p>
+<p>As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
+If you install an URL that is a zip or tar file, bower will automatically extract the contents of it.
+When tags are available in the endpoint, you can specify a <a href="http://semver.org/">semver</a> tag to fetch concrete versions:</p>
+
+<pre><code>bower install jquery#1.8.1
+bower install git://github.com/components/jquery.git#~1.8.1
+bower install components/jquery#1.8.x</code></pre>
+
+<p>Bower also works with private Git repositories. Simply reference them by their SSH endpoint:</p>
+
+<pre><code>bower install git@github.com:user/private-package.git</code></pre>
+
+<p><a href="http://sindresorhus.com/bower-components/">View all packages available through Bower&#39;s registry</a>.</p>
+
+<p>During install you can have Bower add an entry to your component.json as well:</p>
+
+<pre><code>bower install --save jquery</code></pre>
 
 <p>To update a package, reference it by name:</p>
 
@@ -97,6 +114,42 @@ bower install ./repos/jquery</code></pre>
 <pre><code>bower search [name]</code></pre>
 
 <p>To list all the available packages, just call <code>bower search</code> without specifying a name.</p>
+
+<p>To clean the cache:</p>
+
+<pre><code>bower cache-clean [name]</code></pre>
+
+<p>Several packages can be cleaned at the same time.
+To clean the entire cache, just call <code>bower cache-clean</code> without any names.
+Also, both the install and update commands have a <code>--force</code> flag that tells bower to bypass the cache and always fetch remote sources.</p>
+
+<p>You can disable colors by using the <code>--no-color</code> flag.</p>
+
+<h3>Bower Configuration</h3>
+
+<p>Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.</p>
+
+<pre><code>{
+  &quot;directory&quot; : &quot;components&quot;,
+  &quot;json&quot;      : &quot;component.json&quot;,
+  &quot;endpoint&quot;  : &quot;https://bower.herokuapp.com&quot;
+}
+</code></pre>
+
+<p>To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.</p>
+
+<p>The <strong>searchpath</strong> array provides additional URLs of read-only Bower registries that should be consulted to look up components.  This is most typically used if your business wishes to
+house some components internally while still taking advantage of public Bower registries.  For example, you might configure the following:</p>
+
+<pre><code>{
+  &quot;directory&quot;  : &quot;components&quot;,
+  &quot;json&quot;       : &quot;component.json&quot;,
+  &quot;endpoint&quot;   : &quot;http://bower.mycompany.com&quot;,
+  &quot;searchpath&quot; : [&quot;https://bower.herokuapp.com&quot;]
+}
+</code></pre>
+
+<p>Bower will first look to <strong>http://bower.mycompany.com</strong> while trying to find your components.  If not found, the main registry at <strong>https://bower.herokuapp.com</strong> will be consulted to see if a copy of the resource can be retrieved.</p>
 
 <h3>Defining a package</h3>
 
@@ -125,6 +178,9 @@ bower install ./repos/jquery</code></pre>
   }
 }
 </code></pre>
+
+<p>Bower only recognizes versions that follow the <a href="http://semver.org/">semver</a> specification.
+There should only be at most one file per file type in the <code>main</code> list. So only one <code>.js</code> or <code>.css</code>.</p>
 
 <h3>Installing dependencies</h3>
 
@@ -176,6 +232,8 @@ run environment
 
 <p>There&#39;s no authentication or user management. It&#39;s on a first come, first served basis. Think of it like a URL shortener. Now anyone can run <code>bower install myawesomepackagename</code>, and get your library installed.</p>
 
+<p>There is no direct way to unregister a package yet. Meanwhile you can request it <a href="https://github.com/twitter/bower/issues/120">here</a>.</p>
+
 <h3>Philosophy</h3>
 
 <p>Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.</p>
@@ -183,6 +241,51 @@ run environment
 <p>In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn&#39;t rely on any particular transport (AMD, CommonJS, etc.).</p>
 
 <p>Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.</p>
+
+<h3>Programmatic API</h3>
+
+<p>Bower provides a pretty powerful programmatic api. All commands can be accessed through the <code>bower.commands</code> object.</p>
+
+<pre><code>var bower = require(&#39;bower&#39;);
+
+bower.commands
+  .install(paths, options)
+  .on(&#39;end&#39;, function (data) {
+    data &amp;&amp; console.log(data);
+  });
+</code></pre>
+
+<p>All commands emit three types of events: <code>data</code>, <code>end</code>, and <code>error</code>.</p>
+
+<p>For a better of idea how this works, you may want to check out <a href="https://github.com/twitter/bower/blob/master/bin/bower">our bin file</a>.</p>
+
+<p>For the install command, there is an additional <code>package</code> event that is emitted for each installed/uninstalled package.</p>
+
+<h3>Completion</h3>
+
+<p><strong>experimental</strong></p>
+
+<p>Based on the completion feature and fantastic work done in
+<a href="https://npmjs.org/doc/completion.html">npm</a>, bower now has an experimental
+<code>completion</code> command that works similarly.</p>
+
+<p>This command will output a bash / zsh script to put into your <code>~/.bashrc</code>, <code>~/.bash_profile or </code>~/.zshrc` file.</p>
+
+<pre><code>bower completion &gt;&gt; ~./.bash_profile
+</code></pre>
+
+<p>When <code>COMP_CWORD</code>, <code>COMP_LINE</code>, and <code>COMP_POINT</code> are defined in the
+environment, npm completion acts in &quot;plumbing mode&quot;, and outputs completions
+based on the arguments.</p>
+
+<p>This doesn&#39;t work for Windows user, even with cygwin.</p>
+
+<h3>Windows users</h3>
+
+<p>A lot of people are experience problems using bower on windows because <a href="http://code.google.com/p/msysgit/">msysgit</a> must be installed correctly.
+Be sure to check the option shown above, otherwise it will simply not work:</p>
+
+<p><img alt="msysgit" src="http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png"/></p>
 
 <h3>FAQ</h3>
 
@@ -200,7 +303,7 @@ run environment
 
 <p>Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.</p>
 
-<p><strong>We recently saw what happened when the NPM registry went down. Is a central point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
+<p><strong>We recently saw what happened when the main NPM registry went down. Is a single point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
 
 <p>There&#39;s no redundancy planned at the moment, as Bower just installs Git URLs. It&#39;s up to the URL provider to establish redundancy.</p>
 
@@ -222,11 +325,11 @@ run environment
 
 <h3>Authors</h3>
 
-<ul><li><a href="http://github.com/fat">@fat</a></li><li><a href="http://github.com/maccman">@maccman</a></li></ul>
+<ul><li><a href="http://github.com/fat">@fat</a></li><li><a href="http://github.com/maccman">@maccman</a></li><li><a href="http://github.com/satazor">@satazor</a></li></ul>
 
 <p>Thanks for assistance and contributions:</p>
 
-<ul><li><a href="http://github.com/addyosmani">@addyosmani</a></li><li><a href="http://github.com/angus-c">@angus-c</a></li><li><a href="http://github.com/borismus">@borismus</a></li><li><a href="http://github.com/chriseppstein">@chriseppstein</a></li><li><a href="http://github.com/danwrong">@danwrong</a></li><li><a href="http://github.com/desandro">@desandro</a></li><li><a href="http://github.com/isaacs">@isaacs</a></li><li><a href="http://github.com/josh">@josh</a></li><li><a href="http://github.com/jrburke">@jrburke</a></li><li><a href="http://github.com/mklabs">@mklabs</a></li><li><a href="http://github.com/paulirish">@paulirish</a></li><li><a href="http://github.com/rvagg">@rvagg</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/SlexAxton">@SlexAxton</a></li><li><a href="http://github.com/sstephenson">@sstephenson</a></li><li><a href="http://github.com/tomdale">@tomdale</a></li><li><a href="http://github.com/visionmedia">@visionmedia</a></li><li><a href="http://github.com/wagenet">@wagenet</a></li><li><a href="http://github.com/wycats">@wycats</a></li></ul>
+<ul><li><a href="http://github.com/addyosmani">@addyosmani</a></li><li><a href="http://github.com/angus-c">@angus-c</a></li><li><a href="http://github.com/borismus">@borismus</a></li><li><a href="http://github.com/chriseppstein">@chriseppstein</a></li><li><a href="http://github.com/danwrong">@danwrong</a></li><li><a href="http://github.com/desandro">@desandro</a></li><li><a href="http://github.com/isaacs">@isaacs</a></li><li><a href="http://github.com/josh">@josh</a></li><li><a href="http://github.com/jrburke">@jrburke</a></li><li><a href="http://github.com/mklabs">@mklabs</a></li><li><a href="http://github.com/paulirish">@paulirish</a></li><li><a href="http://github.com/rvagg">@rvagg</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/SlexAxton">@SlexAxton</a></li><li><a href="http://github.com/sstephenson">@sstephenson</a></li><li><a href="http://github.com/tomdale">@tomdale</a></li><li><a href="http://github.com/uzquiano">@uzquiano</a></li><li><a href="http://github.com/visionmedia">@visionmedia</a></li><li><a href="http://github.com/wagenet">@wagenet</a></li><li><a href="http://github.com/wycats">@wycats</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/hemanth">@hemanth</a></li></ul>
 
 <h2>License</h2>
 
