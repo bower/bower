@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0
+
+- Add ability to search and publish to different endpoints by specifiying them in the bowerrc file
+- Add experimental autocompletion
+- Fix minor issues in the cache clean command
+- Better error message for invalid semver tags ([#185](https://github.com/twitter/bower/issues/185))
+
 ## 0.6.8 - 2012-12-14
 - Improve list command
   - Does not fetch versions if not necessary (for --map and --paths options)
