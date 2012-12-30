@@ -30,7 +30,7 @@ To install a package:
     bower install ./repos/jquery
 
 As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
-If you install an URL that is a zip or tar file, bower will automatically extract the contents of it.
+If you install from a URL that points to a zip or tar file, bower will automatically extract its contents.
 When tags are available in the endpoint, you can specify a [semver](http://semver.org/) tag to fetch concrete versions:
 
     bower install jquery#1.8.1
