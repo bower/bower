@@ -30,7 +30,7 @@ To install a package:
     bower install ./repos/jquery
 
 As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
-If you install and URL that is a zip or tar file, bower will automatically extract the contents of it.
+If you install an URL that is a zip or tar file, bower will automatically extract the contents of it.
 When tags are available in the endpoint, you can specify a [semver](http://semver.org/) tag to fetch concrete versions:
 
     bower install jquery#1.8.1
@@ -84,6 +84,20 @@ Bower can be configured by creating a .bowerrc file in your home folder (usually
 ```
 
 To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.
+
+The __searchpath__ array provides additional URLs of read-only Bower registries that should be consulted to look up components.  This is most typically used if your business wishes to
+house some components internally while still taking advantage of public Bower registries.  For example, you might configure the following:
+
+```json
+{
+  "directory"  : "components",
+  "json"       : "component.json",
+  "endpoint"   : "http://bower.mycompany.com",
+  "searchpath" : ["https://bower.herokuapp.com"]
+}
+```
+
+Bower will first look to __http://bower.mycompany.com__ while trying to find your components.  If not found, the main registry at __https://bower.herokuapp.com__ will be consulted to see if a copy of the resource can be retrieved.
 
 
 ### Defining a package
@@ -204,6 +218,7 @@ For a better of idea how this works, you may want to check out [our bin file](ht
 
 For the install command, there is an additional `package` event that is emitted for each installed/uninstalled package.
 
+
 ### Completion
 
 **experimental**
@@ -224,6 +239,7 @@ based on the arguments.
 
 This doesn't work for Windows user, even with cygwin.
 
+
 ### Windows users
 
 A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
@@ -234,16 +250,15 @@ Be sure to check the option shown above, otherwise it will simply not work:
 
 ### FAQ
 
-**What distinguishes Bower from Jam, Volo, Component, or Ender? What does it do better?**
+**What distinguishes Bower from Jam, Volo or Ender? What does it do better?**
 
-Bower is a lower level component than Jam, Volo, Component, or Ender. These managers could consume Bower as a dependency.
+Bower is a lower level component than Jam, Volo, or Ender. These managers could consume Bower as a dependency.
 
 Bower's aim is simply to install Git paths, resolve dependencies from a `component.json`, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
-Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender, Component) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
+Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
 
 Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.
-
 
 **Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?**
 
@@ -294,6 +309,7 @@ Thanks for assistance and contributions:
 + [@SlexAxton](http://github.com/SlexAxton)
 + [@sstephenson](http://github.com/sstephenson)
 + [@tomdale](http://github.com/tomdale)
++ [@uzquiano](http://github.com/uzquiano)
 + [@visionmedia](http://github.com/visionmedia)
 + [@wagenet](http://github.com/wagenet)
 + [@wycats](http://github.com/wycats)
