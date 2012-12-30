@@ -89,14 +89,16 @@ describe('cache-clean', function () {
   });
 
   it('Should throw error on unknown package', function (next) {
-    var cleaner = cacheClean(['not-cached-package']);
+    var cleaner = cacheClean(['not-cached-package']),
+        cleanedPkg = false;
 
     cleaner.on('error', function (err) {
-      if (/not\-cached\-package/.test(err)) next();
+      if (/not\-cached\-package/.test(err)) cleanedPkg = true;
     });
 
     cleaner.on('end', function () {
-      throw new Error('Should have thrown an error.');
+      if (!cleanedPkg) throw new Error('Should have thrown an error.');
+      next();
     });
   });
 

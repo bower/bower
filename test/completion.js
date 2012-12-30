@@ -19,7 +19,7 @@ describe('completion', function () {
     });
   });
 
-  beforeEach(function() {
+  beforeEach(function () {
     this.log = complete.log;
   });
 
@@ -73,7 +73,7 @@ describe('completion', function () {
   });
 
   it('completes the list of command on first word', function () {
-    complete.log = function (results, opts) {
+    complete.log = function (results) {
       assert.deepEqual(results, Object.keys(commands));
     };
 
@@ -85,7 +85,7 @@ describe('completion', function () {
   });
 
   it('completes the list of options on first word', function () {
-    complete.log = function (results, opts) {
+    complete.log = function (results) {
       assert.deepEqual(results, ['--no-color', '--help', '--version']);
     };
 
@@ -97,7 +97,7 @@ describe('completion', function () {
   });
 
   it('completes the list of command on invalid command', function () {
-    complete.log = function (results, opts) {
+    complete.log = function (results) {
       assert.deepEqual(results, Object.keys(commands));
     };
 
@@ -109,7 +109,7 @@ describe('completion', function () {
   });
 
   it('delegates to command.completion for each bower command', function (done) {
-    complete.log = function (results, opts) {
+    complete.log = function (results) {
       assert.ok(results.length);
 
       var jq = results.filter(function (res) {
@@ -128,11 +128,10 @@ describe('completion', function () {
     cmd.on('end', done);
   });
 
+  describe('cache clean', function () {
 
-  describe('completion cache clean', function() {
-
-    it('caches the result of <endpoint>/packages to ~/.bower/cache/__bowercompletion__', function(done) {
-      complete.log = function() {};
+    it('caches the result of <endpoint>/packages to the completion cache folder', function (done) {
+      complete.log = function () {};
 
       var cmd = command(['install', 'jquery-'], {
         COMP_CWORD: '2',
@@ -140,16 +139,16 @@ describe('completion', function () {
         COMP_POINT: '14'
       });
 
-      cmd.on('end', function() {
+      cmd.on('end', function () {
         var cache = path.join(config.completion, 'install.json');
         fs.stat(cache, done);
       });
-    })
+    });
 
-    it('is cleared with cache-clean command', function(done) {
-      commands['cache-clean']().on('end', function() {
+    it('is cleared with cache-clean command', function (done) {
+      commands['cache-clean']().on('end', function () {
         var cache = path.join(config.completion, 'install.json');
-        fs.stat(cache, function(err) {
+        fs.stat(cache, function (err) {
           done(err ? null : new Error('completion results wasn\'t cleaned'));
         });
       });
