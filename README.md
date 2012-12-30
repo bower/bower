@@ -313,6 +313,8 @@ Thanks for assistance and contributions:
 + [@visionmedia](http://github.com/visionmedia)
 + [@wagenet](http://github.com/wagenet)
 + [@wycats](http://github.com/wycats)
++ [@sindresorhus](http://github.com/sindresorhus)
++ [@hemanth](http://github.com/hemanth)
 
 ## License
 
