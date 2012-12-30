@@ -202,6 +202,25 @@ All commands emit three types of events: `data`, `end`, and `error`.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
+For the install command, there is an additional `package` event that is emitted for each installed/uninstalled package.
+
+### Completion
+
+**experimental**
+
+Based on the completion feature and fantastic work done in
+[npm](https://npmjs.org/doc/completion.html), bower now has an experimental
+`completion` command that works similarly.
+
+This command will output a bash / zsh script to put into your `~/.bashrc` or
+`~/.zshrc` file.
+
+When `COMP_CWORD`, `COMP_LINE`, and `COMP_POINT` are defined in the
+environment, npm completion acts in "plumbing mode", and outputs completions
+based on the arguments.
+
+This doesn't work for Windows user, even with cygwin.
+
 ### Windows users
 
 A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
