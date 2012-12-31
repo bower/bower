@@ -6,6 +6,7 @@
 - Add experimental autocompletion
 - Fix minor issues in the cache clean command
 - Better error message for invalid semver tags ([#185](https://github.com/twitter/bower/issues/185))
+- Only show discover message in the list command only if there are packages
 
 ## 0.6.8 - 2012-12-14
 - Improve list command
