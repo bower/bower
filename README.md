@@ -238,7 +238,7 @@ bower completion >> ~/.bash_profile
 
 ### Windows users
 
-A lot of people are experience problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
+A lot of people are experiencing problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
 Be sure to check the option shown above, otherwise it will simply not work:
 
 ![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
