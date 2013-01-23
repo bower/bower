@@ -73,7 +73,7 @@ You can disable colors by using the `--no-color` flag.
 
 ### Bower Configuration
 
-Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
+Bower can be configured by creating a .bowerrc file in your home folder (usually ~/.bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
 
 ```json
 {
