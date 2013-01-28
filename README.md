@@ -133,6 +133,17 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 Bower only recognizes versions that follow the [semver](http://semver.org/) specification.
 There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
+You can also point to packages by adding their URL or file path in the dependency's property, just like.
+
+```json
+"dependencies": {
+  "eventEmitter": "Wolfy87/EventEmitter", // GitHub short URL
+  "eventEmitter": "Wolfy87/EventEmitter#>=3", // with version
+  "eventEmitter": "git://github.com/Wolfy87/EventEmitter",
+  "eventEmitter": "git@github.com:Wolfy87/EventEmitter.git"
+}
+```
+
 ### Installing dependencies
 
 Dependencies are installed locally via the `bower install` command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local subdirectory called `./components`, for example:
