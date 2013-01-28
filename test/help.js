@@ -1,3 +1,5 @@
+
+/*Kamus*/
 var assert = require('assert');
 var events = require('events');
 var help   = require('../lib/commands/help');
