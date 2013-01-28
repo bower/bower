@@ -97,7 +97,7 @@ house some components internally while still taking advantage of public Bower re
 }
 ```
 
-Bower will first look to __http://bower.mycompany.com__ while trying to find your components.  If not found, the main registry at __https://bower.herokuapp.com__ will be consulted to see if a copy of the resource can be retrieved.
+Bower will first look to **http://bower.mycompany.com** while trying to find your components.  If not found, the main registry at **https://bower.herokuapp.com** will be consulted to see if a copy of the resource can be retrieved.
 
 
 ### Defining a package
