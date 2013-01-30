@@ -117,7 +117,7 @@ You can create a `component.json` file in your project's root, specifying all of
 
 Put this under your project's root, listing all of your dependencies. When you run `bower install`, Bower will read this `component.json` file, resolve all the relevant dependencies and install them.
 
-For now, `name`, `version`, `main`, and `dependencies` are the only properties that are used by Bower. If you have several files you're distributing as part of your package, pass an array to `main` like this:
+For now, `name`, `version`, `main`, `dependencies`, and `ignore` are the only properties that are used by Bower. If you have several files you're distributing as part of your package, pass an array to `main` like this:
 
 ```json
 {
@@ -133,14 +133,27 @@ For now, `name`, `version`, `main`, and `dependencies` are the only properties t
 Bower only recognizes versions that follow the [semver](http://semver.org/) specification.
 There should only be at most one file per file type in the `main` list. So only one `.js` or `.css`.
 
-You can also point to packages by adding their URL or file path in the dependency's property, just like.
+You can also point to packages by adding their URL or file path in the dependency's property.
 
 ```json
-"dependencies": {
-  "eventEmitter": "Wolfy87/EventEmitter", // GitHub short URL
-  "eventEmitter": "Wolfy87/EventEmitter#>=3", // with version
-  "eventEmitter": "git://github.com/Wolfy87/EventEmitter",
-  "eventEmitter": "git@github.com:Wolfy87/EventEmitter.git"
+{
+  "dependencies": {
+    "eventEmitter": "Wolfy87/EventEmitter", // GitHub short URL
+    "eventEmitter": "Wolfy87/EventEmitter#>=3", // with version
+    "eventEmitter": "git://github.com/Wolfy87/EventEmitter",
+    "eventEmitter": "git@github.com:Wolfy87/EventEmitter.git"
+  }
+}
+```
+
+Chances are you have a bunch of extra stuff in the repo that are not needed in production. List these non-necessary file paths in `ignore`.
+
+```json
+{
+  "ignore": [
+    "tests/",
+    "**/*.txt"
+  ]
 }
 ```
 
