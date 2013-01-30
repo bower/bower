@@ -2,12 +2,16 @@
 
 ## 0.7.0
 
-- Add ability to search and publish to different endpoints by specifiying them in the bowerrc file
-- Add experimental autocompletion
+- __Ability to resolve conflicts__ ([#214](https://github.com/twitter/bower/issues/214)) (IN PROGRESS)
+- __Add ability to search and publish to different endpoints by specifiying them in the `.bowerrc file__
+- __Add experimental autocompletion__
 - Fix minor issues in the cache clean command
 - Better error message for invalid semver tags ([#185](https://github.com/twitter/bower/issues/185))
 - Only show discover message in the list command only if there are packages
 - Fix mismatch issue due to reading cached component.json files ([#214](https://github.com/twitter/bower/issues/214))
+- Better error messages when reading invalid .bowerrc files ([#220](https://github.com/twitter/bower/issues/220))
+- Fix update command when used in packages pointing to assets ([#197](https://github.com/twitter/bower/issues/197))
+- Bower now obeys packages's `.bowerrc` if they define a different `json` ([#205](https://github.com/twitter/bower/issues/205)) (IN PROGRESS)
 
 ## 0.6.8 - 2012-12-14
 - Improve list command
