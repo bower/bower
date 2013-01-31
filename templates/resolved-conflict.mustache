@@ -1,0 +1,10 @@
+
+{{#yellow}}Please note that{{/yellow}}
+{{#packages}}
+    {{#version}}
+    {{#cyan}}{{manager.name}}{{/cyan}} requires {{name}} {{#white}}v{{version}}{{/white}}
+    {{/version}}
+{{/packages}}
+
+Using version suitable to what is defined in your {{json}}, {{name}} {{#white}}v{{resolvedTo}}{{/white}}.
+Conflicts may occur.
