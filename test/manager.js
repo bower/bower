@@ -103,6 +103,20 @@ describe('manager', function () {
     manager.resolve();
   });
 
+  it('Should not error out in resolved conflicts', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-nested';
+
+    manager.on('error', function (err) {
+      throw new Error(err);
+    });
+    manager.on('resolve', function () {
+      next();
+    });
+
+    manager.resolve();
+  });
+
   it('Should detect unresolvable packages in nested JSON dependencies', function (next) {
     var manager = new Manager([]);
     manager.cwd = __dirname + '/assets/project-nested-conflict';
