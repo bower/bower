@@ -447,6 +447,10 @@ describe('package', function () {
       assert(!fs.existsSync(pkgInstallPath + 'don.txt'));
       assert(!fs.existsSync(pkgInstallPath + 'leo.txt'));
       assert(!fs.existsSync(pkgInstallPath + '/test/'));
+      // ignored dot files
+      assert(!fs.existsSync(pkgInstallPath + '/config/.jshintrc'));
+      assert(!fs.existsSync(pkgInstallPath + '.casey'));
+      assert(!fs.existsSync(pkgInstallPath + '.hide/turtle-location.mdown'));
       // this file should still be there
       assert(fs.existsSync(pkgInstallPath + 'index.js'));
       // all ignore file pattern should be removed

@@ -4,6 +4,9 @@
   "dependencies": {},
   "ignore": [
     "test/",
-    "**/*.txt"
+    "**/*.txt",
+    "config/**/*",
+    ".casey",
+    "**/turtle-location*"
   ]
 }
