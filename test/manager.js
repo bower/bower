@@ -9,12 +9,10 @@ var fs      = require('fs');
 var path    = require('path');
 
 describe('manager', function () {
-
   var savedConfigJson = config.json;
 
   function clean(done) {
-
-    // restore possibly dirtied config.json
+    // Restore possibly dirtied config.json
     config.json = savedConfigJson;
 
     var del = 0;
@@ -68,12 +66,12 @@ describe('manager', function () {
     manager.resolve();
   });
 
-  it('Should resolve nested JSON dependencies even when using another name for component.json', function (next) {
+  it('Should resolve nested JSON dependencies even when using another name for component.json project-wise', function (next) {
     // Using another name for .json file leads to unfetchable deps
     // https://github.com/twitter/bower/issues/205
-    config.json = 'foocomponent.json'
+    config.json = 'foocomponent.json';
     var manager = new Manager([]);
-    manager.cwd = __dirname + '/assets/project-nested-nonstandard-json';
+    manager.cwd = __dirname + '/assets/project-nonstandard-json';
 
     manager.on('resolve', function () {
       assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');

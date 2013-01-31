@@ -10,9 +10,13 @@ var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
 describe('package', function () {
+  var savedConfigJson = config.json;
 
   function clean(done) {
     var del = 0;
+
+    // Restore possibly dirtied config.json
+    config.json = savedConfigJson;
 
     rimraf(config.directory, function () {
       // Ignore the error if the local directory was not actually deleted
@@ -171,13 +175,100 @@ describe('package', function () {
     pkg.resolve();
   });
 
-  it('Should load correct json', function (next) {
+  it('Should load configured json file package-wise', function (next) {
+    var pkg = new Package('mypackage', __dirname + '/assets/package-nonstandard-json');
+
+    pkg.on('loadJSON', function () {
+      assert(pkg.json);
+      assert.equal(pkg.json.name, 'mypackage');
+      assert.equal(pkg.json.version, '1.0.0');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.loadJSON();
+  });
+
+  it('Should load configured json file project-wise if not defined package-wise', function (next) {
+    config.json = 'foocomponent.json';
+    var pkg = new Package('mypackage', __dirname + '/assets/package-nonstandard-json-copy');
+
+    pkg.on('loadJSON', function () {
+      assert(pkg.json);
+      assert.equal(pkg.json.name, 'mypackage');
+      assert.equal(pkg.json.version, '1.0.0');
+
+      // Test the same but with a package that has a .bowerrc but does not specify a different json
+      pkg = new Package('mypackage', __dirname + '/assets/package-empty-rc');
+
+      pkg.on('loadJSON', function () {
+        assert(pkg.json);
+        assert.equal(pkg.json.name, 'mypackage-foo');
+        assert.equal(pkg.json.version, '1.0.0');
+
+        next();
+      });
+
+      pkg.on('error', function (err) {
+        throw new Error(err);
+      });
+
+      pkg.loadJSON();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.loadJSON();
+  });
+
+  it('Should fallback to component.json if the json project-wise does not exist', function (next) {
+    config.json = 'foocomponent.json';
     var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
 
     pkg.on('loadJSON', function () {
       assert(pkg.json);
       assert.equal(pkg.json.name, 'jquery');
+      assert.equal(pkg.json.version, '1.8.1');
       next();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    pkg.loadJSON();
+  });
+
+  it('Should fallback to component.json if not defined project wise and package-wise', function (next) {
+    var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
+
+    pkg.on('loadJSON', function () {
+      assert(pkg.json);
+      assert.equal(pkg.json.name, 'jquery');
+      assert.equal(pkg.json.version, '1.8.1');
+
+      // Test the same but with a package that has a .bowerrc but does not specify a different json
+      pkg = new Package('jquery', __dirname + '/assets/package-empty-rc');
+
+      pkg.on('loadJSON', function () {
+        assert(pkg.json);
+        assert.equal(pkg.json.name, 'mypackage');
+        assert.equal(pkg.json.version, '1.0.0');
+
+        // Test the same but with a package that has a .bowerrc but does not specify a different json
+        next();
+      });
+
+      pkg.on('error', function (err) {
+        throw new Error(err);
+      });
+
+      pkg.loadJSON();
     });
 
     pkg.on('error', function (err) {
