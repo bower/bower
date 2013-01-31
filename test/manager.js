@@ -111,6 +111,7 @@ describe('manager', function () {
       throw err;
     });
     manager.on('resolve', function () {
+      assert.deepEqual(manager.dependencies.jquery[0].version, '1.7.2');
       next();
     });
 
@@ -127,6 +128,21 @@ describe('manager', function () {
     });
     manager.on('resolve', function () {
       if (!detected) throw new Error('A conflict in jquery should have been detected.');
+      next();
+    });
+
+    manager.resolve();
+  });
+
+  it('Should resolve to latest version on unresolvable packages in nested JSON dependencies', function (next) {
+    var manager = new Manager([], { forceLatest: true });
+    manager.cwd = __dirname + '/assets/project-nested-conflict';
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+    manager.on('resolve', function () {
+      assert.ok(semver.gte(manager.dependencies.jquery[0].version, '1.7.0'));
       next();
     });
 
