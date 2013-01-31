@@ -2,9 +2,11 @@
 
 var assert  = require('assert');
 var fs      = require('fs');
+var path    = require('path');
 var nock    = require('nock');
 var _       = require('lodash');
 var rimraf  = require('rimraf');
+var glob    = require('glob');
 var async   = require('async');
 var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
@@ -514,6 +516,68 @@ describe('package', function () {
         assert(files.indexOf('img') !== -1);
         next();
       });
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should remove ignored filepaths', function (next) {
+    var pkg = new Package('turtles', __dirname + '/assets/package-ignorables');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw new Error(err);
+    });
+
+    var pkgInstallPath = path.join(__dirname, '/../components/turtles/');
+    pkg.on('install', function () {
+      // these files should have been deleted
+      assert(!fs.existsSync(pkgInstallPath + 'don.txt'));
+      assert(!fs.existsSync(pkgInstallPath + 'leo.txt'));
+      assert(!fs.existsSync(pkgInstallPath + '/test/'));
+      // ignored dot files
+      assert(!fs.existsSync(pkgInstallPath + '/config/.jshintrc'));
+      assert(!fs.existsSync(pkgInstallPath + '.casey'));
+      assert(!fs.existsSync(pkgInstallPath + '.hide/turtle-location.mdown'));
+      // this file should still be there
+      assert(fs.existsSync(pkgInstallPath + 'index.js'));
+      // all ignore file pattern should be removed
+      async.forEach(pkg.json.ignore, function (ignorePattern, asyncNext) {
+        var pattern = path.join(__dirname, '/../components/turtles/' + ignorePattern);
+        glob(pattern, function (err, globPath) {
+          assert(globPath.length === 0);
+          asyncNext();
+        });
+      }, next);
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should remove .git directory', function (next) {
+    var dir = __dirname + '/assets/package-repo';
+
+    fs.renameSync(dir + '/git_repo', dir + '/.git');
+
+    var pkg = new Package('spark-md5', dir);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
+      throw new Error(err);
+    });
+
+    var pkgInstallPath = path.join(__dirname, '/../components/spark-md5/');
+    pkg.on('install', function () {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
+      assert(!fs.existsSync(pkgInstallPath + '/.git/'));
+      next();
     });
 
     pkg.resolve();
