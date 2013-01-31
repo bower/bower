@@ -461,4 +461,30 @@ describe('package', function () {
 
     pkg.resolve();
   });
+
+  it('Should remove .git directory', function (next) {
+    var dir = __dirname + '/assets/package-repo';
+
+    fs.renameSync(dir + '/git_repo', dir + '/.git');
+
+    var pkg = new Package('spark-md5', dir);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
+      throw new Error(err);
+    });
+
+    var pkgInstallPath = path.join(__dirname, '/../components/spark-md5/');
+    pkg.on('install', function () {
+      fs.renameSync(dir + '/.git', dir + '/git_repo');
+      assert(!fs.existsSync(pkgInstallPath + '/.git/'));
+      next();
+    });
+
+    pkg.resolve();
+  });
 });
