@@ -43,7 +43,7 @@ describe('manager', function () {
     });
 
     manager.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     manager.resolve();
@@ -60,7 +60,7 @@ describe('manager', function () {
     });
 
     manager.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     manager.resolve();
@@ -80,7 +80,7 @@ describe('manager', function () {
     });
 
     manager.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     manager.resolve();
@@ -97,7 +97,7 @@ describe('manager', function () {
     });
 
     manager.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     manager.resolve();
@@ -108,7 +108,7 @@ describe('manager', function () {
     manager.cwd = __dirname + '/assets/project-nested';
 
     manager.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
     manager.on('resolve', function () {
       next();
@@ -141,7 +141,7 @@ describe('manager', function () {
       manager.cwd = __dirname + '/assets/project';
 
       manager.on('error', function (err) {
-        throw new Error(err);
+        throw err;
       });
 
       manager.resolve();

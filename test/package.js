@@ -79,7 +79,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -111,7 +111,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -141,7 +141,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -169,7 +169,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -186,7 +186,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.loadJSON();
@@ -213,14 +213,14 @@ describe('package', function () {
       });
 
       pkg.on('error', function (err) {
-        throw new Error(err);
+        throw err;
       });
 
       pkg.loadJSON();
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.loadJSON();
@@ -238,7 +238,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.loadJSON();
@@ -265,14 +265,14 @@ describe('package', function () {
       });
 
       pkg.on('error', function (err) {
-        throw new Error(err);
+        throw err;
       });
 
       pkg.loadJSON();
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.loadJSON();
@@ -302,7 +302,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -327,7 +327,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
@@ -356,7 +356,7 @@ describe('package', function () {
 
     pkg.on('error', function (err) {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -379,7 +379,7 @@ describe('package', function () {
 
     pkg.on('error', function (err) {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -398,12 +398,12 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
       async.map([pkg.localPath, cachePath], fs.stat, function (err, results) {
-        if (err) throw new Error(err);
+        if (err) throw err;
         var mode0777 = parseInt('0777', 8);
         var expectedMode = mode0777 & (~process.umask());
         assert.equal(results[0].mode, results[1].mode);
@@ -423,12 +423,12 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
       fs.stat(pkg.localPath, function (err, stat) {
-        if (err) throw new Error(err);
+        if (err) throw err;
         var mode0777 = parseInt('0777', 8);
         var expectedMode = mode0777 & (~process.umask());
         assert((stat.mode & expectedMode) === expectedMode || stat.mode === 16822);  // 16822 is for windows
@@ -437,7 +437,7 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.resolve();
@@ -451,12 +451,12 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
-        if (err) throw new Error(err);
+        if (err) throw err;
 
         assert(files.indexOf('index.js') !== -1);
         next();
@@ -474,12 +474,12 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
-        if (err) throw new Error(err);
+        if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
         assert(files.indexOf('master.zip') === -1);
@@ -500,12 +500,12 @@ describe('package', function () {
     });
 
     pkg.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     pkg.on('install', function () {
       fs.readdir(pkg.localPath, function (err, files) {
-        if (err) throw new Error(err);
+        if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
         assert(files.indexOf('bootstrap.zip') === -1);

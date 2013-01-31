@@ -52,12 +52,12 @@ describe('cache-clean', function () {
     var cleaner = cacheClean();
 
     cleaner.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     cleaner.on('end', function () {
       glob(config.cache + '/*', function (err, dirs) {
-        if (err) throw new Error(err);
+        if (err) throw err;
         assert(dirs.length === 0);
         next();
       });
@@ -72,12 +72,12 @@ describe('cache-clean', function () {
     var cleaner = cacheClean(['foo-package', 'bar-package']);
 
     cleaner.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     cleaner.on('end', function () {
       glob(config.cache + '/*', function (err, dirs) {
-        if (err) throw new Error(err);
+        if (err) throw err;
         dirs = dirs.map(function (dir) {
           return path.basename(dir);
         });
@@ -109,12 +109,12 @@ describe('cache-clean', function () {
     var cleaner = cacheClean(['foo-package', 'foo-package', 'bar-package']);
 
     cleaner.on('error', function (err) {
-      throw new Error(err);
+      throw err;
     });
 
     cleaner.on('end', function () {
       glob(config.cache + '/*', function (err, dirs) {
-        if (err) throw new Error(err);
+        if (err) throw err;
         assert(dirs.length === 0);
         next();
       });
