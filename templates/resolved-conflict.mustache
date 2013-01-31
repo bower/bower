@@ -1,10 +1,8 @@
 
 {{#yellow}}Please note that{{/yellow}}
-{{#packages}}
-    {{#version}}
-    {{#cyan}}{{manager.name}}{{/cyan}} requires {{name}} {{#white}}v{{version}}{{/white}}
-    {{/version}}
-{{/packages}}
+{{#requirements}}
+    {{#cyan}}{{pkg.manager.name}}{{/cyan}} requires {{pkg.name}} {{#white}}{{tag}}{{/white}}
+{{/requirements}}
 
-Using version suitable to what is defined in your {{json}}, {{name}} {{#white}}v{{resolvedTo}}{{/white}}.
+Resolved to {{name}} {{#white}}v{{resolvedTo}}{{/white}}, which matches the requirement defined in the project's {{json}}.
 Conflicts may occur.
