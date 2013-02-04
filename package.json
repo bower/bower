@@ -37,10 +37,10 @@
   },
   "scripts": {
     "postinstall": "node cleanup",
-    "test": "mocha -R spec -t 20000"
+    "test": "mocha --reporter spec --timeout 40000"
   },
   "devDependencies": {
-    "mocha": "~1.6.0",
+    "mocha": "~1.8.1",
     "nock": "~0.13.5"
   },
   "bin": {
