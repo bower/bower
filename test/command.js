@@ -76,4 +76,26 @@ describe('command', function() {
 
   });
 
+  describe('register', function() {
+
+    it('Should return true if registration succeeded', function(next) {
+      var name = 'oh-yeah',
+          url = 'repo-oh-yeah.js';
+
+      nock('https://bower.herokuapp.com')
+          .post('/packages', 'name=' + name + '&url=' + url)
+          .reply(201);
+
+      commands.register(name, url, {silent: true}).on('result', function(result) {
+        assert(result);
+        next();
+      });
+    });
+
+    afterEach(function() {
+      nock.cleanAll();
+    });
+
+  });
+
 });
