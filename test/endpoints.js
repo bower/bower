@@ -65,4 +65,46 @@ describe('endpoints', function () {
     });
   });
 
+  describe('lookup', function() {
+
+    it('Should use the default endpoints if none are specified', function (next) {
+
+      var expected = {
+          name: 'jquery',
+          url: 'path/to/jquery'
+      };
+
+      nock('https://bower.herokuapp.com')
+          .get('/packages/jquery')
+          .reply(200, expected);
+
+      source.lookup('jquery', function(err, url) {
+        assert.deepEqual(url, expected.url);
+        next();
+      });
+    });
+
+    it('Should use the specified endpoints', function (next) {
+
+      var expected = {
+        name: 'jquery',
+        url: 'path/to/jquery'
+      };
+
+      nock('https://endpoint1.com')
+          .get('/packages/jquery')
+          .reply(404);
+
+      nock('https://endpoint2.com')
+          .get('/packages/jquery')
+          .reply(200, expected);
+
+      source.lookup('jquery', function(err, url) {
+        assert.deepEqual(url, expected.url);
+        next();
+      }, ['https://endpoint1.com/packages', 'https://endpoint2.com/packages']);
+
+    });
+  });
+
 });
