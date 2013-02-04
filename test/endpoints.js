@@ -63,6 +63,8 @@ describe('endpoints', function () {
       }, ['https://endpoint1.com/packages', 'https://endpoint2.com/packages']);
 
     });
+
+    afterEach(nock.cleanAll);
   });
 
   describe('lookup', function() {
@@ -165,6 +167,9 @@ describe('endpoints', function () {
       }, ['https://endpoint1.com/packages', 'https://endpoint2.com/packages']);
 
     });
+
+    afterEach(nock.cleanAll);
+
   });
 
 });
