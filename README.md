@@ -242,10 +242,7 @@ bower.commands
   });
 ```
 
-Commands emit four types of events: `data`, `end`, `result`, and `error`. `error` will only be emitted if something goes wrong.
-Not all commands emit all events; for a detailed look, check out the code in `lib/commands`. `data` is typically a
-colorized string, ready to show to an end user.  `result` is emitted by `search`, `lookup`, and `register`. It contains a
-json representation of the result of the command.
+Commands emit four types of events: `data`, `end`, `result`, and `error`. `error` will only be emitted if something goes wrong. Not all commands emit all events; for a detailed look, check out the code in `lib/commands`. `data` is typically a colorized string, ready to show to an end user. `search` and `lookup` emit `packages` and `package`, respectively. Those events contain a json representation of the result of the command.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
