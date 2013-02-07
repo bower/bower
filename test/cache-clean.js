@@ -13,24 +13,39 @@ describe('cache-clean', function () {
   function clean(done) {
     var del = 0;
 
-    rimraf(config.directory, function () {
-      // Ignore the error if the local directory was not actually deleted
-      if (++del >= 2) createCache(done);
+    rimraf(config.cache, function (err) {
+      if (err) return done(new Error('Unable to remove cache directory'));
+      if (++del >= 3) createDirs(done);
     });
 
-    rimraf(config.cache, function () {
-      // Ignore the error if the cache directory was not actually deleted
-      if (++del >= 2) createCache(done);
+    rimraf(config.links, function (err) {
+      if (err) return done(new Error('Unable to remove links directory'));
+      if (++del >= 3) createDirs(done);
+    });
+
+    rimraf(__dirname + '/temp', function (err) {
+      if (err) return done(new Error('Unable to remove temp directory'));
+      if (++del >= 3) createDirs(done);
     });
   }
 
-  beforeEach(clean);
+  beforeEach(function (done) {
+    clean(function (err) {
+      if (err) return done(err);
+      fs.mkdirSync(__dirname + '/temp');
+      done();
+    });
+  });
   after(clean);
 
-  function createCache(done) {
+  function createDirs(done) {
     mkdirp(config.cache, function (err) {
-      if (err) throw new Error('Unable to create cache');
-      done();
+      if (err) return done(new Error('Unable to create cache directory'));
+
+      mkdirp(config.links, function (err) {
+        if (err) return done(new Error('Unable to create links directory'));
+        done();
+      });
     });
   }
 
@@ -45,9 +60,18 @@ describe('cache-clean', function () {
     fs.writeFileSync(path.join(someDir, 'some-other-file'), 'bower is fantastic');
   }
 
+  function simulateLink(name, linkedPath) {
+    var dir = path.join(config.links, name);
+    fs.mkdirSync(linkedPath);
+    fs.symlinkSync(linkedPath, dir);
+  }
+
   it('Should clean the entire cache', function (next) {
     simulatePackage('some-package');
     simulatePackage('other-package');
+    simulateLink('linked-package', __dirname + '/temp/linked-package');
+    fs.rmdirSync(__dirname + '/temp/linked-package'); // simulate invalid symlinks
+    simulateLink('linked-package2', __dirname + '/temp/linked-package2');
 
     var cleaner = cacheClean();
 
@@ -59,7 +83,19 @@ describe('cache-clean', function () {
       glob(config.cache + '/*', function (err, dirs) {
         if (err) throw err;
         assert(dirs.length === 0);
-        next();
+
+        glob(config.links + '/*', function (err, dirs) {
+          if (err) throw err;
+
+          dirs = dirs.map(function (dir) {
+            return path.basename(dir);
+          });
+
+          assert(dirs.length === 1);
+          assert.deepEqual(dirs, ['linked-package2']);
+
+          next();
+        });
       });
     });
   });
@@ -88,17 +124,28 @@ describe('cache-clean', function () {
     });
   });
 
-  it('Should throw error on unknown package', function (next) {
-    var cleaner = cacheClean(['not-cached-package']),
-        cleanedPkg = false;
+  it('Should clean only the selected links', function (next) {
+    simulateLink('linked-package', __dirname + '/temp/linked-package');
+    fs.rmdirSync(__dirname + '/temp/linked-package'); // simulate invalid symlinks
+    simulateLink('linked-package2', __dirname + '/temp/linked-package2');
+    fs.rmdirSync(__dirname + '/temp/linked-package2'); // simulate invalid symlinks
+
+    var cleaner = cacheClean(['linked-package']);
 
     cleaner.on('error', function (err) {
-      if (/not\-cached\-package/.test(err)) cleanedPkg = true;
+      throw err;
     });
 
     cleaner.on('end', function () {
-      if (!cleanedPkg) throw new Error('Should have thrown an error.');
-      next();
+      glob(config.links + '/*', function (err, dirs) {
+        if (err) throw err;
+        dirs = dirs.map(function (dir) {
+          return path.basename(dir);
+        });
+
+        assert.deepEqual(dirs, ['linked-package2']);
+        next();
+      });
     });
   });
 
