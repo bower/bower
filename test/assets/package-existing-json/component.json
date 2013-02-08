@@ -1,0 +1,8 @@
+{
+	"name": "sample-package",
+	"version": "1.2.3",
+	"main": ["sample.js"],
+	"ignore": ["thingToIgnore"],
+	"dependencies" : {},
+	"custom": "A custom field"
+}
