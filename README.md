@@ -234,9 +234,16 @@ bower.commands
   .on('end', function (data) {
     data && console.log(data);
   });
+
+bower.commands
+  .search('jquery', {})
+  .on('packages', function(packages) {
+    /* `packages` is a list of packages returned by searching for 'jquery' */
+  });
+  
 ```
 
-All commands emit three types of events: `data`, `end`, and `error`.
+Commands emit four types of events: `data`, `end`, `result`, and `error`. `error` will only be emitted if something goes wrong. Not all commands emit all events; for a detailed look, check out the code in `lib/commands`. `data` is typically a colorized string, ready to show to an end user. `search` and `lookup` emit `packages` and `package`, respectively. Those events contain a json representation of the result of the command.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
