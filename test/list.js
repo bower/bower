@@ -30,7 +30,7 @@ describe('list', function () {
   }
 
   it('Should have line method', function () {
-    assert(!!list.line);
+    assert(typeof list.line === 'function');
   });
 
   it('Should install', function (next) {
