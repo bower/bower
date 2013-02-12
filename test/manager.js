@@ -185,14 +185,14 @@ describe('manager', function () {
     });
   });
 
-  it('Should not resolve devDependencies by default', function (next) {
+  it('Should resolve devDependencies by default', function (next) {
     var manager = new Manager([]);
     manager.cwd = __dirname + '/assets/project-dev-deps';
 
     manager.on('resolve', function () {
       assert.ok(manager.dependencies.jquery);
-      assert.ok(!manager.dependencies.bootstrap);
-      assert.ok(!manager.dependencies.turtles);
+      assert.ok(manager.dependencies.bootstrap);
+      assert.ok(manager.dependencies.turtles);
       next();
     });
 
@@ -203,14 +203,14 @@ describe('manager', function () {
     manager.resolve();
   });
 
-  it('Should resolve devDependencies when specified', function (next) {
-    var manager = new Manager([], { dev: true });
+  it('Should not resolve devDependencies when specified', function (next) {
+    var manager = new Manager([], { production: true });
     manager.cwd = __dirname + '/assets/project-dev-deps';
 
     manager.on('resolve', function () {
       assert.ok(manager.dependencies.jquery);
-      assert.ok(manager.dependencies.bootstrap);
-      assert.ok(manager.dependencies.turtles);
+      assert.ok(!manager.dependencies.bootstrap);
+      assert.ok(!manager.dependencies.turtles);
       next();
     });
 
