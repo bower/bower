@@ -117,7 +117,7 @@ You can create a `component.json` file in your project's root, specifying all of
 
 Put this under your project's root, listing all of your dependencies. When you run `bower install`, Bower will read this `component.json` file, resolve all the relevant dependencies and install them.
 
-For now, `name`, `version`, `main`, `dependencies`, and `ignore` are the only properties that are used by Bower. If you have several files you're distributing as part of your package, pass an array to `main` like this:
+For now, `name`, `version`, `main`, `dependencies`, `devDependencies`, and `ignore` are the only properties that are used by Bower. If you have several files you're distributing as part of your package, pass an array to `main` like this:
 
 ```json
 {
@@ -153,6 +153,16 @@ Chances are you have a bunch of extra stuff in the repo that are not needed in p
   "ignore": [
     "tests/",
     "**/*.txt"
+  ]
+}
+```
+
+You may add non-essential packages in `devDependencies`. This is useful for packages aren't required to support the package, but that are used in your project, i.e. to build documentation, run a demo, or run tests.
+
+```json
+{
+  "devDependencies": [
+    "qunit": "~1"
   ]
 }
 ```

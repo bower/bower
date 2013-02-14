@@ -185,4 +185,43 @@ describe('manager', function () {
     });
   });
 
+  it('Should resolve devDependencies by default', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-dev-deps';
+
+    manager.on('resolve', function () {
+      assert.ok(manager.dependencies.jquery);
+      assert.ok(manager.dependencies['package-dev-dep']);
+      assert.ok(manager.dependencies.bootstrap);
+      assert.ok(manager.dependencies.turtles);
+      // no devDependencies of dependencies
+      assert.ok(!manager.dependencies.qunit);
+      next();
+    });
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+
+    manager.resolve();
+  });
+
+  it('Should not resolve devDependencies when specified', function (next) {
+    var manager = new Manager([], { production: true });
+    manager.cwd = __dirname + '/assets/project-dev-deps';
+
+    manager.on('resolve', function () {
+      assert.ok(manager.dependencies.jquery);
+      assert.ok(!manager.dependencies.bootstrap);
+      assert.ok(!manager.dependencies.turtles);
+      next();
+    });
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+
+    manager.resolve();
+  });
+
 });
