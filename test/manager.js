@@ -191,8 +191,11 @@ describe('manager', function () {
 
     manager.on('resolve', function () {
       assert.ok(manager.dependencies.jquery);
+      assert.ok(manager.dependencies['package-dev-dep']);
       assert.ok(manager.dependencies.bootstrap);
       assert.ok(manager.dependencies.turtles);
+      // no devDependencies of dependencies
+      assert.ok(!manager.dependencies.qunit);
       next();
     });
 
