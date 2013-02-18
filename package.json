@@ -37,7 +37,6 @@
     "promptly": "~0.1.0"
   },
   "scripts": {
-    "postinstall": "node cleanup",
     "test": "mocha --reporter spec --timeout 40000"
   },
   "devDependencies": {
