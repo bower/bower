@@ -316,11 +316,12 @@ Twitter is in the process of migrating its frontend architecture onto Bower, so 
 
 ### Contact
 
-Have a question? Ask on our mailing list!
+Have a question?
 
-twitter-bower@googlegroups.com
+- [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
+- [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
+- [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
 
-http://groups.google.com/group/twitter-bower
 
 ### Authors
 
