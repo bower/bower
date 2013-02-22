@@ -1,9 +1,18 @@
 # Changelog
 
-## 0.7.1
+## 0.8.0
+- __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
+- __Add devDependencies__ ([#251](https://github.com/twitter/bower/issues/251))
+- `cache-clean` command now clears links pointing to nonexistent folders ([#182](https://github.com/twitter/bower/issues/182))
 - Fix issue when downloading assets behind a proxy using `https` ([#230](https://github.com/twitter/bower/issues/230))
 - Fix --save saving unresolved components ([#240](https://github.com/twitter/bower/issues/240))
 - Fix issue when extracting some zip files ([#225](https://github.com/twitter/bower/issues/225))
+- Fix automatic conflict resolver not selecting the correct version
+- Add --sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
+- Automatically clear cache when git commands fail with code 128 ([#216](https://github.com/twitter/bower/issues/216))
+
+## 0.7.1 - 2013-02-20
+- Remove postinstall script from `bower` installation
 
 ## 0.7.0 - 2013-02-01
 - __Ability to resolve conflicts__ ([#214](https://github.com/twitter/bower/issues/214))
