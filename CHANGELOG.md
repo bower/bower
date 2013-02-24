@@ -8,7 +8,7 @@
 - Fix --save saving unresolved components ([#240](https://github.com/twitter/bower/issues/240))
 - Fix issue when extracting some zip files ([#225](https://github.com/twitter/bower/issues/225))
 - Fix automatic conflict resolver not selecting the correct version
-- Add --sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
+- Add `--sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
 - Automatically clear cache when git commands fail with code 128 ([#216](https://github.com/twitter/bower/issues/216))
 
 ## 0.7.1 - 2013-02-20
