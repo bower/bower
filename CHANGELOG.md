@@ -3,7 +3,7 @@
 ## 0.8.0
 - __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
 - __Add devDependencies__ support ([#251](https://github.com/twitter/bower/issues/251))
-- __Add `--save-dev` flag to install save dev dependencies__ ([#258](https://github.com/twitter/bower/issues/258))
+- __Add `--save-dev` flag to install/uninstall commands__ ([#258](https://github.com/twitter/bower/issues/258))
 - `cache-clean` command now clears links pointing to nonexistent folders ([#182](https://github.com/twitter/bower/issues/182))
 - Fix issue when downloading assets behind a proxy using `https` ([#230](https://github.com/twitter/bower/issues/230))
 - Fix --save saving unresolved components ([#240](https://github.com/twitter/bower/issues/240))
