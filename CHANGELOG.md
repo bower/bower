@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.0
+## 0.8.0 - 2013-02-24
 - __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
 - __Add devDependencies__ support ([#251](https://github.com/twitter/bower/issues/251))
 - __Add `--save-dev` flag to install/uninstall commands__ ([#258](https://github.com/twitter/bower/issues/258))
