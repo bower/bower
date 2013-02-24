@@ -353,6 +353,8 @@ Thanks for assistance and contributions:
 + [@wycats](http://github.com/wycats)
 + [@sindresorhus](http://github.com/sindresorhus)
 + [@hemanth](http://github.com/hemanth)
++ [@wibblymat](http://github.com/wibblymat)
++ [@marcelombc](http://github.com/marcelombc)
 
 ## License
 
