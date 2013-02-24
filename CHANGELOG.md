@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- Fix some async callbacks being fired twice ([#274](https://github.com/twitter/bower/issues/274))
+
 ## 0.8.0 - 2013-02-24
 - __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
 - __Add devDependencies__ support ([#251](https://github.com/twitter/bower/issues/251))
