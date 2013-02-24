@@ -66,6 +66,20 @@ describe('cache-clean', function () {
     fs.symlinkSync(linkedPath, dir);
   }
 
+  it('Should emit end event', function (next) {
+    simulatePackage('some-package');
+
+    var cleaner = cacheClean();
+
+    cleaner
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('end', function () {
+        next();
+      });
+  });
+
   it('Should clean the entire cache', function (next) {
     simulatePackage('some-package');
     simulatePackage('other-package');
