@@ -2,7 +2,8 @@
 
 ## 0.8.0
 - __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
-- __Add devDependencies__ ([#251](https://github.com/twitter/bower/issues/251))
+- __Add devDependencies__ support ([#251](https://github.com/twitter/bower/issues/251))
+- __Add `--save-dev` flag to install save dev dependencies__ ([#258](https://github.com/twitter/bower/issues/258))
 - `cache-clean` command now clears links pointing to nonexistent folders ([#182](https://github.com/twitter/bower/issues/182))
 - Fix issue when downloading assets behind a proxy using `https` ([#230](https://github.com/twitter/bower/issues/230))
 - Fix --save saving unresolved components ([#240](https://github.com/twitter/bower/issues/240))
@@ -10,6 +11,7 @@
 - Fix automatic conflict resolver not selecting the correct version
 - Add `--sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
 - Automatically clear cache when git commands fail with code 128 ([#216](https://github.com/twitter/bower/issues/216))
+- Fix `bower` not working correctly behind a proxy in some commands ([#208](https://github.com/twitter/bower/issues/208))
 
 ## 0.7.1 - 2013-02-20
 - Remove postinstall script from `bower` installation
