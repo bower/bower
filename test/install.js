@@ -39,7 +39,12 @@ describe('install', function () {
       done();
     });
   });
-  after(clean);
+  after(function (done) {
+    clean(function () {
+      process.chdir(cwd);
+      done();
+    });
+  });
 
   it('Should have line method', function () {
     assert(!!install.line);
