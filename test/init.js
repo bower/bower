@@ -1,6 +1,6 @@
 /*jshint plusplus:false*/
-var assert  = require('assert');
-var init    = require('../lib/commands/init');
+var assert = require('assert');
+var init   = require('../lib/commands/init');
 
 var cwd = process.cwd();
 
