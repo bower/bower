@@ -99,6 +99,22 @@ house some components internally while still taking advantage of public Bower re
 
 Bower will first look to **http://bower.mycompany.com** while trying to find your components.  If not found, the main registry at **https://bower.herokuapp.com** will be consulted to see if a copy of the resource can be retrieved.
 
+The __shorthand_resolver__ key provides support for defining a custom template which Bower uses when constructing a url for a given shorthand.
+
+```json
+{
+  "directory"  			: "components",
+  "json"       			: "component.json",
+  "endpoint"   			: "http://bower.mycompany.com",
+  "shorthand_resolver"	: "git://example.com/{{ organization }}/{{ package }}.git"
+}
+```
+
+For example if a shorthand of __jquery/jquery__ or __jquery/jquery#1.0.0__ is specified the following data can be referenced from within a template.
+
+- __endpoint__ jquery/jquery
+- __organization__ jquery
+- __package__ jquery
 
 ### Defining a package
 
