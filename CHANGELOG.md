@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.1
+## 0.8.1 - 2013-02-25
 
 - Fix some async callbacks being fired twice ([#274](https://github.com/twitter/bower/issues/274))
 
