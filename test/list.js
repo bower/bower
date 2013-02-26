@@ -117,7 +117,8 @@ describe('list', function () {
               }
             }
           });
-          clean(next);
+
+          next();
         });
       })
       .resolve();
@@ -150,7 +151,8 @@ describe('list', function () {
             ],
             '.html': [ 'components/a2/a2.html', 'components/b/b.html' ]
           });
-          clean(next);
+
+          next();
         });
       })
       .resolve();
