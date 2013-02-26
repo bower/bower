@@ -469,7 +469,7 @@ describe('package', function () {
   });
 
   it('Should extract tar and zip files from normal URL packages', function (next) {
-    var pkg = new Package('jquery', 'http://github.com/satazor/SparkMD5/archive/master.zip');
+    var pkg = new Package('spark-md5', 'https://github.com/satazor/SparkMD5/archive/master.zip');
 
     pkg.on('resolve', function () {
       pkg.install();
