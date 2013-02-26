@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.2 - 2013-02-26
+
+- Fix some errors in windows related, had to downgrade `rimraf` ([#274](https://github.com/twitter/bower/issues/274))
+- Prevent duplicate package names in error summaries ([#277](https://github.com/twitter/bower/issues/277))
+
 ## 0.8.1 - 2013-02-25
 
 - Fix some async callbacks being fired twice ([#274](https://github.com/twitter/bower/issues/274))
