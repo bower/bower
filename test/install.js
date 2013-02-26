@@ -34,16 +34,12 @@ describe('install', function () {
   }
 
   beforeEach(function (done) {
-    clean(function () {
-      process.chdir(cwd);
-      done();
-    });
+    process.chdir(cwd);
+    clean(done);
   });
   after(function (done) {
-    clean(function () {
-      process.chdir(cwd);
-      done();
-    });
+    process.chdir(cwd);
+    clean(done);
   });
 
   it('Should have line method', function () {
