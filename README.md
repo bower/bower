@@ -103,18 +103,18 @@ The __shorthand_resolver__ key provides support for defining a custom template w
 
 ```json
 {
-  "directory"  			: "components",
-  "json"       			: "component.json",
-  "endpoint"   			: "http://bower.mycompany.com",
-  "shorthand_resolver"	: "git://example.com/{{ organization }}/{{ package }}.git"
+  "directory"			: "components",
+  "json"				: "component.json",
+  "endpoint"			: "http://bower.mycompany.com",
+  "shorthand_resolver"	: "git://example.com/{{{ organization }}}/{{{ package }}}.git"
 }
 ```
 
-For example if a shorthand of __jquery/jquery__ or __jquery/jquery#1.0.0__ is specified the following data can be referenced from within a template.
+For example if a shorthand of __twitter/flight__ or __twitter/flight#v1.0.0__ is specified the following data can be referenced from within a template.
 
-- __endpoint__ jquery/jquery
-- __organization__ jquery
-- __package__ jquery
+- __endpoint__      twitter/flight
+- __organization__  twitter
+- __package__       flight
 
 ### Defining a package
 

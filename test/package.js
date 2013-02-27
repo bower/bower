@@ -55,27 +55,27 @@ describe('package', function () {
     assert.equal(pkg.tag, '1.0.0');
   });
 
-  it('Should resolve git shorthand template (username/project) containing {{ endpoint }}', function () {
-    config.shorthand_resolver = 'git://example.com/{{ endpoint }}.git';
+  it('Should resolve git shorthand template (username/project) containing {{{ endpoint }}}', function () {
+    config.shorthand_resolver = 'git://example.com/{{{ endpoint }}}.git';
     var pkg = new Package('jquery', 'jquery/jquery');
     assert.equal(pkg.gitUrl, 'git://example.com/jquery/jquery.git');
   });
 
-  it('Should resolve git shorthand template (username/project) containing {{ endpoint }} with specific tag ', function () {
-    config.shorthand_resolver = 'git://example.com/{{ endpoint }}.git';
+  it('Should resolve git shorthand template (username/project) containing {{{ endpoint }}} with specific tag ', function () {
+    config.shorthand_resolver = 'git://example.com/{{{ endpoint }}}.git';
     var pkg = new Package('jquery', 'jquery/jquery#1.0.0');
     assert.equal(pkg.gitUrl, 'git://example.com/jquery/jquery.git');
     assert.equal(pkg.tag, '1.0.0');
   });
 
-  it('Should resolve git shorthand template (username/project) containing {{ organization }} {{ package }}', function () {
-    config.shorthand_resolver = 'git://example.com/{{ organization }}/{{ package }}.git';
+  it('Should resolve git shorthand template (username/project) containing {{{ organization }}} {{{ package }}}', function () {
+    config.shorthand_resolver = 'git://example.com/{{{ organization }}}/{{{ package }}}.git';
     var pkg = new Package('jquery', 'jquery/jquery');
     assert.equal(pkg.gitUrl, 'git://example.com/jquery/jquery.git');
   });
 
-  it('Should resolve git shorthand template (username/project) containing {{ organization }} {{ package }} with specific tag ', function () {
-    config.shorthand_resolver = 'git://example.com/{{ organization }}/{{ package }}.git';
+  it('Should resolve git shorthand template (username/project) containing {{{ organization }}} {{{ package }}} with specific tag ', function () {
+    config.shorthand_resolver = 'git://example.com/{{{ organization }}}/{{{ package }}}.git';
     var pkg = new Package('jquery', 'jquery/jquery#1.0.0');
     assert.equal(pkg.gitUrl, 'git://example.com/jquery/jquery.git');
     assert.equal(pkg.tag, '1.0.0');
