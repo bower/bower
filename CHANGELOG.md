@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.3 - 2013-02-27
+
+- Fix error when using the `update` command ([#282](https://github.com/twitter/bower/issues/282))
+
 ## 0.8.2 - 2013-02-26
 
 - Fix some errors in windows while removing directories, had to downgrade `rimraf` ([#274](https://github.com/twitter/bower/issues/274))
