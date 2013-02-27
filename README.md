@@ -103,10 +103,10 @@ The __shorthand_resolver__ key provides support for defining a custom template w
 
 ```json
 {
-  "directory"			: "components",
-  "json"				: "component.json",
-  "endpoint"			: "http://bower.mycompany.com",
-  "shorthand_resolver"	: "git://example.com/{{{ organization }}}/{{{ package }}}.git"
+  "directory"           : "components",
+  "json"                : "component.json",
+  "endpoint"            : "http://bower.mycompany.com",
+  "shorthand_resolver"  : "git://example.com/{{{ organization }}}/{{{ package }}}.git"
 }
 ```
 
