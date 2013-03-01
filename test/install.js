@@ -295,4 +295,43 @@ describe('install', function () {
           });
       });
   });
+
+  it('Should preserve new line at the end of the file', function (done) {
+    fs.mkdirSync(testDir);
+    process.chdir(testDir);
+
+    fs.writeFileSync(path.join(testDir, config.json), JSON.stringify({
+      name: 'some-package',
+      version: '0.0.0'
+    }) + '\n');
+
+    install(['jquery'], { save: true })
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('end', function () {
+        var contents = fs.readFileSync(path.join(testDir, config.json)).toString();
+        var json = JSON.parse(contents);
+        assert(!json.devDependencies);
+        assert(json.dependencies);
+        assert.equal(_.size(json.dependencies), 1);
+        assert(typeof json.dependencies.jquery === 'string');
+        assert(contents.slice(-1) === '\n');
+
+        fs.writeFileSync(path.join(testDir, config.json), JSON.stringify({
+          name: 'some-package',
+          version: '0.0.0'
+        }));
+
+        install(['jquery'], { save: true })
+          .on('error', function (err) {
+            throw err;
+          })
+          .on('end', function () {
+            var contents = fs.readFileSync(path.join(testDir, config.json)).toString();
+            assert(contents.slice(-1) !== '\n');
+            done();
+          });
+      });
+  });
 });

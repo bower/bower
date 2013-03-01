@@ -4,6 +4,11 @@
 
 - Add `shorthand_resolver` to allow shorthands to be resolved to repositories other than GitHub ([#278](https://github.com/twitter/bower/issues/278))
 
+## 0.8.4 - 2013-03-01
+
+- Fix some more duplicate async callbacks being called twice
+- Preserve new lines when saving `component.json` ([#285](https://github.com/twitter/bower/issues/285))
+
 ## 0.8.3 - 2013-02-27
 
 - Fix error when using the `update` command ([#282](https://github.com/twitter/bower/issues/282))
