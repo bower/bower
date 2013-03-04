@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.5 - 2013-03-04
+- Fix `cache-clean` command clearing the completion cache when the command was called with specific packages
+- Add error message when an error is caught parsing an invalid `component.json`
+
 ## 0.8.4 - 2013-03-01
 
 - Fix some more duplicate async callbacks being called twice
