@@ -78,7 +78,7 @@ describe('list', function () {
             ],
             b: ['components/b/b.js', 'components/b/b.html'],
             b1: ['components/b1/b1.js', 'components/b1/b1.css'],
-            c: 'components/c/c.js'
+            c: 'components/c/c.css'
           });
 
           next();
@@ -141,13 +141,13 @@ describe('list', function () {
               'components/a2/a2.js',
               'components/a/a.js',
               'components/b1/b1.js',
-              'components/b/b.js',
-              'components/c/c.js'
+              'components/b/b.js'
             ],
             '.css': [
               'components/a2/a2.css',
               'components/a/a.css',
-              'components/b1/b1.css'
+              'components/b1/b1.css',
+              'components/c/c.css'
             ],
             '.html': [ 'components/a2/a2.html', 'components/b/b.html' ]
           });
