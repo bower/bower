@@ -1,7 +1,7 @@
 {
   "name": "a1",
   "version": "0.0.1",
-  "main": [
+  "scripts": [
     "a1.js"
   ],
   "dependencies": {
