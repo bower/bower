@@ -5,21 +5,17 @@
 - Add error message when an error is caught parsing an invalid `component.json`
 
 ## 0.8.4 - 2013-03-01
-
 - Fix some more duplicate async callbacks being called twice
 - Preserve new lines when saving `component.json` ([#285](https://github.com/twitter/bower/issues/285))
 
 ## 0.8.3 - 2013-02-27
-
 - Fix error when using the `update` command ([#282](https://github.com/twitter/bower/issues/282))
 
 ## 0.8.2 - 2013-02-26
-
 - Fix some errors in windows while removing directories, had to downgrade `rimraf` ([#274](https://github.com/twitter/bower/issues/274))
 - Prevent duplicate package names in error summaries ([#277](https://github.com/twitter/bower/issues/277))
 
 ## 0.8.1 - 2013-02-25
-
 - Fix some async callbacks being fired twice ([#274](https://github.com/twitter/bower/issues/274))
 
 ## 0.8.0 - 2013-02-24
