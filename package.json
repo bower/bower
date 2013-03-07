@@ -1,7 +1,7 @@
 {
   "name": "bower",
   "description": "The browser package manager.",
-  "version": "0.7.0",
+  "version": "0.8.5",
   "author": "Twitter",
   "licenses": [
     {
@@ -16,19 +16,18 @@
   },
   "dependencies": {
     "tmp": "~0.0.16",
-    "vows": "~0.6.4",
     "glob": "~3.1.14",
     "nopt": "~2.0.0",
     "archy": "~0.0.2",
-    "async": "~0.1.22",
+    "async": "~0.2.5",
     "colors": "~0.6.0-1",
-    "rimraf": "~2.0.2",
+    "rimraf": "~2.0.3",
     "mkdirp": "~0.3.4",
     "semver": "~1.1.0",
     "request": "~2.11.4",
     "fstream": "~0.1.19",
     "hogan.js": "~2.0.0",
-    "lodash": "~0.9.1",
+    "lodash": "~1.0.1",
     "read-package-json": "~0.1.8",
     "stable": "~0.1.2",
     "rc": "~0.0.6",

@@ -1,15 +1,38 @@
 # Changelog
 
-## 0.8.0
+## 0.9.0
+- Add `shorthand_resolver` to allow shorthands to be resolved to repositories other than GitHub ([#278](https://github.com/twitter/bower/issues/278))
+
+## 0.8.5 - 2013-03-04
+- Fix `cache-clean` command clearing the completion cache when the command was called with specific packages
+- Add error message when an error is caught parsing an invalid `component.json`
+
+## 0.8.4 - 2013-03-01
+- Fix some more duplicate async callbacks being called twice
+- Preserve new lines when saving `component.json` ([#285](https://github.com/twitter/bower/issues/285))
+
+## 0.8.3 - 2013-02-27
+- Fix error when using the `update` command ([#282](https://github.com/twitter/bower/issues/282))
+
+## 0.8.2 - 2013-02-26
+- Fix some errors in windows while removing directories, had to downgrade `rimraf` ([#274](https://github.com/twitter/bower/issues/274))
+- Prevent duplicate package names in error summaries ([#277](https://github.com/twitter/bower/issues/277))
+
+## 0.8.1 - 2013-02-25
+- Fix some async callbacks being fired twice ([#274](https://github.com/twitter/bower/issues/274))
+
+## 0.8.0 - 2013-02-24
 - __Add init command similar to `npm init`__ ([#219](https://github.com/twitter/bower/issues/219))
-- __Add devDependencies__ ([#251](https://github.com/twitter/bower/issues/251))
+- __Add devDependencies__ support ([#251](https://github.com/twitter/bower/issues/251))
+- __Add `--save-dev` flag to install/uninstall commands__ ([#258](https://github.com/twitter/bower/issues/258))
 - `cache-clean` command now clears links pointing to nonexistent folders ([#182](https://github.com/twitter/bower/issues/182))
 - Fix issue when downloading assets behind a proxy using `https` ([#230](https://github.com/twitter/bower/issues/230))
 - Fix --save saving unresolved components ([#240](https://github.com/twitter/bower/issues/240))
 - Fix issue when extracting some zip files ([#225](https://github.com/twitter/bower/issues/225))
 - Fix automatic conflict resolver not selecting the correct version
-- Add --sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
+- Add `--sources` option to the `list` command ([#235](https://github.com/twitter/bower/issues/235))
 - Automatically clear cache when git commands fail with code 128 ([#216](https://github.com/twitter/bower/issues/216))
+- Fix `bower` not working correctly behind a proxy in some commands ([#208](https://github.com/twitter/bower/issues/208))
 
 ## 0.7.1 - 2013-02-20
 - Remove postinstall script from `bower` installation
