@@ -177,9 +177,9 @@ You may add non-essential packages in `devDependencies`. This is useful for pack
 
 ```json
 {
-  "devDependencies": [
+  "devDependencies": {
     "qunit": "~1"
-  ]
+  }
 }
 ```
 
