@@ -29,8 +29,8 @@ To install a package:
     bower install http://foo.com/jquery.awesome-plugin.js
     bower install ./repos/jquery
 
-As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
-If you install from a URL that points to a zip or tar file, bower will automatically extract its contents.
+As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL, or local path.
+If you install from a URL that points to a zip or tar file, Bower will automatically extract its contents.
 When tags are available in the endpoint, you can specify a [semver](http://semver.org/) tag to fetch concrete versions:
 
     bower install jquery#1.8.1
@@ -43,7 +43,7 @@ Bower also works with private Git repositories. Simply reference them by their S
 
 [View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
 
-During install you can have Bower add an entry to your component.json as well:
+During install you can have Bower add an entry to your `component.json` as well:
 
     bower install --save jquery
 
@@ -73,7 +73,7 @@ You can disable colors by using the `--no-color` flag.
 
 ### Bower Configuration
 
-Bower can be configured by creating a .bowerrc file in your home folder (usually ~/.bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
+Bower can be configured by creating a `.bowerrc` file in your home folder (usually `~/.bowerrc`) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a `.bowerrc` file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.
 
 ```json
 {
@@ -83,10 +83,10 @@ Bower can be configured by creating a .bowerrc file in your home folder (usually
 }
 ```
 
-To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.
+To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of [Bower Server](https://github.com/twitter/bower-server).
 
-The __searchpath__ array provides additional URLs of read-only Bower registries that should be consulted to look up components.  This is most typically used if your business wishes to
-house some components internally while still taking advantage of public Bower registries.  For example, you might configure the following:
+The __searchpath__ array provides additional URLs of read-only Bower registries that should be consulted to look up components. This is most typically used if your business wishes to
+house some components internally while still taking advantage of public Bower registries. For example, you might configure the following:
 
 ```json
 {
@@ -97,9 +97,9 @@ house some components internally while still taking advantage of public Bower re
 }
 ```
 
-Bower will first look to **http://bower.mycompany.com** while trying to find your components.  If not found, the main registry at **https://bower.herokuapp.com** will be consulted to see if a copy of the resource can be retrieved.
+Bower will first look to **http://bower.mycompany.com** while trying to find your components. If not found, the main registry at **https://bower.herokuapp.com** will be consulted to see if a copy of the resource can be retrieved.
 
-The __shorthand_resolver__ key provides support for defining a custom template which Bower uses when constructing a url for a given shorthand.
+The __shorthand_resolver__ key provides support for defining a custom template which Bower uses when constructing a URL for a given shorthand.
 
 ```json
 {
@@ -162,7 +162,7 @@ You can also point to packages by adding their URL or file path in the dependenc
 }
 ```
 
-Chances are you have a bunch of extra stuff in the repo that are not needed in production. List these non-necessary file paths in `ignore`.
+Chances are you have a bunch of extra stuff in the repo that is not needed in production. List these non-essential file paths in `ignore`.
 
 ```json
 {
@@ -173,7 +173,7 @@ Chances are you have a bunch of extra stuff in the repo that are not needed in p
 }
 ```
 
-You may add non-essential packages in `devDependencies`. This is useful for packages aren't required to support the package, but that are used in your project, i.e. to build documentation, run a demo, or run tests.
+You may add non-essential packages in `devDependencies`. This is useful for packages aren't required to support your package in production, but that are used in your project, i.e. to build documentation, run a demo, or run tests.
 
 ```json
 {
@@ -219,7 +219,7 @@ run environment
 
 Bower also makes available a source mapping – this can be used by build tools to easily consume Bower components.
 
-If you pass the option `--map` to bower's `list` command, it will generate a JSON with dependency objects. Alternatively, you can pass the `--paths` flag to the `list` command to get a simple path to name mapping:
+If you pass the option `--map` to Bower's `list` command, it will generate a JSON with dependency objects. Alternatively, you can pass the `--paths` flag to the `list` command to get a simple path-to-name mapping:
 
 ```json
 {
@@ -269,7 +269,7 @@ bower.commands
   
 ```
 
-Commands emit four types of events: `data`, `end`, `result`, and `error`. `error` will only be emitted if something goes wrong. Not all commands emit all events; for a detailed look, check out the code in `lib/commands`. `data` is typically a colorized string, ready to show to an end user. `search` and `lookup` emit `packages` and `package`, respectively. Those events contain a json representation of the result of the command.
+Commands emit four types of events: `data`, `end`, `result`, and `error`. `error` will only be emitted if something goes wrong. Not all commands emit all events; for a detailed look, check out the code in `lib/commands`. `data` is typically a colorized string, ready to show to an end user. `search` and `lookup` emit `packages` and `package`, respectively. Those events contain a JSON representation of the result of the command.
 
 For a better of idea how this works, you may want to check out [our bin file](https://github.com/twitter/bower/blob/master/bin/bower).
 
@@ -295,7 +295,7 @@ bower completion >> ~/.bash_profile
 
 ### Windows users
 
-A lot of people are experiencing problems using bower on windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
+A lot of people are experiencing problems using Bower on Windows because [msysgit](http://code.google.com/p/msysgit/) must be installed correctly.
 Be sure to check the option shown above, otherwise it will simply not work:
 
 ![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
@@ -309,7 +309,7 @@ Bower is a lower level component than Jam, Volo, or Ender. These managers could 
 
 Bower's aim is simply to install Git paths, resolve dependencies from a `component.json`, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.
 
-Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
+Bower is working under the assumption that there is a single, common problem in front-end application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).
 
 Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.
 
@@ -317,7 +317,7 @@ Bower offers a generic, unopinionated solution to the problem of package managem
 
 Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.
 
-**We recently saw what happened when the main NPM registry went down. Is a single point of failure possible for Bower and if so, do you have redundancy planned?**
+**We recently saw what happened when the main npm registry went down. Is a single point of failure possible for Bower and if so, do you have redundancy planned?**
 
 There's no redundancy planned at the moment, as Bower just installs Git URLs. It's up to the URL provider to establish redundancy.
 
@@ -327,7 +327,7 @@ Don't use a `package.json` – use a `component.json`.
 
 **Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?**
 
-Twitter is in the process of migrating its frontend architecture onto Bower, so it's fairly safe to say it will be maintained and invested in going forward.
+Twitter is in the process of migrating its front-end architecture onto Bower, so it's fairly safe to say it will be maintained and invested in going forward.
 
 
 ### Contact
