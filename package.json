@@ -33,7 +33,8 @@
     "rc": "~0.0.6",
     "unzip": "~0.1.3",
     "tar": "~0.1.13",
-    "promptly": "~0.1.0"
+    "promptly": "~0.1.0",
+    "abbrev": "~1.0.4"
   },
   "scripts": {
     "test": "mocha --reporter spec --timeout 40000"

@@ -29,7 +29,11 @@ options   = nopt(options, shorthand, process.argv);
 bower.version = pkg.version;
 
 if (options.version) return console.log(bower.version);
-if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift())) bower.command = command;
+
+command = options.argv.remain && options.argv.remain.shift();
+command = bower.abbreviations[command];
+
+if (command) bower.command = command;
 
 bower.commands[bower.command || 'help'].line(input)
   .on('data', function (data) {
