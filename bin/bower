@@ -33,12 +33,12 @@ if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift(
 
 bower.commands[bower.command || 'help'].line(input)
   .on('data', function (data) {
-    if (data) console.log(data);
+    if (data) process.stdout.write(data);
   })
   .on('end', function (data) {
-    if (data) console.log(data);
+    if (data) process.stdout.write(data);
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;
-    else console.log(template('error', { message: err.message }, true));
+    else process.stdout.write(template('error', { message: err.message }, true));
   });
