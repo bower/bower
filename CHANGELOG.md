@@ -39,7 +39,7 @@
 
 ## 0.7.0 - 2013-02-01
 - __Ability to resolve conflicts__ ([#214](https://github.com/twitter/bower/issues/214))
-- __Ability to search and publish to different endpoints by specifiying them in the `.bowerrc` file__
+- __Ability to search and publish to different endpoints by specifying them in the `.bowerrc` file__
 - __Experimental autocompletion__
 - __Ability to exclude (ignore) files__
 - Fix minor issues in the cache clean command
