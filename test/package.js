@@ -364,6 +364,7 @@ describe('package', function () {
     });
 
     pkg.on('install', function () {
+      assert(pkg.installed == true));
       assert(fs.existsSync(pkg.localPath));
       next();
     });

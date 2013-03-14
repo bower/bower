@@ -1,6 +1,7 @@
 /*jshint plusplus:false*/
 
 var assert  = require('assert');
+var util       = require('util');
 var fs      = require('fs');
 var path    = require('path');
 var rimraf  = require('rimraf');
@@ -45,21 +46,109 @@ describe('install', function () {
   it('Should have line method', function () {
     assert(!!install.line);
   });
+  
+  describe('Events', function(){
+    it('Should emit end event', function (done) {
+      var dir = __dirname + '/assets/project';
+      process.chdir(dir);
 
-  it('Should emit end event', function (done) {
-    var dir = __dirname + '/assets/project';
-    process.chdir(dir);
-
-    install()
-      .on('error', function (err) {
-        throw err;
-      })
-      .on('end', function () {
-        assert(fs.existsSync(path.join(dir, config.directory, 'jquery')));
-        assert(fs.existsSync(path.join(dir, config.directory, 'package-bootstrap')));
-        assert(fs.existsSync(path.join(dir, config.directory, 'jquery-ui')));
-        done();
-      });
+      install()
+        .on('error', function (err) {
+          throw err;
+        })
+        .on('end', function () {
+          assert(fs.existsSync(path.join(dir, config.directory, 'jquery')));
+          assert(fs.existsSync(path.join(dir, config.directory, 'package-bootstrap')));
+          assert(fs.existsSync(path.join(dir, config.directory, 'jquery-ui')));
+          done();
+        });
+    });
+    
+    it('Should emit package event for each installed package', function (done) {
+      var dir = __dirname + '/assets/project';
+      process.chdir(dir);
+      
+      var packageNames = ['jquery', 'jquery-ui', 'package-bootstrap'];
+      var packageCount = 0;
+      
+      install()
+        .on('error', function (err) {
+          throw err;
+        })
+        .on('package', function (pkg) {
+          assert(packageNames.indexOf(pkg.name) != -1);
+          assert(fs.existsSync(pkg.localPath));
+          assert(pkg.installed == true);
+          packageCount++;
+        })
+        .on('end', function(){
+          assert(packageCount == 3);
+          done();
+        });
+    });
+    
+    it('Should emit install event', function (done) {
+      var dir = __dirname + '/assets/project';
+      process.chdir(dir);
+      
+      install()
+        .on('error', function (err) {
+          throw err;
+        })
+        .on('install', function (packages) {
+          
+          _.each(packages, function(packageList, packageName){
+            _.each(packageList, function(pkg){
+              // Check that the packages have been installed.
+              assert(fs.existsSync(pkg.localPath));
+              assert(pkg.installed == true);
+            });
+          });
+          
+        })
+        .on('end', function(){
+          done();
+        });
+    });
+    
+    it('The emitted install event should pass all resolved packages', function (done) {
+      var dir = __dirname + '/assets/project-install-conflict';
+      process.chdir(dir);
+      
+      var expectedResults = {
+        'package-deps-on-jquery-old:1.0.0': true,
+        'jquery:1.8.3': true,
+        'jquery:1.6.0': false,
+        'jquery:': false
+      };
+      
+      install()
+        .on('error', function (err) {
+          throw err;
+        })
+        .on('package', function(pkg){
+          
+          // Only installed packages should emmit the 'package' event.
+          var packageId = pkg.name+":"+(pkg.version || '');
+          assert.equal(pkg.installed, true, util.format('Package \'%s\'.installed should equal \'%s\'', packageId, true));
+          
+        })
+        .on('install', function (packages) {
+          
+          _.each(packages, function(packageList, name){
+            _.each(packageList, function(pkg){
+              // Confirm that the correct packages have been installed.
+              var packageId = pkg.name+":"+(pkg.version || '');
+              var expected = expectedResults[packageId];
+              assert.equal(pkg.installed, expected, util.format('Package \'%s\'.installed should equal \'%s\'', packageId, expected));
+            });
+          });
+          
+        })
+        .on('end', function(){
+          done();
+        });
+    });
   });
 
   it('Should save dependencies to the json', function (done) {
