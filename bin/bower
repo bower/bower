@@ -40,5 +40,8 @@ bower.commands[bower.command || 'help'].line(input)
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;
-    else process.stdout.write(template('error', { message: err.message }, true));
+    else {
+      process.stdout.write(template('error', { message: err.message }, true));
+      process.exit(1);
+    }
   });
