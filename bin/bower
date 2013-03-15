@@ -15,6 +15,7 @@ var input   = process.argv;
 var cmdList = Object.keys(bower.commands);
 var nodeVer = process.version;
 var reqVer  = pkg.engines.node;
+var errors = [];
 
 process.title = 'bower';
 
@@ -31,6 +32,14 @@ bower.version = pkg.version;
 if (options.version) return console.log(bower.version);
 if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift())) bower.command = command;
 
+
+// Temporarory fix for #22 #320 #187
+var errstatusHandler = function() {
+    process.removeListener('exit', errstatusHandler);
+    process.exit(errors.length > 0 ? 1 : 0);
+}
+process.on('exit', errstatusHandler);
+
 bower.commands[bower.command || 'help'].line(input)
   .on('data', function (data) {
     if (data) process.stdout.write(data);
@@ -40,5 +49,6 @@ bower.commands[bower.command || 'help'].line(input)
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;
-    else process.stdout.write(template('error', { message: err.message }, true));
+    process.stdout.write(template('error', { message: err.message }, true));
+    errors.push(err);
   });
