@@ -1,7 +1,7 @@
 /*jshint plusplus:false*/
 
 var assert  = require('assert');
-var util       = require('util');
+var util    = require('util');
 var fs      = require('fs');
 var path    = require('path');
 var rimraf  = require('rimraf');
@@ -87,7 +87,7 @@ describe('install', function () {
         });
     });
     
-    it('Should emit install event', function (done) {
+    it('Should emit install event with the list of installed packages', function (done) {
       var dir = __dirname + '/assets/project';
       process.chdir(dir);
       
@@ -101,7 +101,7 @@ describe('install', function () {
             _.each(packageList, function(pkg){
               // Check that the packages have been installed.
               assert(fs.existsSync(pkg.localPath));
-              assert(pkg.installed == true);
+              assert.equal(pkg.installed, true, util.format('Expected package \'%s:%s\' to be installed', packageName, (pkg.version || '')));
             });
           });
           
@@ -111,7 +111,7 @@ describe('install', function () {
         });
     });
     
-    it('The emitted install event should pass all resolved packages', function (done) {
+    it('The emitted install event should pass all installed packages', function (done) {
       var dir = __dirname + '/assets/project-install-conflict';
       process.chdir(dir);
       
@@ -127,23 +127,19 @@ describe('install', function () {
           throw err;
         })
         .on('package', function(pkg){
-          
-          // Only installed packages should emmit the 'package' event.
-          var packageId = pkg.name+":"+(pkg.version || '');
+          // Only installed packages should emit the 'package' event.
+          var packageId = pkg.name+':'+(pkg.version || '');
           assert.equal(pkg.installed, true, util.format('Package \'%s\'.installed should equal \'%s\'', packageId, true));
-          
         })
         .on('install', function (packages) {
-          
           _.each(packages, function(packageList, name){
             _.each(packageList, function(pkg){
               // Confirm that the correct packages have been installed.
-              var packageId = pkg.name+":"+(pkg.version || '');
+              var packageId = pkg.name+':'+(pkg.version || '');
               var expected = expectedResults[packageId];
               assert.equal(pkg.installed, expected, util.format('Package \'%s\'.installed should equal \'%s\'', packageId, expected));
             });
           });
-          
         })
         .on('end', function(){
           done();
