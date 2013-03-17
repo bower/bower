@@ -9,7 +9,7 @@ describe('bin', function () {
 
   function clean(done) {
     rimraf(testDir, function (err) {
-      if (err) throw new Error('Unable to remove cache directory');
+      if (err) throw new Error('Unable to remove install directory');
       done();
     });
   }
