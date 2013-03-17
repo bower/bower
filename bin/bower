@@ -30,7 +30,11 @@ options   = nopt(options, shorthand, process.argv);
 bower.version = pkg.version;
 
 if (options.version) return console.log(bower.version);
-if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift())) bower.command = command;
+
+command = options.argv.remain && options.argv.remain.shift();
+command = bower.abbreviations[command];
+
+if (command) bower.command = command;
 
 
 // Temporarory fix for #22 #320 #187
