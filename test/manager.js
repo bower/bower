@@ -17,13 +17,13 @@ describe('manager', function () {
 
     var del = 0;
 
-    rimraf(config.directory, function () {
-      // Ignore the error if the local directory was not actually deleted
+    rimraf(config.directory, function (err) {
+      if (err) throw new Error('Unable to remove components directory');
       if (++del >= 2) done();
     });
 
-    rimraf(config.cache, function () {
-      // Ignore the error if the cache directory was not actually deleted
+    rimraf(config.cache, function (err) {
+      if (err) throw new Error('Unable to remove cache directory');
       if (++del >= 2) done();
     });
   }

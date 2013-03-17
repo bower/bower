@@ -17,18 +17,18 @@ describe('install', function () {
   function clean(done) {
     var del = 0;
 
-    rimraf(testDir, function () {
-      // Ignore the error if the local directory was not actually deleted
+    rimraf(testDir, function (err) {
+      if (err) throw new Error('Unable to remove test directory');
       if (++del >= 3) done();
     });
 
-    rimraf(config.directory, function () {
-      // Ignore the error if the local directory was not actually deleted
+    rimraf(config.directory, function (err) {
+      if (err) throw new Error('Unable to remove components directory');
       if (++del >= 3) done();
     });
 
-    rimraf(config.cache, function () {
-      // Ignore the error if the cache directory was not actually deleted
+    rimraf(config.cache, function (err) {
+      if (err) throw new Error('Unable to remove cache directory');
       if (++del >= 3) done();
     });
   }
