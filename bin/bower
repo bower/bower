@@ -34,11 +34,11 @@ if (~cmdList.indexOf(command = options.argv.remain && options.argv.remain.shift(
 
 
 // Temporarory fix for #22 #320 #187
-var errstatusHandler = function() {
-    process.removeListener('exit', errstatusHandler);
-    process.exit(errors.length > 0 ? 1 : 0);
-}
-process.on('exit', errstatusHandler);
+var errStatusHandler = function () {
+  process.removeListener('exit', errStatusHandler);
+  process.exit(errors.length ? 1 : 0);
+};
+process.on('exit', errStatusHandler);
 
 bower.commands[bower.command || 'help'].line(input)
   .on('data', function (data) {
