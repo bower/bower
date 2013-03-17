@@ -619,7 +619,7 @@ describe('package', function () {
     var pkg = new Package('project', __dirname + '/assets/package-deps-on-jquery');
     
     pkg.on('resolve', function () {
-      assert.strictEqual(pkg.getPublicPackage(), pkg.getPublicPackage())
+      assert.strictEqual(pkg.getPublicPackage(), pkg.getPublicPackage());
       next();
     });
 
