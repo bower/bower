@@ -1,7 +1,8 @@
-var spawn  = require('child_process').spawn;
-var rimraf = require('rimraf');
-var fs     = require('fs');
-var assert = require('assert');
+var spawn      = require('child_process').spawn;
+var rimraf     = require('rimraf');
+var fs         = require('fs');
+var assert     = require('assert');
+var fileExists = require('../lib/util/file-exists');
 
 describe('bin', function () {
   var testDir = __dirname + '/install_test';
@@ -42,4 +43,17 @@ describe('bin', function () {
       done();
     });
   });
+
+  it('should use the command abbreviations', function (done) {
+    var cp = spawn('node', [__dirname + '/../bin/bower', 'inst', 'jquery'], {
+      cwd: testDir
+    });
+
+    cp.on('exit', function (status) {
+      assert.equal(status, 0);
+      assert(fileExists.sync(testDir + '/components/jquery'));
+      done();
+    });
+  });
+
 });
