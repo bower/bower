@@ -347,7 +347,7 @@ describe('package', function () {
 
     pkg.on('resolve', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
-      assert.deepEqual(_.uniq(deps), ['package-bootstrap', 'jquery-ui', 'jquery']);
+      assert.deepEqual(_.uniq(deps), ['jquery', 'package-bootstrap', 'jquery-ui']);
       next();
     });
 
