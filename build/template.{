@@ -26,13 +26,13 @@
 
         <hr class="top">
 
-        <h3>TWITTER ENGINEERING PRESENTS</h3>
-        <h1>bower</h1>
+        <h3>Twitter Engineering presents</h3>
+        <h1>Bower</h1>
 
         <hr class="bottom">
 
-        <h3>THE BROWSER PACKAGE MANAGER<div class="small">html, css, and javascript</div></h3>
-        <a href="//github.com/twitter/bower" target="_blank" class="btn">github</a>
+        <h3>A package manager for the web<div class="small">HTML, CSS, and Javascript</div></h3>
+        <a href="https://github.com/twitter/bower" target="_blank" class="btn">GitHub</a>
       </div>
     </div>
 

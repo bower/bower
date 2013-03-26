@@ -50,11 +50,13 @@ body {
   line-height: 100px;
   margin-bottom: 40px;
   margin-top: 7px;
+  text-transform: uppercase;
 }
 
 .logo h3 {
   font-size: 16px;
   font-weight: normal;
+  text-transform: uppercase;
 }
 
 .logo .small {
@@ -187,7 +189,7 @@ pre:after {
     margin-top: 50px;
     margin-bottom: 50px;
   }
-  .hero .logo h1{
+  .hero .logo h1 {
     font-size: 135px;
     line-height: 70px;
     margin-bottom: 20px;
@@ -196,7 +198,7 @@ pre:after {
 }
 
 @media only screen and (max-width: 479px) {
-  .hero .logo h1{
+  .hero .logo h1 {
     font-size: 98px;
     font-weight: normal;
     margin-bottom: 24px;
