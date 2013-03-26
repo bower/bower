@@ -67,9 +67,14 @@ h1 {
   display: none;
 }
 
-h3 {
+h2 {
   font-size: 1.8em;
-  margin-top: 80px;
+  margin-top: 3em;
+}
+
+h3 {
+  font-size: 1.4em;
+  margin-top: 2em;
 }
 
 a {
@@ -185,10 +190,12 @@ pre:after {
     min-height: auto;
     min-height: 0;
   }
+
   .hero .logo {
     margin-top: 50px;
     margin-bottom: 50px;
   }
+
   .hero .logo h1 {
     font-size: 135px;
     line-height: 70px;
