@@ -1,220 +1,235 @@
 <!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
-<head>
-
-  <!-- Basic Page Needs
-  ================================================== -->
-  <meta charset="utf-8">
-  <title>BOWER</title>
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <!-- Mobile Specific Metas
-  ================================================== -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <!-- Favicons
-  ================================================== -->
-  <link rel="shortcut icon" type="image/x-icon" href="http://twitter.com/favicons/favicon.ico">
-
-  <!-- CSS
-  ================================================== -->
-  <link rel="stylesheet" type="text/css" href="app.css">
-
-</head>
-<body>
-
-  <div class="hero">
-    <div class="logo">
-      <div class="larry">
-        <svg
-          viewbox="0 0 2000 1625.36"
-          width="43"
-          height="43"
-          version="1.1"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="m 1999.9999,192.4 c -73.58,32.64 -152.67,54.69 -235.66,64.61 84.7,-50.78 149.77,-131.19 180.41,-227.01 -79.29,47.03 -167.1,81.17 -260.57,99.57 C 1609.3399,49.82 1502.6999,0 1384.6799,0 c -226.6,0 -410.328,183.71 -410.328,410.31 0,32.16 3.628,63.48 10.625,93.51 -341.016,-17.11 -643.368,-180.47 -845.739,-428.72 -35.324,60.6 -55.5583,131.09 -55.5583,206.29 0,142.36 72.4373,267.95 182.5433,341.53 -67.262,-2.13 -130.535,-20.59 -185.8519,-51.32 -0.039,1.71 -0.039,3.42 -0.039,5.16 0,198.803 141.441,364.635 329.145,402.342 -34.426,9.375 -70.676,14.395 -108.098,14.395 -26.441,0 -52.145,-2.578 -77.203,-7.364 52.215,163.008 203.75,281.649 383.304,284.946 -140.429,110.062 -317.351,175.66 -509.5972,175.66 -33.1211,0 -65.7851,-1.949 -97.8828,-5.738 181.586,116.4176 397.27,184.359 628.988,184.359 754.732,0 1167.462,-625.238 1167.462,-1167.47 0,-17.79 -0.41,-35.48 -1.2,-53.08 80.1799,-57.86 149.7399,-130.12 204.7499,-212.41"
-            style="fill:#000"/>
-        </svg>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>BOWER: A package manager for the web</title>
+    <meta name="description" content="Bower is a package manager for the web.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="http://twitter.com/favicons/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="app.css">
+  </head>
+  <body>
+    <div class="hero">
+      <div class="logo">
+        <div class="larry">
+          <svg
+            viewbox="0 0 2000 1625.36"
+            width="43"
+            height="43"
+            version="1.1"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m 1999.9999,192.4 c -73.58,32.64 -152.67,54.69 -235.66,64.61 84.7,-50.78 149.77,-131.19 180.41,-227.01 -79.29,47.03 -167.1,81.17 -260.57,99.57 C 1609.3399,49.82 1502.6999,0 1384.6799,0 c -226.6,0 -410.328,183.71 -410.328,410.31 0,32.16 3.628,63.48 10.625,93.51 -341.016,-17.11 -643.368,-180.47 -845.739,-428.72 -35.324,60.6 -55.5583,131.09 -55.5583,206.29 0,142.36 72.4373,267.95 182.5433,341.53 -67.262,-2.13 -130.535,-20.59 -185.8519,-51.32 -0.039,1.71 -0.039,3.42 -0.039,5.16 0,198.803 141.441,364.635 329.145,402.342 -34.426,9.375 -70.676,14.395 -108.098,14.395 -26.441,0 -52.145,-2.578 -77.203,-7.364 52.215,163.008 203.75,281.649 383.304,284.946 -140.429,110.062 -317.351,175.66 -509.5972,175.66 -33.1211,0 -65.7851,-1.949 -97.8828,-5.738 181.586,116.4176 397.27,184.359 628.988,184.359 754.732,0 1167.462,-625.238 1167.462,-1167.47 0,-17.79 -0.41,-35.48 -1.2,-53.08 80.1799,-57.86 149.7399,-130.12 204.7499,-212.41"
+              style="fill:#000"/>
+          </svg>
         </div>
-      <hr class="top">
-      <h3>TWITTER ENGINEERING PRESENTS</h3>
-      <h1>bower</h1>
-      <hr class="bottom">
-      <h3>THE BROWSER PACKAGE MANAGER<div class="small">html, css, and javascript</div></h3>
-      <a href="//github.com/twitter/bower" target="_blank" class="btn">github</a>
+
+        <hr class="top">
+
+        <h3>Twitter Engineering presents</h3>
+        <h1>Bower</h1>
+
+        <hr class="bottom">
+
+        <h3>A package manager for the web<div class="small">HTML, CSS, and Javascript</div></h3>
+        <a href="https://github.com/twitter/bower" target="_blank" class="btn">GitHub</a>
+      </div>
     </div>
-  </div>
 
-  <div id="wrap">
-    <div id="wrap-inner">
-      <h1>BOWER</h1>
+    <div id="wrap">
+      <div id="wrap-inner">
+        <h1>BOWER</h1>
 
-<h3>Introduction</h3>
+<p>Bower is a package manager for the web. It offers a generic, unopinionated
+solution to the problem of <strong>front-end package management</strong>, while exposing the
+package dependency model via an API that can be consumed by a more opinionated
+build stack. There are no system wide dependencies, no dependencies are shared
+between different apps, and the dependency tree is flat.</p>
 
-<p>Bower is a package manager for the web. Bower lets you easily install assets such as images, CSS and JavaScript, and manages dependencies for you.</p>
-
-<p>For example, to install a package, run:</p>
-
-<pre><code>bower install jquery</code></pre>
-
-<p>This will download jQuery to <code>./components/jquery</code>. That&#39;s it. The idea is that Bower does package management and package management only.</p>
-
-<h3>Installing Bower</h3>
-
-<p>Bower is installed using <a href="http://nodejs.org/">Node</a> and <a href="http://npmjs.org/">npm</a> (oh my, how meta).</p>
-
-<pre><code>npm install -g bower</code></pre>
-
-<h3>Usage</h3>
-
-<p>Your best friend at this stage is probably <code>bower --help</code>.</p>
-
-<p>To install a package:</p>
-
-<pre><code>bower install jquery
-bower install git://github.com/components/jquery.git
-bower install components/jquery (same as above)
-bower install http://foo.com/jquery.awesome-plugin.js
-bower install ./repos/jquery</code></pre>
-
-<p>As you can see, packages can be installed by name, Git endpoint, GitHub shorthand, URL or local path.
-If you install from a URL that points to a zip or tar file, bower will automatically extract its contents.
-When tags are available in the endpoint, you can specify a <a href="http://semver.org/">semver</a> tag to fetch concrete versions:</p>
-
-<pre><code>bower install jquery#1.8.1
-bower install git://github.com/components/jquery.git#~1.8.1
-bower install components/jquery#1.8.x</code></pre>
-
-<p>Bower also works with private Git repositories. Simply reference them by their SSH endpoint:</p>
-
-<pre><code>bower install git@github.com:user/private-package.git</code></pre>
+<p>Bower runs over Git, and is package-agnostic. A packaged component can be made
+up of any type of asset, and use any type of transport (e.g., AMD, CommonJS,
+etc.).</p>
 
 <p><a href="http://sindresorhus.com/bower-components/">View all packages available through Bower&#39;s registry</a>.</p>
 
-<p>During install you can have Bower add an entry to your component.json as well:</p>
+<h2>Installing Bower</h2>
 
-<pre><code>bower install --save jquery</code></pre>
+<p>Bower depends on <a href="http://nodejs.org/">Node</a> and <a href="http://npmjs.org/">npm</a>. It&#39;s
+installed globally using npm:</p>
 
-<p>To update a package, reference it by name:</p>
+<pre><code>npm install -g bower
+</code></pre>
 
-<pre><code>bower update jquery-ui</code></pre>
+<h2>Usage</h2>
 
-<p>To list installed packages:</p>
+<p>Much more information is available via <code>bower help</code> once it&#39;s installed. This
+is just enough to get you started.</p>
 
-<pre><code>bower list</code></pre>
+<h3>Installing packages and dependencies</h3>
 
-<p>To search for packages:</p>
+<p>Bower offers several ways to install packages:</p>
 
-<pre><code>bower search [name]</code></pre>
+<pre><code># Using the dependencies listed in the current directory&#39;s component.json
+bower install
+# Using a local or remote package
+bower install &lt;package&gt;
+# Using a specific Git-tagged version from a remote package
+bower install &lt;package&gt;#&lt;version&gt;
+</code></pre>
 
-<p>To list all the available packages, just call <code>bower search</code> without specifying a name.</p>
+<p>Where <code>&lt;package&gt;</code> can be any one of the following:</p>
 
-<p>To clean the cache:</p>
+<ul><li>A name that maps to a package registered with Bower, e.g, <code>jquery</code>. ‡</li><li>A remote Git endpoint, e.g., <code>git://github.com/someone/some-package.git</code>. Can be
+public or private. ‡</li><li>A local Git endpoint, i.e., a folder that&#39;s a Git repository. ‡</li><li>A shorthand endpoint, e.g., <code>someone/some-package</code> (defaults to GitHub). ‡</li><li>A URL to a file, including <code>zip</code> and <code>tar.gz</code> files. It&#39;s contents will be
+extracted.</li></ul>
 
-<pre><code>bower cache-clean [name]</code></pre>
+<p>‡ These types of <code>&lt;package&gt;</code> make Git tags available. You can specify a
+<a href="http://semver.org/">semver</a> tag to fetch a specific release, and lock the
+package to that version.</p>
 
-<p>Several packages can be cleaned at the same time.
-To clean the entire cache, just call <code>bower cache-clean</code> without any names.
-Also, both the install and update commands have a <code>--force</code> flag that tells bower to bypass the cache and always fetch remote sources.</p>
+<p>All package contents are installed in the <code>components</code> directory by default.
+You should <strong>never</strong> directly modify the contents of this directory.</p>
 
-<p>You can disable colors by using the <code>--no-color</code> flag.</p>
+<p>Using <code>bower list</code> will show all the packages that are installed locally.</p>
 
-<h3>Bower Configuration</h3>
+<p><strong>N.B.</strong> If you aren&#39;t authoring a package that is intended to be consumed by
+others (e.g., you&#39;re building a web app), you should always check installed
+packages into source control.</p>
 
-<p>Bower can be configured by creating a .bowerrc file in your home folder (usually ~/bowerrc) with one or all of the following configuration parameters. You can also configure Bower on a per-project basis by creating a .bowerrc file in the project directory, Bower will merge this configuration with the configuration found in your home directory. This allows you to version your project specific Bower configuration with the rest of your code base.</p>
+<h3>Finding packages</h3>
+
+<p>To search for packages registered with Bower:</p>
+
+<pre><code>bower search [&lt;name&gt;]
+</code></pre>
+
+<p>Using just <code>bower search</code> will list all packages in the registry.</p>
+
+<h3>Using packages</h3>
+
+<p>The easiest approach is to use Bower statically, just reference the package&#39;s
+installed components manually using a <code>script</code> tag:</p>
+
+<pre><code>&lt;script src=&quot;components/jquery/index.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p>For more complex projects, you&#39;ll probably want to concatenate your scripts or
+use a module loader. Bower is just a package manager, but there plenty of other
+tools -- such as <a href="https://github.com/sstephenson/sprockets">Sprockets</a> and
+<a href="http://requirejs.org/">RequireJS</a> -- that will help you do this.</p>
+
+<h3>Registering packages</h3>
+
+<p>To register a new package, there <strong>must</strong> be a valid manifest JSON in the
+current working directory, your package <strong>must</strong> be available at a Git endpoint
+(e.g., GitHub), and it should use <a href="http://semver.org/">semver</a> Git tags. Then
+run:</p>
+
+<pre><code>bower register &lt;my-package-name&gt; &lt;git-endpoint&gt;
+</code></pre>
+
+<p>The Bower registry does not have authentication or user management. It&#39;s on a
+first come, first served basis. Think of it like a URL shortener. Now anyone
+can run <code>bower install &lt;my-package-name&gt;</code>, and get your library installed.</p>
+
+<p>There is no direct way to unregister a package yet. For now, you can <a href="https://github.com/twitter/bower/issues/120">request a
+package be unregistered</a>.</p>
+
+<h3>Uninstalling packages</h3>
+
+<p>To uninstall a locally installed package:</p>
+
+<pre><code>bower uninstall &lt;package-name&gt;
+</code></pre>
+
+<h2>Configuration</h2>
+
+<p>Bower can be configured using JSON in a <code>.bowerrc</code> file.</p>
+
+<p>Global configuration is handled by creating a <code>.bowerrc</code> in your home directory
+(i.e., <code>~/.bowerrc</code>).  Local configuration is handled by creating a <code>.bowerrc</code>
+in your project&#39;s directory, allowing you to version a project-specific Bower
+configuration with the rest of your code base.</p>
+
+<p>Bower will combine the local and global configurations (with local settings
+taking precedence).</p>
+
+<p>The <code>.bowerrc</code> defines several options:</p>
+
+<ul><li><code>directory</code>: Set the default directory to install packaged components into.</li><li><code>endpoint</code>: Set a custom registry endpoint.</li><li><code>json</code>: Set the default JSON file for Bower to use when resolving dependencies.</li><li><code>searchpath</code>: An array of additional URLs pointing to read-only Bower registries.</li><li><code>shorthand_resolver</code>: Define a custom template for shorthand package names.</li></ul>
 
 <pre><code>{
-  &quot;directory&quot; : &quot;components&quot;,
-  &quot;json&quot;      : &quot;component.json&quot;,
-  &quot;endpoint&quot;  : &quot;https://bower.herokuapp.com&quot;
+  &quot;directory&quot;: &quot;bower_components&quot;,
+  &quot;endpoint&quot;: &quot;https://bower.mycompany.com&quot;,
+  &quot;json&quot;: &quot;bower.json&quot;,
+  &quot;searchpath&quot;: [
+    &quot;https://bower.herokuapp.com&quot;
+  ],
+  &quot;shorthand_resolver&quot;: &quot;git://example.com/{{{ organization }}}/{{{ package }}}.git&quot;
 }
 </code></pre>
 
-<p>To run your own Bower Endpoint for custom components/packages that are behind a firewall you can use a simple implementation of bower server at https://github.com/twitter/bower-server.</p>
+<p>The <code>searchpath</code> array is useful if your organization wishes to maintain a
+private registry of packages while also taking advantage of public Bower
+registries. If a package is not found at your private endpoint, Bower will
+consult the registries specified in the <code>searchpath</code> array.</p>
 
-<p>The <strong>searchpath</strong> array provides additional URLs of read-only Bower registries that should be consulted to look up components.  This is most typically used if your business wishes to
-house some components internally while still taking advantage of public Bower registries.  For example, you might configure the following:</p>
+<p>The <code>shorthand_resolver</code> key provides support for defining a custom template
+which Bower uses when constructing a URL for a given shorthand. For example, if
+a shorthand of <code>twitter/flight</code> or <code>twitter/flight#v1.0.0</code> is specified in the
+package manifest, the following data can be referenced from within the
+<code>.bowerrc</code> as part of the <code>shorthand_resolver</code> template:</p>
 
-<pre><code>{
-  &quot;directory&quot;  : &quot;components&quot;,
-  &quot;json&quot;       : &quot;component.json&quot;,
-  &quot;endpoint&quot;   : &quot;http://bower.mycompany.com&quot;,
-  &quot;searchpath&quot; : [&quot;https://bower.herokuapp.com&quot;]
-}
+<ul><li><code>endpoint</code>: <code>twitter/flight</code></li><li><code>organization</code>: <code>twitter</code></li><li><code>package</code>: <code>flight</code></li></ul>
+
+<p><strong>N.B.</strong> To run your own Bower Endpoint for custom packages that are behind a
+firewall, you can use a simple implementation of the <a href="https://github.com/twitter/bower-server">Bower
+Server</a>.</p>
+
+<h2>Defining a package</h2>
+
+<p>You must create a JSON file -- <code>component.json</code> by default -- in your project&#39;s
+root, and specify all of its dependencies. This is similar to Node&#39;s
+<code>package.json</code>, or Ruby&#39;s <code>Gemfile</code>, and is useful for locking down a project&#39;s
+dependencies.</p>
+
+<p>You can interactively create a <code>component.json</code> with the following command:</p>
+
+<pre><code>bower init
 </code></pre>
 
-<p>Bower will first look to <strong>http://bower.mycompany.com</strong> while trying to find your components.  If not found, the main registry at <strong>https://bower.herokuapp.com</strong> will be consulted to see if a copy of the resource can be retrieved.</p>
+<p>The <code>component.json</code> defines several options:</p>
 
-<h3>Defining a package</h3>
-
-<p>You can create a <code>component.json</code> file in your project&#39;s root, specifying all of its dependencies. This is similar to Node&#39;s <code>package.json</code>, or Ruby&#39;s <code>Gemfile</code>, and is useful for locking down a project&#39;s dependencies.</p>
+<ul><li><code>name</code> (required): The name of your package.</li><li><code>version</code>: A semantic version number (see <a href="http://semver.org/">semver</a>).</li><li><code>main</code> [string|array]: The primary endpoints of your package.</li><li><code>ignore</code> [array]: An array of paths not needed in production that you want
+Bower to ignore when installing your package.</li><li><code>dependencies</code> [hash]: Packages your package depends upon in production.</li><li><code>devDependencies</code> [hash]: Development dependencies.</li></ul>
 
 <pre><code>{
-  &quot;name&quot;: &quot;myProject&quot;,
+  &quot;name&quot;: &quot;my-project&quot;,
   &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;main&quot;: &quot;./path/to/main.css&quot;,
+  &quot;main&quot;: &quot;path/to/main.css&quot;,
+  &quot;ignore&quot;: [
+    &quot;.jshintrc&quot;,
+    &quot;**/*.txt&quot;
+  ],
   &quot;dependencies&quot;: {
-    &quot;jquery&quot;: &quot;~1.7.2&quot;
+    &quot;&lt;name&gt;&quot;: &quot;&lt;version&gt;&quot;,
+    &quot;&lt;name&gt;&quot;: &quot;&lt;folder&gt;&quot;,
+    &quot;&lt;name&gt;&quot;: &quot;&lt;package&gt;&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;&lt;test-framework-name&gt;&quot;: &quot;&lt;version&gt;&quot;
   }
 }
 </code></pre>
 
-<p>Put this under your project&#39;s root, listing all of your dependencies. When you run <code>bower install</code>, Bower will read this <code>component.json</code> file, resolve all the relevant dependencies and install them.</p>
+<h2>Consuming a package</h2>
 
-<p>For now, <code>name</code>, <code>version</code>, <code>main</code>, and <code>dependencies</code> are the only properties that are used by Bower. If you have several files you&#39;re distributing as part of your package, pass an array to <code>main</code> like this:</p>
+<p>Bower also makes available a source mapping. This can be used by build tools to
+easily consume Bower packages.</p>
 
-<pre><code>{
-  &quot;name&quot;: &quot;myProject&quot;,
-  &quot;version&quot;: &quot;1.0.0&quot;,
-  &quot;main&quot;: [&quot;./path/to/app.css&quot;, &quot;./path/to/app.js&quot;, &quot;./path/to/sprite.img&quot;],
-  &quot;dependencies&quot;: {
-    &quot;jquery&quot;: &quot;~1.7.2&quot;
-  }
-}
-</code></pre>
-
-<p>Bower only recognizes versions that follow the <a href="http://semver.org/">semver</a> specification.
-There should only be at most one file per file type in the <code>main</code> list. So only one <code>.js</code> or <code>.css</code>.</p>
-
-<h3>Installing dependencies</h3>
-
-<p>Dependencies are installed locally via the <code>bower install</code> command. First they’re resolved to find conflicts. Then they’re downloaded and unpacked in a local subdirectory called <code>./components</code>, for example:</p>
-
-<pre><code>/component.json
-/components/jquery/index.js
-/components/jquery/component.json
-</code></pre>
-
-<p>You can also install packages one at a time <code>bower install git://my/git/thing</code></p>
-
-<p>There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.</p>
-
-<h3>Deploying</h3>
-
-<p>The easiest approach is to use Bower statically, just reference the packages manually from a script tag:</p>
-
-<pre><code>&lt;script src=&quot;components/jquery/index.js&quot;&gt;&lt;/script&gt;</code></pre>
-
-<p>For more complex projects, you&#39;ll probably want to concatenate your scripts. Bower is just a package manager, but there are lots of awesome libraries out there to help you do this, such as <a href="https://github.com/sstephenson/sprockets">Sprockets</a> and <a href="http://requirejs.org/">RequireJS</a>.</p>
-
-<p>For example, to use Sprockets:</p>
-
-<pre><code>environment = Sprockets::Environment.new
-environment.append_path &#39;components&#39;
-environment.append_path &#39;public&#39;
-run environment
-</code></pre>
-
-<h3>Package Consumption</h3>
-
-<p>Bower also makes available a source mapping – this can be used by build tools to easily consume Bower components.</p>
-
-<p>If you pass the option <code>--map</code> to bower&#39;s <code>list</code> command, it will generate a JSON with dependency objects. Alternatively, you can pass the <code>--paths</code> flag to the <code>list</code> command to get a simple path to name mapping:</p>
+<p>If you pass the <code>--map</code> option to Bower&#39;s <code>list</code> command, it will generate JSON
+with dependency objects. Alternatively, you can pass the <code>--paths</code> option to
+the <code>list</code> command to get a simple path-to-name mapping:</p>
 
 <pre><code>{
   &quot;backbone&quot;: &quot;components/backbone/index.js&quot;,
@@ -223,27 +238,10 @@ run environment
 }
 </code></pre>
 
-<h3>Authoring packages</h3>
+<h2>Programmatic API</h2>
 
-<p>To register a new package, it&#39;s as simple as specifying a <code>component.json</code>, pushing the package to a Git endpoint, say GitHub, and running:</p>
-
-<pre><code>bower register myawesomepackagename git://github.com/maccmans/face</code></pre>
-
-<p>There&#39;s no authentication or user management. It&#39;s on a first come, first served basis. Think of it like a URL shortener. Now anyone can run <code>bower install myawesomepackagename</code>, and get your library installed.</p>
-
-<p>There is no direct way to unregister a package yet. Meanwhile you can request it <a href="https://github.com/twitter/bower/issues/120">here</a>.</p>
-
-<h3>Philosophy</h3>
-
-<p>Currently, people are managing dependencies, such as JavaScript libraries, manually. This sucks, and we want to change it.</p>
-
-<p>In a nutshell, Bower is a generic tool which will resolve dependencies and lock packages down to a version. It runs over Git, and is package-agnostic. A package may contain JavaScript, CSS, images, etc., and doesn&#39;t rely on any particular transport (AMD, CommonJS, etc.).</p>
-
-<p>Bower then makes available a simple programmatic API which exposes the package dependency model, so that existing build tools (like Sprockets, LoadBuilder, curls.js, Ender, etc.) can consume it and build files accordingly.</p>
-
-<h3>Programmatic API</h3>
-
-<p>Bower provides a pretty powerful programmatic api. All commands can be accessed through the <code>bower.commands</code> object.</p>
+<p>Bower provides a powerful, programmatic API. All commands can be accessed
+through the <code>bower.commands</code> object.</p>
 
 <pre><code>var bower = require(&#39;bower&#39;);
 
@@ -252,132 +250,109 @@ bower.commands
   .on(&#39;end&#39;, function (data) {
     data &amp;&amp; console.log(data);
   });
+
+bower.commands
+  .search(&#39;jquery&#39;, {})
+  .on(&#39;packages&#39;, function(packages) {
+    // `packages` is a list of packages returned by searching for &#39;jquery&#39;
+  });
 </code></pre>
 
-<p>All commands emit three types of events: <code>data</code>, <code>end</code>, and <code>error</code>.</p>
+<p>Commands emit four types of events: <code>data</code>, <code>end</code>, <code>result</code>, and <code>error</code>.</p>
 
-<p>For a better of idea how this works, you may want to check out <a href="https://github.com/twitter/bower/blob/master/bin/bower">our bin file</a>.</p>
+<p><code>error</code> will only be emitted if something goes wrong. Not all commands emit all
+events; for a detailed look, check out the code in <code>lib/commands</code>.</p>
 
-<p>For the install command, there is an additional <code>package</code> event that is emitted for each installed/uninstalled package.</p>
+<p><code>data</code> is typically a colorized string, ready to show to an end user. <code>search</code>
+and <code>lookup</code> emit <code>packages</code> and <code>package</code>, respectively. Those events contain
+a JSON representation of the result of the command.</p>
 
-<h3>Completion</h3>
+<p>For a better of idea how this works, you may want to check out <a href="https://github.com/twitter/bower/blob/master/bin/bower">our bin
+file</a>.</p>
 
-<p><strong>experimental</strong></p>
+<p>For the install command, there is an additional <code>package</code> event that is emitted
+for each installed/uninstalled package.</p>
 
-<p>Based on the completion feature and fantastic work done in
-<a href="https://npmjs.org/doc/completion.html">npm</a>, bower now has an experimental
-<code>completion</code> command that works similarly.</p>
+<h2>Completion (experimental)</h2>
 
-<p>This command will output a bash / zsh script to put into your <code>~/.bashrc</code>, <code>~/.bash_profile or </code>~/.zshrc` file.</p>
+<p>Bower now has an experimental <code>completion</code> command that is based on, and works
+similarly to the <a href="https://npmjs.org/doc/completion.html">npm completion</a>. It is
+not available for Windows users.</p>
 
-<pre><code>bower completion &gt;&gt; ~./.bash_profile
+<p>This command will output a Bash / ZSH script to put into your <code>~/.bashrc</code>,
+<code>~/.bash_profile</code>, or <code>~/.zshrc</code> file.</p>
+
+<pre><code>bower completion &gt;&gt; ~/.bash_profile
 </code></pre>
 
-<p>When <code>COMP_CWORD</code>, <code>COMP_LINE</code>, and <code>COMP_POINT</code> are defined in the
-environment, npm completion acts in &quot;plumbing mode&quot;, and outputs completions
-based on the arguments.</p>
+<h2>A note for Windows users</h2>
 
-<p>This doesn&#39;t work for Windows user, even with cygwin.</p>
-
-<h3>Windows users</h3>
-
-<p>A lot of people are experience problems using bower on windows because <a href="http://code.google.com/p/msysgit/">msysgit</a> must be installed correctly.
-Be sure to check the option shown above, otherwise it will simply not work:</p>
+<p>To use Bower on Windows, you must install
+<a href="http://code.google.com/p/msysgit/">msysgit</a> correctly. Be sure to check the
+option shown below:</p>
 
 <p><img alt="msysgit" src="http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png"/></p>
 
-<h3>FAQ</h3>
+<h2>Contact</h2>
 
-<p><strong>What distinguishes Bower from Jam, Volo or Ender? What does it do better?</strong></p>
+<p>Have a question?</p>
 
-<p>Bower is a lower level component than Jam, Volo, or Ender. These managers could consume Bower as a dependency.</p>
+<ul><li><a href="http://stackoverflow.com/questions/tagged/bower">StackOverflow</a></li><li><a href="http://groups.google.com/group/twitter-bower">Mailinglist</a> - twitter-bower@googlegroups.com</li><li><a href="http://webchat.freenode.net/?channels=bower">#bower</a> on Freenode</li></ul>
 
-<p>Bower&#39;s aim is simply to install Git paths, resolve dependencies from a <code>component.json</code>, check versions, and then provide an API which reports on these things. Nothing more. This is a major diversion from past attempts at browser package management.</p>
+<h2>Authors</h2>
 
-<p>Bower is working under the assumption that there is a single, common problem in frontend application development: dependency resolution. Past attempts (Jam, Volo, Ender) try to tackle this problem in such a way that they actually end up alienating and further segregating the JavaScript community around transports (Sprockets, CommonJS, RequireJS, regular script tags).</p>
-
-<p>Bower offers a generic, unopinionated solution to the problem of package management, while exposing an API that can be consumed by a more opinionated build stack.</p>
-
-<p><strong>Volo is an arguably more established project and works with the GitHub search API. Will it take long for Bower to contain a decent number of packages?</strong></p>
-
-<p>Bower (being a Git powered package manager) should, in theory, be capable of consuming every package that Volo does, with the additional benefit of supporting internal networks and other Git repositories not hosted on GitHub.</p>
-
-<p><strong>We recently saw what happened when the main NPM registry went down. Is a single point of failure possible for Bower and if so, do you have redundancy planned?</strong></p>
-
-<p>There&#39;s no redundancy planned at the moment, as Bower just installs Git URLs. It&#39;s up to the URL provider to establish redundancy.</p>
-
-<p><strong>Isn&#39;t having a <code>package.json</code> file going to conflict with my npm&#39;s <code>package.json</code>? Will this be a problem?</strong></p>
-
-<p>Don&#39;t use a <code>package.json</code> – use a <code>component.json</code>.</p>
-
-<p><strong>Bower is an open-source Twitter project. How well can we expect it to be maintained in the future?</strong></p>
-
-<p>Twitter is in the process of migrating its frontend architecture onto Bower, so it&#39;s fairly safe to say it will be maintained and invested in going forward.</p>
-
-<h3>Contact</h3>
-
-<p>Have a question? Ask on our mailing list!</p>
-
-<p>twitter-bower@googlegroups.com</p>
-
-<p>http://groups.google.com/group/twitter-bower</p>
-
-<h3>Authors</h3>
-
-<ul><li><a href="http://github.com/fat">@fat</a></li><li><a href="http://github.com/maccman">@maccman</a></li><li><a href="http://github.com/satazor">@satazor</a></li></ul>
+<ul><li><a href="https://github.com/fat">@fat</a></li><li><a href="https://github.com/maccman">@maccman</a></li><li><a href="https://github.com/satazor">@satazor</a></li></ul>
 
 <p>Thanks for assistance and contributions:</p>
 
-<ul><li><a href="http://github.com/addyosmani">@addyosmani</a></li><li><a href="http://github.com/angus-c">@angus-c</a></li><li><a href="http://github.com/borismus">@borismus</a></li><li><a href="http://github.com/chriseppstein">@chriseppstein</a></li><li><a href="http://github.com/danwrong">@danwrong</a></li><li><a href="http://github.com/desandro">@desandro</a></li><li><a href="http://github.com/isaacs">@isaacs</a></li><li><a href="http://github.com/josh">@josh</a></li><li><a href="http://github.com/jrburke">@jrburke</a></li><li><a href="http://github.com/mklabs">@mklabs</a></li><li><a href="http://github.com/paulirish">@paulirish</a></li><li><a href="http://github.com/rvagg">@rvagg</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/SlexAxton">@SlexAxton</a></li><li><a href="http://github.com/sstephenson">@sstephenson</a></li><li><a href="http://github.com/tomdale">@tomdale</a></li><li><a href="http://github.com/uzquiano">@uzquiano</a></li><li><a href="http://github.com/visionmedia">@visionmedia</a></li><li><a href="http://github.com/wagenet">@wagenet</a></li><li><a href="http://github.com/wycats">@wycats</a></li><li><a href="http://github.com/sindresorhus">@sindresorhus</a></li><li><a href="http://github.com/hemanth">@hemanth</a></li></ul>
+<ul><li><a href="https://github.com/addyosmani">@addyosmani</a></li><li><a href="https://github.com/angus-c">@angus-c</a></li><li><a href="https://github.com/borismus">@borismus</a></li><li><a href="https://github.com/chriseppstein">@chriseppstein</a></li><li><a href="https://github.com/danwrong">@danwrong</a></li><li><a href="https://github.com/desandro">@desandro</a></li><li><a href="https://github.com/hemanth">@hemanth</a></li><li><a href="https://github.com/isaacs">@isaacs</a></li><li><a href="https://github.com/josh">@josh</a></li><li><a href="https://github.com/jrburke">@jrburke</a></li><li><a href="https://github.com/marcelombc">@marcelombc</a></li><li><a href="https://github.com/mklabs">@mklabs</a></li><li><a href="https://github.com/paulirish">@paulirish</a></li><li><a href="https://github.com/rvagg">@rvagg</a></li><li><a href="https://github.com/sindresorhus">@sindresorhus</a></li><li><a href="https://github.com/SlexAxton">@SlexAxton</a></li><li><a href="https://github.com/sstephenson">@sstephenson</a></li><li><a href="https://github.com/tomdale">@tomdale</a></li><li><a href="https://github.com/uzquiano">@uzquiano</a></li><li><a href="https://github.com/visionmedia">@visionmedia</a></li><li><a href="https://github.com/wagenet">@wagenet</a></li><li><a href="https://github.com/wibblymat">@wibblymat</a></li><li><a href="https://github.com/wycats">@wycats</a></li></ul>
 
 <h2>License</h2>
 
 <p>Copyright 2012 Twitter, Inc.</p>
 
 <p>Licensed under the MIT License</p>
+      </div>
     </div>
-  </div>
 
-  <div class="footer">
-    <p class="license">Code licensed under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
-  </div>
+    <div class="footer">
+      <p class="license">Code licensed under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT License</a>. Documentation licensed under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a>.</p>
+    </div>
 
-  <script>
-  /*! Normalized address bar hiding for iOS & Android (c) @scottjehl MIT License */
-    (function( win ){
+    <script>
+    /*! Normalized address bar hiding for iOS & Android (c) @scottjehl MIT License */
+    (function (win){
       var doc = win.document;
 
       // If there's a hash, or addEventListener is undefined, stop here
-      if( !location.hash && win.addEventListener ){
-
+      if (!location.hash && win.addEventListener) {
         //scroll to 1
-        window.scrollTo( 0, 1 );
-        var scrollTop = 1,
-          getScrollTop = function(){
-            return win.pageYOffset || doc.compatMode === "CSS1Compat" && doc.documentElement.scrollTop || doc.body.scrollTop || 0;
-          },
+        window.scrollTo(0, 1);
+        var scrollTop = 1;
+        var getScrollTop = function () {
+          return win.pageYOffset || doc.compatMode === "CSS1Compat" && doc.documentElement.scrollTop || doc.body.scrollTop || 0;
+        };
 
-          //reset to 0 on bodyready, if needed
-          bodycheck = setInterval(function(){
-            if( doc.body ){
-              clearInterval( bodycheck );
-              scrollTop = getScrollTop();
-              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
-            }
-          }, 15 );
+        //reset to 0 on bodyready, if needed
+        var bodycheck = setInterval(function(){
+          if (doc.body) {
+            clearInterval(bodycheck);
+            scrollTop = getScrollTop();
+            win.scrollTo(0, scrollTop === 1 ? 0 : 1);
+          }
+        }, 15);
 
-        win.addEventListener( "load", function(){
-          setTimeout(function(){
+        win.addEventListener("load", function () {
+          setTimeout(function () {
             //at load, if user hasn't scrolled more than 20 or so...
-            if( getScrollTop() < 20 ){
+            if (getScrollTop() < 20) {
               //reset to hide addr bar at onload
-              win.scrollTo( 0, scrollTop === 1 ? 0 : 1 );
+              win.scrollTo(0, scrollTop === 1 ? 0 : 1);
             }
           }, 0);
-        } );
+        });
       }
-    })( this );
-</script>
-
-</body>
+    }(this));
+    </script>
+  </body>
 </html>
