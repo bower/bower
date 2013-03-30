@@ -1,0 +1,8 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "dependencies": {
+    "package-deps-on-jquery-old": "../package-deps-on-jquery-old",
+    "jquery": "~1.8.1"
+  }
+}

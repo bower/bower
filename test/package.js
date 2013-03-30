@@ -363,6 +363,7 @@ describe('package', function () {
     });
 
     pkg.on('install', function () {
+      assert.equal(pkg.installed, true, 'Expected package to be installed');
       assert(fs.existsSync(pkg.localPath));
       next();
     });
@@ -608,6 +609,86 @@ describe('package', function () {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
       assert(!fs.existsSync(pkgInstallPath + '/.git/'));
       next();
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should always return return the same object instance from getPublicPackage', function (next) {
+    var pkg = new Package('project', __dirname + '/assets/package-deps-on-jquery');
+    
+    pkg.on('resolve', function () {
+      assert.strictEqual(pkg.getPublicPackage(), pkg.getPublicPackage());
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
+  
+  it('Should return only public Package information from getPublicPackage', function (next) {
+    var pkg = new Package('project', __dirname + '/assets/package-deps-on-jquery');
+    var cwd = process.cwd();
+    
+    var expectedPackage = {
+      'name': 'project',
+      'localPath': path.join(cwd, config.directory, '/project'),
+      'json': {
+        'name': 'package-deps-on-jquery',
+        'version': '1.0.0',
+        'dependencies': {
+          'jquery': 'test/assets/package-jquery-copy'
+        },
+        '_id': 'package-deps-on-jquery@1.0.0',
+        'readme': 'ERROR: No README.md file found!',
+        'description': 'ERROR: No README.md file found!'
+      },
+      'version': '1.0.0',
+      'tag': undefined,
+      'installed': false,
+      'dependencies': {
+        'jquery': [{
+            'name': 'jquery',
+            'localPath': path.join(cwd, config.directory, '/jquery'),
+            'json': {                                         
+              'name': 'jquery',
+              'version': '1.8.1',
+              'main': [
+                'index.js'
+              ],
+              'dependencies': {},
+              '_id': 'jquery@1.8.1',
+              'readme': 'ERROR: No README.md file found!',
+              'description': 'ERROR: No README.md file found!'
+            },                                                
+            'version': '1.8.1',
+            'tag': undefined,
+            'installed': false,
+            'dependencies': {}
+          }]
+      }
+    };
+    
+    pkg.on('resolve', function () {
+      
+      try
+      {
+        assert.deepEqual(pkg.getPublicPackage(), expectedPackage );
+      } catch(e){
+        // The assert method truncates the output too much to be useful - print the entire error object to help with debugging.
+        // When debugging watch for 'undefined' properties, they are stripped by `JSON.stringify()` (and possibly other libraries like Underscore/Lodash) which might make the output look equal when the objects really aren't.
+        console.error('assert.deepEqual error:\n', e);
+        throw e;
+      }
+      
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
     });
 
     pkg.resolve();
