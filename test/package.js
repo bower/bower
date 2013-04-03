@@ -310,6 +310,24 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
+  it('Should correct guessed name with configured json file package-wise', function (next) {
+    var pkg = new Package(null, __dirname + '/assets/package-jquery');
+
+    pkg.on('loadJSON', function () {
+      assert(pkg.json);
+      assert.equal(pkg.name, 'jquery');
+      assert.equal(pkg.json.name, 'jquery');
+      assert.equal(pkg.json.version, '1.8.1');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.loadJSON();
+  });
+
   it('Should give an error on an invalid components.json', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
 
@@ -329,7 +347,7 @@ describe('package', function () {
 
     pkg.on('resolve', function () {
       var deps = _.pluck(pkg.getDeepDependencies(), 'name');
-      assert.deepEqual(_.uniq(deps), ['package-bootstrap', 'jquery-ui', 'jquery']);
+      assert.deepEqual(_.uniq(deps), ['jquery', 'package-bootstrap', 'jquery-ui']);
       next();
     });
 
