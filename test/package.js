@@ -630,4 +630,49 @@ describe('package', function () {
 
     pkg.resolve();
   });
+
+  it('Should display a warning if a dependency is using the old component.json file', function (next) {
+    var pkg = new Package('project', __dirname + '/assets/project');
+    var warn = [];
+
+    pkg.on('resolve', function () {
+      // jQuery will get resolved twice as it is a dependency of both explicit dependencies.
+      assert.equal(warn.length, 4);
+      next();
+    });
+
+    pkg.on('warn', function (message) {
+      if (/deprecated "component.json"/.test(message)) {
+        warn.push(message);
+      }
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should not display a warning for dependencies using the new bower.json file', function (next) {
+    var pkg = new Package('project-new-deps', __dirname + '/assets/project-new-deps');
+    var warn = [];
+
+    pkg.on('resolve', function () {
+      assert.equal(warn.length, 0);
+      next();
+    });
+
+    pkg.on('warn', function (message) {
+      if (/deprecated "component.json"/.test(message)) {
+        warn.push(message);
+      }
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
 });

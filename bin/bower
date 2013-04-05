@@ -12,7 +12,6 @@ var command;
 var options;
 var shorthand;
 var input   = process.argv;
-var cmdList = Object.keys(bower.commands);
 var nodeVer = process.version;
 var reqVer  = pkg.engines.node;
 var errors = [];
@@ -50,6 +49,9 @@ bower.commands[bower.command || 'help'].line(input)
   })
   .on('end', function (data) {
     if (data) process.stdout.write(data);
+  })
+  .on('warn', function (warning)  {
+    process.stdout.write(template('warn', { message: warning }, true));
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;

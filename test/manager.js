@@ -86,6 +86,44 @@ describe('manager', function () {
     manager.resolve();
   });
 
+  it('Should fallback to component.json if not overriden and bower.json does not exist', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-old';
+
+    manager.on('resolve', function () {
+      assert.deepEqual(manager.dependencies['jquery-pjax'][0].version, '1.0.0');
+      assert.notEqual(manager.dependencies.jquery[0].version, null);
+      next();
+    });
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+
+    manager.resolve();
+  });
+
+  it('Should emit a warning when falling back to component.json', function (next) {
+    var manager = new Manager([]);
+    var warning = '';
+    manager.cwd = __dirname + '/assets/project-old';
+
+    manager.on('resolve', function () {
+      assert(/deprecated "component.json"/.test(warning));
+      next();
+    });
+
+    manager.on('warn', function (message) {
+      warning = message;
+    });
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+
+    manager.resolve();
+  });
+
   it('Should override packages at the project level', function (next) {
     var manager = new Manager([]);
     manager.cwd = __dirname + '/assets/project-static';
