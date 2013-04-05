@@ -66,7 +66,7 @@ describe('manager', function () {
     manager.resolve();
   });
 
-  it('Should resolve nested JSON dependencies even when using another name for component.json project-wise', function (next) {
+  it('Should resolve nested JSON dependencies even when using another name for bower.json project-wise', function (next) {
     // Using another name for .json file leads to unfetchable deps
     // https://github.com/twitter/bower/issues/205
     config.json = 'foocomponent.json';

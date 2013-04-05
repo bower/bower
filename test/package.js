@@ -258,7 +258,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should fallback to component.json if the json project-wise does not exist', function (next) {
+  it('Should fallback to bower.json if the json project-wise does not exist', function (next) {
     config.json = 'foocomponent.json';
     var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
 
@@ -276,7 +276,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should fallback to component.json if not defined project wise and package-wise', function (next) {
+  it('Should fallback to bower.json if not defined project wise and package-wise', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
 
     pkg.on('loadJSON', function () {
@@ -328,7 +328,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should give an error on an invalid components.json', function (next) {
+  it('Should give an error on an invalid bower.json', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
 
     pkg.on('error', function (error) {
