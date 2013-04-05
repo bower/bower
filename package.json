@@ -1,5 +1,5 @@
 {
-  "name": "bower-rewrite",
+  "name": "bower",
   "version": "0.0.0",
   "description": "This repository is just an experiment around the new bower rewrite. It will remain private and only trustworthy people will have access to it. It's meant to be a common place to share thoughts.",
   "dependencies": {
