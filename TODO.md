@@ -5,4 +5,5 @@ TODO list:
    - Allow `config.cwd` to be changed by an argument when using the CLI. Two ways of doing this:
       - Read a --cwd or similar and change the `config.cwd` to it
       - Allow any arbitrary `config.*` to be changed with --config.* arguments
+         - It seems that `rc` already does this, but is bugged.. see: https://github.com/dominictarr/rc/issues/9
 - Gracefully remove all created tmp dirs
