@@ -258,7 +258,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should fallback to component.json if the json project-wise does not exist', function (next) {
+  it('Should fallback to bower.json if the json project-wise does not exist', function (next) {
     config.json = 'foocomponent.json';
     var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
 
@@ -276,7 +276,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should fallback to component.json if not defined project wise and package-wise', function (next) {
+  it('Should fallback to bower.json if not defined project wise and package-wise', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-jquery');
 
     pkg.on('loadJSON', function () {
@@ -328,7 +328,7 @@ describe('package', function () {
     pkg.loadJSON();
   });
 
-  it('Should give an error on an invalid components.json', function (next) {
+  it('Should give an error on an invalid bower.json', function (next) {
     var pkg = new Package('jquery', __dirname + '/assets/package-invalid-json');
 
     pkg.on('error', function (error) {
@@ -626,6 +626,51 @@ describe('package', function () {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
       assert(!fs.existsSync(pkgInstallPath + '/.git/'));
       next();
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should display a warning if a dependency is using the old component.json file', function (next) {
+    var pkg = new Package('project', __dirname + '/assets/project');
+    var warn = [];
+
+    pkg.on('resolve', function () {
+      // jQuery will get resolved twice as it is a dependency of both explicit dependencies.
+      assert.equal(warn.length, 4);
+      next();
+    });
+
+    pkg.on('warn', function (message) {
+      if (/deprecated "component.json"/.test(message)) {
+        warn.push(message);
+      }
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should not display a warning for dependencies using the new bower.json file', function (next) {
+    var pkg = new Package('project-new-deps', __dirname + '/assets/project-new-deps');
+    var warn = [];
+
+    pkg.on('resolve', function () {
+      assert.equal(warn.length, 0);
+      next();
+    });
+
+    pkg.on('warn', function (message) {
+      if (/deprecated "component.json"/.test(message)) {
+        warn.push(message);
+      }
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
     });
 
     pkg.resolve();
