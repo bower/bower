@@ -51,6 +51,7 @@ Think of it as an abstract class that implements the package interface as well a
 
 - name_change (fired when the name of the package has changed)
 - action      (fired to inform the current action being performed by the package)
+- warn        (fired to inform a warning, e.g.: deprecation)
 
 ------------
 
