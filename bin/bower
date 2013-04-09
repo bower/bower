@@ -18,7 +18,9 @@ var reqVer  = pkg.engines.node;
 var errors = [];
 var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
 
-if (notifier.update) notifier.notify();
+if (notifier.update) {
+  process.stderr.write(template('update-notice', notifier.update, true));
+}
 
 process.title = 'bower';
 
