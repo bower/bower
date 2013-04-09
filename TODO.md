@@ -1,9 +1,40 @@
 TODO list:
 
-- config
+- Config
    - Fix nodejs 0.10.x issue due to a bug in the `rc` package. I've already submited a [PR](https://github.com/dominictarr/config-chain/pull/11)
    - Allow `config.cwd` to be changed by an argument when using the CLI. Two ways of doing this:
       - Read a --cwd or similar and change the `config.cwd` to it
       - Allow any arbitrary `config.*` to be changed with --config.* arguments
          - It seems that `rc` already does this, but is bugged.. see: https://github.com/dominictarr/rc/issues/9
+    - Codebase should access config directly and not use cached vars, see: https://github.com/twitter/bower/issues/232#issuecomment-16014467
+- Registry
+    - Register model
+        - Allow endpoints other than git?
+        - Allow easy unregister
+        - Possible ways to get rid of shim repos
+          - https://github.com/twitter/bower/issues/172#issuecomment-13017880
+          - https://github.com/twitter/bower/issues/198
+          - But then.. how would versions be handled here?? different versions might have changed the deps
+    - Publish model
+- Commands
+    - Bower script x
+         - post-install
+         - pre-publish
+         - etc
+    - bower test
+    - bower install & update
+        - Ability to target specific commits and not only versions
+            - But then, how would a version be guessed from it?!
+            - It would be ok project wise, but if used within a reusable package, it must have a version!
+        - Option to install deps in a tree structure like npm? see: https://github.com/twitter/bower/issues/157
+        - Be smart when guessing the name out of the endpoint, see: https://github.com/twitter/bower/issues/192
+        - Allow a name to be specified when installing some endpoints, see: https://github.com/twitter/bower/issues/192#issuecomment-16014201
+            - Also try to `guess` version from the file contents? see: https://github.com/twitter/bower/issues/193
+        - Print a tree like npm with the deps
+        - Root packages that resolve to same higher versions should always have priority!!
+        - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
+        - Install only stable versions, see: https://github.com/twitter/bower/issues/266
+        - Expand also .gz files, see: https://github.com/twitter/bower/issues/347
 - Gracefully remove all created tmp dirs
+- Use update-notifier!!
+- use yeomen insight!!
