@@ -630,4 +630,49 @@ describe('package', function () {
 
     pkg.resolve();
   });
+
+  // It seems that these tests only pass with newer versions of git (1.8+)
+  it('Should make shallow clones', function (next) {
+    var pkg = new Package('jquery', 'git://github.com/components/jquery#~1.2');
+    pkg.path = pkg.gitPath;
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.on('cache', function () {
+      assert(fs.existsSync(path.join(pkg.path, '.git/refs/tags/1.2.3')));
+      assert(!fs.existsSync(path.join(pkg.path, '.git/refs/tags/1.3.0')));
+      next();
+    }).cache();
+  });
+
+  it('Should fetch required tags that are not already in the cache', function (next) {
+    var oldPkg = new Package('jquery', 'git://github.com/components/jquery#~1.2');
+    oldPkg.path = oldPkg.gitPath;
+
+    oldPkg.on('error', function (err) {
+      throw err;
+    });
+
+    oldPkg.on('cache', function () {
+      var newPkg = new Package('jquery', 'git://github.com/components/jquery#~1.3');
+      newPkg.path = newPkg.gitPath;
+
+      // 1.2.3 is already in the cache
+      assert(fs.existsSync(path.join(newPkg.path, '.git/refs/tags/1.2.3')));
+      // 1.3.0 hasn't been fetched yet
+      assert(!fs.existsSync(path.join(newPkg.path, '.git/refs/tags/1.3.0')));
+      newPkg.on('error', function (err) {
+        throw err;
+      });
+
+      newPkg.on('cache', function () {
+        // 1.3.0 now fetched
+        assert(fs.existsSync(path.join(newPkg.path, '.git/refs/tags/1.3.0')));
+        assert(true);
+        next();
+      }).cache();
+    }).cache();
+  });
 });
