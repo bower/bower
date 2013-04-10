@@ -152,7 +152,7 @@ The following packages will extend from the Package.js and will obey its interfa
 - `GitFsPackage` extends `Package` (git packages available in the own system)
 - `GitRemotePackage` extends `Package` or `GitFsPackage` (remote git packages)
 - `PublishedPackage` extends `Package` (? makes sense if bower supports a publish model, just like npm).
-- `InstalledPackage` extends `Package` (locally installed packages located in the components folder)
+- `InstalledPackage` extends `Package` (? locally installed packages located in the components folder)
 
 These type of packages will be known and created (instantiated) by the `createPackage`.
 
