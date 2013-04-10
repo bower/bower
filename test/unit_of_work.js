@@ -187,15 +187,15 @@ describe('UnitOfWork', function () {
         });
     });
 
-    describe('.getUnresolved()', function () {
+    describe('.getFailed()', function () {
         it('should always return a valid array/object', function () {
             var unitOfWork = new UnitOfWork();
 
-            expect(unitOfWork.getUnresolved('foo')).to.eql([]);
-            expect(unitOfWork.getUnresolved()).to.eql({});
+            expect(unitOfWork.getFailed('foo')).to.eql([]);
+            expect(unitOfWork.getFailed()).to.eql({});
         });
 
-        it('should return unresolved packages of a specific name', function (done) {
+        it('should return failed packages of a specific name', function (done) {
             var unitOfWork = new UnitOfWork({ failFast: false }),
                 pkg1 = new Package('foo', { name: 'foo' }),
                 pkg2 = new Package('bar', { name: 'bar' }),
@@ -215,11 +215,11 @@ describe('UnitOfWork', function () {
             unitOfWork.enqueue(pkg4).then(error(100));
 
             setTimeout(function () {
-                arr = unitOfWork.getUnresolved('foo');
+                arr = unitOfWork.getFailed('foo');
                 expect(arr.length).to.be(2);
                 expect(arr[0]).to.equal(pkg1);
                 expect(arr[1]).to.equal(pkg3);
-                arr = unitOfWork.getUnresolved('bar');
+                arr = unitOfWork.getFailed('bar');
                 expect(arr.length).to.be(2);
                 expect(arr[0]).to.equal(pkg2);
                 expect(arr[1]).to.equal(pkg4);
@@ -228,7 +228,7 @@ describe('UnitOfWork', function () {
             }, 500);
         });
 
-        it('should return all unresolved packages', function (done) {
+        it('should return all failed packages', function (done) {
             var unitOfWork = new UnitOfWork({ failFast: false }),
                 pkg1 = new Package('foo', { name: 'foo' }),
                 pkg2 = new Package('bar', { name: 'bar' }),
@@ -248,10 +248,10 @@ describe('UnitOfWork', function () {
             unitOfWork.enqueue(pkg4).then(error(100));
 
             setTimeout(function () {
-                obj = unitOfWork.getUnresolved();
+                obj = unitOfWork.getFailed();
                 expect(Object.keys(obj)).to.eql(['foo', 'bar']);
-                expect(obj.foo).to.equal(unitOfWork.getUnresolved('foo'));
-                expect(obj.bar).to.equal(unitOfWork.getUnresolved('bar'));
+                expect(obj.foo).to.equal(unitOfWork.getFailed('foo'));
+                expect(obj.bar).to.equal(unitOfWork.getFailed('bar'));
 
                 done();
             }, 500);
@@ -259,7 +259,7 @@ describe('UnitOfWork', function () {
     });
 
     describe('general stuff', function () {
-        it('should let only "maxConcurrent" packages to resolve at the same time', function (done) {
+        it('should let only allow "maxConcurrent" packages to resolve at the same time', function (done) {
             var unitOfWork = new UnitOfWork({ maxConcurrent: 2 }),
                 nrBeingResolved = 0,
                 pkg1 = new Package('foo'),
@@ -350,7 +350,7 @@ describe('UnitOfWork', function () {
             });
         });
 
-        it('should fire "dequeue", "before_resolve", "resolve" and "unresolve" during the resolve process', function (done) {
+        it('should fire "dequeue", "before_resolve", "resolve" and "failed" during the resolve process', function (done) {
             var unitOfWork = new UnitOfWork(),
                 events = [],
                 pkg1 = new Package('foo'),
@@ -365,8 +365,8 @@ describe('UnitOfWork', function () {
             unitOfWork.on('resolve', function (pkg) {
                 events.push('resolve', pkg.getEndpoint());
             });
-            unitOfWork.on('unresolve', function (pkg) {
-                events.push('unresolve', pkg.getEndpoint());
+            unitOfWork.on('failed', function (pkg) {
+                events.push('failed', pkg.getEndpoint());
             });
 
             unitOfWork.enqueue(pkg1).then(function (cb) {
@@ -383,7 +383,7 @@ describe('UnitOfWork', function () {
                     'dequeue', pkg2.getEndpoint(),
                     'before_resolve', pkg2.getEndpoint(),
                     'resolve', pkg1.getEndpoint(),
-                    'unresolve', pkg2.getEndpoint()
+                    'failed', pkg2.getEndpoint()
                 ]);
                 done();
             }, 500);

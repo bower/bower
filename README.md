@@ -166,7 +166,7 @@ The unit of work is a central entity in which state will be stored during the un
 - Guarantees that a maximum of X packages are being resolved at every instant.
 - Guarantees that packages with the same endpoint will not be resolved at the same time.
 - Guarantees that packages with the exact same endpoint and range will not be resolved twice.
-- Stores all the resolved/unresolved packages during the unroll of the dependency tree.
+- Stores all the resolved/failed packages during the unroll of the dependency tree.
 - When a package fails to resolve, it will make all the other enqueued ones to fail-fast.
 
 ------------
@@ -177,7 +177,7 @@ The unit of work is a central entity in which state will be stored during the un
 - dequeue        - fired when a package is dequeued
 - before_resolve - fired when a package is about to be resolved (fired after dequeue)
 - resolve        - fired when a package resolved successfully
-- unresolve      - fired when a package failed to resolve
+- failed         - fired when a package failed to resolve
 
 With this events, it will be possible to track the current status of each package during the expansion of the dependency tree.
 
@@ -198,7 +198,7 @@ The promise is fulfilled when the package is accepted to be resolved or is rejec
 When fullfilled, a `done` function is passed that should be called when the resolve process of the package is finished:
 Throws an error if the package is already queued or being resolved.
 
-- If the package failed resolving, it should be called with an instance of `Error`. In that case, the package will be marked as unresolved and all the remaining enqueued packages will have the `enqueue` promise rejected, making the whole process to fail-fast.
+- If the package failed resolving, it should be called with an instance of `Error`. In that case, the package will be marked as failed and all the remaining enqueued packages will have the `enqueue` promise rejected, making the whole process to fail-fast.
 - If the packages succeed resolving, it should be called with no arguments. In that case, the package will be marked as resolved
 
 #### UnitOfWork#dequeue(package) -> Itself
@@ -208,9 +208,9 @@ Removes a previously enqueued package.
 Returns an array of resolved packages whose names are `name`.
 When called without a name, returns an object with all the resolved packages.
 
-#### UnitOfWork#getUnresolved(name) -> Itself
-Returns an array of unresolved packages whose names are `name`.
-When called without a name, returns an object with all the unresolved packages.
+#### UnitOfWork#getFailed(name) -> Itself
+Returns an array of packages that failed to resulve whose names are `name`.
+When called without a name, returns an object with all the failed packages.
 
 
 ### Project / Manager -> EventEmitter
