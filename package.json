@@ -34,7 +34,8 @@
     "unzip": "0.1.4",
     "tar": "~0.1.13",
     "promptly": "~0.1.0",
-    "abbrev": "~1.0.4"
+    "abbrev": "~1.0.4",
+    "update-notifier": "~0.1.3"
   },
   "scripts": {
     "test": "mocha --reporter spec --timeout 40000"

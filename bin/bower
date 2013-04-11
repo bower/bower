@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-var semver = require('semver');
-var nopt   = require('nopt');
-var path   = require('path');
-var pkg    = require(path.join(__dirname, '..', 'package.json'));
+var semver         = require('semver');
+var nopt           = require('nopt');
+var path           = require('path');
+var pkg            = require(path.join(__dirname, '..', 'package.json'));
+var updateNotifier = require('update-notifier');
 
 var template = require('../lib/util/template');
 var bower    = require('../lib');
@@ -15,6 +16,11 @@ var input   = process.argv;
 var nodeVer = process.version;
 var reqVer  = pkg.engines.node;
 var errors = [];
+var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
+
+if (notifier.update) {
+  process.stderr.write(template('update-notice', notifier.update, true));
+}
 
 process.title = 'bower';
 
