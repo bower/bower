@@ -64,6 +64,7 @@ Options:
 - name - the package name (if none is passed, one will be guessed from the endpoint)
 - range - a valid semver range (defaults to *)
 - unitOfWork - the unit of work to use (if none is passed, one will be created)
+- config - the config to use (defaults to the global config)
 
 ------------
 
@@ -88,7 +89,6 @@ The resolve process obeys a very explicit flow:
 - Enqueues the package to be resolved in the unit of work and waits
 - When accepted calls #_createTempDir and waits
 - When done, calls #_resolveSelf and waits
-- When done, calls #_readRc and waits
 - When done, calls #_readJson and waits
 - When done, calls #_parseJson and waits
 - When done, marks the package as resolved and informs the unit of work
@@ -120,10 +120,7 @@ Protected functions
 #### Package#_createTempDir() -> Promise
 Creates a temporary dir.
 
-#### Package#_readRc() -> Promise
-Reads the local .bowerrc configuration.
-
-#### Package#_readJson(rc) -> Promise
+#### Package#_readJson() -> Promise
 Reads the package component.json, possibly by using a dedicated `read-json` package that will be available in the bower organization. It will ensure everything is valid.
 
 ### Package#_parseJson(json) -> Promise
