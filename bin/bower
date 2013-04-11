@@ -51,7 +51,7 @@ bower.commands[bower.command || 'help'].line(input)
     if (data) process.stdout.write(data);
   })
   .on('warn', function (warning)  {
-    process.stdout.write(template('warn', { message: warning }, true));
+    process.stderr.write(template('warn', { message: warning }, true));
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;
