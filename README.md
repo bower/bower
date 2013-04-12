@@ -39,6 +39,8 @@ For the sake of simplicity, keep the following terms in mind:
 - **Dep tuple (dependency tuple):** A data structure composed of an endpoint string (url, git repo, etc) and a *semver* compatible version.
 - **Dep tuple range**: Same as *dep tuple*, but version can contain a range. Used mainly to specify a set of compatible versions.
 
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/1E0R2w2P1z3e1V2w1X23/bower_architecture.jpg "Really nicely drawn architecture diagram")
+
 Bower is composed of the following components:
 
 - `CLI`: Command line interface for Bower.
