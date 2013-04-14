@@ -31,9 +31,27 @@ function testGitLocalResolver() {
     });
 }
 
+function testGitRemoteResolverNoTags() {
+    var spoonResolver = new GitRemoteResolver('git://github.com/IndigoUnited/spoon.js.git', {
+        name: 'spoonjs',
+        //target: '7d07190ca6fb7ffa63642526537e0c314cbaab12'
+        //target: 'master'
+        target: '*'
+    });
+
+    return spoonResolver.resolve()
+    .then(function () {
+        console.log('ok!');
+    }, function (err) {
+        console.log('failed to resolve', err);
+    });
+}
+
 if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     testGitRemoteResolver()
-    .then(testGitLocalResolver);
+    .then(testGitLocalResolver)
+    .then(testGitRemoteResolverNoTags);
 
     //testGitLocalResolver();
+    //testGitRemoteResolverNoTags();
 }
