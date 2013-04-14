@@ -28,18 +28,28 @@ Solutions to the main issues:
 - Promises could solve the nesting problem found in the codebase.
 - **TODO: COMPLETE HERE**
 
+## Advantages
+
+- Installation/update speedup.
+- Named endpoints.
+- Offline installation of packages, thanks to the cache.
+- Clear architecture and separation of concerns.
+
 ## Implementation details
+
+### Term dictionary
+
+- **Canonical package:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
+- **Source:** URL, git endpoint, etc.
+- **Target:** `semver` range, commit hash, branch (indicates a version).
+- **Endpoint:** source#target
+- **Named endpoint:** name@endpoint#target
+- **UoW:** Unit of Work
+- **Components folder:** The folder in which components are installed (`bower_components` by default).
 
 ### Overall strategy
 
-For the sake of simplicity, keep the following terms in mind:
-
-- **UoW:** Unit of Work
-- **Canonical endpoint:** The form in which a dependency endpoint is declared in the `bower.json` file.
-- **Dep tuple (dependency tuple):** A data structure composed of an endpoint string (url, git repo, etc) and a *semver* compatible version.
-- **Dep tuple range**: Same as *dep tuple*, but version can contain a range. Used mainly to specify a set of compatible versions.
-
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/1E0R2w2P1z3e1V2w1X23/bower_architecture.jpg "Really nicely drawn architecture diagram")
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/1E0R2w2P1z3e1V2w1X23/bower_architecture.jpg "Don't over think it! We already did! :P")
 
 Bower is composed of the following components:
 
@@ -47,30 +57,48 @@ Bower is composed of the following components:
 - `.bowerrc`: Allows for customisations of Bower behaviour at the project/user level.
 - `bower.json`: Main purpose is to declare the component dependencies and other component related information.
 - `Manager`: Main coordinator, responsible for:
-    - Deciding which version of the dependencies should be resolved while keeping every dependant compatible, and queueing those dependencies in the `UoW`.
-    - Tracking which dependencies have been resolved, and which ones failed to resolve.
-    - Caching resolved dependencies into `ResolveCache`.
-    - Requesting `Uow` to fail-fast, in case it realises there is no resolution for the current dependency tree.
-- `ResolveCache`: Keeps a cache of previously resolved *dep tuples*. Lookup can be done using a *dep tuple range*.
+    - Checking which packages are already installed in the current `bower folder`.
+    - Deciding which version of the dependencies should be fetched from the `PackageRepository`, while keeping every dependant compatible (note that the `Manager` is `server` aware).
+    - Tracking which dependencies have been fetched, which ones failed to fetch, and which ones are being fetched.
+    - Requesting the `PackageRepository` to fail-fast, in case it realises there is no resolution for the current dependency tree.
+- `PackageRepository`: Abstraction to the underlying complexity of heterogeneous source types. Responsible for:
+  - Storing new entries in `ResolveCache`.
+  - Queueing resolvers into the `UoW`, if no suitable entry is found in the `ResolveCache`.
+- `ResolveCache`: Keeps a cache of previously resolved endpoints. Lookup can be done using an endpoint.
 - `UnitOfWork`: Work coordinator, responsible for:
-    - Keeping track of which *dep tuples* are being resolved.
-    - Limiting amount of parallel resolutions
-    - **QUESTION:** I see that *dep tuples* with same endpoint and different versions are not supposed to be processed in parallel. Not sure why, I don't see any problem with it. I even see a potential optimisation, in which the `Manager` realises that something that is being resolved will never be compatible, and aborts that specific resolution, and then queues another version (not a must for an initial version, but something to keep in mind).
-- `ResolverFactory`: Parses a *dep tuple* and returns a `Resolver` capable of resolving the endpoint type.
+    - Keeping track of which resolvers are being resolved.
+    - Limiting amount of parallel resolutions.
+- `ResolverFactory`: Parses an endpoint and returns a `Resolver` capable of resolving the source type.
 - `Resolver`: Base resolver, which can be extended by concrete resolvers, like `UrlResolver`, `GitRemoteResolver`, etc.
 
-Here's an overview of the resolution process (pseudo-algorithm):
 
-1. `Manager` is requested to install a set of *dep tuple ranges* (may have come from `bower.json`, through the CLI, or even asked to install programatically).
-2. **START OF RESOLUTION CYCLE**
-3. `Manager` checks if `UoW` is currently resolving any of the *dep tuple ranges* and, if it is, no need to re-enqueue.
-4. `Manager` queries `ResolveCache` for any cached resolution for the unresolved *dep tuple ranges*.
-5. If there is no cache miss, use cached results and **RESOLUTION CYCLE IS DONE**.
-6. Else, queue *dep tuple ranges* that are missing in cache into `UoW`.
-7. While `UoW` has queued dependencies and parallel limit has not been reached, request `ResolverFactory` to fabricate a `Resolver` suited for each of the queued dependencies, and start their resolution (if limit has been reached, wait before starting resolution).
-8. Every time a `Resolver` is done, the `UoW` notifies the `Manager`.
-9. `Manager` caches the result in `ResolveCache`.
-10. `Manager` asks the resolved `Resolver` if it has any dependency. Go to **START OF RESOLUTION CYCLE**, and continue process with the unresolved dependencies of the resolved `Resolver`.
+Here's an overview of the resolution process:
+
+1. **INSTALL/UPDATE** - A set of named endpoints and/or endpoints is requested to be installed/updated, and these are passed to the `Manager`.
+2. **ANALIZE COMPONENTS FOLDER** -  `Manager` starts by reading the *components folder* and understanding which packages are already installed.
+3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the *named endpoints*/endpoints in the `PackageRepository`. Some considerations:
+    - If a package should be fetched or not depends on the following conditions:
+        - What operation is being done (install/update).
+        - If package is already installed.
+        - If `Manager` has already enqueued that *named endpoint*/endpoint in the current runtime (regardless of the fetch being currently in progress, already complete, or failed).
+        - Additional flags (force, etc).
+4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
+    - The factory method takes the source string as its main argument, and is also provided with target, and package name if possible (all this information is extracted from the *named endpoint*/endpoint).
+    - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
+    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
+5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached *canonical package* that complies to the endpoint target. Some considerations:
+    - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
+    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
+6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
+    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs, and check if there is a higher version that complies with the target). 
+    - This check should be as quick as possible. If the process of checking a new version is too slow, it's preferable to just assume there is a new version.
+    - If there is no way to check if there is a higher version, assume that there is.
+    - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss, unless there is a flag that forces to use cached entries (like an `offline` flag).
+7. **RESOLVE CACHE MISSES** - Any cache miss needs to be resolved, so the `PackageRepository` requests each of the remaining resolvers to resolve, and waits.
+8. **CACHE RESOLVED RESOLVERS** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides (this allows for concrete to store additional details about the fetched package, like HTTP expiration headers, in the case of the `UrlPackage`).
+9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical package to the `Manager`.
+10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical packages have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
+
 
 ### Project / Manager -> EventEmitter
 
