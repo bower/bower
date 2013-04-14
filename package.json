@@ -20,7 +20,8 @@
     "rc": "~0.1.0",
     "mkdirp": "~0.3.5",
     "nopt": "~2.1.1",
-    "semver": "~1.1.4"
+    "semver": "~1.1.4",
+    "fstream": "~0.1.22"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
