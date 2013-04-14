@@ -84,9 +84,9 @@ installed components manually using a `script` tag:
 ```
 
 For more complex projects, you'll probably want to concatenate your scripts or
-use a module loader. Bower is just a package manager, but there plenty of other
-tools -- such as [Sprockets](https://github.com/sstephenson/sprockets) and
-[RequireJS](http://requirejs.org/) -- that will help you do this.
+use a module loader. Bower is just a package manager, but there are plenty of
+other tools -- such as [Sprockets](https://github.com/sstephenson/sprockets)
+and [RequireJS](http://requirejs.org/) -- that will help you do this.
 
 ### Registering packages
 
