@@ -20,7 +20,8 @@ function testGitRemoteResolver() {
 function testGitLocalResolver() {
     var bowerResolver = new GitFsResolver('.', {
         name: 'bower',
-        target: '*'
+        //target: 'rewrite',
+        target: '0.8.4'
     });
 
     return bowerResolver.resolve()
