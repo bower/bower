@@ -288,9 +288,11 @@ option shown below:
 
 ![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
 
-Note that if you use TortoiseGit and if bower keeps asking your ssh password, you should add the following environment variable:
-`GIT_SSH - C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`
-Adjust the `TortoisePlink` path if needed.
+Note that if you use TortoiseGit and if Bower keeps asking for your SSH
+password, you should add the following environment variable: `GIT_SSH -
+C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
+path if needed.
+
 
 ## Contact
 
