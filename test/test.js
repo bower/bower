@@ -5,8 +5,8 @@ function testGitRemoteResolver() {
     var dejavuResolver = new GitRemoteResolver('git://github.com/IndigoUnited/dejavu.git', {
         name: 'dejavu',
         //target: '7d07190ca6fb7ffa63642526537e0c314cbaab12'
-        target: 'master'
-        //target: '~0.4.1'
+        //target: 'master'
+        target: '~0.4.1'
     });
 
     return dejavuResolver.resolve()
