@@ -1,21 +1,14 @@
-var UrlPackage = require('../lib/core/packages/UrlPackage');
-var GitRemotePackage = require('../lib/core/packages/GitRemotePackage');
+var GitResolver = require('../lib/resolve/resolvers/GitRemoteResolver');
 
-function testUrlPackage() {
-    var bootstrapPackage = new UrlPackage('http://twitter.github.com/bootstrap/assets/bootstrap.zip', { name: 'bootstrap' });
-
-    return bootstrapPackage.resolve()
-    .then(function () {
-        console.log('ok!');
-    }, function (err) {
-        console.log('failed to resolve', err);
+function testGitResolver() {
+    var dejavuResolver = new GitResolver('git://github.com/IndigoUnited/dejavu.git', {
+        name: 'dejavu',
+        //target: '962be0f7b779b061eccce6a661928cb719031964'
+        //target: 'master'
+        target: '~0.4.1'
     });
-}
 
-function testGitRemotePackage() {
-    var dejavuPackage = new GitRemotePackage('git://github.com/IndigoUnited/dejavu.git', { name: 'bootstrap' });
-
-    return dejavuPackage.resolve()
+    return dejavuResolver.resolve()
     .then(function () {
         console.log('ok!');
     }, function (err) {
@@ -24,6 +17,5 @@ function testGitRemotePackage() {
 }
 
 if (process.argv[1] && !/mocha/.test(process.argv[1])) {
-    testUrlPackage()
-    .then(testGitRemotePackage);
+    testGitResolver();
 }

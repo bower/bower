@@ -32,7 +32,7 @@
     "trailing": true,
 
     "asi": false,
-    "boss": false,
+    "boss": true,
     "debug": false,
     "eqnull": true,
     "es5": false,
