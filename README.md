@@ -1,39 +1,34 @@
 # Bower rewrite
 
-This repository is just an experiment around the new bower rewrite.
-It will remain private and only trustworthy people will have access to it.
-If the general consensus is to advance with it, the code will move to a new branch on the official repository.
-
 ## Why?
 
 Bower codebase is becoming unmanageable, especially at its core.
 Main issues are:
 
-- ___Monolithic Package.js that handles all package types (GitHub, url, local, etc).___
-- ___Package.js has too many nesting level of callbacks, causing confusion and making it hard to read___
-- Some commands, such as install and update, have incorrect behaviour (#200, #256)
+- __No separation of concerns. The overall codebase has grown in a patch fashion, which has lead to a bloated and tight coupled solution.__
+- __Monolithic Package.js that handles all package types (both local and remote `Git`, URL, local files, etc).__
+- __Package.js has a big nesting level of callbacks, causing confusion and making the code hard to read.__
+- Some commands, such as install and update, have incorrect behaviour ([#200](https://github.com/twitter/bower/issues/200), [#256](https://github.com/twitter/bower/issues/256))
    - This is directly related with the current implementation of bower core: Package.js and Manager.js
 - Programmatic usage needs improvement
+  - Unable to spawn multiple commands in parallel in different folders
   - Some commands simply do not fire the `end` event
   - Others fire the `error` event many times
   - Some commands should fire more meaningful events (e.g.: install should fire each installed package)
 
-## Solution
 
-The rewrite will give a chance to make bower more manageable, solving the issues mentioned above while also improving the overall codebase. Readable code is crucial to increase the number of contributors and to the success of bower.
+## Main goals
 
-Solutions to the main issues:
-
-- Polymorphism can be used to make different kind of packages share a common API. Different kind of package resolvers will be implemented separately but will share common functionality. This will be further explained bellow.
-- Promises could solve the nesting problem found in the codebase.
-- **TODO: COMPLETE HERE**
-
-## Advantages
-
-- Installation/update speedup.
-- Named endpoints.
-- Offline installation of packages, thanks to the cache.
+- Ease the process of gathering more contributors.
 - Clear architecture and separation of concerns.
+- Installation/update speedup.
+- Named endpoints on the CLI install.
+- Offline installation of packages, thanks to the cache.
+- Ability to easily add package types (`SVN`, etc).
+- Support for commit hashes and branches in targets for `Git` endpoints.
+- Improved output after installation/update.
+- Integrate with update-notifier and yeomen insight.
+
 
 ## Implementation details
 
@@ -71,8 +66,12 @@ Bower is composed of the following components:
 - `ResolverFactory`: Parses an endpoint and returns a `Resolver` capable of resolving the source type.
 - `Resolver`: Base resolver, which can be extended by concrete resolvers, like `UrlResolver`, `GitRemoteResolver`, etc.
 
+You can find additional details about each of these components below, in [Architecture components details](#architecture-components-details).
 
-Here's an overview of the resolution process:
+
+#### Resolve process
+
+Here's an overview of the dependency resolve process:
 
 1. **INSTALL/UPDATE** - A set of named endpoints and/or endpoints is requested to be installed/updated, and these are passed to the `Manager`.
 
@@ -95,29 +94,32 @@ Here's an overview of the resolution process:
     - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
 
 6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
-    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs, and check if there is a higher version that complies with the target). 
+    - This step is ignored in case a flag like `offline` is passed.
+    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs with `git ls-remote --tags --heads`, and check if there is a higher version that complies with the target). 
     - This check should be as quick as possible. If the process of checking a new version is too slow, it's preferable to just assume there is a new version.
     - If there is no way to check if there is a higher version, assume that there is.
-    - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss, unless there is a flag that forces to use cached entries (like an `offline` flag).
+    - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss.
 
 7. **RESOLVE CACHE MISSES** - Any cache miss needs to be resolved, so the `PackageRepository` requests each of the remaining resolvers to resolve, and waits.
 
-8. **CACHE RESOLVED PACKAGES** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides (this allows for concrete to store additional details about the fetched package, like HTTP expiration headers, in the case of the `UrlPackage`).
+8. **CACHE RESOLVED PACKAGES** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides. This allows resolvers to store additional details about the fetched package to be used for future *cache hit validations* (e.g. store HTTP expiration headers in the case of the `UrlPackage`).
 
 9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical package to the `Manager`.
 
 10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical packages have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
 
-### Project / Manager -> EventEmitter
+### Architecture components details
+
+#### Manager -> EventEmitter
 
 TODO
 
-### Resolve Cache
+#### PackageRepository
 
 TODO
 
-### Resolve Factory
+#### ResolverFactory
 
 Simple function that takes a *dep tuple range* with options and creates an instance of a `Resolver` that obeys the base `Resolver` interface.
 
@@ -125,16 +127,19 @@ Simple function that takes a *dep tuple range* with options and creates an insta
 function createResolver(depTuple, options) -> Promise
 ```
 
-This function could perform transformations/normalizations to the tuple endpoint.
+This function could perform transformations/normalisations to the tuple endpoint.
 For instance, if `endpoint` is a shorthand it would expand it.
 The function is actually async to allow query the bower registry to know the real endpoint.
 
-### Resolver -> EventEmitter
+
+#### ResolveCache
+
+#### Resolver -> EventEmitter
 
 The `Resolver.js` class extends EventEmitter.
 Think of it as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
 
-#### Events
+##### Events
 
 - `name_change`: fired when the name of the package has changed
 - `action`: fired to inform the current action being performed by the resolver
@@ -144,7 +149,7 @@ Think of it as an abstract class that implements the resolver interface as well 
 
 ------------
 
-#### Constructor
+##### Constructor
 
 Resolver(depTuple, options)
 
@@ -157,19 +162,19 @@ Options:
 
 Public functions
 
-#### Resolver#getName() -> String
+##### Resolver#getName() -> String
 Returns the package name.
 
-#### Resolver#getEndpoint() -> String
+##### Resolver#getEndpoint() -> String
 Returns the package endpoint.
 
-#### Resolver#getRange() -> String
+##### Resolver#getRange() -> String
 Returns the semver range it should resolve to.
 
-#### Resolver#getTempDir() -> String
+##### Resolver#getTempDir() -> String
 Returns the temporary directory that the package is using to resolve itself.
 
-#### Resolver#resolve()
+##### Resolver#resolve()
 Resolves the package.
 The resolve process obeys a very explicit flow:
 
@@ -179,19 +184,19 @@ The resolve process obeys a very explicit flow:
 - When done, calls #_parseJson and waits
 - When done, marks the package as resolved and emits the `end` event.
 
-#### Resolver#getResolveError() -> Error
+##### Resolver#getResolveError() -> Error
 Get the error occurred during the resolve process.
 Returns null if no error occurred.
 
-#### Resolver#getJson() -> Object
+##### Resolver#getJson() -> Object
 Get the package JSON.
 Throws an error if the package is not yet resolved.
 
-#### Resolver#getDependencies() -> Array
+##### Resolver#getDependencies() -> Array
 Get an array of packages that are direct dependencies of the package.
 Throws an error if the package is not yet resolved.
 
-#### Resolver#install(directory) -> Promise
+##### Resolver#install(directory) -> Promise
 Installs the package into the specified directory.
 The base implementation simply renames the temporary directory to the install directory.
 If the install directory already exists, it will be deleted unless it is some kind of repository.
@@ -202,26 +207,26 @@ Throws an error if the package is not yet resolved.
 
 Protected functions
 
-#### Resolver#_createTempDir() -> Promise
+##### Resolver#_createTempDir() -> Promise
 Creates a temporary dir.
 
-### Resolver#_readJson() -> Promise
+##### Resolver#_readJson() -> Promise
 Reads `bower.json`, possibly by using a dedicated `read-json` package that will be available in the Bower organization. It will ensure everything is valid.
 
-### Resolver#_parseJson(json) -> Promise
+##### Resolver#_parseJson(json) -> Promise
 Parses the json:
 
-- Checks if the packages name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emited.
+- Checks if the packages name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
 - Deletes files that are specified in the `ignore` property of the json from the temporary directory.
 
 --------
 
 Abstract functions that must be implemented by concrete resolvers.
 
-#### Resolver#_resolveSelf() -> Promise
+##### Resolver#_resolveSelf() -> Promise
 Resolves self. This method should be implemented by the concrete resolvers. For instance, the UrlPackage would download the contents of a URL into the temporary directory.
 
-### Types of Resolvers
+#### Types of Resolvers
 
 The following resolvers will extend from `Resolver.js` and will obey its interface.
 
@@ -229,18 +234,19 @@ The following resolvers will extend from `Resolver.js` and will obey its interfa
 - `UrlResolver`       extends `Resolver` (dependencies pointing to downloadable resources)
 - `GitFsResolver`     extends `Resolver` (git dependencies available in the local file system)
 - `GitRemoteResolver` extends `Resolver` or `GitFsResolver` (remote git dependencies)
-- `PublishedResolver` extends `Resolver` (? makes sense if bower supports a publish model, just like npm).
+- `PublishedResolver` extends `Resolver` (? makes sense if bower supports a publish model, just like `npm`).
 
 These type of resolvers will be known and created (instantiated) by the `ResolverFactory`.
 
 This architecture will make it very easy for the community to create others package types, for instance, a `MercurialLocalPackage`, `MercurialRemotePackage`, `SvnResolver`, etc.
 
-
-### Unit of work -> EventEmitter
-
 ------------
 
-#### Events
+
+#### Unit of work -> EventEmitter
+
+
+##### Events
 
 - `enqueue`: fired when a package is enqueued
 - `dequeue`: fired when a package is dequeued
@@ -252,7 +258,7 @@ With these events, it will be possible to track the current status of each packa
 
 ------------
 
-#### Constructor
+##### Constructor
 
 UnitOfWork(options)
 
@@ -261,25 +267,25 @@ Options:
 - `maxConcurrent`: maximum number of concurrent resolvers running (defaults to 5)
 - `failFast`: true to fail-fast if an error occurred while resolving a package (defaults to true)
 
-#### UnitOfWork#enqueue(depTuple) -> Promise
+##### UnitOfWork#enqueue(depTuple) -> Promise
 **WON'T TOUCH FROM HERE DOWN. SINCE A LOT HAS BEEN CHANGED, I WONDER IF THE PROMISES ARE REALLY NECESSARY FOR WHAT WE'RE TRYING TO ACCOMPLISH HERE. LET'S DISCUSS THIS TOMORROW**
 
 Enqueues a resolver to be ran.
 The promise is fulfilled when the package is accepted to be resolved or is rejected if the unit of work is doomed to fail.
-When fullfilled, a `done` function is passed that should be called when the resolve process of the package is finished:
+When fulfilled, a `done` function is passed that should be called when the resolve process of the package is finished:
 Throws an error if the package is already queued or being resolved.
 
 - If the package failed resolving, it should be called with an instance of `Error`. In that case, the package will be marked as failed and all the remaining enqueued packages will have the `enqueue` promise rejected, making the whole process to fail-fast.
 - If the packages succeed resolving, it should be called with no arguments. In that case, the package will be marked as resolved
 
-#### UnitOfWork#dequeue(package) -> Itself
+##### UnitOfWork#dequeue(package) -> Itself
 Removes a previously enqueued package.
 
-#### UnitOfWork#getResolved(name) -> Itself
+##### UnitOfWork#getResolved(name) -> Itself
 Returns an array of resolved packages whose names are `name`.
 When called without a name, returns an object with all the resolved packages.
 
-#### UnitOfWork#getFailed(name) -> Itself
-Returns an array of packages that failed to resulve whose names are `name`.
+##### UnitOfWork#getFailed(name) -> Itself
+Returns an array of packages that failed to resolve whose names are `name`.
 When called without a name, returns an object with all the failed packages.
 
