@@ -49,7 +49,7 @@ Solutions to the main issues:
 
 ### Overall strategy
 
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/1E0R2w2P1z3e1V2w1X23/bower_architecture.jpg "Don't over think it! We already did! :P")
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/44271M0R1O012H2m4234/resolve_diagram.png "Don't over think it! We already did! :P")
 
 Bower is composed of the following components:
 
