@@ -1,10 +1,15 @@
-var UrlPackage = require('../lib/core/packages/UrlPackage');
-var GitRemotePackage = require('../lib/core/packages/GitRemotePackage');
+var GitRemoteResolver = require('../lib/resolve/resolvers/GitRemoteResolver');
+var GitFsResolver = require('../lib/resolve/resolvers/GitFsResolver');
 
-function testUrlPackage() {
-    var bootstrapPackage = new UrlPackage('http://twitter.github.com/bootstrap/assets/bootstrap.zip', { name: 'bootstrap' });
+function testGitRemoteResolver() {
+    var dejavuResolver = new GitRemoteResolver('git://github.com/IndigoUnited/dejavu.git', {
+        name: 'dejavu',
+        //target: '7d07190ca6fb7ffa63642526537e0c314cbaab12'
+        //target: 'master'
+        target: '~0.4.1'
+    });
 
-    return bootstrapPackage.resolve()
+    return dejavuResolver.resolve()
     .then(function () {
         console.log('ok!');
     }, function (err) {
@@ -12,10 +17,29 @@ function testUrlPackage() {
     });
 }
 
-function testGitRemotePackage() {
-    var dejavuPackage = new GitRemotePackage('git://github.com/IndigoUnited/dejavu.git', { name: 'bootstrap' });
+function testGitLocalResolver() {
+    var bowerResolver = new GitFsResolver('.', {
+        name: 'bower',
+        target: 'rewrite'
+    });
 
-    return dejavuPackage.resolve()
+    return bowerResolver.resolve()
+    .then(function () {
+        console.log('ok!');
+    }, function (err) {
+        console.log('failed to resolve', err);
+    });
+}
+
+function testGitRemoteResolverNoTags() {
+    var spoonResolver = new GitRemoteResolver('git://github.com/IndigoUnited/spoon.js.git', {
+        name: 'spoonjs',
+        //target: '7d07190ca6fb7ffa63642526537e0c314cbaab12'
+        //target: 'master'
+        target: '*'
+    });
+
+    return spoonResolver.resolve()
     .then(function () {
         console.log('ok!');
     }, function (err) {
@@ -24,6 +48,10 @@ function testGitRemotePackage() {
 }
 
 if (process.argv[1] && !/mocha/.test(process.argv[1])) {
-    testUrlPackage()
-    .then(testGitRemotePackage);
+    testGitRemoteResolver()
+    .then(testGitLocalResolver)
+    .then(testGitRemoteResolverNoTags);
+
+    //testGitLocalResolver();
+    //testGitRemoteResolverNoTags();
 }

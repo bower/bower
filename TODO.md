@@ -1,7 +1,7 @@
 TODO list:
 
+- Offline usage
 - Config
-   - Fix nodejs 0.10.x issue due to a bug in the `rc` package. I've already submited a [PR](https://github.com/dominictarr/config-chain/pull/11)
    - Allow `config.cwd` to be changed by an argument when using the CLI. Two ways of doing this:
       - Read a --cwd or similar and change the `config.cwd` to it
       - Allow any arbitrary `config.*` to be changed with --config.* arguments
@@ -18,7 +18,7 @@ TODO list:
     - Publish model
 - Commands
     - Bower script x
-         - post-install
+         - post-install (only useful for moving files around)
          - pre-publish
          - etc
     - bower test
@@ -37,4 +37,5 @@ TODO list:
         - Expand also .gz files, see: https://github.com/twitter/bower/issues/347
 - Gracefully remove all created tmp dirs
 - Use update-notifier!!
-- use yeomen insight!!
+- Use yeomen insight!!
+- bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
