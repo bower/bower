@@ -75,28 +75,37 @@ Bower is composed of the following components:
 Here's an overview of the resolution process:
 
 1. **INSTALL/UPDATE** - A set of named endpoints and/or endpoints is requested to be installed/updated, and these are passed to the `Manager`.
+
 2. **ANALIZE COMPONENTS FOLDER** -  `Manager` starts by reading the *components folder* and understanding which packages are already installed.
+
 3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the *named endpoints*/endpoints in the `PackageRepository`. Some considerations:
     - If a package should be fetched or not depends on the following conditions:
         - What operation is being done (install/update).
         - If package is already installed.
         - If `Manager` has already enqueued that *named endpoint*/endpoint in the current runtime (regardless of the fetch being currently in progress, already complete, or failed).
         - Additional flags (force, etc).
+
 4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
     - The factory method takes the source string as its main argument, and is also provided with target, and package name if possible (all this information is extracted from the *named endpoint*/endpoint).
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
     - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
+
 5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached *canonical package* that complies to the endpoint target. Some considerations:
     - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
     - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
+
 6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
     - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs, and check if there is a higher version that complies with the target). 
     - This check should be as quick as possible. If the process of checking a new version is too slow, it's preferable to just assume there is a new version.
     - If there is no way to check if there is a higher version, assume that there is.
     - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss, unless there is a flag that forces to use cached entries (like an `offline` flag).
+
 7. **RESOLVE CACHE MISSES** - Any cache miss needs to be resolved, so the `PackageRepository` requests each of the remaining resolvers to resolve, and waits.
-8. **CACHE RESOLVED RESOLVERS** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides (this allows for concrete to store additional details about the fetched package, like HTTP expiration headers, in the case of the `UrlPackage`).
+
+8. **CACHE RESOLVED PACKAGES** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides (this allows for concrete to store additional details about the fetched package, like HTTP expiration headers, in the case of the `UrlPackage`).
+
 9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical package to the `Manager`.
+
 10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical packages have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
 
