@@ -12,12 +12,10 @@ function testGitRemoteResolver() {
     return dejavuResolver.resolve()
     .then(function () {
         console.log('ok!');
-    }, function (err) {
-        console.log('failed to resolve', err);
     });
 }
 
-function testGitLocalResolver() {
+function testGitFsResolver() {
     var bowerResolver = new GitFsResolver('.', {
         name: 'bower',
         target: 'rewrite'
@@ -26,8 +24,6 @@ function testGitLocalResolver() {
     return bowerResolver.resolve()
     .then(function () {
         console.log('ok!');
-    }, function (err) {
-        console.log('failed to resolve', err);
     });
 }
 
@@ -42,16 +38,14 @@ function testGitRemoteResolverNoTags() {
     return spoonResolver.resolve()
     .then(function () {
         console.log('ok!');
-    }, function (err) {
-        console.log('failed to resolve', err);
     });
 }
 
 if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     testGitRemoteResolver()
-    .then(testGitLocalResolver)
+    .then(testGitFsResolver)
     .then(testGitRemoteResolverNoTags);
 
-    //testGitLocalResolver();
+    //testGitFsResolver();
     //testGitRemoteResolverNoTags();
 }
