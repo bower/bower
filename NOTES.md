@@ -1,5 +1,3 @@
-TODO list:
-
 - Offline usage
 - Config
    - Allow `config.cwd` to be changed by an argument when using the CLI. Two ways of doing this:
