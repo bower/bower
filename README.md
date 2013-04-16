@@ -111,20 +111,23 @@ Here's an overview of the dependency resolve process:
 
 ### Architecture components details
 
-#### Manager -> EventEmitter
+
+#### Manager
 
 TODO
+
 
 #### PackageRepository
 
 TODO
 
+
 #### ResolverFactory
 
-Simple function that takes a *dep tuple range* with options and creates an instance of a `Resolver` that obeys the base `Resolver` interface.
+Simple function that takes a *named endpoint*/endpoint with options and creates an instance of a `Resolver` that obeys the base `Resolver` interface.
 
 ```js
-function createResolver(depTuple, options) -> Promise
+function createResolver(endpoint, options) -> Promise
 ```
 
 This function could perform transformations/normalisations to the tuple endpoint.
@@ -134,9 +137,12 @@ The function is actually async to allow query the bower registry to know the rea
 
 #### ResolveCache
 
-#### Resolver -> EventEmitter
+TODO
 
-The `Resolver.js` class extends EventEmitter.
+
+#### Resolver
+
+The `Resolver` class extends `EventEmitter`.
 Think of it as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
 
 ##### Events
@@ -144,18 +150,15 @@ Think of it as an abstract class that implements the resolver interface as well 
 - `name_change`: fired when the name of the package has changed
 - `action`: fired to inform the current action being performed by the resolver
 - `warn`: fired to inform a warning, e.g.: deprecation
-- `error`: fired when something went wrong
-- `end`: fired when the resolution is complete
-
-------------
 
 ##### Constructor
 
-Resolver(depTuple, options)
+Resolver(source, options)
 
 Options:
 
-- `name` - the package name (if none is passed, one will be guessed from the endpoint)
+- `name` - the name (if none is passed, one will be guessed from the endpoint)
+- `target` - the target (defaults to *)
 - `config` - the config to use (defaults to the global config)
 
 ------------
@@ -163,45 +166,34 @@ Options:
 Public functions
 
 ##### Resolver#getName() -> String
-Returns the package name.
+Returns the name.
 
-##### Resolver#getEndpoint() -> String
-Returns the package endpoint.
+##### Resolver#getSource() -> String
+Returns the source.
 
-##### Resolver#getRange() -> String
-Returns the semver range it should resolve to.
+##### Resolver#getTarget() -> String
+Returns the target.
 
 ##### Resolver#getTempDir() -> String
-Returns the temporary directory that the package is using to resolve itself.
+Returns the temporary directory that the resolver can use to resolve itself.
 
-##### Resolver#resolve()
-Resolves the package.
+##### Resolver#hasNew(oldVersion, oldResolution) -> Promise
+Checks if there is a new version. Takes the old version and resolution to be used when comparing.   
+Resolves to a boolean when done.
+
+##### Resolver#resolve() -> Promise
+Resolves the resolver.
 The resolve process obeys a very explicit flow:
 
 - calls #_createTempDir and waits
 - When done, calls #_resolveSelf and waits
 - When done, calls #_readJson and waits
 - When done, calls #_parseJson and waits
-- When done, marks the package as resolved and emits the `end` event.
-
-##### Resolver#getResolveError() -> Error
-Get the error occurred during the resolve process.
-Returns null if no error occurred.
+- When done, resolves the promise with the resolution.
 
 ##### Resolver#getJson() -> Object
-Get the package JSON.
-Throws an error if the package is not yet resolved.
-
-##### Resolver#getDependencies() -> Array
-Get an array of packages that are direct dependencies of the package.
-Throws an error if the package is not yet resolved.
-
-##### Resolver#install(directory) -> Promise
-Installs the package into the specified directory.
-The base implementation simply renames the temporary directory to the install directory.
-If the install directory already exists, it will be deleted unless it is some kind of repository.
-If so, the promise should be rejected with a meaningful error.
-Throws an error if the package is not yet resolved.
+Get the `bower.json` of the resolved package.
+Throws an error if the resolver is not yet resolved.
 
 -----------
 
@@ -216,7 +208,7 @@ Reads `bower.json`, possibly by using a dedicated `read-json` package that will 
 ##### Resolver#_parseJson(json) -> Promise
 Parses the json:
 
-- Checks if the packages name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
+- Checks if the resolver name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
 - Deletes files that are specified in the `ignore` property of the json from the temporary directory.
 
 --------
@@ -224,7 +216,7 @@ Parses the json:
 Abstract functions that must be implemented by concrete resolvers.
 
 ##### Resolver#_resolveSelf() -> Promise
-Resolves self. This method should be implemented by the concrete resolvers. For instance, the UrlPackage would download the contents of a URL into the temporary directory.
+Resolves self. This method should be implemented by the concrete resolvers. For instance, the UrlResolver would download the contents of a URL into the temporary directory.
 
 #### Types of Resolvers
 
@@ -240,52 +232,8 @@ These type of resolvers will be known and created (instantiated) by the `Resolve
 
 This architecture will make it very easy for the community to create others package types, for instance, a `MercurialLocalPackage`, `MercurialRemotePackage`, `SvnResolver`, etc.
 
-------------
 
+#### Unit of work
 
-#### Unit of work -> EventEmitter
-
-
-##### Events
-
-- `enqueue`: fired when a package is enqueued
-- `dequeue`: fired when a package is dequeued
-- `pre_resolve`: fired when a package is about to be resolved (fired after dequeue)
-- `post_resolve`: fired when a package resolved successfully
-- `fail`: fired when a package failed to resolve
-
-With these events, it will be possible to track the current status of each package during the expansion of the dependency tree.
-
-------------
-
-##### Constructor
-
-UnitOfWork(options)
-
-Options:
-
-- `maxConcurrent`: maximum number of concurrent resolvers running (defaults to 5)
-- `failFast`: true to fail-fast if an error occurred while resolving a package (defaults to true)
-
-##### UnitOfWork#enqueue(depTuple) -> Promise
-**WON'T TOUCH FROM HERE DOWN. SINCE A LOT HAS BEEN CHANGED, I WONDER IF THE PROMISES ARE REALLY NECESSARY FOR WHAT WE'RE TRYING TO ACCOMPLISH HERE. LET'S DISCUSS THIS TOMORROW**
-
-Enqueues a resolver to be ran.
-The promise is fulfilled when the package is accepted to be resolved or is rejected if the unit of work is doomed to fail.
-When fulfilled, a `done` function is passed that should be called when the resolve process of the package is finished:
-Throws an error if the package is already queued or being resolved.
-
-- If the package failed resolving, it should be called with an instance of `Error`. In that case, the package will be marked as failed and all the remaining enqueued packages will have the `enqueue` promise rejected, making the whole process to fail-fast.
-- If the packages succeed resolving, it should be called with no arguments. In that case, the package will be marked as resolved
-
-##### UnitOfWork#dequeue(package) -> Itself
-Removes a previously enqueued package.
-
-##### UnitOfWork#getResolved(name) -> Itself
-Returns an array of resolved packages whose names are `name`.
-When called without a name, returns an object with all the resolved packages.
-
-##### UnitOfWork#getFailed(name) -> Itself
-Returns an array of packages that failed to resolve whose names are `name`.
-When called without a name, returns an object with all the failed packages.
+TODO
 
