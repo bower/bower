@@ -251,5 +251,35 @@ This architecture will make it very easy for the community to create others pack
 
 #### Unit of work
 
-TODO
+The work coordinator, responsible for keeping track of which resolvers are being resolved.
+The number of parallel resolutions may be limited and configured.
+
+------------
+
+#### Constructor
+
+UnitOfWork(options)
+
+Options:
+
+- `maxConcurrent`: maximum number of concurrent resolvers running (defaults to 5)
+
+------------
+
+Public methods.
+
+`UnitOfWork#enqueue(resolver)`: Promise
+
+Enqueues a resolver to be ran.
+The promise is fulfilled when the resolver successfully resolved or is rejected if it failed to resolve.
+
+`UnitOfWork#has(resolver)`: Boolean
+
+Checks if a resolver is already in the unit of work.
+
+`UnitOfWork#abort()`: Promise
+
+Aborts the current work being done.
+Clears the queue. Please note that resolvers that are already being resolved can't be aborted.
+Returns a promise that is fulfilled when the current resolvers being resolved complete the resolve process.
 
