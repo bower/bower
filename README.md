@@ -279,7 +279,7 @@ Checks if a resolver is already in the unit of work.
 
 `UnitOfWork#abort()`: Promise
 
-Aborts the current work being done.
-Clears the queue. Please note that resolvers that are already being resolved can't be aborted.
-Returns a promise that is fulfilled when the current resolvers being resolved complete the resolve process.
+Aborts the current work being done, by removing any resolvers waiting to resolve.
+Please note that resolvers that are being run can't be aborted.
+Returns a promise that is fulfilled when the current running resolvers finish the resolve process.
 
