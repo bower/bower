@@ -108,6 +108,7 @@ Here's an overview of the dependency resolve process:
 
 10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical packages have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
+-----
 
 ### Architecture components details
 
@@ -124,15 +125,14 @@ TODO
 
 #### ResolverFactory
 
-Simple function that takes a *named endpoint*/endpoint with options and creates an instance of a `Resolver` that obeys the base `Resolver` interface.
+Simple function that takes a *named endpoint*/endpoint with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
 
 ```js
 function createResolver(endpoint, options) -> Promise
 ```
 
-This function could perform transformations/normalisations to the tuple endpoint.
-For instance, if `endpoint` is a shorthand it would expand it.
-The function is actually async to allow query the bower registry to know the real endpoint.
+This function will perform transformations/normalisations to the endpoint, like expanding shorthand andendpoints.
+The function is async to allow querying the Bower registry, etc.
 
 
 #### ResolveCache
@@ -145,6 +145,15 @@ TODO
 The `Resolver` class extends `EventEmitter`.
 Think of it as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
 
+Resolvers are responsible for the following:
+
+- Based on an endpoint, fetch the contents of the package into a temporary folder (step is implemented by the `_resolveSelf()` method).
+- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties). If this file does not exist, one is created, with the information that was inferred. Note that validation should be done using a node module that is common for both the Bower client and the server.
+- Update any relevant information based on the `json` (e.g. this step may emit a `name_change`).
+- Attach any additional meta data to the `json` file. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
+- Applying the `ignore` constraint based on the `json` file. Files are effectively removed in this step.
+
+
 ##### Events
 
 - `name_change`: fired when the name of the package has changed
@@ -153,45 +162,52 @@ Think of it as an abstract class that implements the resolver interface as well 
 
 ##### Constructor
 
-Resolver(source, options)
+`Resolver(source, options)`
 
 Options:
 
-- `name` - the name (if none is passed, one will be guessed from the endpoint)
+- `name` - the name (if none is passed, one will be guessed from the source)
 - `target` - the target (defaults to *)
 - `config` - the config to use (defaults to the global config)
 
 ------------
 
-Public functions
+##### Public functions
 
-##### Resolver#getName() -> String
+`Resolver#getName()`: String
+
 Returns the name.
 
-##### Resolver#getSource() -> String
+`Resolver#getSource()`: String
+
 Returns the source.
 
-##### Resolver#getTarget() -> String
+`Resolver#getTarget()`: String
+
 Returns the target.
 
-##### Resolver#getTempDir() -> String
-Returns the temporary directory that the resolver can use to resolve itself.
+`Resolver#getTempDir()`: String
 
-##### Resolver#hasNew(oldVersion, oldResolution) -> Promise
+Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
+
+`Resolver#hasNew(oldVersion, oldResolution)`: Promise
+
 Checks if there is a new version. Takes the old version and resolution to be used when comparing.   
 Resolves to a boolean when done.
 
-##### Resolver#resolve() -> Promise
+`Resolver#resolve()`: Promise
+
 Resolves the resolver.
 The resolve process obeys a very explicit flow:
 
-- calls #_createTempDir and waits
+- calls `_createTempDir()` and waits
 - When done, calls #_resolveSelf and waits
 - When done, calls #_readJson and waits
 - When done, calls #_parseJson and waits
 - When done, resolves the promise with the resolution.
 
-##### Resolver#getJson() -> Object
+`Resolver#getJson()`: Object
+
 Get the `bower.json` of the resolved package.
 Throws an error if the resolver is not yet resolved.
 
