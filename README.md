@@ -41,6 +41,7 @@ Main issues are:
 - **Named endpoint:** name@endpoint#target
 - **UoW:** Unit of Work
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
+- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file.
 
 ### Overall strategy
 
@@ -148,10 +149,11 @@ Think of it as an abstract class that implements the resolver interface as well 
 Resolvers are responsible for the following:
 
 - Based on an endpoint, fetch the contents of the package into a temporary folder (step is implemented by the `_resolveSelf()` method).
-- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties). If this file does not exist, one is created, with the information that was inferred. Note that validation should be done using a node module that is common for both the Bower client and the server.
-- Update any relevant information based on the `json` (e.g. this step may emit a `name_change`).
-- Attach any additional meta data to the `json` file. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
-- Applying the `ignore` constraint based on the `json` file. Files are effectively removed in this step.
+- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties) into a `package meta` object. If the file does not exist, a base one is inferred. Note that this should be done using a node module that is common for both the Bower client and the server.
+- Update any relevant information based on the `package meta` (e.g. this step may emit a `name_change`).
+- Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
+- Applying the `ignore` constraint based on the `package meta`. Files are effectively removed in this step.
+- Storing the `package meta` into a `.bower.json` hidden file.
 
 
 ##### Events
@@ -190,42 +192,55 @@ Returns the target.
 
 Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
 
-`Resolver#hasNew(oldVersion, oldResolution)`: Promise
+`Resolver#hasNew(canonicalPackage)`: Promise
 
-Checks if there is a new version. Takes the old version and resolution to be used when comparing.   
-Resolves to a boolean when done.
+Checks if there is a version more recent than the provided `canonicalPackage` (folder) that complies with the resolver target.
 
 `Resolver#resolve()`: Promise
 
-Resolves the resolver.
-The resolve process obeys a very explicit flow:
+Resolves the resolver, and returns a promise of a canonical package.
+The resolve process is as follows:
 
-- calls `_createTempDir()` and waits
-- When done, calls #_resolveSelf and waits
-- When done, calls #_readJson and waits
-- When done, calls #_parseJson and waits
-- When done, resolves the promise with the resolution.
+- calls `_createTempDir()` and waits.
+- When done, calls `_resolveSelf()` and waits.
+- When done, calls `_readJson()` and waits (validation and normalisation also happens here).
+- When done, calls `_decoratePkgMeta()`, giving the resolver the chance to attach additional information about the resolved package (`HTTP` headers, etc).
+- When done, calls both, and waits:
+    - `_applyPkgMeta(meta)`
+    - `_savePkgMeta(meta)`
+- When done, resolves the promise with the *temp dir*, which is now a canonical package.
 
-`Resolver#getJson()`: Object
+`Resolver#getPackageMeta()`: Object
 
-Get the `bower.json` of the resolved package.
+Get the `package meta`. Essentially, it's what you'll find in `.bower.json`.
 Throws an error if the resolver is not yet resolved.
 
 -----------
 
-Protected functions
+##### Protected functions
 
-##### Resolver#_createTempDir() -> Promise
+`Resolver#_createTempDir()`: Promise
+
 Creates a temporary dir.
 
-##### Resolver#_readJson() -> Promise
-Reads `bower.json`, possibly by using a dedicated `read-json` package that will be available in the Bower organization. It will ensure everything is valid.
+`Resolver#_readJson()`: Promise
 
-##### Resolver#_parseJson(json) -> Promise
-Parses the json:
+Reads `bower.json`/`component.json`, possibly by using a dedicated `read-json` node module that will be available in the Bower organisation.
+
+This method also normalises the `package meta`, filling in any missing information, inferring when possible.
+
+`Resolver#_decoratePkgMeta(meta)`: Promise
+
+Decorates the `package meta` with any additional information that might be relevant to be stored. A `UrlResolver` could, for example, store some `HTTP` headers, that would be useful when comparing versions, in the `hasNew()` method.
+
+`Resolver#_applyPkgMeta(meta)`: Promise
+
+Since the `package meta` might contain some information that has implications to the *canonical* state of the package, this is where these rules are enforced.
 
 - Checks if the resolver name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
 - Deletes files that are specified in the `ignore` property of the json from the temporary directory.
+
+`Resolver#_savePkgMeta(meta)`: Promise
 
 --------
 
