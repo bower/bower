@@ -1,0 +1,23 @@
+{
+  "name": "read-bower-json",
+  "version": "0.0.0",
+  "description": "Read bower.json files with semantics, normalisation, defaults and validation.",
+  "author": "Twitter",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bower/read-bower-json/blob/master/LICENSE"
+    }
+  ],
+  "main": "lib/read-json",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "expect.js": "~0.2.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  }
+}
