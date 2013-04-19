@@ -2,6 +2,7 @@
   "name": "bower",
   "version": "0.0.0",
   "description": "The browser package manager.",
+  "author": "Twitter",
   "licenses": [
     {
       "type": "MIT",
@@ -9,7 +10,7 @@
     }
   ],
   "main": "lib",
-  "homepage": "http://twitter.github.com/bower",
+  "homepage": "http://bower.io",
   "engines": {
     "node": ">=0.8.0"
   },
@@ -30,8 +31,6 @@
   "scripts": {
     "test": "mocha -R spec"
   },
-  "author": "Twitter",
-  "license": "MIT",
   "bin": {
     "bower": "bin/bower"
   },

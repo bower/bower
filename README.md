@@ -2,10 +2,10 @@
 
 ## Why?
 
-Bower codebase is becoming unmanageable, especially at its core.
+Bower code base is becoming unmanageable, especially at its core.
 Main issues are:
 
-- __No separation of concerns. The overall codebase has grown in a patch fashion, which has lead to a bloated and tight coupled solution.__
+- __No separation of concerns. The overall code base has grown in a patch fashion, which has lead to a bloated and tight coupled solution.__
 - __Monolithic Package.js that handles all package types (both local and remote `Git`, URL, local files, etc).__
 - __Package.js has a big nesting level of callbacks, causing confusion and making the code hard to read.__
 - Some commands, such as install and update, have incorrect behaviour ([#200](https://github.com/twitter/bower/issues/200), [#256](https://github.com/twitter/bower/issues/256))
@@ -21,7 +21,7 @@ Main issues are:
 
 - Ease the process of gathering more contributors.
 - Clear architecture and separation of concerns.
-- Installation/update speedup.
+- Installation/update speed-up.
 - Named endpoints on the CLI install.
 - Offline installation of packages, thanks to the cache.
 - Ability to easily add package types (`SVN`, etc).
@@ -39,13 +39,12 @@ Main issues are:
 - **Target:** `semver` range, commit hash, branch (indicates a version).
 - **Endpoint:** source#target
 - **Named endpoint:** name@endpoint#target
-- **UoW:** Unit of Work
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
 - **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/44271M0R1O012H2m4234/resolve_diagram.png "Don't over think it! We already did! :P")
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/2z0u3B1817341P0q0H3M/bower_diagram2.jpg "Don't over think it! We already did! :P")
 
 Bower is composed of the following components:
 
@@ -59,11 +58,9 @@ Bower is composed of the following components:
     - Requesting the `PackageRepository` to fail-fast, in case it realises there is no resolution for the current dependency tree.
 - `PackageRepository`: Abstraction to the underlying complexity of heterogeneous source types. Responsible for:
   - Storing new entries in `ResolveCache`.
-  - Queueing resolvers into the `UoW`, if no suitable entry is found in the `ResolveCache`.
+  - Queueing resolvers into the `Worker`, if no suitable entry is found in the `ResolveCache`.
 - `ResolveCache`: Keeps a cache of previously resolved endpoints. Lookup can be done using an endpoint.
-- `UnitOfWork`: Work coordinator, responsible for:
-    - Keeping track of which resolvers are being resolved.
-    - Limiting amount of parallel resolutions.
+- `Worker`: A service responsible for limiting amount of parallel executions of tasks of the same type.
 - `ResolverFactory`: Parses an endpoint and returns a `Resolver` capable of resolving the source type.
 - `Resolver`: Base resolver, which can be extended by concrete resolvers, like `UrlResolver`, `GitRemoteResolver`, etc.
 
@@ -96,7 +93,7 @@ Here's an overview of the dependency resolve process:
 
 6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
     - This step is ignored in case a flag like `offline` is passed.
-    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs with `git ls-remote --tags --heads`, and check if there is a higher version that complies with the target). 
+    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs with `git ls-remote --tags --heads`, and check if there is a higher version that complies with the target).
     - This check should be as quick as possible. If the process of checking a new version is too slow, it's preferable to just assume there is a new version.
     - If there is no way to check if there is a higher version, assume that there is.
     - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss.
@@ -148,7 +145,7 @@ Simple function that takes a *named endpoint*/endpoint with options and creates 
 function createResolver(endpoint, options) -> Promise
 ```
 
-This function will perform transformations/normalisations to the endpoint, like expanding shorthand andendpoints.
+This function will perform transformations/normalisations to the endpoint, like expanding shorthand endpoints.
 The function is async to allow querying the Bower registry, etc.
 
 
@@ -243,7 +240,7 @@ Creates a temporary dir.
 
 Reads `bower.json`/`component.json`, possibly by using a dedicated `read-json` node module that will be available in the Bower organisation.
 
-This method also normalises the `package meta`, filling in any missing information, inferring when possible.
+This method also generates the `package meta` based on the `json`, filling in any missing information, inferring when possible.
 
 `Resolver#_decoratePkgMeta(meta)`: Promise
 
@@ -283,37 +280,48 @@ The `ResolverFactory` knows these types, and is able to fabricate suitable resol
 This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
 
 
-#### Unit of work
+#### Worker
 
-The work coordinator, responsible for keeping track of which resolvers are being resolved.
-The number of parallel resolutions may be limited and configured.
+A worker responsible for limiting execution of parallel tasks.
+The number of parallel tasks may be limited and configured per type.
+This component will be a service that can be accessed to perform tasks.
 
 ------------
 
 #### Constructor
 
-`UnitOfWork(options)`
+`Worker(defaultConcurrency, types)`
 
-Options:
+The `defaultConcurrency` is the default maximum concurrent functions being run.   
+The `types` allows you to specify different concurrencies for different types.   
+Use `-1` to specify no limits.
 
-- `maxConcurrent`: maximum number of concurrent resolvers running (defaults to 5)
+Example:
+
+```js
+var worker = new Worker(15, {
+    'network_io': 10,
+    'disk_io': 50
+});
+```
 
 ------------
 
 #### Public methods.
 
-`UnitOfWork#enqueue(resolver)`: Promise
+`Worker#enqueue(func, type)`: Promise
 
-Enqueues a resolver to be ran.
-The promise is fulfilled when the resolver successfully resolved or is rejected if it failed to resolve.
+Enqueues a function to be ran. The function is expected to return a promise.   
+The returned promise is resolved when the function promise is also resolved.
 
-`UnitOfWork#has(resolver)`: Boolean
+The `type` argument is optional and can be a `string` or an array of `strings`.   
+Use it to specify the type(s) associated with the function.
+If multiple types are specified, the function will only be ran when a free slot on every type list is found.
 
-Checks if a resolver is already in the unit of work.
+`Worker#abort()`: Promise
 
-`UnitOfWork#abort()`: Promise
+Aborts all current work being done.
+Returns a promise that is resolved when the current running functions finish to execute.   
+Any function that was in the queue waiting to be ran is removed immediately.
 
-Aborts the current work being done, by removing any resolvers waiting to resolve.
-Note that resolvers running can't be aborted.
-Returns a promise that is fulfilled when the current running resolvers finish the resolve process. Any `Resolver` that was in queue to be ran is aborted immediately.
 
