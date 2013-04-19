@@ -15,7 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d7"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="108.0" x="499.9999999999998" y="26.00000000000003"/>
@@ -32,7 +31,6 @@
       </data>
     </node>
     <node id="n1">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="108.0" x="746.9999999999998" y="-59.0"/>
@@ -49,7 +47,6 @@
       </data>
     </node>
     <node id="n2">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="487.4999999999998" y="179.50000000000003"/>
@@ -66,7 +63,6 @@
       </data>
     </node>
     <node id="n3">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="193.25000000000017" y="179.50000000000003"/>
@@ -83,7 +79,6 @@
       </data>
     </node>
     <node id="n4">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="769.4999999999998" y="179.50000000000003"/>
@@ -100,7 +95,6 @@
       </data>
     </node>
     <node id="n5">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="71.0" x="518.4999999999998" y="333.0"/>
@@ -117,7 +111,6 @@
       </data>
     </node>
     <node id="n6">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="108.0" x="499.9999999999998" y="-148.42089843749997"/>
@@ -134,7 +127,6 @@
       </data>
     </node>
     <node id="n7">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="-39.49999999999952" y="25.50000000000037"/>
@@ -151,7 +143,6 @@
       </data>
     </node>
     <node id="n8">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="-39.49999999999952" y="102.5000000000002"/>
@@ -168,7 +159,6 @@
       </data>
     </node>
     <node id="n9">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="-39.49999999999952" y="179.50000000000003"/>
@@ -185,7 +175,6 @@
       </data>
     </node>
     <node id="n10">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="-39.49999999999952" y="256.0000000000002"/>
@@ -202,7 +191,6 @@
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:GenericNode configuration="ShinyPlateNode">
           <y:Geometry height="53.0" width="133.0" x="-39.49999999999952" y="332.5000000000004"/>
@@ -219,7 +207,6 @@
       </data>
     </node>
     <edge id="e0" source="n6" target="n1">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="53.96875" sy="0.0" tx="0.0" ty="0.0">
@@ -232,7 +219,6 @@
       </data>
     </edge>
     <edge id="e1" source="n1" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -255,7 +241,6 @@ additional settings<y:LabelModel>
       </data>
     </edge>
     <edge id="e2" source="n0" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -278,7 +263,6 @@ named endpoint
       </data>
     </edge>
     <edge id="e3" source="n2" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -300,7 +284,6 @@ Package<y:LabelModel>
       </data>
     </edge>
     <edge id="e4" source="n2" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="-66.526611328125" sy="0.0" tx="66.526611328125" ty="0.0">
@@ -322,7 +305,6 @@ Package<y:LabelModel>
       </data>
     </edge>
     <edge id="e5" source="n3" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="66.526611328125" sy="0.0" tx="-66.526611328125" ty="0.0">
@@ -343,7 +325,6 @@ Package<y:LabelModel>
       </data>
     </edge>
     <edge id="e6" source="n2" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="50.50000000000557" sy="14.499999999998693" tx="-66.526611328125" ty="0.0">
@@ -365,7 +346,6 @@ endpoint<y:LabelModel>
       </data>
     </edge>
     <edge id="e7" source="n4" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="-66.526611328125" sy="0.0" tx="66.526611328125" ty="0.0">
@@ -386,7 +366,6 @@ endpoint<y:LabelModel>
       </data>
     </edge>
     <edge id="e8" source="n2" target="n5">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -408,7 +387,6 @@ Resolver<y:LabelModel>
       </data>
     </edge>
     <edge id="e9" source="n5" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -430,7 +408,6 @@ Resolver<y:LabelModel>
       </data>
     </edge>
     <edge id="e10" source="n2" target="n4">
-      <data key="d9"/>
       <data key="d10">
         <y:ArcEdge>
           <y:Path sx="66.52301487651081" sy="10.136170353159002" tx="-66.526611328125" ty="0.0">
@@ -452,7 +429,6 @@ package<y:LabelModel>
       </data>
     </edge>
     <edge id="e11" source="n3" target="n7">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -466,7 +442,6 @@ package<y:LabelModel>
       </data>
     </edge>
     <edge id="e12" source="n3" target="n9">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
@@ -477,7 +452,6 @@ package<y:LabelModel>
       </data>
     </edge>
     <edge id="e13" source="n3" target="n10">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -491,7 +465,6 @@ package<y:LabelModel>
       </data>
     </edge>
     <edge id="e14" source="n3" target="n11">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">
@@ -505,7 +478,6 @@ package<y:LabelModel>
       </data>
     </edge>
     <edge id="e15" source="n3" target="n8">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0">

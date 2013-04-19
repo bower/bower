@@ -41,6 +41,7 @@ Main issues are:
 - **Named endpoint:** name@endpoint#target
 - **UoW:** Unit of Work
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
+- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
@@ -120,7 +121,23 @@ TODO
 
 #### PackageRepository
 
-TODO
+##### Constructor
+
+`PackageRepository()`
+
+##### Public methods
+
+`PackageRepository#get(endpoint)`: Promise
+
+Enqueues an endpoint to be fetched, and returns a promise of a *canonical package*.
+
+`PackageRepository#abort()`: Promise
+
+Aborts any queued package lookup as soon as possible, and returns a promise that everything has been aborted.
+
+##### Protected methods
+
+*CONTINUE HERE*
 
 
 #### ResolverFactory
@@ -148,10 +165,11 @@ Think of it as an abstract class that implements the resolver interface as well 
 Resolvers are responsible for the following:
 
 - Based on an endpoint, fetch the contents of the package into a temporary folder (step is implemented by the `_resolveSelf()` method).
-- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties). If this file does not exist, one is created, with the information that was inferred. Note that validation should be done using a node module that is common for both the Bower client and the server.
-- Update any relevant information based on the `json` (e.g. this step may emit a `name_change`).
-- Attach any additional meta data to the `json` file. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
-- Applying the `ignore` constraint based on the `json` file. Files are effectively removed in this step.
+- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties) into a `package meta` object. If the file does not exist, a base one is inferred. Note that this should be done using a node module that is common for both the Bower client and the server.
+- Update any relevant information based on the `package meta` (e.g. this step may emit a `name_change`).
+- Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
+- Applying the `ignore` constraint based on the `package meta`. Files are effectively removed in this step.
+- Storing the `package meta` into a `.bower.json` hidden file.
 
 
 ##### Events
@@ -190,53 +208,69 @@ Returns the target.
 
 Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
 
-`Resolver#hasNew(oldVersion, oldResolution)`: Promise
+`Resolver#hasNew(canonicalPackage)`: Promise
 
-Checks if there is a new version. Takes the old version and resolution to be used when comparing.   
-Resolves to a boolean when done.
+Checks if there is a version more recent than the provided `canonicalPackage` (folder) that complies with the resolver target.
 
 `Resolver#resolve()`: Promise
 
-Resolves the resolver.
-The resolve process obeys a very explicit flow:
+Resolves the resolver, and returns a promise of a canonical package.
+The resolve process is as follows:
 
-- calls `_createTempDir()` and waits
-- When done, calls #_resolveSelf and waits
-- When done, calls #_readJson and waits
-- When done, calls #_parseJson and waits
-- When done, resolves the promise with the resolution.
+- calls `_createTempDir()` and waits.
+- When done, calls `_resolveSelf()` and waits.
+- When done, calls `_readJson()` and waits (validation and normalisation also happens here).
+- When done, calls `_decoratePkgMeta()`, giving the resolver the chance to attach additional information about the resolved package (`HTTP` headers, etc).
+- When done, calls both, and waits:
+    - `_applyPkgMeta(meta)`
+    - `_savePkgMeta(meta)`
+- When done, resolves the promise with the *temp dir*, which is now a canonical package.
 
-`Resolver#getJson()`: Object
+`Resolver#getPackageMeta()`: Object
 
-Get the `bower.json` of the resolved package.
+Get the `package meta`. Essentially, it's what you'll find in `.bower.json`.
 Throws an error if the resolver is not yet resolved.
 
 -----------
 
-Protected functions
+##### Protected functions
 
-##### Resolver#_createTempDir() -> Promise
+`Resolver#_createTempDir()`: Promise
+
 Creates a temporary dir.
 
-##### Resolver#_readJson() -> Promise
-Reads `bower.json`, possibly by using a dedicated `read-json` package that will be available in the Bower organization. It will ensure everything is valid.
+`Resolver#_readJson()`: Promise
 
-##### Resolver#_parseJson(json) -> Promise
-Parses the json:
+Reads `bower.json`/`component.json`, possibly by using a dedicated `read-json` node module that will be available in the Bower organisation.
+
+This method also normalises the `package meta`, filling in any missing information, inferring when possible.
+
+`Resolver#_decoratePkgMeta(meta)`: Promise
+
+Decorates the `package meta` with any additional information that might be relevant to be stored. A `UrlResolver` could, for example, store some `HTTP` headers, that would be useful when comparing versions, in the `hasNew()` method.
+
+`Resolver#_applyPkgMeta(meta)`: Promise
+
+Since the `package meta` might contain some information that has implications to the *canonical* state of the package, this is where these rules are enforced.
 
 - Checks if the resolver name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
 - Deletes files that are specified in the `ignore` property of the json from the temporary directory.
 
+`Resolver#_savePkgMeta(meta)`: Promise
+
+Stores the `package meta` into a `.bower.json` file inside the root of the package.
+
 --------
 
-Abstract functions that must be implemented by concrete resolvers.
+##### Abstract functions that must be implemented by concrete resolvers.
 
-##### Resolver#_resolveSelf() -> Promise
-Resolves self. This method should be implemented by the concrete resolvers. For instance, the UrlResolver would download the contents of a URL into the temporary directory.
+`Resolver#_resolveSelf()`: Promise
 
-#### Types of Resolvers
+The actual process of fetching the package files. This method must he implemented by concrete resolvers. For instance, the `UrlResolver` would download the contents of a URL into the temporary directory in this stage.
 
-The following resolvers will extend from `Resolver.js` and will obey its interface.
+#### Resolver types
+
+The following resolvers will extend from `Resolver.js` and obey its interface.
 
 - `LocalResolver`     extends `Resolver` (dependencies pointing to files of folders in the own system)
 - `UrlResolver`       extends `Resolver` (dependencies pointing to downloadable resources)
@@ -244,9 +278,9 @@ The following resolvers will extend from `Resolver.js` and will obey its interfa
 - `GitRemoteResolver` extends `Resolver` or `GitFsResolver` (remote git dependencies)
 - `PublishedResolver` extends `Resolver` (? makes sense if bower supports a publish model, just like `npm`).
 
-These type of resolvers will be known and created (instantiated) by the `ResolverFactory`.
+The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
 
-This architecture will make it very easy for the community to create others package types, for instance, a `MercurialLocalPackage`, `MercurialRemotePackage`, `SvnResolver`, etc.
+This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
 
 
 #### Unit of work
@@ -258,7 +292,7 @@ The number of parallel resolutions may be limited and configured.
 
 #### Constructor
 
-UnitOfWork(options)
+`UnitOfWork(options)`
 
 Options:
 
@@ -266,7 +300,7 @@ Options:
 
 ------------
 
-Public methods.
+#### Public methods.
 
 `UnitOfWork#enqueue(resolver)`: Promise
 
@@ -280,6 +314,6 @@ Checks if a resolver is already in the unit of work.
 `UnitOfWork#abort()`: Promise
 
 Aborts the current work being done, by removing any resolvers waiting to resolve.
-Please note that resolvers that are being run can't be aborted.
-Returns a promise that is fulfilled when the current running resolvers finish the resolve process.
+Note that resolvers running can't be aborted.
+Returns a promise that is fulfilled when the current running resolvers finish the resolve process. Any `Resolver` that was in queue to be ran is aborted immediately.
 
