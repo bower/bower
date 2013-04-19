@@ -41,7 +41,7 @@ Main issues are:
 - **Named endpoint:** name@endpoint#target
 - **UoW:** Unit of Work
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
-- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file.
+- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
