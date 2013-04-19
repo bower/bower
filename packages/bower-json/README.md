@@ -28,7 +28,7 @@ readJson('/path/to/bower.json', function (err, json) {
 
 #### readJson.parse(json, callback)
 
-Parses an object as `json` file. Useful when you want to apply normalisation, defaults and validation
+Parses an object. Useful when you want to apply normalisation, defaults and validation
 directly to an object.
 
 ```js
