@@ -12,7 +12,8 @@ Read `bower.json` files with semantics, normalisation, defaults and validation.
 Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.
 
 ```js
-// Reads the `json` file.
+var readJson = require('read-bower-json');
+
 readJson('/path/to/bower.json', function (err, json) {
     if (err) {
         console.error('There was an error reading the file');
@@ -67,7 +68,7 @@ readJson.find('/path/to/folder', function (err, filename) {
 
     console.log('Filename: ', filename);
 
-    // Read its contents
+    // Now that we got the filename, we can read its contents
     readJson(filename, function () {
         if (err) {
             console.error('There was an error reading the file');
