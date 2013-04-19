@@ -1,4 +1,4 @@
-read-bower-json
+bower-json
 
 ----------------
 
@@ -7,14 +7,14 @@ Read `bower.json` files with semantics, normalisation, defaults and validation.
 
 ## Usage
 
-#### readJson(file, callback)
+#### .read(file, callback)
 
 Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.
 
 ```js
-var readJson = require('read-bower-json');
+var bowerJson = require('bower-json');
 
-readJson('/path/to/bower.json', function (err, json) {
+bowerJson.read('/path/to/bower.json', function (err, json) {
     if (err) {
         console.error('There was an error reading the file');
         console.error(err.message);
@@ -24,23 +24,25 @@ readJson('/path/to/bower.json', function (err, json) {
     console.log('JSON: ', json);
 });
 
+// Can also be used by simply calling bowerJson()
+
 ```
 
 
-#### readJson.parse(json, callback)
+#### .parse(json, callback)
 
 Parses an object. Useful when you want to apply normalisation, defaults and validation
 directly to an object.
 
 ```js
-var readJson = require('read-bower-json');
+var bowerJson = require('bower-json');
 
 var json = {
     name: 'my-package',
     version: '0.0.1'
 };
 
-readJson.parse(json, function (err, filename) {
+bowerJson.parse(json, function (err, filename) {
     if (err) {
         console.error('There was an error parsing the object');
         console.error(err.message);
@@ -52,15 +54,15 @@ readJson.parse(json, function (err, filename) {
 ```
 
 
-#### readJson.find(folder, callback)
+#### .find(folder, callback)
 
 Finds the `json` filename inside a folder.   
 Checks if a `bower.json` exists, falling back to the deprecated `component.json`.   
 
 ```js
-var readJson = require('read-bower-json');
+var bowerJson = require('bower-json');
 
-readJson.find('/path/to/folder', function (err, filename) {
+bowerJson.find('/path/to/folder', function (err, filename) {
     if (err) {
         console.error('There is no json file in the folder');
         return;
@@ -69,7 +71,7 @@ readJson.find('/path/to/folder', function (err, filename) {
     console.log('Filename: ', filename);
 
     // Now that we got the filename, we can read its contents
-    readJson(filename, function () {
+    bowerJson.read(filename, function () {
         if (err) {
             console.error('There was an error reading the file');
             console.error(err.message);
