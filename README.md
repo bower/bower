@@ -316,7 +316,7 @@ The returned promise is resolved when the function promise is also resolved.
 
 The `type` argument is optional and can be a `string` or an array of `strings`.   
 Use it to specify the type(s) associated with the function.
-If multiple types are specified, the function will only be ran when a free slot on every type list is found.
+If multiple types are specified, the function will only ran when a free slot of every type is found.
 
 `Worker#abort()`: Promise
 
