@@ -121,7 +121,23 @@ TODO
 
 #### PackageRepository
 
-TODO
+##### Constructor
+
+`PackageRepository()`
+
+##### Public methods
+
+`PackageRepository#get(endpoint)`: Promise
+
+Enqueues an endpoint to be fetched, and returns a promise of a *canonical package*.
+
+`PackageRepository#abort()`: Promise
+
+Aborts any queued package lookup as soon as possible, and returns a promise that everything has been aborted.
+
+##### Protected methods
+
+*CONTINUE HERE*
 
 
 #### ResolverFactory
@@ -242,16 +258,19 @@ Since the `package meta` might contain some information that has implications to
 
 `Resolver#_savePkgMeta(meta)`: Promise
 
+Stores the `package meta` into a `.bower.json` file inside the root of the package.
+
 --------
 
-Abstract functions that must be implemented by concrete resolvers.
+##### Abstract functions that must be implemented by concrete resolvers.
 
-##### Resolver#_resolveSelf() -> Promise
-Resolves self. This method should be implemented by the concrete resolvers. For instance, the UrlResolver would download the contents of a URL into the temporary directory.
+`Resolver#_resolveSelf()`: Promise
 
-#### Types of Resolvers
+The actual process of fetching the package files. This method must he implemented by concrete resolvers. For instance, the `UrlResolver` would download the contents of a URL into the temporary directory in this stage.
 
-The following resolvers will extend from `Resolver.js` and will obey its interface.
+#### Resolver types
+
+The following resolvers will extend from `Resolver.js` and obey its interface.
 
 - `LocalResolver`     extends `Resolver` (dependencies pointing to files of folders in the own system)
 - `UrlResolver`       extends `Resolver` (dependencies pointing to downloadable resources)
@@ -259,9 +278,9 @@ The following resolvers will extend from `Resolver.js` and will obey its interfa
 - `GitRemoteResolver` extends `Resolver` or `GitFsResolver` (remote git dependencies)
 - `PublishedResolver` extends `Resolver` (? makes sense if bower supports a publish model, just like `npm`).
 
-These type of resolvers will be known and created (instantiated) by the `ResolverFactory`.
+The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
 
-This architecture will make it very easy for the community to create others package types, for instance, a `MercurialLocalPackage`, `MercurialRemotePackage`, `SvnResolver`, etc.
+This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
 
 
 #### Unit of work
@@ -273,7 +292,7 @@ The number of parallel resolutions may be limited and configured.
 
 #### Constructor
 
-UnitOfWork(options)
+`UnitOfWork(options)`
 
 Options:
 
@@ -281,7 +300,7 @@ Options:
 
 ------------
 
-Public methods.
+#### Public methods.
 
 `UnitOfWork#enqueue(resolver)`: Promise
 
@@ -295,6 +314,6 @@ Checks if a resolver is already in the unit of work.
 `UnitOfWork#abort()`: Promise
 
 Aborts the current work being done, by removing any resolvers waiting to resolve.
-Please note that resolvers that are being run can't be aborted.
-Returns a promise that is fulfilled when the current running resolvers finish the resolve process.
+Note that resolvers running can't be aborted.
+Returns a promise that is fulfilled when the current running resolvers finish the resolve process. Any `Resolver` that was in queue to be ran is aborted immediately.
 
