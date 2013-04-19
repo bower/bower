@@ -309,14 +309,15 @@ var worker = new Worker(15, {
 
 #### Public methods.
 
-`Worker#enqueue(func, type)`: Promise
+`Worker#enqueue(func, [type])`: Promise
 
 Enqueues a function to be ran. The function is expected to return a promise.   
 The returned promise is resolved when the function promise is also resolved.
 
 The `type` argument is optional and can be a `string` or an array of `strings`.   
 Use it to specify the type(s) associated with the function.
-If multiple types are specified, the function will only ran when a free slot of every type is found.
+If multiple types are specified, the function will only ran when a free slot of every type is found.   
+If no `type` is passed or is unknown, the `defaultConcurrency` is used.
 
 `Worker#abort()`: Promise
 
