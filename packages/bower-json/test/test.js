@@ -21,7 +21,7 @@ describe('.find', function () {
         });
     });
 
-    it('should give error if no component.json / bower.json is found', function (done) {
+    it('should error if no component.json / bower.json is found', function (done) {
         bowerJson.find(__dirname, function (err) {
             expect(err).to.be.an(Error);
             expect(err.code).to.equal('ENOENT');
@@ -35,6 +35,14 @@ describe('.read', function () {
         bowerJson.read(__dirname + '/willneverexist', function (err) {
             expect(err).to.be.an(Error);
             expect(err.code).to.equal('ENOENT');
+            done();
+        });
+    });
+
+    it('should give error if when reading an invalid json', function (done) {
+        bowerJson.read(__dirname + '/pkg-bower-json-invalid/bower.json', function (err) {
+            expect(err).to.be.an(Error);
+            expect(err.code).to.equal('ESYNTAX');
             done();
         });
     });

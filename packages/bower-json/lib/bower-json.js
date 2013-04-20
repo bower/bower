@@ -9,9 +9,8 @@ function read(file, callback) {
 
         try {
             json = JSON.parse(contents);
-        } catch (e) {
-            err = new Error('Not a valid JSON file: ' + e.message);
-            err.code = 'EINVFRMT';
+        } catch (err) {
+            err.code = 'ESYNTAX';
             return callback(err);
         }
 
