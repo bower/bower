@@ -33,7 +33,7 @@
         - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
         - Install only stable versions, see: https://github.com/twitter/bower/issues/266
         - Expand also .gz files, see: https://github.com/twitter/bower/issues/347
-- Gracefully remove all created tmp dirs
+- Inter process locks? two processes running bower (either from the bin or programatically) might mess up the cache on write operations.. and possibly other write operations. Think about a solution for this (make the worker multi-process aware?!)
 - Use update-notifier!!
 - Use yeomen insight!!
 - bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
