@@ -311,7 +311,7 @@ var worker = new Worker(15, {
 
 `Worker#enqueue(func, [type])`: Promise
 
-Enqueues a function to be ran. The function is expected to return a promise.   
+Enqueues a function to be ran. The function is expected to return a promise or a value.   
 The returned promise is resolved when the function promise is also resolved.
 
 The `type` argument is optional and can be a `string` or an array of `strings`.   
