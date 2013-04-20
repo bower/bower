@@ -25,6 +25,7 @@ describe('.find', function () {
         bowerJson.find(__dirname, function (err) {
             expect(err).to.be.an(Error);
             expect(err.code).to.equal('ENOENT');
+            expect(err.message).to.contain('no json file');
             done();
         });
     });
@@ -42,7 +43,7 @@ describe('.read', function () {
     it('should give error if when reading an invalid json', function (done) {
         bowerJson.read(__dirname + '/pkg-bower-json-invalid/bower.json', function (err) {
             expect(err).to.be.an(Error);
-            expect(err.code).to.equal('ESYNTAX');
+            expect(err.code).to.equal('EMALFORMED');
             done();
         });
     });
@@ -62,13 +63,16 @@ describe('.read', function () {
 });
 
 describe('.parse', function () {
-    it('should return the same object', function () {
+    it('should parse an object, giving a parsed object', function (done) {
         var json = {
             name: 'foo',
             version: '0.0.0'
         };
 
-        expect(bowerJson.parse(json)).to.equal(json);
+        bowerJson.parse(json, function (err, retJson) {
+            expect(json).to.eql(retJson);
+            done();
+        });
     });
 
     it.skip('should validate the passed object');

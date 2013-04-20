@@ -8,19 +8,20 @@ function read(file, callback) {
         var json;
 
         try {
-            json = JSON.parse(contents);
+            json = JSON.parse(contents.toString());
         } catch (err) {
-            err.code = 'ESYNTAX';
+            err.code = 'EMALFORMED';
             return callback(err);
         }
 
-        callback(null, parse(json));
+        parse(json, callback);
     });
 }
 
-function parse(json) {
+function parse(json, callback) {
     // Apply normalisation, defaults, validation here
-    return json;
+    // If something is invalid, the error.code should be EINVALID
+    callback(null, json);
 }
 
 function find(folder, callback) {
