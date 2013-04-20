@@ -14,6 +14,7 @@ Reads `file` and applies normalisation, defaults and validation according to the
 ```js
 var bowerJson = require('bower-json');
 
+// Can also be used by simply calling bowerJson()
 bowerJson.read('/path/to/bower.json', function (err, json) {
     if (err) {
         console.error('There was an error reading the file');
@@ -23,9 +24,6 @@ bowerJson.read('/path/to/bower.json', function (err, json) {
 
     console.log('JSON: ', json);
 });
-
-// Can also be used by simply calling bowerJson()
-
 ```
 
 
