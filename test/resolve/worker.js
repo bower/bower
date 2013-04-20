@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var Q = require('Q');
-var Worker = require('../lib/resolve/Worker');
+var Worker = require('../../lib/resolve/Worker');
 
 describe('Worker', function () {
     var timeout;
@@ -19,71 +19,74 @@ describe('Worker', function () {
 
             promise = worker.enqueue(function () { return Q.resolve('foo'); });
 
+            expect(promise).to.be.an('object');
             expect(promise.then).to.be.a('function');
         });
 
-        it('should call the function and resolve', function (done) {
+        it('should call the function and resolve', function (next) {
             var worker = new Worker();
 
             worker.enqueue(function () { return Q.resolve('foo'); })
             .then(function (ret) {
                 expect(ret).to.equal('foo');
-                done();
-            });
+                next();
+            })
+            .done();
         });
 
-        it('should work with functions that return values syncronously', function (done) {
+        it('should work with functions that return values syncronously', function (next) {
             var worker = new Worker();
 
             worker.enqueue(function () { return 'foo'; })
             .then(function (ret) {
                 expect(ret).to.equal('foo');
-                done();
-            });
+                next();
+            })
+            .done();
         });
 
-        it('should assume the default concurrency when a type is not specified', function (done) {
+        it('should assume the default concurrency when a type is not specified', function (next) {
             var worker = new Worker(1),
                 calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; });
-            worker.enqueue(function () { done(new Error('Should not be called!')); });
+            worker.enqueue(function () { next(new Error('Should not be called!')); });
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(1);
-                done();
+                next();
             }, 100);
         });
 
-        it('should assume the default concurrency when a type is not known', function (done) {
+        it('should assume the default concurrency when a type is not known', function (next) {
             var worker = new Worker(1),
                 calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; }, 'foo_type');
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, 'foo_type');
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, 'foo_type');
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(1);
-                done();
+                next();
             }, 100);
         });
 
-        it('should have different slots when type is not passed or is not known', function (done) {
+        it('should have different slots when type is not passed or is not known', function (next) {
             var worker = new Worker(1),
                 calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; });
             worker.enqueue(function () { calls++; return Q.defer().promise; }, 'foo_type');
-            worker.enqueue(function () { done(new Error('Should not be called!')); });
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, 'foo_type');
+            worker.enqueue(function () { next(new Error('Should not be called!')); });
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, 'foo_type');
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(2);
-                done();
+                next();
             }, 100);
         });
 
-        it('should use the configured concurrency for the type', function (done) {
+        it('should use the configured concurrency for the type', function (next) {
             var worker = new Worker(1, {
                 foo: 2,
                 bar: 3
@@ -95,35 +98,35 @@ describe('Worker', function () {
                 };
 
             worker.enqueue(function () { calls.def++; return Q.defer().promise; });
-            worker.enqueue(function () { done(new Error('Should not be called!')); });
+            worker.enqueue(function () { next(new Error('Should not be called!')); });
             worker.enqueue(function () { calls.foo++; return Q.defer().promise; }, 'foo');
             worker.enqueue(function () { calls.foo++; return Q.defer().promise; }, 'foo');
             worker.enqueue(function () { calls.bar++; return Q.defer().promise; }, 'bar');
             worker.enqueue(function () { calls.bar++; return Q.defer().promise; }, 'bar');
             worker.enqueue(function () { calls.bar++; return Q.defer().promise; }, 'bar');
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, 'bar');
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, 'bar');
 
             timeout = setTimeout(function () {
                 expect(calls.def).to.equal(1);
                 expect(calls.foo).to.equal(2);
                 expect(calls.bar).to.equal(3);
-                done();
+                next();
             }, 100);
         });
     });
 
     describe('.abort', function () {
-        it('should clear the whole queue', function (done) {
+        it('should clear the whole queue', function (next) {
             var worker = new Worker(1, {
                 foo: 2
             }),
                 calls = 0;
 
             worker.enqueue(function () { calls++; return Q.resolve(); });
-            worker.enqueue(function () { done(new Error('Should not be called!')); });
+            worker.enqueue(function () { next(new Error('Should not be called!')); });
             worker.enqueue(function () { calls++; return Q.resolve(); }, 'foo');
             worker.enqueue(function () { calls++; return Q.resolve(); }, 'foo');
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, 'foo');
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, 'foo');
 
             worker.abort();
 
@@ -131,11 +134,11 @@ describe('Worker', function () {
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(4);
-                done();
+                next();
             }, 100);
         });
 
-        it('should wait for currently running functions to finish', function (done) {
+        it('should wait for currently running functions to finish', function (next) {
             var worker = new Worker(1, {
                 foo: 2
             }),
@@ -157,7 +160,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 worker.abort().then(function () {
                     expect(calls).to.eql([1, 2, 3]);
-                    done();
+                    next();
                 });
             }, 30);
         });
@@ -165,7 +168,7 @@ describe('Worker', function () {
 
 
     describe('scheduler', function () {
-        it('should start remaining tasks when one ends', function (done) {
+        it('should start remaining tasks when one ends', function (next) {
             var worker = new Worker(1, {
                 foo: 2
             }),
@@ -179,11 +182,11 @@ describe('Worker', function () {
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(5);
-                done();
+                next();
             }, 100);
         });
 
-        it('should respect the enqueue order', function (done) {
+        it('should respect the enqueue order', function (next) {
             var worker = new Worker(1),
                 defCalls = [],
                 fooCalls = [];
@@ -221,11 +224,11 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(defCalls).to.eql([1, 2, 3]);
                 expect(fooCalls).to.eql([1, 2, 3]);
-                done();
+                next();
             }, 100);
         });
 
-        it('should wait for one slot in every type on a multi-type function', function (done) {
+        it('should wait for one slot in every type on a multi-type function', function (next) {
             var worker = new Worker(1, {
                 foo: 1,
                 bar: 2
@@ -236,17 +239,17 @@ describe('Worker', function () {
             worker.enqueue(function () { return Q.defer().promise; }, 'bar');
 
             worker.enqueue(function () { calls++; return Q.resolve(); }, 'bar');
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, ['foo', 'bar']);
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, ['foo', 'bar']);
             worker.enqueue(function () { calls++; return Q.resolve(); }, 'bar');
-            worker.enqueue(function () { done(new Error('Should not be called!')); }, 'foo');
+            worker.enqueue(function () { next(new Error('Should not be called!')); }, 'foo');
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(2);
-                done();
+                next();
             }, 100);
         });
 
-        it('should free all type slots when finished running a function', function (done) {
+        it('should free all type slots when finished running a function', function (next) {
             var worker = new Worker(1, {
                 foo: 1,
                 bar: 2
@@ -260,7 +263,7 @@ describe('Worker', function () {
 
             timeout = setTimeout(function () {
                 expect(calls).to.equal(3);
-                done();
+                next();
             }, 100);
         });
     });

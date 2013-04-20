@@ -48,4 +48,7 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
 
     //testGitFsResolver();
     //testGitRemoteResolverNoTags();
+} else {
+    require('./resolve/resolver');
+    require('./resolve/worker');
 }

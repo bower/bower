@@ -15,6 +15,7 @@
           - But then.. how would versions be handled here?? different versions might have changed the deps
     - Publish model
 - Commands
+    - Abbreviations is supported in nopt.. don't need to install anything else
     - Bower script x
          - post-install (only useful for moving files around)
          - pre-publish
@@ -33,7 +34,12 @@
         - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
         - Install only stable versions, see: https://github.com/twitter/bower/issues/266
         - Expand also .gz files, see: https://github.com/twitter/bower/issues/347
+- Contributing.md
+  - Copy from master
+  - Tell users to learn about promises
+  - Tell users to not forget to call .done() to throw unhandled promise errors in tests
 - Inter process locks? two processes running bower (either from the bin or programatically) might mess up the cache on write operations.. and possibly other write operations. Think about a solution for this (make the worker multi-process aware?!)
 - Use update-notifier!!
 - Use yeomen insight!!
 - bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
+- in prod dont forget to Q.longStackJumpLimit = 0;

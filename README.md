@@ -164,8 +164,8 @@ Resolvers are responsible for the following:
 - Based on an endpoint, fetch the contents of the package into a temporary folder (step is implemented by the `_resolveSelf()` method).
 - After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties) into a `package meta` object. If the file does not exist, a base one is inferred. Note that this should be done using a node module that is common for both the Bower client and the server.
 - Update any relevant information based on the `package meta` (e.g. this step may emit a `name_change`).
-- Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
 - Applying the `ignore` constraint based on the `package meta`. Files are effectively removed in this step.
+- Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
 - Storing the `package meta` into a `.bower.json` hidden file.
 
 
@@ -189,13 +189,13 @@ Options:
 
 ##### Public functions
 
-`Resolver#getName()`: String
-
-Returns the name.
-
 `Resolver#getSource()`: String
 
 Returns the source.
+
+`Resolver#getName()`: String
+
+Returns the name.
 
 `Resolver#getTarget()`: String
 
