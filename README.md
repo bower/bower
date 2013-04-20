@@ -217,13 +217,12 @@ The resolve process is as follows:
 - calls `_createTempDir()` and waits.
 - When done, calls `_resolveSelf()` and waits.
 - When done, calls `_readJson()` and waits (validation and normalisation also happens here).
-- When done, calls `_decoratePkgMeta()`, giving the resolver the chance to attach additional information about the resolved package (`HTTP` headers, etc).
-- When done, calls both, and waits:
+- When done, calls both functions below, and waits:
     - `_applyPkgMeta(meta)`
     - `_savePkgMeta(meta)`
 - When done, resolves the promise with the *temp dir*, which is now a canonical package.
 
-`Resolver#getPackageMeta()`: Object
+`Resolver#getPkgMeta()`: Object
 
 Get the `package meta`. Essentially, it's what you'll find in `.bower.json`.
 Throws an error if the resolver is not yet resolved.
@@ -242,10 +241,6 @@ Reads `bower.json`/`component.json`, possibly by using a dedicated `read-json` n
 
 This method also generates the `package meta` based on the `json`, filling in any missing information, inferring when possible.
 
-`Resolver#_decoratePkgMeta(meta)`: Promise
-
-Decorates the `package meta` with any additional information that might be relevant to be stored. A `UrlResolver` could, for example, store some `HTTP` headers, that would be useful when comparing versions, in the `hasNew()` method.
-
 `Resolver#_applyPkgMeta(meta)`: Promise
 
 Since the `package meta` might contain some information that has implications to the *canonical* state of the package, this is where these rules are enforced.
@@ -256,6 +251,7 @@ Since the `package meta` might contain some information that has implications to
 `Resolver#_savePkgMeta(meta)`: Promise
 
 Stores the `package meta` into a `.bower.json` file inside the root of the package.
+Concrete resolvers may override this to add any additional information that might be relevant to be stored. A `UrlResolver` could, for example, store some `HTTP` headers, that would be useful when comparing versions, in the `hasNew()` method.
 
 --------
 
@@ -290,11 +286,10 @@ This component will be a service that can be accessed to perform tasks.
 
 #### Constructor
 
-`Worker(defaultConcurrency, types)`
+`Worker(defaultConcurrency, [types])`
 
-The `defaultConcurrency` is the default maximum concurrent functions being run.   
+The `defaultConcurrency` is the default maximum concurrent functions being run (-1 to specify no limits).   
 The `types` allows you to specify different concurrencies for different types.   
-Use `-1` to specify no limits.
 
 Example:
 
@@ -312,17 +307,18 @@ var worker = new Worker(15, {
 `Worker#enqueue(func, [type])`: Promise
 
 Enqueues a function to be ran. The function is expected to return a promise or a value.   
-The returned promise is resolved when the function promise is also resolved.
+The returned promise is resolved when the function finishes execution.
 
 The `type` argument is optional and can be a `string` or an array of `strings`.   
-Use it to specify the type(s) associated with the function.
-If multiple types are specified, the function will only ran when a free slot of every type is found.   
-If no `type` is passed or is unknown, the `defaultConcurrency` is used.
+Use it to specify the type(s) associated with the function.   
+
+The function will run as soon as a free slot is available for every `type`.  
+If no `type` is passed or is unknown, the `defaultConcurrency` is used.  
+
+The execution order is guaranteed for functions enqueued with the exact same `type` argument.
 
 `Worker#abort()`: Promise
 
 Aborts all current work being done.
 Returns a promise that is resolved when the current running functions finish to execute.   
 Any function that was in the queue waiting to be ran is removed immediately.
-
-
