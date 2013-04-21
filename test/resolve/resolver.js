@@ -298,7 +298,15 @@ describe('Resolver', function () {
             resolver._applyPkgMeta(meta)
             .then(function (retMeta) {
                 expect(retMeta).to.equal(meta);
-                next();
+
+                // Test also with the ignore property because the code is different
+                meta = { name: 'foo', ignore: ['somefile'] };
+                resolver._applyPkgMeta(meta)
+                .then(function (retMeta) {
+                    expect(retMeta).to.equal(meta);
+                    next();
+                })
+                .done();
             })
             .done();
         });
@@ -411,7 +419,36 @@ describe('Resolver', function () {
             promise.then(done.bind(done, null), done.bind(done, null));
         });
 
-        it.skip('should resolve with the the same package meta');
-        it.skip('should save the package meta to the package meta file (.bower.json)');
+        it('should resolve with the the same package meta', function (next) {
+            var resolver = new Resolver('foo'),
+                meta = { name: 'foo' };
+
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta(meta)
+            .then(function (retMeta) {
+                expect(retMeta).to.equal(meta);
+                next();
+            })
+            .done();
+        });
+
+        it('should save the package meta to the package meta file (.bower.json)', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta({ name: 'bar' })
+            .then(function (retMeta) {
+                fs.readFile(path.join(tempDir, '.bower.json'), function (err, contents) {
+                    if (err) return next(err);
+
+                    contents = contents.toString();
+                    expect(JSON.parse(contents)).to.eql(retMeta);
+                    next();
+                });
+            })
+            .done();
+        });
     });
 });
