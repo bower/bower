@@ -4,6 +4,8 @@ var path = require('path');
 var util = require('util');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
+var tmp = require('tmp');
+var cmd = require('../../lib/util/cmd');
 var Resolver = require('../../lib/resolve/Resolver');
 
 describe('Resolver', function () {
@@ -181,7 +183,7 @@ describe('Resolver', function () {
             expect(resolver.getTempDir() == null).to.be(true);
         });
 
-        it('should still return null if resolved failed', function () {
+        it('should still return null if resolve failed', function () {
             it('should still return null', function (next) {
                 var resolver = new Resolver('foo');
 
@@ -221,7 +223,7 @@ describe('Resolver', function () {
             expect(resolver.getPkgMeta() == null).to.be(true);
         });
 
-        it('should still return null if resolved failed', function () {
+        it('should still return null if resolve failed', function () {
             it('should still return null', function (next) {
                 var resolver = new Resolver('foo');
 
@@ -252,6 +254,21 @@ describe('Resolver', function () {
     });
 
     describe('_createTempDir', function () {
+        var tempDir = path.normalize(__dirname + '/../assets/tmp'),
+            dirMode0777;
+
+        before(function () {
+            var stat;
+
+            mkdirp.sync(tempDir, '0777');
+            stat = fs.statSync(tempDir);
+            dirMode0777 = stat.mode;
+        });
+
+        after(function (next) {
+            rimraf(tempDir, next);
+        });
+
         it('should return a promise', function (done) {
             var resolver = new Resolver('foo'),
                 promise = resolver._createTempDir();
@@ -260,13 +277,102 @@ describe('Resolver', function () {
             expect(promise.then).to.be.an('function');
             promise.then(done.bind(done, null), done.bind(done, null));
         });
-        it.skip('should create a directory inside a bower folder, located within the OS temp folder');
-        it.skip('should set the dir mode the same as the process');
-        it.skip('should remove the folder after execution');
-        it.skip('should set _tempDir with the created directory');
+
+        it('should create a directory inside a bower folder, located within the OS temp folder', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._createTempDir()
+            .then(function (dir) {
+                var dirname,
+                    osTempDir;
+
+                expect(dir).to.be.a('string');
+                expect(fs.existsSync(dir)).to.be(true);
+
+                dirname = path.dirname(dir);
+                osTempDir = path.resolve(tmp.tmpdir);
+
+                expect(path.basename(dirname)).to.equal('bower');
+                expect(path.dirname(dirname)).to.equal(osTempDir);
+                next();
+            })
+            .done();
+        });
+
+        it('should set the dir mode the same as the process', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._createTempDir()
+            .then(function (dir) {
+                var stat = fs.statSync(dir),
+                    expectedMode = dirMode0777 & ~process.umask();
+
+                expect(stat.mode).to.equal(expectedMode);
+                next();
+            })
+            .done();
+        });
+
+        it('should remove the folder after execution', function (next) {
+            var bowerOsTempDir = path.join(tmp.tmpdir, 'bower');
+
+            rimraf(bowerOsTempDir, function (err) {
+                if (err) return next(err);
+
+                cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: __dirname + '/../../' })
+                .then(function () {
+                    expect(fs.existsSync(bowerOsTempDir)).to.be(true);
+                    expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
+                    next();
+                }, function (err) {
+                    next(new Error(err.details));
+                })
+                .done();
+            });
+        });
+
+        it('should remove the folder on an uncaught exception', function (next) {
+            var bowerOsTempDir = path.join(tmp.tmpdir, 'bower');
+
+            rimraf(bowerOsTempDir, function (err) {
+                if (err) return next(err);
+
+                cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: __dirname + '/../../' })
+                .then(function () {
+                    next(new Error('The command should have failed'));
+                }, function () {
+                    expect(fs.existsSync(bowerOsTempDir)).to.be(true);
+                    expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
+                    next();
+                })
+                .done();
+            });
+        });
+
+        it('should set _tempDir with the created directory', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._createTempDir()
+            .then(function (dir) {
+                expect(resolver._tempDir).to.be.ok();
+                expect(resolver._tempDir).to.equal(dir);
+                next();
+            })
+            .done();
+        });
     });
 
     describe('_readJson', function () {
+        var tempDir = path.normalize(__dirname + '/../assets/tmp');
+
+        beforeEach(function (next) {
+            mkdirp(tempDir, next);
+        });
+
+        afterEach(function (next) {
+            rimraf(tempDir, next);
+        });
+
         it('should return a promise', function (done) {
             var resolver = new Resolver('foo'),
                 promise = resolver._readJson();
@@ -275,9 +381,50 @@ describe('Resolver', function () {
             expect(promise.then).to.be.an('function');
             promise.then(done.bind(done, null), done.bind(done, null));
         });
-        it.skip('should read the bower.json file');
-        it.skip('should fallback to component.json');
-        it.skip('should resolve to an inferred json if no json file was found');
+
+        it('should read the bower.json file', function (next) {
+            var resolver = new Resolver('foo');
+
+            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
+            fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
+
+            resolver._readJson(tempDir)
+            .then(function (meta) {
+                expect(meta).to.be.an('object');
+                expect(meta.name).to.equal('foo');
+                expect(meta.version).to.equal('0.0.0');
+                next();
+            })
+            .done();
+        });
+
+        it('should fallback to component.json', function (next) {
+            var resolver = new Resolver('foo');
+
+            fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
+
+            resolver._readJson(tempDir)
+            .then(function (meta) {
+                expect(meta).to.be.an('object');
+                expect(meta.name).to.equal('bar');
+                expect(meta.version).to.equal('0.0.0');
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to an inferred json if no json file was found', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._readJson(tempDir)
+            .then(function (meta) {
+                expect(meta).to.be.an('object');
+                expect(meta.name).to.equal('foo');
+                next();
+            })
+            .done();
+        });
+
         it.skip('should apply normalisation, defaults and validation to the json object');
     });
 

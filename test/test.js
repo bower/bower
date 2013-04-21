@@ -49,6 +49,11 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     //testGitFsResolver();
     //testGitRemoteResolverNoTags();
 } else {
+
+    // Cleanup the uncaughtException added by the tmp module
+    // It messes with the mocha uncaughtException event to caught errors
+    process.removeAllListeners('uncaughtException');
+
     require('./resolve/resolver');
     require('./resolve/worker');
 }
