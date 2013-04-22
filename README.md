@@ -1,4 +1,4 @@
-# Bower rewrite
+# Bower rewrite [![Build Status](https://secure.travis-ci.org/twitter/bower.png?branch=rewrite)](http://travis-ci.org/twitter/bower)
 
 ## Why?
 
