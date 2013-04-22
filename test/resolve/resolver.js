@@ -398,16 +398,23 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should fallback to component.json', function (next) {
-            var resolver = new Resolver('foo');
+        it('should fallback to component.json (emitting a "warn" event)', function (next) {
+            var resolver = new Resolver('foo'),
+                warn;
 
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
+
+            resolver.on('warn', function (data) {
+                warn = data;
+            });
 
             resolver._readJson(tempDir)
             .then(function (meta) {
                 expect(meta).to.be.an('object');
                 expect(meta.name).to.equal('bar');
                 expect(meta.version).to.equal('0.0.0');
+
+                expect(warn).to.contain('deprecated');
                 next();
             })
             .done();

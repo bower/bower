@@ -27,6 +27,7 @@ Main issues are:
 - Ability to easily add package types (`SVN`, etc).
 - Support for commit hashes and branches in targets for `Git` endpoints.
 - Improved output after installation/update.
+- Improve tests coverage
 - Integrate with update-notifier and yeomen insight.
 
 
