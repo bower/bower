@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var Q = require('Q');
+var Q = require('q');
 var Worker = require('../../lib/resolve/Worker');
 
 describe('Worker', function () {
