@@ -324,6 +324,7 @@ Thanks for assistance and contributions:
 * [@marcelombc](https://github.com/marcelombc)
 * [@mklabs](https://github.com/mklabs)
 * [@paulirish](https://github.com/paulirish)
+* [@richo](https://github.com/richo)
 * [@rvagg](https://github.com/rvagg)
 * [@sindresorhus](https://github.com/sindresorhus)
 * [@SlexAxton](https://github.com/SlexAxton)
