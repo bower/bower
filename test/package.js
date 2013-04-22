@@ -636,8 +636,7 @@ describe('package', function () {
     var warn = [];
 
     pkg.on('resolve', function () {
-      // jQuery will get resolved twice as it is a dependency of both explicit dependencies.
-      assert.equal(warn.length, 4);
+      assert.equal(warn.length, 3);
       next();
     });
 
