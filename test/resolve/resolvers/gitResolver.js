@@ -10,7 +10,38 @@ describe('GitResolver', function () {
         delete GitResolver._refs;
     });
 
+    describe('hasNew', function () {
+        it('should return a promise');
+        it('should be true when the resolution type is different');
+        it('should be true when a different tag (higher/lower) for a range is available');
+        it('should be false when resolved to the same tag for a given range');
+        it('should be true when a different commit hash for a given branch is available');
+        it('should be false when resolved to the the same commit hash for a given branch');
+        it('should be false when targeting commit hashes');
+        it('should resolve to the master branch when the target is *');
+    });
+
+    describe('resolve', function () {
+        it('should return a promise');
+        it('should call the necessary functions by thee correct order');
+    });
+
+    describe('._findResolution', function () {
+        it('should return a promise');
+    });
+
+    describe('._cleanup', function () {
+        it('should return a promise');
+        it('should remove the .git folder from the temp dir');
+    });
+
+    describe('._savePkgMeta', function () {
+        it('should return a promise');
+        it('should save the resolution to the json to be used later by .hasNew');
+    });
+
     describe('#fetchHeads', function () {
+        it('should return a promise');
         it('should resolve to an empty object if no heads are found', function (next) {
             GitResolver.fetchRefs = function () {
                 return Q.resolve([]);
@@ -109,6 +140,7 @@ describe('GitResolver', function () {
     });
 
     describe('#fetchVersions', function () {
+        it('should return a promise');
         it('should resolve to an empty array if no tags are found', function (next) {
             GitResolver.fetchRefs = function () {
                 return Q.resolve([]);

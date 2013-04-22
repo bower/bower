@@ -1,6 +1,6 @@
 describe('GitFsResolver', function () {
     describe('.resolve', function () {
-        it.skip('should resolve to the latest commit if a repo has no tags');
+        it.skip('should resolve to the latest commit if a repository has no tags');
         it.skip('should resolve to the specified range');
         it.skip('should resolve to the specified version');
         it.skip('should resolve to the specified commit');
