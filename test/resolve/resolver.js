@@ -436,18 +436,24 @@ describe('Resolver', function () {
     });
 
     describe('_applyPkgMeta', function () {
+        var tempDir = path.normalize(__dirname + '/../assets/tmp');
+
         it('should return a promise', function (done) {
             var resolver = new Resolver('foo'),
                 promise = resolver._applyPkgMeta({ name: 'foo' });
+
+            resolver._tempDir = tempDir;
 
             expect(promise).to.be.an('object');
             expect(promise.then).to.be.an('function');
             promise.then(done.bind(done, null), done.bind(done, null));
         });
 
-        it('should resolve with the the same package meta', function (next) {
+        it('should resolve with the same package meta', function (next) {
             var resolver = new Resolver('foo'),
                 meta = { name: 'foo' };
+
+            resolver._tempDir = tempDir;
 
             resolver._applyPkgMeta(meta)
             .then(function (retMeta) {
@@ -573,7 +579,7 @@ describe('Resolver', function () {
             promise.then(done.bind(done, null), done.bind(done, null));
         });
 
-        it('should resolve with the the same package meta', function (next) {
+        it('should resolve with the same package meta', function (next) {
             var resolver = new Resolver('foo'),
                 meta = { name: 'foo' };
 
