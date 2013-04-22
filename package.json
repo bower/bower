@@ -26,7 +26,8 @@
     "ncp": "~0.4.2",
     "pathspec": "~0.9.2",
     "glob": "~3.1.21",
-    "rimraf": "~2.1.4"
+    "rimraf": "~2.1.4",
+    "chmodr": "~0.1.0"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
