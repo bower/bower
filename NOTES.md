@@ -43,3 +43,4 @@
 - Use yeomen insight!!
 - bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
 - in prod dont forget to Q.longStackJumpLimit = 0;
+- switch from events to promise progress

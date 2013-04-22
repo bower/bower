@@ -55,5 +55,7 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     process.removeAllListeners('uncaughtException');
 
     require('./resolve/resolver');
+    require('./resolve/resolvers/gitResolver');
+    //require('./resolve/resolvers/gitFsResolver');
     require('./resolve/worker');
 }
