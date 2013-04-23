@@ -187,10 +187,10 @@ describe('GitResolver', function () {
                 //       See: https://github.com/isaacs/node-semver/issues/16
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/0.1.0',
-                    //'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.1+build.2',
-                    //'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.1+build.1',
-                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.1.1-rc2',
-                    'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.1.1-rc0',
+                    //'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.1+build.11',
+                    //'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.1+build.100',
+                    //'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.1.1-rc.22',
+                    //'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.1.1-rc.200',
                     'ffffffffffffffffffffffffffffffffffffffff refs/tags/0.1.1',
                     'abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/v0.2.1'
                 ]);
@@ -200,11 +200,11 @@ describe('GitResolver', function () {
             .then(function (versions) {
                 expect(versions).to.eql([
                     '0.2.1',
-                    //'0.1.1+build.2',
-                    //'0.1.1+build.1',
+                    //'0.1.1+build.100',
+                    //'0.1.1+build.11',
                     '0.1.1',
-                    '0.1.1-rc2',
-                    '0.1.1-rc0',
+                    //'0.1.1-rc.200',
+                    //'0.1.1-rc.22',
                     '0.1.0'
                 ]);
                 next();
