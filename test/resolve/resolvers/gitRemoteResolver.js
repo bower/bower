@@ -2,7 +2,6 @@ var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
 var GitRemoteResolver = require('../../../lib/resolve/resolvers/GitRemoteResolver');
-var fetchBranch = require('../../util/fetchBranch');
 
 describe('GitRemoteResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
@@ -12,14 +11,6 @@ describe('GitRemoteResolver', function () {
         delete GitRemoteResolver._heads;
         delete GitRemoteResolver._refs;
     }
-
-    before(function (next) {
-        // Ensure that our "fake" remote repository has all
-        // the necessary branches being tracked
-        return fetchBranch('some-branch', testPackage)
-        .then(next.bind(next, null))
-        .done();
-    });
 
     describe('.constructor', function () {
         it('should guess the name from the path', function () {

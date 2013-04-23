@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs');
 var expect = require('expect.js');
 var path = require('path');
-var fetchBranch = require('../../util/fetchBranch');
 var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
 
 describe('GitFsResolver', function () {
@@ -13,14 +12,6 @@ describe('GitFsResolver', function () {
         delete GitFsResolver._heads;
         delete GitFsResolver._refs;
     }
-
-    before(function (next) {
-        // Ensure that our "fake" remote repository has all
-        // the necessary branches being tracked
-        return fetchBranch('some-branch', testPackage)
-        .then(next.bind(next, null))
-        .done();
-    });
 
     describe('.resolve', function () {
         it('should checkout correctly if resolution is a branch', function (next) {
