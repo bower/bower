@@ -674,6 +674,9 @@ describe('GitResolver', function () {
                 })
                 .done();
         });
+
+        it.skip('should add the .version to the package meta if not present');
+        it.skip('should emit a "warn" event if the resolution version is different than the package meta version');
     });
 
     describe('#fetchHeads', function () {

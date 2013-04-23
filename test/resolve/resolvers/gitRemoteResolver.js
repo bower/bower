@@ -1,8 +1,8 @@
 var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
-var cmd = require('../../../lib/util/cmd');
 var GitRemoteResolver = require('../../../lib/resolve/resolvers/GitRemoteResolver');
+var fetchBranch = require('../../util/fetchBranch');
 
 describe('GitRemoteResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
@@ -13,22 +13,10 @@ describe('GitRemoteResolver', function () {
         delete GitRemoteResolver._refs;
     }
 
-    function fetchBranch(branch) {
-        return cmd('git', ['checkout', '-b', branch, 'origin/' + branch], { cwd: testPackage })
-        .then(null, function (err) {
-            if (/already exists/i.test(err.details)) {
-                return cmd('git', ['checkout', branch], { cwd: testPackage })
-                .then(function () {
-                    return cmd('git', ['pull', 'origin', branch], { cwd: testPackage });
-                });
-            }
-        });
-    }
-
     before(function (next) {
         // Ensure that our "fake" remote repository has all
         // the necessary branches being tracked
-        return fetchBranch('some-branch')
+        return fetchBranch('some-branch', testPackage)
         .then(next.bind(next, null))
         .done();
     });
