@@ -96,7 +96,7 @@ describe('GitRemoteResolver', function () {
             GitRemoteResolver.fetchRefs('file://' + testPackage)
             .then(function (refs) {
                 expect(refs).to.eql([
-                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/heads/master',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/heads/master',
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155\trefs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0\trefs/tags/0.0.1',
                     '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476\trefs/tags/0.0.1^{}',

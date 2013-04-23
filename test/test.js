@@ -59,7 +59,12 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     // Ensure that our "fake" remote repository has all
     // the necessary branches being tracked
     before(function (next) {
-        return fetchBranch('some-branch', path.join(__dirname, 'assets/github-test-package'))
+        var dir = path.join(__dirname, 'assets/github-test-package');
+
+        return fetchBranch('master', dir)
+        .then(function () {
+            return fetchBranch('some-branch', dir);
+        })
         .then(next.bind(next, null))
         .done();
     });

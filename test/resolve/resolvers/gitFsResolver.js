@@ -104,7 +104,7 @@ describe('GitFsResolver', function () {
             GitFsResolver.fetchRefs(testPackage)
             .then(function (refs) {
                 expect(refs).to.eql([
-                    'b273e321ebc69381be2780668a22e28bec9e2b07 refs/heads/master',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/heads/master',
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
                     '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
