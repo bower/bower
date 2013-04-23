@@ -34,7 +34,7 @@
     "expect.js": "~0.2.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "node test/assets/downloader.js && mocha -R spec"
   },
   "bin": {
     "bower": "bin/bower"

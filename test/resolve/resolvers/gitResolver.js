@@ -23,11 +23,11 @@ describe('GitResolver', function () {
 
     describe('.hasNew', function () {
         beforeEach(function (next) {
-            cleanInternalResolverCache();
             mkdirp(tempDir, next);
         });
 
         afterEach(function (next) {
+            cleanInternalResolverCache();
             rimraf(tempDir, next);
         });
 
@@ -252,7 +252,7 @@ describe('GitResolver', function () {
     });
 
     describe('._resolveSelf', function () {
-        beforeEach(cleanInternalResolverCache);
+        afterEach(cleanInternalResolverCache);
 
         it('should call the necessary functions by the correct order', function (next) {
             function DummyResolver() {
@@ -360,7 +360,7 @@ describe('GitResolver', function () {
     });
 
     describe('._findResolution', function () {
-        beforeEach(cleanInternalResolverCache);
+        afterEach(cleanInternalResolverCache);
 
         it('should resolve to an object', function (next) {
             var resolver;
@@ -654,7 +654,7 @@ describe('GitResolver', function () {
         it('should save the resolution to the .bower.json to be used later by .hasNew', function (next) {
             var resolver = new GitResolver('foo');
 
-            resolver._resolution = { type: 'tag', tag: '0.0.1' };
+            resolver._resolution = { type: 'tag', version: '0.0.1', tag: '0.0.1' };
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
@@ -677,7 +677,7 @@ describe('GitResolver', function () {
     });
 
     describe('#fetchHeads', function () {
-        beforeEach(cleanInternalResolverCache);
+        afterEach(cleanInternalResolverCache);
 
         it('should resolve to an empty object if no heads are found', function (next) {
             GitResolver.fetchRefs = function () {
@@ -777,7 +777,7 @@ describe('GitResolver', function () {
     });
 
     describe('#fetchVersions', function () {
-        beforeEach(cleanInternalResolverCache);
+        afterEach(cleanInternalResolverCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
             GitResolver.fetchRefs = function () {

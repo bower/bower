@@ -1,3 +1,8 @@
+# General
 .DS_Store
 Thumbs.db
 node_modules
+npm-debug.log
+
+# Project specific
+test/assets/github-test-package
