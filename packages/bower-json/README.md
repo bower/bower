@@ -1,6 +1,4 @@
-bower-json
-
-----------------
+# bower-json
 
 Read `bower.json` files with semantics, normalisation, defaults and validation.
 
