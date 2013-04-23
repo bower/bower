@@ -13,6 +13,23 @@ describe('GitFsResolver', function () {
         delete GitFsResolver._refs;
     }
 
+    describe('.constructor', function () {
+        it('should guess the name from the path', function () {
+            var resolver = new GitFsResolver(testPackage);
+
+            expect(resolver.getName()).to.equal('github-test-package');
+        });
+
+        it('should make paths absolute and normalized', function () {
+            var resolver = new GitFsResolver(path.relative(process.cwd(), testPackage));
+
+            expect(resolver.getSource()).to.equal(testPackage);
+
+            resolver = new GitFsResolver(testPackage + '/something/..');
+            expect(resolver.getSource()).to.equal(testPackage);
+        });
+    });
+
     describe('.resolve', function () {
         it('should checkout correctly if resolution is a branch', function (next) {
             var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
