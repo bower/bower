@@ -31,7 +31,7 @@ describe('GitResolver', function () {
             rimraf(tempDir, next);
         });
 
-        it('should be true when the resolution type is different', function () {
+        it('should be true when the resolution type is different', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -53,11 +53,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
 
-        it('should be true when a higher version for a range is available', function () {
+        it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -81,11 +82,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
 
-        it('should be true when a resolved to a lower version of a range', function () {
+        it('should be true when a resolved to a lower version of a range', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -108,11 +110,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
 
-        it('should be false when resolved to the same tag (with same commit hash) for a given range', function () {
+        it('should be false when resolved to the same tag (with same commit hash) for a given range', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -136,11 +139,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
+                next();
             })
             .done();
         });
 
-        it('should be true when resolved to the same tag (with different commit hash) for a given range', function () {
+        it('should be true when resolved to the same tag (with different commit hash) for a given range', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -164,11 +168,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
 
-        it('should be true when a different commit hash for a given branch is available', function () {
+        it('should be true when a different commit hash for a given branch is available', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -189,11 +194,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
 
-        it('should be false when resolved to the the same commit hash for a given branch', function () {
+        it('should be false when resolved to the the same commit hash for a given branch', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -214,11 +220,12 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
+                next();
             })
             .done();
         });
 
-        it('should be false when targeting commit hashes', function () {
+        it('should be false when targeting commit hashes', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
@@ -238,6 +245,7 @@ describe('GitResolver', function () {
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
+                next();
             })
             .done();
         });
@@ -354,7 +362,7 @@ describe('GitResolver', function () {
     describe('._findResolution', function () {
         beforeEach(cleanInternalResolverCache);
 
-        it('should resolve to an object', function () {
+        it('should resolve to an object', function (next) {
             var resolver;
 
             GitResolver.fetchRefs = function () {
@@ -367,6 +375,7 @@ describe('GitResolver', function () {
             resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.be.an('object');
+                next();
             })
             .done();
         });
