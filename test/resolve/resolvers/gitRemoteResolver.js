@@ -103,7 +103,9 @@ describe('GitRemoteResolver', function () {
                     '34dd75a11e686be862844996392e96e9457c7467\trefs/tags/0.0.2',
                     'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00\trefs/tags/0.0.2^{}',
                     '92327598500f115d09ab14f16cde23718fc87658\trefs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}'
+                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92\trefs/tags/0.1.1',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/tags/0.1.1^{}'
                 ]);
                 next();
             })
@@ -132,7 +134,9 @@ describe('GitRemoteResolver', function () {
                     '34dd75a11e686be862844996392e96e9457c7467\trefs/tags/0.0.2',
                     'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00\trefs/tags/0.0.2^{}',
                     '92327598500f115d09ab14f16cde23718fc87658\trefs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}'
+                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92\trefs/tags/0.1.1',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/tags/0.1.1^{}'
                 ]);
                 next();
             })

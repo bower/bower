@@ -72,12 +72,29 @@ describe('GitFsResolver', function () {
             .done();
         });
 
-        it.skip('should remove any untracked files and directories');
+        it('should remove any untracked files and directories', function (next) {
+            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+
+            fs.writeFileSync(path.join(testPackage, 'new-file'), 'foo');
+            fs.mkdir(path.join(testPackage, 'new-dir'));
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(dir).to.be.a('string');
+
+                var files = fs.readdirSync(dir);
+
+                expect(files).to.not.contain('new-file');
+                expect(files).to.not.contain('new-dir');
+                next();
+            })
+            .done();
+        });
     });
 
     describe('._copy', function () {
-        it.skip('should copy files from the source to the temporary directory');
-        it.skip('should not copy over the files specified in the ignore list');
+        it('should copy files from the source to the temporary directory');
+        it('should not copy over the files specified in the ignore list');
     });
 
     describe('#fetchRefs', function () {
@@ -91,7 +108,8 @@ describe('GitFsResolver', function () {
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
                     '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
-                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0'
+                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1'
                 ]);
                 next();
             })
@@ -115,7 +133,8 @@ describe('GitFsResolver', function () {
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
                     '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
-                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0'
+                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1'
                 ]);
                 next();
             })
