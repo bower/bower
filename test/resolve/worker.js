@@ -55,7 +55,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(1);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should assume the default concurrency when a type is not known', function (next) {
@@ -68,7 +68,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(1);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should have different slots when type is not passed or is not known', function (next) {
@@ -83,7 +83,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(2);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should use the configured concurrency for the type', function (next) {
@@ -111,7 +111,7 @@ describe('Worker', function () {
                 expect(calls.foo).to.equal(2);
                 expect(calls.bar).to.equal(3);
                 next();
-            }, 100);
+            }, 25);
         });
     });
 
@@ -135,7 +135,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(4);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should wait for currently running functions to finish', function (next) {
@@ -152,7 +152,7 @@ describe('Worker', function () {
                 setTimeout(function () {
                     calls.push(3);
                     deferred.resolve();
-                }, 100);
+                }, 25);
 
                 return deferred.promise;
             }, 'foo');
@@ -183,7 +183,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(5);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should respect the enqueue order', function (next) {
@@ -225,7 +225,7 @@ describe('Worker', function () {
                 expect(defCalls).to.eql([1, 2, 3]);
                 expect(fooCalls).to.eql([1, 2, 3]);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should wait for one slot in every type on a multi-type function', function (next) {
@@ -246,7 +246,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(2);
                 next();
-            }, 100);
+            }, 25);
         });
 
         it('should free all type slots when finished running a function', function (next) {
@@ -264,7 +264,7 @@ describe('Worker', function () {
             timeout = setTimeout(function () {
                 expect(calls).to.equal(3);
                 next();
-            }, 100);
+            }, 25);
         });
     });
 });

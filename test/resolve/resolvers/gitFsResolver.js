@@ -1,19 +1,27 @@
 describe('GitFsResolver', function () {
-    describe('.resolve', function () {
-        it.skip('should resolve to the latest commit if a repository has no tags');
-        it.skip('should resolve to the specified range');
-        it.skip('should resolve to the specified version');
-        it.skip('should resolve to the specified commit');
-        it.skip('should resolve to the specified branch');
-        it.skip('should resolve to the specified commit');
-        it.skip('should remove the .git folder');
-        it.skip('should not copy the ignored files to the temp directory');
+    describe('._resolveSelf', function () {
+        it.skip('should call all the functions necessary to resolve by the correct order');
     });
 
-    describe('.hasNew', function () {
-        it.skip('should detect a new version if the resolution type changed');
-        it.skip('should detect a new version if the resolved version changed');
-        it.skip('should detect a new version if the resolved commit changed (branch)');
-        it.skip('should detect a new version if the resolved commit changed (commit)');
+    describe('._copy', function () {
+        it.skip('should copy files from the source to the temporary directory');
+        it.skip('should not copy over the files specified in the ignore list');
+    });
+
+    describe('._checkout', function () {
+        it.skip('should checkout correctly if resolution is a branch');
+        it.skip('should checkout correctly if resolution is a tag');
+        it.skip('should checkout correctly if resolution is a commit');
+        it.skip('should remove any untracked files and directories');
+    });
+
+    describe('#fetchRefs', function () {
+        it('should resolve to the references of the local repository', function () {
+
+        });
+
+        it('should cache the results', function () {
+
+        });
     });
 });

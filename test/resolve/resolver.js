@@ -9,6 +9,8 @@ var cmd = require('../../lib/util/cmd');
 var Resolver = require('../../lib/resolve/Resolver');
 
 describe('Resolver', function () {
+    var tempDir = path.resolve(__dirname, '../assets/tmp');
+
     describe('.getSource', function () {
         it('should return the resolver source', function () {
             var resolver = new Resolver('foo');
@@ -46,15 +48,6 @@ describe('Resolver', function () {
     });
 
     describe('.hasNew', function () {
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise = resolver.hasNew('.');
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
-        });
-
         it('should resolve to true by default', function (next) {
             var resolver = new Resolver('foo');
 
@@ -68,26 +61,18 @@ describe('Resolver', function () {
     });
 
     describe('.resolve', function () {
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise = resolver.resolve();
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
-        });
-
-        it('should reject the promise if _resolveSelf is not implemented', function (done) {
+        it('should reject the promise if _resolveSelf is not implemented', function (next) {
             var resolver = new Resolver('foo');
 
             resolver.resolve()
             .then(function () {
-                done(new Error('Should have rejected the promise'));
+                next(new Error('Should have rejected the promise'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.contain('not implemented');
-                done();
-            });
+                expect(err.message).to.contain('_resolveSelf not implemented');
+                next();
+            })
+            .done();
         });
 
         it('should call all the functions necessary to resolve by the correct order', function (next) {
@@ -253,9 +238,8 @@ describe('Resolver', function () {
         });
     });
 
-    describe('_createTempDir', function () {
-        var tempDir = path.normalize(__dirname + '/../assets/tmp'),
-            dirMode0777;
+    describe('._createTempDir', function () {
+        var dirMode0777;
 
         before(function () {
             var stat;
@@ -267,15 +251,6 @@ describe('Resolver', function () {
 
         after(function (next) {
             rimraf(tempDir, next);
-        });
-
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise = resolver._createTempDir();
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
         });
 
         it('should create a directory inside a bower folder, located within the OS temp folder', function (next) {
@@ -319,7 +294,7 @@ describe('Resolver', function () {
             rimraf(bowerOsTempDir, function (err) {
                 if (err) return next(err);
 
-                cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: __dirname + '/../../' })
+                cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: path.resolve(__dirname, '../..') })
                 .then(function () {
                     expect(fs.existsSync(bowerOsTempDir)).to.be(true);
                     expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
@@ -337,7 +312,7 @@ describe('Resolver', function () {
             rimraf(bowerOsTempDir, function (err) {
                 if (err) return next(err);
 
-                cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: __dirname + '/../../' })
+                cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: path.resolve(__dirname, '../..') })
                 .then(function () {
                     next(new Error('The command should have failed'));
                 }, function () {
@@ -362,24 +337,13 @@ describe('Resolver', function () {
         });
     });
 
-    describe('_readJson', function () {
-        var tempDir = path.normalize(__dirname + '/../assets/tmp');
-
+    describe('._readJson', function () {
         beforeEach(function (next) {
             mkdirp(tempDir, next);
         });
 
         afterEach(function (next) {
             rimraf(tempDir, next);
-        });
-
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise = resolver._readJson();
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
         });
 
         it('should read the bower.json file', function (next) {
@@ -435,20 +399,7 @@ describe('Resolver', function () {
         it.skip('should apply normalisation, defaults and validation to the json object');
     });
 
-    describe('_applyPkgMeta', function () {
-        var tempDir = path.normalize(__dirname + '/../assets/tmp');
-
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise = resolver._applyPkgMeta({ name: 'foo' });
-
-            resolver._tempDir = tempDir;
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
-        });
-
+    describe('._applyPkgMeta', function () {
         it('should resolve with the same package meta', function (next) {
             var resolver = new Resolver('foo'),
                 meta = { name: 'foo' };
@@ -556,27 +507,13 @@ describe('Resolver', function () {
         });
     });
 
-    describe('_savePkgMeta', function () {
-        var tempDir = path.normalize(__dirname + '/../assets/tmp');
-
+    describe('._savePkgMeta', function () {
         beforeEach(function (next) {
             mkdirp(tempDir, next);
         });
 
         afterEach(function (next) {
             rimraf(tempDir, next);
-        });
-
-        it('should return a promise', function (done) {
-            var resolver = new Resolver('foo'),
-                promise;
-
-            resolver._tempDir = tempDir;
-            promise = resolver._savePkgMeta({ name: 'foo' });
-
-            expect(promise).to.be.an('object');
-            expect(promise.then).to.be.an('function');
-            promise.then(done.bind(done, null), done.bind(done, null));
         });
 
         it('should resolve with the same package meta', function (next) {
