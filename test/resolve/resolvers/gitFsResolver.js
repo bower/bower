@@ -1,7 +1,8 @@
-var path = require('path');
-var fs = require('fs');
 var expect = require('expect.js');
 var path = require('path');
+var fs = require('fs');
+var path = require('path');
+var cmd = require('../../../lib/util/cmd');
 var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
 
 describe('GitFsResolver', function () {
@@ -90,10 +91,21 @@ describe('GitFsResolver', function () {
         });
 
         it('should remove any untracked files and directories', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' }),
+                file = path.join(testPackage, 'new-file'),
+                dir = path.join(testPackage, 'new-dir');
 
-            fs.writeFileSync(path.join(testPackage, 'new-file'), 'foo');
-            fs.mkdir(path.join(testPackage, 'new-dir'));
+            fs.writeFileSync(file, 'foo');
+            fs.mkdir(dir);
+
+            function cleanup(err) {
+                fs.unlinkSync(file);
+                fs.rmdirSync(dir);
+
+                if (err) {
+                    throw err;
+                }
+            }
 
             resolver.resolve()
             .then(function (dir) {
@@ -103,15 +115,59 @@ describe('GitFsResolver', function () {
 
                 expect(files).to.not.contain('new-file');
                 expect(files).to.not.contain('new-dir');
+
+                cleanup();
+                next();
+            })
+            .then(null, cleanup)
+            .done();
+        });
+
+        it('should leave the original repository untouched', function (next) {
+            // Switch to master
+            cmd('git', ['checkout', 'master'], { cwd: testPackage })
+            // Resolve to some-branch
+            .then(function () {
+                var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
+                return resolver.resolve();
+            })
+            // Check if the original branch is still the master one
+            .then(function () {
+                return cmd('git', ['branch', '--color=never'], { cwd: testPackage })
+                .then(function (stdout) {
+                    expect(stdout).to.contain('* master');
+                });
+            })
+            // Check if git status is empty
+            .then(function () {
+                return cmd('git', ['status', '--porcelain'], { cwd: testPackage })
+                .then(function (stdout) {
+                    stdout = stdout.trim();
+                    expect(stdout).to.equal('');
+                    next();
+                });
+            })
+            .done();
+        });
+
+        it('should copy source folder permissions', function (next) {
+            var mode0755;
+
+            // Change testPackage dir to 0755
+            fs.chmodSync(testPackage, 0755);
+            mode0755 = fs.statSync(testPackage).mode;
+
+            var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
+
+            resolver.resolve()
+            .then(function (dir) {
+                // Check if temporary dir is 0755 instead of default 0777 & ~process.umask()
+                var stat = fs.statSync(dir);
+                expect(stat.mode).to.equal(mode0755);
                 next();
             })
             .done();
         });
-    });
-
-    describe('._copy', function () {
-        it('should copy files from the source to the temporary directory');
-        it('should not copy over the files specified in the ignore list');
     });
 
     describe('#fetchRefs', function () {

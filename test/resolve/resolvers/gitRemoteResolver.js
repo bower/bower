@@ -96,16 +96,16 @@ describe('GitRemoteResolver', function () {
             GitRemoteResolver.fetchRefs('file://' + testPackage)
             .then(function (refs) {
                 expect(refs).to.eql([
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/heads/master',
-                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155\trefs/heads/some-branch',
-                    '122ac45fd22671a23cf77055a32d06d5a7baedd0\trefs/tags/0.0.1',
-                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476\trefs/tags/0.0.1^{}',
-                    '34dd75a11e686be862844996392e96e9457c7467\trefs/tags/0.0.2',
-                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00\trefs/tags/0.0.2^{}',
-                    '92327598500f115d09ab14f16cde23718fc87658\trefs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92\trefs/tags/0.1.1',
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/tags/0.1.1^{}'
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/heads/master',
+                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
+                    '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
+                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476 refs/tags/0.0.1^{}',
+                    '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
+                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00 refs/tags/0.0.2^{}',
+                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
+                    'b273e321ebc69381be2780668a22e28bec9e2b07 refs/tags/0.1.0^{}',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}'
                 ]);
                 next();
             })
@@ -128,15 +128,15 @@ describe('GitRemoteResolver', function () {
             })
             .then(function (refs) {
                 expect(refs).to.eql([
-                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155\trefs/heads/some-branch',
-                    '122ac45fd22671a23cf77055a32d06d5a7baedd0\trefs/tags/0.0.1',
-                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476\trefs/tags/0.0.1^{}',
-                    '34dd75a11e686be862844996392e96e9457c7467\trefs/tags/0.0.2',
-                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00\trefs/tags/0.0.2^{}',
-                    '92327598500f115d09ab14f16cde23718fc87658\trefs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07\trefs/tags/0.1.0^{}',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92\trefs/tags/0.1.1',
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e\trefs/tags/0.1.1^{}'
+                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
+                    '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
+                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476 refs/tags/0.0.1^{}',
+                    '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
+                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00 refs/tags/0.0.2^{}',
+                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
+                    'b273e321ebc69381be2780668a22e28bec9e2b07 refs/tags/0.1.0^{}',
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
+                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}'
                 ]);
                 next();
             })

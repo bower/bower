@@ -601,6 +601,7 @@ describe('GitResolver', function () {
         });
 
         afterEach(function (next) {
+            cleanInternalResolverCache();
             // Need to chmodr before removing..at least on windows
             // because .git has some read only files
             chmodr(tempDir, 0777, function () {
@@ -636,6 +637,36 @@ describe('GitResolver', function () {
             resolver._cleanup()
             .then(function () {
                 expect(fs.existsSync(dest)).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should sill run even if _checkout fails for some reason', function (next) {
+            var resolver = new GitResolver('foo'),
+                called = false;
+
+            GitResolver.fetchRefs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
+                ]);
+            };
+
+            resolver._tempDir = tempDir;
+            resolver._checkout = function () {
+                return Q.reject(new Error('Some error'));
+            };
+
+            resolver._cleanup = function () {
+                called = true;
+                return GitResolver.prototype._cleanup.apply(this, arguments);
+            };
+
+            resolver.resolve()
+            .then(function () {
+                next(new Error('Should have failed'));
+            }, function () {
+                expect(called).to.be(true);
                 next();
             })
             .done();
