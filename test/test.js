@@ -1,7 +1,5 @@
-var path = require('path');
 var GitRemoteResolver = require('../lib/resolve/resolvers/GitRemoteResolver');
 var GitFsResolver = require('../lib/resolve/resolvers/GitFsResolver');
-var fetchBranch = require('./util/fetchBranch');
 
 function testGitRemoteResolver() {
     var dejavuResolver = new GitRemoteResolver('git://github.com/IndigoUnited/dejavu.git', {
@@ -55,19 +53,6 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     // Cleanup the uncaughtException added by the tmp module
     // It messes with the mocha uncaughtException event to caught errors
     process.removeAllListeners('uncaughtException');
-
-    // Ensure that our "fake" remote repository has all
-    // the necessary branches being tracked
-    before(function (next) {
-        var dir = path.join(__dirname, 'assets/github-test-package');
-
-        return fetchBranch('master', dir)
-        .then(function () {
-            return fetchBranch('some-branch', dir);
-        })
-        .then(next.bind(next, null))
-        .done();
-    });
 
     require('./resolve/resolver');
     require('./resolve/resolvers/gitResolver');
