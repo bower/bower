@@ -36,9 +36,6 @@ if (!fs.existsSync(githubTestPackage)) {
         console.log('Successfully downloaded "test-package"');
         return updateBranches();
     })
-    .then(function () {
-        return updateBranches();
-    })
     .done();
 } else {
     console.log('Fetching "test-package"..');
