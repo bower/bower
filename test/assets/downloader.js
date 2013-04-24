@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var cmd = require('../../lib/util/cmd');
-var fetchBranch = require('../util/fetchBranch');
 
 var githubTestPackage = path.join(__dirname, 'github-test-package');
 
