@@ -32,7 +32,8 @@
   },
   "devDependencies": {
     "mocha": "~1.8.2",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "async": "~0.2.7"
   },
   "scripts": {
     "test": "node test/assets/downloader.js && mocha -R spec"

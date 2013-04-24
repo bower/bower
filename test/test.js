@@ -59,4 +59,5 @@ if (process.argv[1] && !/mocha/.test(process.argv[1])) {
     require('./resolve/resolvers/gitFsResolver');
     require('./resolve/resolvers/gitRemoteResolver');
     require('./resolve/worker');
+    require('./resolve/resolverFactory');
 }
