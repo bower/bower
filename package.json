@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "mocha": "~1.8.1",
-    "nock": "~0.13.5"
+    "nock": "~0.17.3"
   },
   "bin": {
     "bower": "bin/bower"
