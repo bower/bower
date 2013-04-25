@@ -553,7 +553,7 @@ describe('package', function () {
       .get('/package-folder.zip')
       .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'));
 
-    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-zip-folder.zip');
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-folder.zip');
 
     pkg.on('resolve', function () {
       pkg.install();
