@@ -8,11 +8,11 @@
 - Remove temporary directories before exiting ([#345](https://github.com/twitter/bower/issues/345))
 - Integrate `update-notifier` ([#202](https://github.com/twitter/bower/issues/202))
 - Use `json` name when a package name was inferred ([#192](https://github.com/twitter/bower/issues/192))
-- Fix `bin/bower` not exiting with code != 0 when an error occurs ([#187](https://github.com/twitter/bower/issues/187))
+- Fix `bin/bower` not exiting with a exit code more than 0 when an error occurs ([#187](https://github.com/twitter/bower/issues/187))
 - Fix `--save` and `--save-dev` saving resolved shorthands instead of the actual shorthands
 - Fix bower using user defined git templates [#324](https://github.com/twitter/bower/issues/324)
 - Add command abbreviations ([#262](https://github.com/twitter/bower/issues/262))
-- Improve help messages and fix abuse of colours in output
+- Improve help messages and fix abuse of colors in output
 - Wait for every package to resolve before printing error messages ([#290](https://github.com/twitter/bower/issues/290))
 - Add `shorthand_resolver` to allow shorthands to be resolved to repositories other than GitHub ([#278](https://github.com/twitter/bower/issues/278))
 
