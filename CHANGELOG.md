@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0
+## 0.9.0 - 2013-04-25
 - __Change from `component.json` to `bower.json`__ ([#39](https://github.com/twitter/bower/issues/39))
 - __Compatibility with `node 0.10.x`, including fix hangs/errors when extracting `zip` files__
 - Fix `--save` and `--save-dev` not working with URLs that get redirected ([#417](https://github.com/twitter/bower/issues/417))
@@ -15,6 +15,9 @@
 - Improve help messages and fix abuse of colors in output
 - Wait for every package to resolve before printing error messages ([#290](https://github.com/twitter/bower/issues/290))
 - Add `shorthand_resolver` to allow shorthands to be resolved to repositories other than GitHub ([#278](https://github.com/twitter/bower/issues/278))
+
+## 0.8.6 - 2013-04-03
+- Emergency fix for `node 0.8.x` users to make `zip` extraction work again
 
 ## 0.8.5 - 2013-03-04
 - Fix `cache-clean` command clearing the completion cache when the command was called with specific packages
