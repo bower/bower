@@ -689,25 +689,38 @@ describe('GitResolver', function () {
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
-                .then(function () {
-                    return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
-                })
-                .then(function (contents) {
-                    var json = JSON.parse(contents.toString());
+            .then(function () {
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
 
-                    expect(json).to.eql({
-                        name: 'foo',
-                        version: '0.0.1',
-                        _resolution: resolver._resolution
-                    });
-
-                    next();
-                })
-                .done();
+                expect(json._resolution).to.eql(resolver._resolution);
+                next();
+            })
+            .done();
         });
 
-        it.skip('should add the .version to the package meta if not present');
-        it.skip('should emit a "warn" event if the resolution version is different than the package meta version');
+        it('should add the version to the package meta if not present', function (next) {
+            var resolver = new GitResolver('foo');
+
+            resolver._resolution = { type: 'tag', version: '0.0.1', tag: '0.0.1' };
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta({ name: 'foo' })
+            .then(function () {
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json.version).to.equal('0.0.1');
+
+                next();
+            })
+            .done();
+        });
+
+        it.skip('should warn if the resolution version is different than the package meta version');
     });
 
     describe('#fetchHeads', function () {

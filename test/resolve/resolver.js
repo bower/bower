@@ -362,10 +362,12 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should fallback to component.json', function (next) {
+        it('should fallback to component.json (emitting a warn)', function (next) {
             var resolver = new Resolver('foo');
 
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
+
+            // TODO: should notify via progress events
 
             resolver._readJson(tempDir)
             .then(function (meta) {
@@ -417,6 +419,8 @@ describe('Resolver', function () {
 
         it('should use the json name if the name was guessed', function (next) {
             var resolver = new Resolver('foo');
+
+            // TODO: should notify via progress events
 
             resolver._applyPkgMeta({ name: 'bar' })
             .then(function (retMeta) {
