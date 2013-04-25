@@ -36,7 +36,10 @@ describe('package', function () {
   }
 
   beforeEach(clean);
-  after(clean);
+  after(function (done) {
+    nock.cleanAll();
+    clean(done);
+  });
 
   it('Should resolve git URLs properly', function () {
     var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
@@ -118,10 +121,6 @@ describe('package', function () {
   });
 
   it('Should resolve url when we got redirected', function (next) {
-    after(function () {
-      nock.cleanAll();
-    });
-
     var redirecting_url    = 'http://redirecting-url.com';
     var redirecting_to_url = 'http://redirected-to-url.com';
 
@@ -466,7 +465,11 @@ describe('package', function () {
   });
 
   it('Should have accessible file permissions for downloaded files', function (next) {
-    var pkg = new Package('bootstrap', 'http://twitter.github.com/bootstrap/assets/bootstrap.zip');
+    nock('http://someawesomedomain.com')
+      .get('/package.zip')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'));
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package.zip');
 
     pkg.on('resolve', function () {
       pkg.install();
@@ -517,7 +520,11 @@ describe('package', function () {
   });
 
   it('Should extract tar and zip files from normal URL packages', function (next) {
-    var pkg = new Package('spark-md5', 'https://github.com/satazor/SparkMD5/archive/master.zip');
+    nock('http://someawesomedomain.com')
+      .get('/package.zip')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'));
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package.zip');
 
     pkg.on('resolve', function () {
       pkg.install();
@@ -532,9 +539,8 @@ describe('package', function () {
         if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
-        assert(files.indexOf('master.zip') === -1);
-        assert(files.indexOf('spark-md5.js') !== -1);
-        assert(files.indexOf('spark-md5.min.js') !== -1);
+        assert(files.indexOf('package.zip') === -1);
+        assert(files.indexOf('foo.js') !== -1);
         next();
       });
     });
@@ -543,7 +549,11 @@ describe('package', function () {
   });
 
   it('Should extract tar and zip files from normal URL packages and move them if the archive only contains a folder', function (next) {
-    var pkg = new Package('jquery', 'http://twitter.github.com/bootstrap/assets/bootstrap.zip');
+    nock('http://someawesomedomain.com')
+      .get('/package-folder.zip')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'));
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-folder.zip');
 
     pkg.on('resolve', function () {
       pkg.install();
@@ -558,10 +568,8 @@ describe('package', function () {
         if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
-        assert(files.indexOf('bootstrap.zip') === -1);
-        assert(files.indexOf('js') !== -1);
-        assert(files.indexOf('css') !== -1);
-        assert(files.indexOf('img') !== -1);
+        assert(files.indexOf('package-folder.zip') === -1);
+        assert(files.indexOf('foo.js') !== -1);
         next();
       });
     });
