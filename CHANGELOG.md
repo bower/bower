@@ -1,6 +1,19 @@
 # Changelog
 
 ## 0.9.0
+- __Change from `component.json` to `bower.json`__ ([#39](https://github.com/twitter/bower/issues/39))
+- __Compatibility with `node 0.10.x`, including fix hangs/errors when extracting `zip` files__
+- Fix `--save` and `--save-dev` not working with URLs that get redirected ([#417](https://github.com/twitter/bower/issues/417))
+- Fix `init` command targeting `~commit` instead of `*`. ([#385](https://github.com/twitter/bower/issues/385))
+- Remove temporary directories before exiting ([#345](https://github.com/twitter/bower/issues/345))
+- Integrate `update-notifier` ([#202](https://github.com/twitter/bower/issues/202))
+- Use `json` name when a package name was inferred ([#192](https://github.com/twitter/bower/issues/192))
+- Fix `bin/bower` not exiting with code != 0 when an error occurs ([#187](https://github.com/twitter/bower/issues/187))
+- Fix `--save` and `--save-dev` saving resolved shorthands instead of the actual shorthands
+- Fix bower using user defined git templates [#324](https://github.com/twitter/bower/issues/324)
+- Add command abbreviations ([#262](https://github.com/twitter/bower/issues/262))
+- Improve help messages and fix abuse of colours in output
+- Wait for every package to resolve before printing error messages ([#290](https://github.com/twitter/bower/issues/290))
 - Add `shorthand_resolver` to allow shorthands to be resolved to repositories other than GitHub ([#278](https://github.com/twitter/bower/issues/278))
 
 ## 0.8.5 - 2013-03-04
