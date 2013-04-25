@@ -314,6 +314,7 @@ Thanks for assistance and contributions:
 * [@addyosmani](https://github.com/addyosmani)
 * [@angus-c](https://github.com/angus-c)
 * [@borismus](https://github.com/borismus)
+* [@carsonmcdonald](https://github/@carsonmcdonald)
 * [@chriseppstein](https://github.com/chriseppstein)
 * [@danwrong](https://github.com/danwrong)
 * [@desandro](https://github.com/desandro)
