@@ -10,7 +10,7 @@
 - Use `json` name when a package name was inferred ([#192](https://github.com/twitter/bower/issues/192))
 - Fix `bin/bower` not exiting with an exit code greater than zero when an error occurs ([#187](https://github.com/twitter/bower/issues/187))
 - Fix `--save` and `--save-dev` saving resolved shorthands instead of the actual shorthands
-- Fix bower using user defined git templates [#324](https://github.com/twitter/bower/issues/324)
+- Fix bower using user defined git templates ([#324](https://github.com/twitter/bower/issues/324))
 - Add command abbreviations ([#262](https://github.com/twitter/bower/issues/262))
 - Improve help messages and fix abuse of colors in output
 - Wait for every package to resolve before printing error messages ([#290](https://github.com/twitter/bower/issues/290))
