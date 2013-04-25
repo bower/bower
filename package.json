@@ -31,7 +31,7 @@
     "read-package-json": "~0.1.8",
     "stable": "~0.1.2",
     "rc": "~0.0.6",
-    "unzip": "0.1.4",
+    "unzip": "0.1.7",
     "tar": "~0.1.13",
     "promptly": "~0.1.0",
     "abbrev": "~1.0.4",
