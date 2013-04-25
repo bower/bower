@@ -151,19 +151,20 @@ describe('GitFsResolver', function () {
         });
 
         it('should copy source folder permissions', function (next) {
-            var mode0755;
+            var mode0777;
 
-            // Change testPackage dir to 0755
-            fs.chmodSync(testPackage, 0755);
-            mode0755 = fs.statSync(testPackage).mode;
+            // Change testPackage dir to 0777
+            fs.chmodSync(testPackage, 0777);
+            // Get the mode to a variable
+            mode0777 = fs.statSync(testPackage).mode;
 
             var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
 
             resolver.resolve()
             .then(function (dir) {
-                // Check if temporary dir is 0755 instead of default 0777 & ~process.umask()
+                // Check if temporary dir is 0777 instead of default 0777 & ~process.umask()
                 var stat = fs.statSync(dir);
-                expect(stat.mode).to.equal(mode0755);
+                expect(stat.mode).to.equal(mode0777);
                 next();
             })
             .done();
