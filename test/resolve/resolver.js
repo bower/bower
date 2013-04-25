@@ -362,23 +362,16 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should fallback to component.json (emitting a "warn" event)', function (next) {
-            var resolver = new Resolver('foo'),
-                warn;
+        it('should fallback to component.json', function (next) {
+            var resolver = new Resolver('foo');
 
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
-
-            resolver.on('warn', function (data) {
-                warn = data;
-            });
 
             resolver._readJson(tempDir)
             .then(function (meta) {
                 expect(meta).to.be.an('object');
                 expect(meta.name).to.equal('bar');
                 expect(meta.version).to.equal('0.0.0');
-
-                expect(warn).to.contain('deprecated');
                 next();
             })
             .done();
@@ -422,74 +415,29 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should fire the "name_change" event if the json name is different than the guessed one', function (next) {
-            var resolver = new Resolver('foo'),
-                newName;
-
-            resolver.on('name_change', function (name) {
-                newName = name;
-            });
+        it('should use the json name if the name was guessed', function (next) {
+            var resolver = new Resolver('foo');
 
             resolver._applyPkgMeta({ name: 'bar' })
             .then(function (retMeta) {
                 expect(retMeta.name).to.equal('bar');
                 expect(resolver.getName()).to.equal('bar');
-                expect(newName).to.equal('bar');
                 next();
             })
             .done();
         });
 
-        it('should not fire the "name_change" event if the json name is different but the name was not guessed', function (next) {
-            var resolver = new Resolver('foo', { name: 'foo' }),
-                newName;
-
-            resolver.on('name_change', function (name) {
-                newName = name;
-            });
+        it('should not use the json name if a name was passed in the constructor', function (next) {
+            var resolver = new Resolver('foo', { name: 'foo' });
 
             resolver._applyPkgMeta({ name: 'bar' })
             .then(function (retMeta) {
                 expect(retMeta.name).to.equal('foo');
                 expect(resolver.getName()).to.equal('foo');
-                expect(newName).to.not.be.ok();
                 next();
             })
             .done();
         });
-
-        it('should not fire the "name_change" event the json name is the same', function (next) {
-            var resolver = new Resolver('foo'),
-                newName;
-
-            resolver.on('name_change', function (name) {
-                newName = name;
-            });
-
-            resolver._applyPkgMeta({ name: 'foo' })
-            .then(function (retMeta) {
-                expect(retMeta.name).to.equal('foo');
-                expect(resolver.getName()).to.equal('foo');
-                expect(newName).to.not.be.ok();
-
-                resolver = new Resolver('foo', { name: 'foo' });
-
-                resolver.on('name_change', function (name) {
-                    newName = name;
-                });
-
-                resolver._applyPkgMeta({ name: 'foo' })
-                .then(function (retMeta) {
-                    expect(retMeta.name).to.equal('foo');
-                    expect(resolver.getName()).to.equal('foo');
-                    expect(newName).to.not.be.ok();
-                    next();
-                })
-                .done();
-            })
-            .done();
-        });
-
 
         describe('handling of ignore property according to the .gitignore spec', function () {
             it.skip('A blank line matches no files, so it can serve as a separator for readability.');

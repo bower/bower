@@ -157,8 +157,7 @@ TODO
 
 #### Resolver
 
-The `Resolver` class extends `EventEmitter`.
-Think of it as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
+Think of `Resolver` as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
 
 Resolvers are responsible for the following:
 
@@ -169,12 +168,6 @@ Resolvers are responsible for the following:
 - Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
 - Storing the `package meta` into a `.bower.json` hidden file.
 
-
-##### Events
-
-- `name_change`: fired when the name of the package has changed
-- `action`: fired to inform the current action being performed by the resolver
-- `warn`: fired to inform a warning, e.g.: deprecation
 
 ##### Constructor
 
