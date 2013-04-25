@@ -139,6 +139,8 @@ describe('install', function () {
       });
   });
 
+  it.skip('should save an URL to the json even if a redirect occurs');
+
   it('Should save devDependencies to the json', function (done) {
     fs.mkdirSync(testDir);
     process.chdir(testDir);
