@@ -539,7 +539,7 @@ describe('package', function () {
         if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
-        assert(files.indexOf('package-zip.zip') === -1);
+        assert(files.indexOf('package.zip') === -1);
         assert(files.indexOf('foo.js') !== -1);
         next();
       });
@@ -550,7 +550,7 @@ describe('package', function () {
 
   it('Should extract tar and zip files from normal URL packages and move them if the archive only contains a folder', function (next) {
     nock('http://someawesomedomain.com')
-      .get('/package-zip-folder.zip')
+      .get('/package-folder.zip')
       .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'));
 
     var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-zip-folder.zip');
@@ -568,7 +568,7 @@ describe('package', function () {
         if (err) throw err;
 
         assert(files.indexOf('index.js') === -1);
-        assert(files.indexOf('package-zip-folder.zip') === -1);
+        assert(files.indexOf('package-folder.zip') === -1);
         assert(files.indexOf('foo.js') !== -1);
         next();
       });
