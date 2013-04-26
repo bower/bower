@@ -1,4 +1,4 @@
-# BOWER [![Build Status](https://secure.travis-ci.org/twitter/bower.png?branch=master)](http://travis-ci.org/twitter/bower)
+# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
 
 Bower is a package manager for the web. It offers a generic, unopinionated
 solution to the problem of **front-end package management**, while exposing the
@@ -104,7 +104,7 @@ first come, first served basis. Think of it like a URL shortener. Now anyone
 can run `bower install <my-package-name>`, and get your library installed.
 
 There is no direct way to unregister a package yet. For now, you can [request a
-package be unregistered](https://github.com/twitter/bower/issues/120).
+package be unregistered](https://github.com/bower/bower/issues/120).
 
 ### Uninstalling packages
 
@@ -164,7 +164,7 @@ package manifest, the following data can be referenced from within the
 
 **N.B.** To run your own Bower Endpoint for custom packages that are behind a
 firewall, you can use a simple implementation of the [Bower
-Server](https://github.com/twitter/bower-server).
+Server](https://github.com/bower/bower-server).
 
 
 ## Defining a package
@@ -260,7 +260,7 @@ and `lookup` emit `packages` and `package`, respectively. Those events contain
 a JSON representation of the result of the command.
 
 For a better of idea how this works, you may want to check out [our bin
-file](https://github.com/twitter/bower/blob/master/bin/bower).
+file](https://github.com/bower/bower/blob/master/bin/bower).
 
 For the install command, there is an additional `package` event that is emitted
 for each installed/uninstalled package.
