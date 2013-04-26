@@ -80,7 +80,7 @@ The easiest approach is to use Bower statically, just reference the package's
 installed components manually using a `script` tag:
 
 ```html
-<script src="components/jquery/index.js"></script>
+<script src="/bower_components/jquery/index.js"></script>
 ```
 
 For more complex projects, you'll probably want to concatenate your scripts or
@@ -222,9 +222,9 @@ the `list` command to get a simple path-to-name mapping:
 
 ```json
 {
-  "backbone": "components/backbone/index.js",
-  "jquery": "components/jquery/index.js",
-  "underscore": "components/underscore/index.js"
+  "backbone": "bower_components/backbone/index.js",
+  "jquery": "bower_components/jquery/index.js",
+  "underscore": "bower_components/underscore/index.js"
 }
 ```
 
