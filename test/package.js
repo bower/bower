@@ -548,6 +548,36 @@ describe('package', function () {
     pkg.resolve();
   });
 
+  it('Should resolve filetype based on header content-disposition from URL packages', function (next) {
+    nock('http://someawesomedomain.com')
+      .get('/package/zipball')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'),{'Content-Disposition':'attachment; filename=package.zip'});
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
+
+    pkg.on('resolve', function () {
+      pkg.install();
+      assert.equal(pkg.assetType, '.zip');
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.on('install', function () {
+      fs.readdir(pkg.localPath, function (err, files) {
+        if (err) throw err;
+
+        assert(files.indexOf('index.js') === -1);
+        assert(files.indexOf('package.zip') === -1);
+        assert(files.indexOf('foo.js') !== -1);
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
+
   it('Should extract tar and zip files from normal URL packages and move them if the archive only contains a folder', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package-folder.zip')
