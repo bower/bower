@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.9.2 - 2013-04-28
-- Better fix for #429
+- Better fix for [#429](https://github.com/bower/bower/issues/429)
 
 ## 0.9.1 - 2013-04-27
 - Update `package.json`, docs and other stuff to point to the new `Bower` organisation on GitHub
