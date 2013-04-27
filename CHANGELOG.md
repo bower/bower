@@ -2,9 +2,9 @@
 
 ## 0.9.1 - 2013-04-27
 - Update `package.json`, docs and other stuff to point to the new `Bower` organisation on GitHub
-- Fix root label of `bower list` being a absolute dir; now uses the package name
+- Fix root label of `bower list` being an absolute path; now uses the package name
 - Fix `bower update <pkg>` updating all packages; now throws when updating an unknown package
-- Fix `list` command when package use different names than the `guessed` ones ([#429](https://github.com/bower/bower/issues/429))
+- Fix `list` command when package use different names than the `guessed` one ([#429](https://github.com/bower/bower/issues/429))
 
 ## 0.9.0 - 2013-04-25
 - __Change from `component.json` to `bower.json`__ ([#39](https://github.com/bower/bower/issues/39))
