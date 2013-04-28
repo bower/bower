@@ -223,6 +223,16 @@ Throws an error if the resolver is not yet resolved.
 
 -----------
 
+##### Public static functions
+
+`Resolver#clearRuntimeCache`
+
+Clears the resolver runtime cache, that is, data stored statically.
+Resolvers may cache data based on the sources to speed up calls to `hasNew` and `resolve` for the
+same source.
+
+-----------
+
 ##### Protected functions
 
 `Resolver#_createTempDir()`: Promise

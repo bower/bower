@@ -14,12 +14,9 @@ describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp'),
         originalFetchRefs = GitResolver.fetchRefs;
 
-    function cleanInternalResolverCache() {
+    function clearResolverRuntimeCache() {
         GitResolver.fetchRefs = originalFetchRefs;
-        delete GitResolver._versions;
-        delete GitResolver._tags;
-        delete GitResolver._branches;
-        delete GitResolver._refs;
+        GitResolver.clearRuntimeCache();
     }
 
     describe('.hasNew', function () {
@@ -28,7 +25,7 @@ describe('GitResolver', function () {
         });
 
         afterEach(function (next) {
-            cleanInternalResolverCache();
+            clearResolverRuntimeCache();
             rimraf(tempDir, next);
         });
 
@@ -253,7 +250,7 @@ describe('GitResolver', function () {
     });
 
     describe('._resolveSelf', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should call the necessary functions by the correct order', function (next) {
             function DummyResolver() {
@@ -361,7 +358,7 @@ describe('GitResolver', function () {
     });
 
     describe('._findResolution', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an object', function (next) {
             var resolver;
@@ -629,7 +626,7 @@ describe('GitResolver', function () {
         });
 
         afterEach(function (next) {
-            cleanInternalResolverCache();
+            clearResolverRuntimeCache();
             // Need to chmodr before removing..at least on windows
             // because .git has some read only files
             chmodr(tempDir, 0777, function () {
@@ -796,7 +793,7 @@ describe('GitResolver', function () {
     });
 
     describe('#fetchBranches', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty object if no heads are found', function (next) {
             GitResolver.fetchRefs = function () {
@@ -896,7 +893,7 @@ describe('GitResolver', function () {
     });
 
     describe('#fetchTags', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
             GitResolver.fetchRefs = function () {
@@ -999,8 +996,15 @@ describe('GitResolver', function () {
         });
     });
 
+    describe('#clearRuntimeCache', function () {
+        it.skip('should clear refs cache');
+        it.skip('should clear branches cache');
+        it.skip('should clear tags cache');
+        it.skip('should clear versions cache');
+    });
+
     describe('#fetchVersions', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
             GitResolver.fetchRefs = function () {

@@ -8,11 +8,8 @@ var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
 describe('GitFsResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
 
-    function cleanInternalResolverCache() {
-        delete GitFsResolver._versions;
-        delete GitFsResolver._tags;
-        delete GitFsResolver._branches;
-        delete GitFsResolver._refs;
+    function clearResolverRuntimeCache() {
+        GitFsResolver.clearRuntimeCache();
     }
 
     describe('.constructor', function () {
@@ -23,8 +20,9 @@ describe('GitFsResolver', function () {
         });
 
         it('should make paths absolute and normalized', function () {
-            var resolver = new GitFsResolver(path.relative(process.cwd(), testPackage));
+            var resolver;
 
+            resolver = new GitFsResolver(path.relative(process.cwd(), testPackage));
             expect(resolver.getSource()).to.equal(testPackage);
 
             resolver = new GitFsResolver(testPackage + '/something/..');
@@ -173,18 +171,22 @@ describe('GitFsResolver', function () {
     });
 
     describe('#fetchRefs', function () {
-        afterEach(cleanInternalResolverCache);
+        afterEach(clearResolverRuntimeCache);
 
         it('should resolve to the references of the local repository', function (next) {
             GitFsResolver.fetchRefs(testPackage)
             .then(function (refs) {
+                // Remove master and test only for the first 7 refs
+                refs = refs.slice(1, 8);
+
                 expect(refs).to.eql([
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/heads/master',
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
                     '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
                     '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1'
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
+                    'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
+                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1'
                 ]);
                 next();
             })
@@ -204,12 +206,17 @@ describe('GitFsResolver', function () {
                 return GitFsResolver.fetchRefs(testPackage);
             })
             .then(function (refs) {
+                // Test only for the first 6 refs
+                refs = refs.slice(0, 7);
+
                 expect(refs).to.eql([
                     '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
                     '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
                     '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
                     '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1'
+                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
+                    'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
+                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1'
                 ]);
                 next();
             })
