@@ -8,7 +8,8 @@ describe('GitRemoteResolver', function () {
 
     function cleanInternalResolverCache() {
         delete GitRemoteResolver._versions;
-        delete GitRemoteResolver._heads;
+        delete GitRemoteResolver._tags;
+        delete GitRemoteResolver._branches;
         delete GitRemoteResolver._refs;
     }
 

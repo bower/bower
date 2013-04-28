@@ -10,7 +10,8 @@ describe('GitFsResolver', function () {
 
     function cleanInternalResolverCache() {
         delete GitFsResolver._versions;
-        delete GitFsResolver._heads;
+        delete GitFsResolver._tags;
+        delete GitFsResolver._branches;
         delete GitFsResolver._refs;
     }
 
