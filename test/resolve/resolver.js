@@ -362,19 +362,25 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should fallback to component.json (emitting a warn)', function (next) {
-            var resolver = new Resolver('foo');
+        it('should fallback to component.json (notifying a warn)', function (next) {
+            var resolver = new Resolver('foo'),
+                notified = false;
 
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
-
-            // TODO: should notify via progress events
 
             resolver._readJson(tempDir)
             .then(function (meta) {
                 expect(meta).to.be.an('object');
                 expect(meta.name).to.equal('bar');
                 expect(meta.version).to.equal('0.0.0');
+                expect(notified).to.be(true);
                 next();
+            }, null, function (notification) {
+                expect(notification).to.be.an('object');
+                if (notification.type === 'warn' && /deprecated/i.test(notification.data)) {
+                    notified = true;
+                }
+                return notification;
             })
             .done();
         });
@@ -419,8 +425,6 @@ describe('Resolver', function () {
 
         it('should use the json name if the name was guessed', function (next) {
             var resolver = new Resolver('foo');
-
-            // TODO: should notify via progress events
 
             resolver._applyPkgMeta({ name: 'bar' })
             .then(function (retMeta) {
