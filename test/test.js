@@ -1,5 +1,8 @@
 // Cleanup the uncaughtException added by the tmp module
 // It messes with the mocha uncaughtException event to caught errors
+// Please note that is the Resolver that calls tmp.setGracefulCleanup()
+// so we need to require that before
+require('../lib/resolve/Resolver');
 process.removeAllListeners('uncaughtException');
 
 require('./resolve/resolver');

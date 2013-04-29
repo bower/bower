@@ -130,7 +130,7 @@ describe('FsResolver', function () {
             .done();
         });
 
-        it('should not copy ignored paths', function (next) {
+        it('should not copy ignored paths (to speed up copying)', function (next) {
             var resolver = new FsResolver(testPackage);
 
             // Override the _applyPkgMeta function to prevent it from deleting ignored files
@@ -140,6 +140,30 @@ describe('FsResolver', function () {
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'foo'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'test'))).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should extract if source is an archive', function (next) {
+            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip.zip'));
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should copy extracted folder contents if it\'s single to the root', function (next) {
+            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 next();
             })
             .done();
