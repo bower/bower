@@ -46,10 +46,21 @@ describe('FsResolver', function () {
     });
 
     describe('.hasNew', function () {
-        it.skip('should be false if the file modified date hasn\'t changed');
-        it.skip('should be false if the directory modified date hasn\'t changed');
-        it.skip('should be true if the file modified date has changed');
-        it.skip('should be true if the directory modified date has changed');
+        it('should resolve always to true (for now..)', function (next) {
+            var resolver = new FsResolver(path.relative(process.cwd(), testPackage));
+
+            resolver.hasNew()
+            .then(function (hasNew) {
+                expect(hasNew).to.be(true);
+                next();
+            })
+            .done();
+        });
+
+        it.skip('should be false if the file mtime hasn\'t changed');
+        it.skip('should be false if the directory mtime hasn\'t changed');
+        it.skip('should be true if the file mtime has changed');
+        it.skip('should be true if the directory mtime has changed');
         it.skip('should ignore files specified to be ignored');
     });
 
