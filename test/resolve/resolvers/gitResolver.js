@@ -437,7 +437,6 @@ describe('GitResolver', function () {
             resolver = new GitResolver('foo');
             resolver._findResolution('*')
             .then(function (resolution) {
-                expect(resolver._resolution).to.equal(resolution);
                 expect(resolution).to.eql({
                     type: 'version',
                     tag: 'v0.1.1',
@@ -464,7 +463,6 @@ describe('GitResolver', function () {
             resolver = new GitResolver('foo');
             resolver._findResolution('~0.2.0')
             .then(function (resolution) {
-                expect(resolver._resolution).to.equal(resolution);
                 expect(resolution).to.eql({
                     type: 'version',
                     tag: 'v0.2.1',
@@ -536,7 +534,6 @@ describe('GitResolver', function () {
             resolver = new GitResolver('foo');
             resolver._findResolution('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
             .then(function (resolution) {
-                expect(resolver._resolution).to.equal(resolution);
                 expect(resolution).to.eql({
                     type: 'commit',
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
@@ -559,7 +556,6 @@ describe('GitResolver', function () {
             resolver = new GitResolver('foo');
             resolver._findResolution('some-tag')
             .then(function (resolution) {
-                expect(resolver._resolution).to.equal(resolution);
                 expect(resolution).to.eql({
                     type: 'tag',
                     tag: 'some-tag',
@@ -583,7 +579,6 @@ describe('GitResolver', function () {
             resolver = new GitResolver('foo');
             resolver._findResolution('some-branch')
             .then(function (resolution) {
-                expect(resolver._resolution).to.equal(resolution);
                 expect(resolution).to.eql({
                     type: 'branch',
                     branch: 'some-branch',
