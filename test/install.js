@@ -336,4 +336,57 @@ describe('install', function () {
           });
       });
   });
+
+  it('should install to "/components" if it exists, but "/bower_components" does not', function (done) {
+    fs.mkdirSync(testDir);
+    fs.mkdirSync(testDir + '/components');
+
+    process.chdir(testDir);
+
+    // refresh module cache.
+    for (var cache in require.cache) {
+      delete require.cache[cache];
+    }
+
+    var install = require('../lib/commands/install');
+    var config = require('../lib/core/config.js');
+
+    assert(config.directory === 'components');
+
+    install(['jquery'])
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('end', function () {
+        assert(fs.existsSync(path.join(testDir, 'components', 'jquery')));
+        done();
+      });
+  });
+
+  it('should install to "/bower_components" if "/bower_components" and "/components" both exist', function (done) {
+    fs.mkdirSync(testDir);
+    fs.mkdirSync(testDir + '/components');
+    fs.mkdirSync(testDir + '/bower_components');
+
+    process.chdir(testDir);
+
+    // refresh module cache.
+    for (var cache in require.cache) {
+      delete require.cache[cache];
+    }
+
+    var install = require('../lib/commands/install');
+    var config = require('../lib/core/config.js');
+
+    assert(config.directory === 'bower_components');
+
+    install(['jquery'])
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('end', function () {
+        assert(fs.existsSync(path.join(testDir, 'bower_components', 'jquery')));
+        done();
+      });
+  });
 });

@@ -69,16 +69,16 @@ describe('list', function () {
       .on('resolve', function () {
         list({ paths: true }).on('data', function (data) {
           assert.deepEqual(normalize(data), {
-            a: ['components/a/a.js', 'components/a/a.css'],
-            a1: 'components/a1/a1.js',
+            a: ['bower_components/a/a.js', 'bower_components/a/a.css'],
+            a1: 'bower_components/a1/a1.js',
             a2: [
-              'components/a2/a2.js',
-              'components/a2/a2.css',
-              'components/a2/a2.html'
+              'bower_components/a2/a2.js',
+              'bower_components/a2/a2.css',
+              'bower_components/a2/a2.html'
             ],
-            b: ['components/b/b.js', 'components/b/b.html'],
-            b1: ['components/b1/b1.js', 'components/b1/b1.css'],
-            c: 'components/c/c.css'
+            b: ['bower_components/b/b.js', 'bower_components/b/b.html'],
+            b1: ['bower_components/b1/b1.js', 'bower_components/b1/b1.css'],
+            c: 'bower_components/c/c.css'
           });
 
           next();
@@ -101,17 +101,17 @@ describe('list', function () {
           assert(normalize(data), {
             jquery: {
               source: {
-                main: 'components/jquery/jquery.js'
+                main: 'bower_components/jquery/jquery.js'
               }
             },
             'jquery-pjax': {
               source: {
-                main: 'components/jquery-pjax/jquery.pjax.js'
+                main: 'bower_components/jquery-pjax/jquery.pjax.js'
               },
               dependencies: {
                 jquery: {
                   source: {
-                    main: 'components/jquery/jquery.js'
+                    main: 'bower_components/jquery/jquery.js'
                   }
                 }
               }
@@ -137,19 +137,19 @@ describe('list', function () {
         list({ sources: true }).on('data', function (data) {
           assert.deepEqual(normalize(data), {
             '.js': [
-              'components/a1/a1.js',
-              'components/a2/a2.js',
-              'components/a/a.js',
-              'components/b1/b1.js',
-              'components/b/b.js'
+              'bower_components/a1/a1.js',
+              'bower_components/a2/a2.js',
+              'bower_components/a/a.js',
+              'bower_components/b1/b1.js',
+              'bower_components/b/b.js'
             ],
             '.css': [
-              'components/a2/a2.css',
-              'components/a/a.css',
-              'components/b1/b1.css',
-              'components/c/c.css'
+              'bower_components/a2/a2.css',
+              'bower_components/a/a.css',
+              'bower_components/b1/b1.css',
+              'bower_components/c/c.css'
             ],
-            '.html': [ 'components/a2/a2.html', 'components/b/b.html' ]
+            '.html': [ 'bower_components/a2/a2.html', 'bower_components/b/b.html' ]
           });
 
           next();
