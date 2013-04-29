@@ -6,3 +6,5 @@ npm-debug.log
 
 # Project specific
 test/assets/github-test-package
+test/assets/github-test-package-copy
+test/assets/temp

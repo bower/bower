@@ -5,9 +5,9 @@ var fs = require('fs');
 var mkdirp = require('mkdirp');
 var chmodr = require('chmodr');
 var rimraf = require('rimraf');
-var ncp = require('ncp');
 var Q = require('q');
 var mout = require('mout');
+var copy = require('../../../lib/util/copy');
 var GitResolver = require('../../../lib/resolve/resolvers/GitResolver');
 
 describe('GitResolver', function () {
@@ -639,18 +639,19 @@ describe('GitResolver', function () {
                 dest = path.join(tempDir, '.git');
 
             // Copy .git folder to the tempDir
-            ncp(path.resolve(__dirname, '../../../.git'), dest, function (err) {
-                if (err) return next(err);
-
+            copy.copyDir(path.resolve(__dirname, '../../../.git'), dest, {
+                mode: 0777
+            })
+            .then(function () {
                 resolver._tempDir = tempDir;
 
-                resolver._cleanup()
+                return resolver._cleanup()
                 .then(function () {
                     expect(fs.existsSync(dest)).to.be(false);
                     next();
-                })
-                .done();
-            });
+                });
+            })
+            .done();
         });
 
         it('should not fail if .git does not exist for some reason', function (next) {

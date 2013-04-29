@@ -43,6 +43,6 @@
 - Use yeomen insight!!
 - bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
 - in prod dont forget to Q.longStackJumpLimit = 0;
-- switch from events to promise progress
-  - wait for domenic response on twitter
-  - progress events: name_change, warn (deprecated json, mismatch version..), action
+- add perf tests
+- url resolver should work with fonts, e.g.: http://fonts.googleapis.com/css?family=Noto+Serif
+- discuss ability to specify folders inside bower_components.. e.g. components/fonts/

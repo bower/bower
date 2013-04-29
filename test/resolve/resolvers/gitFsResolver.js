@@ -2,15 +2,27 @@ var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
 var path = require('path');
+var rimraf = require('rimraf');
 var cmd = require('../../../lib/util/cmd');
+var copy = require('../../../lib/util/copy');
 var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
 
 describe('GitFsResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package'),
+        tempSource;
 
     function clearResolverRuntimeCache() {
         GitFsResolver.clearRuntimeCache();
     }
+
+    afterEach(function (next) {
+        if (tempSource) {
+            rimraf(tempSource, next);
+            tempSource = null;
+        } else {
+            next();
+        }
+    });
 
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
@@ -150,16 +162,20 @@ describe('GitFsResolver', function () {
         });
 
         it('should copy source folder permissions', function (next) {
-            var mode0777;
+            var mode0777,
+                resolver;
 
-            // Change testPackage dir to 0777
-            fs.chmodSync(testPackage, 0777);
-            // Get the mode to a variable
-            mode0777 = fs.statSync(testPackage).mode;
+            tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
+            resolver = new GitFsResolver(tempSource, { target: 'some-branch' });
 
-            var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
-
-            resolver.resolve()
+            copy.copyDir(testPackage, tempSource)
+            .then(function () {
+                // Change tempSource dir to 0777
+                fs.chmodSync(tempSource, 0777);
+                // Get the mode to a variable
+                mode0777 = fs.statSync(tempSource).mode;
+            })
+            .then(resolver.resolve.bind(resolver))
             .then(function (dir) {
                 // Check if temporary dir is 0777 instead of default 0777 & ~process.umask()
                 var stat = fs.statSync(dir);
