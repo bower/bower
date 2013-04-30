@@ -75,6 +75,29 @@ describe('Resolver', function () {
             .done();
         });
 
+        it('should throw an error if already resolving', function (next) {
+            var resolver = new Resolver('foo'),
+                ok;
+
+            resolver._resolveSelf = function () {};
+
+            resolver.resolve()
+            .then(function () {
+                expect(resolver._resolving).to.not.be.ok();
+                return resolver.resolve();
+            })
+            .then(function () {
+                next(ok ? null : new Error('Should throw error'));
+            })
+            .done();
+
+            try {
+                resolver.resolve();
+            } catch (e) {
+                ok = /already resolving/i.test(e.message);
+            }
+        });
+
         it('should call all the functions necessary to resolve by the correct order', function (next) {
             function DummyResolver() {
                 Resolver.apply(this, arguments);

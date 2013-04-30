@@ -29,14 +29,14 @@
     "request": "~2.20.0",
     "unzip": "~0.1.7",
     "tar": "~0.1.17",
-    "walkdir": "0.0.7",
     "fstream": "~0.1.22",
     "fstream-ignore": "0.0.6"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
     "expect.js": "~0.2.0",
-    "async": "~0.2.7"
+    "async": "~0.2.7",
+    "nock": "~0.17.5"
   },
   "scripts": {
     "test": "node test/assets/downloader.js && mocha -R spec"

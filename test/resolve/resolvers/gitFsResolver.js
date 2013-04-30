@@ -31,6 +31,12 @@ describe('GitFsResolver', function () {
             expect(resolver.getName()).to.equal('github-test-package');
         });
 
+        it('should not guess the name from the path if the name was specified', function () {
+            var resolver = new GitFsResolver(testPackage, { name: 'foo' });
+
+            expect(resolver.getName()).to.equal('foo');
+        });
+
         it('should make paths absolute and normalized', function () {
             var resolver;
 
