@@ -16,7 +16,6 @@ describe('package', function () {
   var savedConfigShorthandResolver = config.shorthand_resolver;
 
   function clean(done) {
-    var del = 0;
 
     // Restore possibly dirtied config.json
     config.json = savedConfigJson;
@@ -24,15 +23,11 @@ describe('package', function () {
     // Restore possibly dirtied config.shorthand_resolver
     config.shorthand_resolver = savedConfigShorthandResolver;
 
-    rimraf(config.directory, function (err) {
-      if (err) throw new Error('Unable to remove components directory');
-      if (++del >= 2) done();
-    });
+    rimraf.sync(config.directory);
 
-    rimraf(config.cache, function (err) {
-      if (err) throw new Error('Unable to remove cache directory');
-      if (++del >= 2) done();
-    });
+    rimraf.sync(config.cache);
+
+    done();
   }
 
   beforeEach(clean);
