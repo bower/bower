@@ -519,28 +519,28 @@ describe('package', function () {
     pkg.resolve();
   });
 
-  it('Should emit a warning on .tar.gz files, as it is not able to extract them',function(next){
+  it('Should emit a warning on .tar.gz files, as it is not able to extract them', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package-folder.tar.gz')
-      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'),{'Content-Disposition':'attachment; filename=package.tar.gz'});
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'), {'Content-Disposition': 'attachment; filename=package.tar.gz'});
 
     var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-folder.tar.gz');
     var warn = [];
-    
+
     pkg.on('resolve', function () {
         assert.equal(warn.length, 1);
         next();
-    });
+      });
 
     pkg.on('error', function (err) {
         throw err;
-    });
+      });
 
     pkg.on('warn', function (message) {
         if (/not yet supported/.test(message)) {
-            warn.push(message);
+          warn.push(message);
         }
-    });
+      });
 
     pkg.resolve();
   });
@@ -577,28 +577,17 @@ describe('package', function () {
   it('Should resolve filetype based on header content-disposition from URL packages', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package/zipball')
-      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'),{'Content-Disposition':'attachment; filename=package.zip'});
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {'Content-Disposition': 'attachment; filename=package.zip'});
 
     var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
 
     pkg.on('resolve', function () {
-      pkg.install();
       assert.equal(pkg.assetType, '.zip');
+      next();
     });
 
     pkg.on('error', function (err) {
       throw err;
-    });
-
-    pkg.on('install', function () {
-      fs.readdir(pkg.localPath, function (err, files) {
-        if (err) throw err;
-
-        assert(files.indexOf('index.js') === -1);
-        assert(files.indexOf('package.zip') === -1);
-        assert(files.indexOf('foo.js') !== -1);
-        next();
-      });
     });
 
     pkg.resolve();
