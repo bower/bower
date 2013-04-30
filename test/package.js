@@ -682,4 +682,46 @@ describe('package', function () {
 
     pkg.resolve();
   });
+
+  it('Should give a meaningful error if the commit does not exist', function (next) {
+    var commit = '000002a7b4e31cad48886d67446eb31faad92683';
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git#' + commit);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      assert(/not a valid semver range\/version or a valid commit hash/.test(err.message));
+      next();
+    });
+
+    pkg.on('checkout', function () {
+      assert(false);
+      next();
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should allow you to specify a git commit rather than a tag version', function (next) {
+    var commit = 'd54062a7b4e31cad48886d67446ea31faad92683';
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git#' + commit);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.on('checkout', function () {
+      assert(fs.existsSync(pkg.gitPath));
+      assert.equal(fs.readFileSync(path.join(pkg.gitPath, '.git/HEAD'), 'UTF-8'), commit + '\n');
+      next();
+    });
+
+    pkg.resolve();
+  });
 });
