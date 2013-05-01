@@ -42,7 +42,7 @@ describe('GitResolver', function () {
             }));
             GitResolver.fetchRefs = function () {
                 return Q.resolve([
-                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'  // same commit hash on purpose
                 ]);
             };
 
@@ -71,7 +71,7 @@ describe('GitResolver', function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.0',
-                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/1.0.1'
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.1'  // same commit hash on purpose
                 ]);
             };
 
