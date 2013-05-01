@@ -992,10 +992,35 @@ describe('GitResolver', function () {
     });
 
     describe('#clearRuntimeCache', function () {
-        it.skip('should clear refs cache');
-        it.skip('should clear branches cache');
-        it.skip('should clear tags cache');
-        it.skip('should clear versions cache');
+        // Use a class that inherit the GitResolver to see if it uses
+        // late binding when clearing the cache
+        var CustomGitResolver = function () {};
+        util.inherits(CustomGitResolver, GitResolver);
+        mout.object.mixIn(CustomGitResolver, GitResolver);
+
+        it('should clear refs cache', function () {
+            CustomGitResolver._refs = {};
+            CustomGitResolver.clearRuntimeCache();
+            expect(CustomGitResolver._refs == null).to.be(true);
+        });
+
+        it('should clear branches cache', function () {
+            CustomGitResolver._branches = {};
+            CustomGitResolver.clearRuntimeCache();
+            expect(CustomGitResolver._branches == null).to.be(true);
+        });
+
+        it('should clear tags cache', function () {
+            CustomGitResolver._tags = {};
+            CustomGitResolver.clearRuntimeCache();
+            expect(CustomGitResolver._tags == null).to.be(true);
+        });
+
+        it('should clear versions cache', function () {
+            CustomGitResolver._versions = {};
+            CustomGitResolver.clearRuntimeCache();
+            expect(CustomGitResolver._versions == null).to.be(true);
+        });
     });
 
     describe('#fetchVersions', function () {
