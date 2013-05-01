@@ -145,6 +145,8 @@ describe('UrlResolver', function () {
             })
             .done();
         });
+
+        it.skip('should resolve to true if server responds with 304 (ETag mechanism)');
     });
 
     describe('.resolve', function () {
@@ -263,8 +265,56 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it.skip('should extract if response content-type is an archive');
-        it.skip('should extract if response content-disposition filename is an archive');
+        it('should extract if response content-type is an archive', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/package-zip')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
+                'Content-Type': 'application/zip'
+            });
+
+            resolver = new UrlResolver('http://bower.io/package-zip');
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should extract if response content-disposition filename is an archive', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/package-zip')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
+                'Content-Disposition': 'attachment; filename="package-zip.zip"'
+            });
+
+            resolver = new UrlResolver('http://bower.io/package-zip');
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        describe('content-disposition', function () {
+            it.skip('should work with and without quotes');
+            it.skip('should not work with partial quotes');
+            it.skip('should not work if the filename contain chars other than alphanumerical, dashes, spaces and dots');
+            it.skip('should not work if the filename start with a space');
+            it.skip('should not work if the filename ends with a space');
+            it.skip('should not work if the filename ends with a dot');
+        });
 
         // TODO: copy other tests related with extraction from the FsResolver tests
     });
