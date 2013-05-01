@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
+var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var FsResolver = require('../../../lib/resolve/resolvers/FsResolver');
@@ -82,6 +83,18 @@ describe('FsResolver', function () {
     });
 
     describe('.resolve', function () {
+        // Function to assert that the main property of the
+        // package meta of a canonical package is set to the
+        // expected value
+        function assertMain(dir, singleFile) {
+            return Q.nfcall(fs.readFile, path.join(dir, '.bower.json'))
+            .then(function (contents) {
+                var pkgMeta = JSON.parse(contents.toString());
+
+                expect(pkgMeta.main).to.equal(singleFile);
+            });
+        }
+
         it('should copy the source directory contents', function (next) {
             var resolver = new FsResolver(testPackage);
 
@@ -115,13 +128,30 @@ describe('FsResolver', function () {
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'index.md'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'README.md'))).to.be(false);
-                next();
+
+                return assertMain(dir, 'index.md')
+                .then(next);
             })
             .done();
         });
 
-        it.skip('should not rename to index if source is a folder (even with just one file)');
-        it.skip('should set the main property in the package metadata if renamed to index');
+        it('should rename to index if source is a folder with just one file in it', function (next) {
+            tempSource = path.resolve(__dirname, '../../assets/tmp');
+
+            var resolver = new FsResolver(tempSource);
+
+            fs.mkdirSync(tempSource);
+
+            copy.copyFile(path.join(testPackage, 'foo'), path.join(tempSource, 'foo'))
+            .then(resolver.resolve.bind(resolver))
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'index'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'foo'))).to.be(false);
+                return assertMain(dir, 'index')
+                .then(next);
+            })
+            .done();
+        });
 
         it('should copy the source directory permissions', function (next) {
             var mode0777,
@@ -206,8 +236,9 @@ describe('FsResolver', function () {
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
-                expect(fs.existsSync(path.join(dir, 'package-zip-folder'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-folder'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-folder.zip'))).to.be(false);
                 next();
             })
             .done();
@@ -220,12 +251,29 @@ describe('FsResolver', function () {
             resolver.resolve()
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'index.js'))).to.be(true);
-                expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
-                next();
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-single-file'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-single-file.zip'))).to.be(false);
+                return assertMain(dir, 'index.js')
+                .then(next);
             })
             .done();
         });
 
-        it.skip('should rename single file from a single folder to index when source is an archive');
+        it('should rename single file from a single folder to index when source is an archive', function (next) {
+            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip-folder-single-file.zip'));
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'index.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-folder-single-file'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip-folder-single-file.zip'))).to.be(false);
+
+                return assertMain(dir, 'index.js')
+                .then(next);
+            })
+            .done();
+        });
     });
 });

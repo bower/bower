@@ -2,7 +2,6 @@ var expect = require('expect.js');
 var util = require('util');
 var path = require('path');
 var fs = require('fs');
-var mkdirp = require('mkdirp');
 var chmodr = require('chmodr');
 var rimraf = require('rimraf');
 var Q = require('q');
@@ -20,8 +19,8 @@ describe('GitResolver', function () {
     }
 
     describe('.hasNew', function () {
-        beforeEach(function (next) {
-            mkdirp(tempDir, next);
+        beforeEach(function () {
+            fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
@@ -616,8 +615,8 @@ describe('GitResolver', function () {
     });
 
     describe('._cleanup', function () {
-        beforeEach(function (next) {
-            mkdirp(tempDir, next);
+        beforeEach(function () {
+            fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
@@ -695,8 +694,8 @@ describe('GitResolver', function () {
     });
 
     describe('._savePkgMeta', function () {
-        beforeEach(function (next) {
-            mkdirp(tempDir, next);
+        beforeEach(function () {
+            fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {

@@ -2,7 +2,6 @@ var expect = require('expect.js');
 var fs = require('fs');
 var path = require('path');
 var util = require('util');
-var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
 var tmp = require('tmp');
 var cmd = require('../../lib/util/cmd');
@@ -49,36 +48,52 @@ describe('Resolver', function () {
 
     describe('.hasNew', function () {
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = new Resolver('foo'),
+                succeeded;
 
             resolver._resolve = function () {};
 
-            resolver.resolve();
+            resolver.resolve()
+            .then(function () {
+                // Test if resolve can be called again when done
+                resolver.resolve()
+                .then(function () {
+                    next(succeeded ? new Error('Should have failed') : null);
+                });
+            })
+            .done();
 
             resolver.hasNew()
             .then(function () {
-                next(new Error('Should have failed'));
+                succeeded = true;
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.code).to.equal('EWORKING');
                 expect(err.message).to.match(/already working/i);
-                next();
             });
         });
 
         it('should throw an error if already working (checking for newer version)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = new Resolver('foo'),
+                succeeded;
 
-            resolver.hasNew();
+            resolver.hasNew()
+            .then(function () {
+                // Test if hasNew can be called again when done
+                resolver.hasNew()
+                .then(function () {
+                    next(succeeded ? new Error('Should have failed') : null);
+                });
+            })
+            .done();
 
             resolver.hasNew()
             .then(function () {
-                next(new Error('Should have failed'));
+                succeeded = true;
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.code).to.equal('EWORKING');
                 expect(err.message).to.match(/already working/i);
-                next();
             });
         });
 
@@ -110,38 +125,54 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = new Resolver('foo'),
+                succeeded;
 
             resolver._resolve = function () {};
 
-            resolver.resolve();
+            resolver.resolve()
+            .then(function () {
+                // Test if resolve can be called again when done
+                resolver.resolve()
+                .then(function () {
+                    next(succeeded ? new Error('Should have failed') : null);
+                });
+            })
+            .done();
 
             resolver.resolve()
             .then(function () {
-                next(new Error('Should have failed'));
+                succeeded = true;
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.code).to.equal('EWORKING');
                 expect(err.message).to.match(/already working/i);
-                next();
             });
         });
 
         it('should throw an error if already working (checking newer version)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = new Resolver('foo'),
+                succeeded;
 
             resolver._resolve = function () {};
 
-            resolver.hasNew();
+            resolver.hasNew()
+            .then(function () {
+                // Test if hasNew can be called again when done
+                resolver.hasNew()
+                .then(function () {
+                    next(succeeded ? new Error('Should have failed') : null);
+                });
+            })
+            .done();
 
             resolver.resolve()
             .then(function () {
-                next(new Error('Should have failed'));
+                succeeded = true;
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.code).to.equal('EWORKING');
                 expect(err.message).to.match(/already working/i);
-                next();
             });
         });
 
@@ -314,7 +345,7 @@ describe('Resolver', function () {
         before(function () {
             var stat;
 
-            mkdirp.sync(tempDir, '0777');
+            fs.mkdirSync(tempDir);
             stat = fs.statSync(tempDir);
             dirMode0777 = stat.mode;
         });
@@ -408,8 +439,8 @@ describe('Resolver', function () {
     });
 
     describe('._readJson', function () {
-        beforeEach(function (next) {
-            mkdirp(tempDir, next);
+        beforeEach(function () {
+            fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
@@ -534,8 +565,8 @@ describe('Resolver', function () {
     });
 
     describe('._savePkgMeta', function () {
-        beforeEach(function (next) {
-            mkdirp(tempDir, next);
+        beforeEach(function () {
+            fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
