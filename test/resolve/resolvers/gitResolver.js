@@ -32,7 +32,7 @@ describe('GitResolver', function () {
         it('should be true when the resolution type is different', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _resolution: {
@@ -59,7 +59,7 @@ describe('GitResolver', function () {
         it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.0',
                 _resolution: {
@@ -88,7 +88,7 @@ describe('GitResolver', function () {
         it('should be true when a resolved to a lower version of a range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -116,7 +116,7 @@ describe('GitResolver', function () {
         it('should be false when resolved to the same tag (with same commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -145,7 +145,7 @@ describe('GitResolver', function () {
         it('should be true when resolved to the same tag (with different commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -174,7 +174,7 @@ describe('GitResolver', function () {
         it('should be true when a different commit hash for a given branch is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
@@ -200,7 +200,7 @@ describe('GitResolver', function () {
         it('should be false when resolved to the the same commit hash for a given branch', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
@@ -226,7 +226,7 @@ describe('GitResolver', function () {
         it('should be false when targeting commit hashes', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'commit',
@@ -249,7 +249,7 @@ describe('GitResolver', function () {
         });
     });
 
-    describe('._resolveSelf', function () {
+    describe('._resolve', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should call the necessary functions by the correct order', function (next) {

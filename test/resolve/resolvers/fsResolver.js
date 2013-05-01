@@ -43,25 +43,26 @@ describe('FsResolver', function () {
             resolver = new FsResolver(testPackage + '/something/..');
             expect(resolver.getSource()).to.equal(testPackage);
         });
-    });
 
-    describe('.hasNew', function () {
-        it('should fail if a target was specified', function (next) {
-            var resolver = new FsResolver(testPackage, {
-                target: '0.0.1'
-            });
+        it('should error out if a target was specified', function (next) {
+            var resolver;
 
-            resolver.hasNew()
-            .then(function () {
-                next(new Error('Should have failed'));
-            }, function (err) {
+            try {
+                resolver = new FsResolver(testPackage, {
+                    target: '0.0.1'
+                });
+            } catch (err) {
                 expect(err).to.be.an(Error);
                 expect(err.message).to.match(/can\'t resolve targets/i);
                 expect(err.code).to.equal('ENORESTARGET');
-                next();
-            });
-        });
+                return next();
+            }
 
+            next(new Error('Should have thrown'));
+        });
+    });
+
+    describe('.hasNew', function () {
         it('should resolve always to true (for now..)', function (next) {
             var resolver = new FsResolver(path.relative(process.cwd(), testPackage));
 
@@ -73,30 +74,14 @@ describe('FsResolver', function () {
             .done();
         });
 
-        it.skip('should be false if the file mtime hasn\'t changed');
-        it.skip('should be false if the directory mtime hasn\'t changed');
-        it.skip('should be true if the file mtime has changed');
-        it.skip('should be true if the directory mtime has changed');
-        it.skip('should ignore files specified to be ignored');
+        //it.skip('should be false if the file mtime hasn\'t changed');
+        //it.skip('should be false if the directory mtime hasn\'t changed');
+        //it.skip('should be true if the file mtime has changed');
+        //it.skip('should be true if the directory mtime has changed');
+        //it.skip('should ignore files specified to be ignored');
     });
 
     describe('.resolve', function () {
-        it('should fail if a target was specified', function (next) {
-            var resolver = new FsResolver(testPackage, {
-                target: '0.0.1'
-            });
-
-            resolver.hasNew()
-            .then(function () {
-                next(new Error('Should have failed'));
-            }, function (err) {
-                expect(err).to.be.an(Error);
-                expect(err.message).to.match(/can\'t resolve targets/i);
-                expect(err.code).to.equal('ENORESTARGET');
-                next();
-            });
-        });
-
         it('should copy the source directory contents', function (next) {
             var resolver = new FsResolver(testPackage);
 

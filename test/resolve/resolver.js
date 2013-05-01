@@ -48,6 +48,40 @@ describe('Resolver', function () {
     });
 
     describe('.hasNew', function () {
+        it('should throw an error if already working (resolving)', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._resolve = function () {};
+
+            resolver.resolve();
+
+            resolver.hasNew()
+            .then(function () {
+                next(new Error('Should have failed'));
+            }, function (err) {
+                expect(err).to.be.an(Error);
+                expect(err.code).to.equal('EWORKING');
+                expect(err.message).to.match(/already working/i);
+                next();
+            });
+        });
+
+        it('should throw an error if already working (checking for newer version)', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver.hasNew();
+
+            resolver.hasNew()
+            .then(function () {
+                next(new Error('Should have failed'));
+            }, function (err) {
+                expect(err).to.be.an(Error);
+                expect(err.code).to.equal('EWORKING');
+                expect(err.message).to.match(/already working/i);
+                next();
+            });
+        });
+
         it('should resolve to true by default', function (next) {
             var resolver = new Resolver('foo');
 
@@ -61,7 +95,7 @@ describe('Resolver', function () {
     });
 
     describe('.resolve', function () {
-        it('should reject the promise if _resolveSelf is not implemented', function (next) {
+        it('should reject the promise if _resolve is not implemented', function (next) {
             var resolver = new Resolver('foo');
 
             resolver.resolve()
@@ -69,33 +103,46 @@ describe('Resolver', function () {
                 next(new Error('Should have rejected the promise'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.contain('_resolveSelf not implemented');
+                expect(err.message).to.contain('_resolve not implemented');
                 next();
             })
             .done();
         });
 
-        it('should throw an error if already resolving', function (next) {
-            var resolver = new Resolver('foo'),
-                ok;
+        it('should throw an error if already working (resolving)', function (next) {
+            var resolver = new Resolver('foo');
 
-            resolver._resolveSelf = function () {};
+            resolver._resolve = function () {};
+
+            resolver.resolve();
 
             resolver.resolve()
             .then(function () {
-                expect(resolver._resolving).to.not.be.ok();
-                return resolver.resolve();
-            })
-            .then(function () {
-                next(ok ? null : new Error('Should throw error'));
-            })
-            .done();
+                next(new Error('Should have failed'));
+            }, function (err) {
+                expect(err).to.be.an(Error);
+                expect(err.code).to.equal('EWORKING');
+                expect(err.message).to.match(/already working/i);
+                next();
+            });
+        });
 
-            try {
-                resolver.resolve();
-            } catch (e) {
-                ok = /already resolving/i.test(e.message);
-            }
+        it('should throw an error if already working (checking newer version)', function (next) {
+            var resolver = new Resolver('foo');
+
+            resolver._resolve = function () {};
+
+            resolver.hasNew();
+
+            resolver.resolve()
+            .then(function () {
+                next(new Error('Should have failed'));
+            }, function (err) {
+                expect(err).to.be.an(Error);
+                expect(err.code).to.equal('EWORKING');
+                expect(err.message).to.match(/already working/i);
+                next();
+            });
         });
 
         it('should call all the functions necessary to resolve by the correct order', function (next) {
@@ -123,7 +170,7 @@ describe('Resolver', function () {
                     return val;
                 }.bind(this));
             };
-            DummyResolver.prototype._resolveSelf = function () {};
+            DummyResolver.prototype._resolve = function () {};
             DummyResolver.prototype._readJson = function () {
                 this._stack.push('before _readJson');
                 return Resolver.prototype._readJson.apply(this, arguments)
@@ -172,7 +219,7 @@ describe('Resolver', function () {
         it('should resolve with the canonical package (folder)', function (next) {
             var resolver = new Resolver('foo');
 
-            resolver._resolveSelf = function () {};
+            resolver._resolve = function () {};
 
             resolver.resolve()
             .then(function (folder) {
@@ -195,7 +242,7 @@ describe('Resolver', function () {
             it('should still return null', function (next) {
                 var resolver = new Resolver('foo');
 
-                resolver._resolveSelf = function () {
+                resolver._resolve = function () {
                     throw new Error('I\'ve failed to resolve');
                 };
 
@@ -210,7 +257,7 @@ describe('Resolver', function () {
         it('should return the canonical package (folder) if resolve succeeded', function (next) {
             var resolver = new Resolver('foo');
 
-            resolver._resolveSelf = function () {};
+            resolver._resolve = function () {};
 
             resolver.resolve()
             .then(function () {
@@ -235,7 +282,7 @@ describe('Resolver', function () {
             it('should still return null', function (next) {
                 var resolver = new Resolver('foo');
 
-                resolver._resolveSelf = function () {
+                resolver._resolve = function () {
                     throw new Error('I\'ve failed to resolve');
                 };
 
@@ -250,7 +297,7 @@ describe('Resolver', function () {
         it('should return the package meta if resolve succeeded', function (next) {
             var resolver = new Resolver('foo');
 
-            resolver._resolveSelf = function () {};
+            resolver._resolve = function () {};
 
             resolver.resolve()
             .then(function () {

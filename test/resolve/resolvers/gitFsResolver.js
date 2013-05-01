@@ -244,5 +244,7 @@ describe('GitFsResolver', function () {
             })
             .done();
         });
+
+        it.skip('should reuse promises for the same source, avoiding making duplicate fetchs');
     });
 });

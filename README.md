@@ -199,22 +199,33 @@ Returns the target.
 
 Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
 
-`Resolver#hasNew(canonicalPackage)`: Promise
+`Resolver#hasNew(canonicalPkg)`: Promise
 
-Checks if there is a version more recent than the provided `canonicalPackage` (folder) that complies with the resolver target.
+Checks if there is a version more recent than the provided `canonicalPkg` (folder) that complies with the resolver target.
+The hasNew process is as follows:
+
+- Reads the `package meta` from the `canonicalPkg`
+- Resolves to `true if it doesn't exist
+- Otherwise, calls _hasNew with the `package meta` and the `canonicalPkg` as arguments
+
+If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
+rejected.
 
 `Resolver#resolve()`: Promise
 
 Resolves the resolver, and returns a promise of a canonical package.
 The resolve process is as follows:
 
-- calls `_createTempDir()` and waits.
-- When done, calls `_resolveSelf()` and waits.
+- Calls `_createTempDir()` and waits.
+- When done, calls `_resolve()` and waits.
 - When done, calls `_readJson()` and waits (validation and normalisation also happens here).
 - When done, calls both functions below, and waits:
     - `_applyPkgMeta(meta)`
     - `_savePkgMeta(meta)`
 - When done, resolves the promise with the *temp dir*, which is now a canonical package.
+
+If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
+rejected.
 
 `Resolver#getPkgMeta()`: Object
 
@@ -234,6 +245,11 @@ same source.
 -----------
 
 ##### Protected functions
+
+`Resolver#_hasNew(pkgMeta, canonicalPkg)`: Promise
+
+The process of checking for a newer version. This function should be as fast as possible.  
+Concrete resolvers are encouraged to rewrite this function since the default implementation resolves to `true`.
 
 `Resolver#_createTempDir()`: Promise
 
@@ -261,7 +277,7 @@ Concrete resolvers may override this to add any additional information that migh
 
 ##### Abstract functions that must be implemented by concrete resolvers.
 
-`Resolver#_resolveSelf()`: Promise
+`Resolver#_resolve()`: Promise
 
 The actual process of fetching the package files. This method must he implemented by concrete resolvers. For instance, the `UrlResolver` would download the contents of a URL into the temporary directory in this stage.
 
