@@ -240,12 +240,14 @@ var bower = require('bower');
 bower.commands
   .install(paths, options)
   .on('end', function (data) {
-    data && console.log(data);
+    if (data) {
+      console.log(data);
+    }
   });
 
 bower.commands
   .search('jquery', {})
-  .on('packages', function(packages) {
+  .on('packages', function (packages) {
     // `packages` is a list of packages returned by searching for 'jquery'
   });
 ```
