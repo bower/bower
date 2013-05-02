@@ -92,6 +92,8 @@ describe('FsResolver', function () {
                 var pkgMeta = JSON.parse(contents.toString());
 
                 expect(pkgMeta.main).to.equal(singleFile);
+
+                return pkgMeta;
             });
         }
 
@@ -130,7 +132,7 @@ describe('FsResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'README.md'))).to.be(false);
 
                 return assertMain(dir, 'index.md')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -147,8 +149,9 @@ describe('FsResolver', function () {
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'index'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'foo'))).to.be(false);
+
                 return assertMain(dir, 'index')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -254,8 +257,9 @@ describe('FsResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file.zip'))).to.be(false);
+
                 return assertMain(dir, 'index.js')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -271,7 +275,7 @@ describe('FsResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder-single-file.zip'))).to.be(false);
 
                 return assertMain(dir, 'index.js')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });

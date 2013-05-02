@@ -146,7 +146,69 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it.skip('should resolve to true if server responds with 304 (ETag mechanism)');
+        it('should resolve to true if server responds with 304 (ETag mechanism)', function (next) {
+            var resolver = new UrlResolver('http://bower.io/foo.js');
+
+            nock('http://bower.io')
+            .head('/foo.js')
+            .matchHeader('If-None-Match', '686897696a7c876b7e')
+            .reply(304, '', {
+                'ETag': '686897696a7c876b7e',
+                'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+            });
+
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+                name: 'foo',
+                version: '0.0.0',
+                _cacheHeaders: {
+                    'ETag': '686897696a7c876b7e',
+                    'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+                }
+            }));
+
+            resolver.hasNew(tempDir)
+            .then(function (hasNew) {
+                expect(hasNew).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should work with redirects', function (next) {
+            var redirectingUrl = 'http://redirecting-url.com',
+                redirectingToUrl = 'http://bower.io',
+                resolver;
+
+            nock(redirectingUrl)
+              .head('/foo.js')
+              .reply(302, '', { location: redirectingToUrl + '/foo.js' });
+
+            nock(redirectingToUrl)
+              .head('/foo.js')
+              .reply(200, 'foo contents', {
+                'ETag': '686897696a7c876b7e',
+                'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+            });
+
+
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+                name: 'foo',
+                version: '0.0.0',
+                _cacheHeaders: {
+                    'ETag': '686897696a7c876b7e',
+                    'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+                }
+            }));
+
+            resolver = new UrlResolver(redirectingUrl + '/foo.js');
+
+            resolver.hasNew(tempDir)
+            .then(function (hasNew) {
+                expect(hasNew).to.be(false);
+                next();
+            })
+            .done();
+        });
     });
 
     describe('.resolve', function () {
@@ -159,6 +221,8 @@ describe('UrlResolver', function () {
                 var pkgMeta = JSON.parse(contents.toString());
 
                 expect(pkgMeta.main).to.equal(singleFile);
+
+                return pkgMeta;
             });
         }
 
@@ -173,11 +237,16 @@ describe('UrlResolver', function () {
 
             resolver.resolve()
             .then(function (dir) {
+                var contents;
+
                 expect(fs.existsSync(path.join(dir, 'index.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(false);
 
+                contents = fs.readFileSync(path.join(dir, 'index.js')).toString();
+                expect(contents).to.equal('foo contents');
+
                 assertMain(dir, 'index.js')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -196,6 +265,25 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
+                next();
+            })
+            .done();
+        });
+
+        it('should extract if source is an archive (case insensitive)', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/package-zip.ZIP')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'));
+
+            resolver = new UrlResolver('http://bower.io/package-zip.ZIP');
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip.ZIP'))).to.be(false);
                 next();
             })
             .done();
@@ -238,7 +326,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file.zip'))).to.be(false);
                 return assertMain(dir, 'index.js')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -260,7 +348,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder-single-file.zip'))).to.be(false);
 
                 return assertMain(dir, 'index.js')
-                .then(next);
+                .then(next.bind(next, null));
             })
             .done();
         });
@@ -281,6 +369,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
                 next();
             })
             .done();
@@ -302,20 +391,173 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
                 next();
             })
             .done();
         });
 
-        describe('content-disposition', function () {
-            it.skip('should work with and without quotes');
-            it.skip('should not work with partial quotes');
-            it.skip('should not work if the filename contain chars other than alphanumerical, dashes, spaces and dots');
-            it.skip('should not work if the filename start with a space');
-            it.skip('should not work if the filename ends with a space');
-            it.skip('should not work if the filename ends with a dot');
+        it('should store cache headers in the package meta', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/foo.js')
+            .reply(200, 'foo contents', {
+                'ETag': '686897696a7c876b7e',
+                'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+            });
+
+            resolver = new UrlResolver('http://bower.io/foo.js');
+
+            resolver.resolve()
+            .then(function (dir) {
+                assertMain(dir, 'index.js')
+                .then(function (pkgMeta) {
+                    expect(pkgMeta._cacheHeaders).to.eql({
+                        'ETag': '686897696a7c876b7e',
+                        'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+                    });
+                    next();
+                });
+            })
+            .done();
         });
 
-        // TODO: copy other tests related with extraction from the FsResolver tests
+        it('should work with redirects', function (next) {
+            var redirectingUrl = 'http://redirecting-url.com',
+                redirectingToUrl = 'http://bower.io',
+                resolver;
+
+            nock(redirectingUrl)
+              .get('/foo.js')
+              .reply(302, '', { location: redirectingToUrl + '/foo.js' });
+
+            nock(redirectingToUrl)
+              .get('/foo.js')
+              .reply(200, 'foo contents');
+
+            resolver = new UrlResolver(redirectingUrl + '/foo.js');
+
+            resolver.resolve()
+            .then(function (dir) {
+                var contents;
+
+                expect(fs.existsSync(path.join(dir, 'index.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(false);
+
+                contents = fs.readFileSync(path.join(dir, 'index.js')).toString();
+                expect(contents).to.equal('foo contents');
+
+                assertMain(dir, 'index.js')
+                .then(next.bind(next, null));
+            })
+            .done();
+        });
+
+        describe('content-disposition validation', function () {
+            function performTest(header, extraction) {
+                var resolver;
+
+                nock('http://bower.io')
+                .get('/package-zip')
+                .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
+                    'Content-Disposition': header
+                });
+
+                resolver = new UrlResolver('http://bower.io/package-zip');
+
+                return resolver.resolve()
+                .then(function (dir) {
+                    if (extraction) {
+                        expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                        expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                        expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                    } else {
+                        expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(false);
+                        expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(false);
+                        expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                        expect(fs.existsSync(path.join(dir, 'index'))).to.be(true);
+                    }
+                });
+            }
+
+            it('should work with and without quotes', function (next) {
+                performTest('attachment; filename="package-zip.zip"', true)
+                .then(function () {
+                    return performTest('attachment; filename=package-zip.zip', true);
+                })
+                .then(next.bind(next, null))
+                .done();
+            });
+
+            it('should not work with partial quotes', function (next) {
+                performTest('attachment; filename="package-zip.zip', false)
+                .then(function () {
+                    // This one works, and the last quote is simply ignored
+                    return performTest('attachment; filename=package-zip.zip"', true);
+                })
+                .then(next.bind(next, null))
+                .done();
+            });
+
+            it('should not work if the filename contain chars other than alphanumerical, dashes, spaces and dots', function (next) {
+                performTest('attachment; filename="1package01 _-zip.zip"', true)
+                .then(function () {
+                    return performTest('attachment; filename="package$%"', false);
+                })
+                .then(function () {
+                    return performTest('attachment; filename=packagé', false);
+                })
+                .then(function () {
+                    // This one works, but since the filename is truncated once a space is found
+                    // the extraction will not happen because the file has no .zip extension
+                    return performTest('attachment; filename=1package01 _-zip.zip"', false);
+                })
+                .then(function () {
+                    return performTest('attachment; filename=1package01.zip _-zip.zip"', true);
+                })
+                .then(next.bind(next, null))
+                .done();
+            });
+
+            it('should trim leading and trailing spaces', function (next) {
+                performTest('attachment; filename=" package.zip "', true)
+                .then(next.bind(next, null))
+                .done();
+            });
+
+            it('should not work if the filename ends with a dot', function (next) {
+                performTest('attachment; filename="package.zip."', false)
+                .then(function () {
+                    return performTest('attachment; filename="package.zip. "', false);
+                })
+                .then(function () {
+                    return performTest('attachment; filename=package.zip.', false);
+                })
+                .then(function () {
+                    return performTest('attachment; filename="package.zip ."', false);
+                })
+                .then(function () {
+                    return performTest('attachment; filename="package.zip. "', false);
+                })
+                .then(next.bind(next, null))
+                .done();
+            });
+
+            it('should be case insensitive', function (next) {
+                performTest('attachment; FILENAME="package.zip"', true)
+                .then(function () {
+                    return performTest('attachment; filename="package.ZIP"', true);
+                })
+                .then(function () {
+                    return performTest('attachment; FILENAME=package.zip', true);
+                })
+                .then(function () {
+                    return performTest('attachment; filename=package.ZIP', true);
+                })
+                .then(next.bind(next, null))
+                .done();
+            });
+        });
     });
 });
