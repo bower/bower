@@ -54,7 +54,7 @@ Bower is composed of the following components:
 - `bower.json`: Main purpose is to declare the component dependencies and other component related information.
 - `Manager`: Main coordinator, responsible for:
     - Checking which packages are already installed in the current `bower folder`.
-    - Deciding which version of the dependencies should be fetched from the `PackageRepository`, while keeping every dependant compatible (note that the `Manager` is `server` aware).
+    - Deciding which version of the dependencies should be fetched from the `PackageRepository`, while keeping every dependant compatible (note that the `Manager` is `semver` aware).
     - Tracking which dependencies have been fetched, which ones failed to fetch, and which ones are being fetched.
     - Requesting the `PackageRepository` to fail-fast, in case it realises there is no resolution for the current dependency tree.
 - `PackageRepository`: Abstraction to the underlying complexity of heterogeneous source types. Responsible for:

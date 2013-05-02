@@ -13,8 +13,9 @@ describe('GitRemoteResolver', function () {
 
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
-            var resolver = new GitRemoteResolver('file://' + testPackage);
+            var resolver;
 
+            resolver = new GitRemoteResolver('file://' + testPackage);
             expect(resolver.getName()).to.equal('github-test-package');
 
             resolver = new GitRemoteResolver('git://github.com/twitter/bower.git');
@@ -25,6 +26,19 @@ describe('GitRemoteResolver', function () {
 
             resolver = new GitRemoteResolver('git://github.com');
             expect(resolver.getName()).to.equal('github.com');
+        });
+
+        it('should ensure .git in the source (except if protocol is file://)', function () {
+            var resolver;
+
+            resolver = new GitRemoteResolver('git://github.com/twitter/bower');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+
+            resolver = new GitRemoteResolver('git://github.com/twitter/bower.git');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+
+            resolver = new GitRemoteResolver('file://' + testPackage);
+            expect(resolver.getSource()).to.equal('file://' + testPackage);
         });
     });
 
@@ -156,16 +170,15 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise = Q.resolve([]),
-                retPromise;
+            var promise1,
+                promise2;
 
-            GitRemoteResolver._refs = {};
-            GitRemoteResolver._refs[testPackage] = promise;
-            retPromise = GitRemoteResolver.fetchRefs(testPackage);
+            promise1 = GitRemoteResolver.fetchRefs(testPackage);
+            promise2 = GitRemoteResolver.fetchRefs(testPackage);
 
-            retPromise
+            Q.all([promise1, promise2])
             .then(function () {
-                expect(retPromise).to.equal(promise);
+                expect(promise1).to.equal(promise2);
                 next();
             })
             .done();

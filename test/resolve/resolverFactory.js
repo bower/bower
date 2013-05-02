@@ -1,72 +1,108 @@
-var BASE_DIR = '../../';
-
 var expect = require('expect.js');
-var resolverFactory   = require(BASE_DIR + 'lib/resolve/resolverFactory');
-var FsResolver        = require(BASE_DIR + 'lib/resolve/resolvers/FsResolver');
-var GitFsResolver     = require(BASE_DIR + 'lib/resolve/resolvers/GitFsResolver');
-var GitRemoteResolver = require(BASE_DIR + 'lib/resolve/resolvers/GitRemoteResolver');
-var UrlResolver       = require(BASE_DIR + 'lib/resolve/resolvers/UrlResolver');
-var async             = require('async');
+var mout = require('mout');
+var Q = require('q');
+var resolverFactory = require('../../lib/resolve/resolverFactory');
+var FsResolver = require('../../lib/resolve/resolvers/FsResolver');
+var GitFsResolver = require('../../lib/resolve/resolvers/GitFsResolver');
+var GitRemoteResolver = require('../../lib/resolve/resolvers/GitRemoteResolver');
+var UrlResolver = require('../../lib/resolve/resolvers/UrlResolver');
 
-function resolverType(resolver) {
-    if (resolver instanceof FsResolver) {
-        return 'FsResolver';
-    }
+describe('resolverFactory', function () {
+    it('should recognize git remote endpoints correctly', function (next) {
+        var promise = Q.resolve(),
+            endpoints;
 
-    if (resolver instanceof GitFsResolver) {
-        return 'GitFsResolver';
-    }
+        endpoints = {
+            'git://github.com/user/project.git': {
+                source: 'git://github.com/user/project.git',
+                target: '*'
+            },
+            'git://github.com/user/project.git#commit-ish': {
+                source: 'git://github.com/user/project.git',
+                target: 'commit-ish'
+            },
+            'git+ssh://user@hostname:project.git': {
+                source: 'ssh://user@hostname:project.git',
+                target: '*'
+            },
+            'git+ssh://user@hostname:project.git#commit-ish': {
+                source: 'ssh://user@hostname:project.git',
+                target: 'commit-ish'
+            },
+            'git+ssh://user@hostname/project.git': {
+                source: 'ssh://user@hostname/project.git',
+                target: '*'
+            },
+            'git+ssh://user@hostname/project.git#commit-ish': {
+                source: 'ssh://user@hostname/project.git',
+                target: 'commit-ish'
+            },
+            'user@hostname:project.git': {
+                source: 'user@hostname:project.git',
+                target: '*'
+            },
+            'user@hostname:project.git#commit-ish': {
+                source: 'user@hostname:project.git',
+                target: 'commit-ish'
+            },
+            'git+http://user@hostname/project/blah.git': {
+                source: 'http://user@hostname/project/blah.git',
+                target: '*'
+            },
+            'git+http://user@hostname/project/blah.git#commit-ish': {
+                source: 'http://user@hostname/project/blah.git',
+                target: 'commit-ish'
+            },
+            'git+https://user@hostname/project/blah.git': {
+                source: 'https://user@hostname/project/blah.git',
+                target: '*'
+            },
+            'git+https://user@hostname/project/blah.git#commit-ish': {
+                source: 'https://user@hostname/project/blah.git',
+                target: 'commit-ish'
+            },
+            'bower/bower': {
+                source: 'git://github.com/bower/bower.git',
+                target: '*'
+            },
+            'bower/bower#commit-ish': {
+                source: 'git://github.com/bower/bower.git',
+                target: 'commit-ish'
+            },
+        };
 
-    if (resolver instanceof GitRemoteResolver) {
-        return 'GitRemoteResolver';
-    }
+        mout.object.forOwn(endpoints, function (value, key) {
+            promise = promise.then(function () {
+                return resolverFactory(key);
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(GitRemoteResolver);
+                expect(resolver.getSource()).to.equal(value.source);
+                expect(resolver.getTarget()).to.equal(value.target);
 
-    if (resolver instanceof UrlResolver) {
-        return 'UrlResolver';
-    }
-
-    return 'unknown';
-}
-
-describe.skip('resolverFactory', function () {
-    describe('create', function () {
-        it.skip('should separate the target correctly from the endpoint', function (done) {
-
-        });
-
-        it('should recognize the source type correctly', function (done) {
-            var testResolverType = function (endpoint, expectedType, next) {
-                resolverFactory(endpoint).done(function (resolver) {
-                    expect(resolverType(resolver)).to.equal(expectedType);
-
-                    next();
-                });
-            };
-
-            var testSubjects = {
-                'git://github.com/user/project.git': 'GitRemoteResolver',
-                'git://github.com/user/project.git#commit-ish': 'GitRemoteResolver',
-                'git+ssh://user@hostname:project.git': 'GitRemoteResolver',
-                'git+ssh://user@hostname:project.git#commit-ish': 'GitRemoteResolver',
-                'git+ssh://user@hostname/project.git': 'GitRemoteResolver',
-                'git+ssh://user@hostname/project.git#commit-ish': 'GitRemoteResolver',
-                'git+http://user@hostname/project/blah.git': 'GitRemoteResolver',
-                'git+http://user@hostname/project/blah.git#commit-ish': 'GitRemoteResolver',
-                'git+https://user@hostname/project/blah.git': 'GitRemoteResolver',
-                'git+https://user@hostname/project/blah.git#commit-ish': 'GitRemoteResolver'
-            };
-
-            testSubjects[__dirname]  = 'FsResolver';
-            testSubjects[__filename] = 'FsResolver';
-            testSubjects[BASE_DIR]   = 'GitFsResolver';
-
-            for (var k in testSubjects) {
-                testSubjects[k] = testResolverType.bind(null, k, testSubjects[k]);
-            }
-
-            async.parallel(testSubjects, function (err) {
-                return done(err);
             });
         });
+
+        promise
+        .then(next.bind(next, null))
+        .done();
+    });
+
+    it.skip('should recognize local fs git endpoints correctly', function () {
+
+    });
+
+    it.skip('should recognize local fs files/folder endpoints correctly', function () {
+
+    });
+
+    it.skip('should recognize URL endpoints correctly', function () {
+
+    });
+
+    it.skip('should recognize registry endpoints correctly');
+
+    it.skip('should use the configured shorthand resolver', function () {
+
     });
 });

@@ -137,7 +137,7 @@ describe('GitFsResolver', function () {
                 cleanup();
                 next();
             })
-            .then(null, cleanup)
+            .fail(cleanup)
             .done();
         });
 
@@ -247,16 +247,15 @@ describe('GitFsResolver', function () {
         });
 
         it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise = Q.resolve([]),
-                retPromise;
+            var promise1,
+                promise2;
 
-            GitFsResolver._refs = {};
-            GitFsResolver._refs[testPackage] = promise;
-            retPromise = GitFsResolver.fetchRefs(testPackage);
+            promise1 = GitFsResolver.fetchRefs(testPackage);
+            promise2 = GitFsResolver.fetchRefs(testPackage);
 
-            retPromise
+            Q.all([promise1, promise2])
             .then(function () {
-                expect(retPromise).to.equal(promise);
+                expect(promise1).to.equal(promise2);
                 next();
             })
             .done();

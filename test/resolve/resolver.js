@@ -278,7 +278,7 @@ describe('Resolver', function () {
                 };
 
                 resolver.resolve()
-                .then(null, function () {
+                .fail(function () {
                     expect(resolver.getTempDir() == null).to.be(true);
                     next();
                 });
@@ -318,7 +318,7 @@ describe('Resolver', function () {
                 };
 
                 resolver.resolve()
-                .then(null, function () {
+                .fail(function () {
                     expect(resolver.getPkgMeta() == null).to.be(true);
                     next();
                 });
