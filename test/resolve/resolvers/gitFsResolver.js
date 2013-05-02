@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
+var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
@@ -245,6 +246,20 @@ describe('GitFsResolver', function () {
             .done();
         });
 
-        it.skip('should reuse promises for the same source, avoiding making duplicate fetchs');
+        it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
+            var promise = Q.resolve([]),
+                retPromise;
+
+            GitFsResolver._refs = {};
+            GitFsResolver._refs[testPackage] = promise;
+            retPromise = GitFsResolver.fetchRefs(testPackage);
+
+            retPromise
+            .then(function () {
+                expect(retPromise).to.equal(promise);
+                next();
+            })
+            .done();
+        });
     });
 });

@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
+var Q = require('q');
 var GitRemoteResolver = require('../../../lib/resolve/resolvers/GitRemoteResolver');
 
 describe('GitRemoteResolver', function () {
@@ -154,6 +155,20 @@ describe('GitRemoteResolver', function () {
             .done();
         });
 
-        it.skip('should reuse promises for the same source, avoiding making duplicate fetchs');
+        it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
+            var promise = Q.resolve([]),
+                retPromise;
+
+            GitRemoteResolver._refs = {};
+            GitRemoteResolver._refs[testPackage] = promise;
+            retPromise = GitRemoteResolver.fetchRefs(testPackage);
+
+            retPromise
+            .then(function () {
+                expect(retPromise).to.equal(promise);
+                next();
+            })
+            .done();
+        });
     });
 });
