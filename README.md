@@ -1,4 +1,4 @@
-# Bower rewrite [![Build Status](https://secure.travis-ci.org/twitter/bower.png?branch=rewrite)](http://travis-ci.org/twitter/bower)
+# Bower rewrite [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=rewrite)](http://travis-ci.org/bower/bower)
 
 ## Why?
 
@@ -8,7 +8,7 @@ Main issues are:
 - __No separation of concerns. The overall code base has grown in a patch fashion, which has lead to a bloated and tight coupled solution.__
 - __Monolithic Package.js that handles all package types (both local and remote `Git`, URL, local files, etc).__
 - __Package.js has a big nesting level of callbacks, causing confusion and making the code hard to read.__
-- Some commands, such as install and update, have incorrect behaviour ([#200](https://github.com/twitter/bower/issues/200), [#256](https://github.com/twitter/bower/issues/256))
+- Some commands, such as install and update, have incorrect behaviour ([#200](https://github.com/bower/bower/issues/200), [#256](https://github.com/bower/bower/issues/256))
    - This is directly related with the current implementation of bower core: Package.js and Manager.js
 - Programmatic usage needs improvement
   - Unable to spawn multiple commands in parallel in different folders

@@ -6,7 +6,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/twitter/bower/blob/master/LICENSE"
+      "url": "https://github.com/bower/bower/blob/master/LICENSE"
     }
   ],
   "main": "lib",
@@ -39,7 +39,7 @@
     "nock": "~0.17.5"
   },
   "scripts": {
-    "test": "node test/assets/downloader.js && mocha -R spec"
+    "test": "node test/assets/downloader && mocha -R spec"
   },
   "bin": {
     "bower": "bin/bower"
