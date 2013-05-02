@@ -183,7 +183,9 @@ describe('resolverFactory', function () {
             expect(resolver.getSource()).to.equal('git://github.com/bower/bower.git');
 
             return resolverFactory('IndigoUnited/promptly', {
-                shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
+                config: {
+                    shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
+                }
             });
         })
         .then(function (resolver) {
