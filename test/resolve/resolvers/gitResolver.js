@@ -10,8 +10,8 @@ var copy = require('../../../lib/util/copy');
 var GitResolver = require('../../../lib/resolve/resolvers/GitResolver');
 
 describe('GitResolver', function () {
-    var tempDir = path.resolve(__dirname, '../../assets/tmp'),
-        originalFetchRefs = GitResolver.fetchRefs;
+    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var originalFetchRefs = GitResolver.fetchRefs;
 
     function clearResolverRuntimeCache() {
         GitResolver.fetchRefs = originalFetchRefs;
@@ -288,6 +288,7 @@ describe('GitResolver', function () {
                     return val;
                 }.bind(this));
             };
+
             DummyResolver.prototype._checkout = function () {
                 this._stack.push('before _checkout');
                 return Q.resolve()
@@ -296,6 +297,7 @@ describe('GitResolver', function () {
                     return val;
                 }.bind(this));
             };
+
             DummyResolver.prototype._cleanup = function () {
                 this._stack.push('before _cleanup');
                 return GitResolver.prototype._cleanup.apply(this, arguments)
@@ -634,8 +636,8 @@ describe('GitResolver', function () {
         });
 
         it('should remove the .git folder from the temp dir', function (next) {
-            var resolver = new GitResolver('foo'),
-                dest = path.join(tempDir, '.git');
+            var resolver = new GitResolver('foo');
+            var dest = path.join(tempDir, '.git');
 
             // Copy .git folder to the tempDir
             copy.copyDir(path.resolve(__dirname, '../../../.git'), dest, {
@@ -654,8 +656,8 @@ describe('GitResolver', function () {
         });
 
         it('should not fail if .git does not exist for some reason', function (next) {
-            var resolver = new GitResolver('foo'),
-                dest = path.join(tempDir, '.git');
+            var resolver = new GitResolver('foo');
+            var dest = path.join(tempDir, '.git');
 
             resolver._tempDir = tempDir;
 
@@ -668,8 +670,8 @@ describe('GitResolver', function () {
         });
 
         it('should sill run even if _checkout fails for some reason', function (next) {
-            var resolver = new GitResolver('foo'),
-                called = false;
+            var resolver = new GitResolver('foo');
+            var called = false;
 
             GitResolver.fetchRefs = function () {
                 return Q.resolve([
@@ -769,8 +771,8 @@ describe('GitResolver', function () {
         });
 
         it('should warn if the resolution version is different than the package meta version', function (next) {
-            var resolver = new GitResolver('foo'),
-                notified = false;
+            var resolver = new GitResolver('foo');
+            var notified = false;
 
             resolver._resolution = { type: 'version', version: '0.0.1', tag: '0.0.1' };
             resolver._tempDir = tempDir;

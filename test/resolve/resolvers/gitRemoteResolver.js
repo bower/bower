@@ -50,8 +50,8 @@ describe('GitRemoteResolver', function () {
             .then(function (dir) {
                 expect(dir).to.be.a('string');
 
-                var files = fs.readdirSync(dir),
-                    fooContents;
+                var files = fs.readdirSync(dir);
+                var fooContents;
 
                 expect(files).to.contain('foo');
                 expect(files).to.contain('baz');
@@ -170,8 +170,8 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise1,
-                promise2;
+            var promise1;
+            var promise2;
 
             promise1 = GitRemoteResolver.fetchRefs(testPackage);
             promise2 = GitRemoteResolver.fetchRefs(testPackage);

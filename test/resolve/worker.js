@@ -14,8 +14,8 @@ describe('Worker', function () {
 
     describe('.enqueue', function () {
         it('return a promise', function () {
-            var worker = new Worker(),
-                promise;
+            var worker = new Worker();
+            var promise;
 
             promise = worker.enqueue(function () { return Q.resolve('foo'); });
 
@@ -46,8 +46,8 @@ describe('Worker', function () {
         });
 
         it('should assume the default concurrency when a type is not specified', function (next) {
-            var worker = new Worker(1),
-                calls = 0;
+            var worker = new Worker(1);
+            var calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; });
             worker.enqueue(function () { next(new Error('Should not be called!')); });
@@ -59,8 +59,8 @@ describe('Worker', function () {
         });
 
         it('should assume the default concurrency when a type is not known', function (next) {
-            var worker = new Worker(1),
-                calls = 0;
+            var worker = new Worker(1);
+            var calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; }, 'foo_type');
             worker.enqueue(function () { next(new Error('Should not be called!')); }, 'foo_type');
@@ -72,8 +72,8 @@ describe('Worker', function () {
         });
 
         it('should have different slots when type is not passed or is not known', function (next) {
-            var worker = new Worker(1),
-                calls = 0;
+            var worker = new Worker(1);
+            var calls = 0;
 
             worker.enqueue(function () { calls++; return Q.defer().promise; });
             worker.enqueue(function () { calls++; return Q.defer().promise; }, 'foo_type');
@@ -90,12 +90,12 @@ describe('Worker', function () {
             var worker = new Worker(1, {
                 foo: 2,
                 bar: 3
-            }),
-                calls = {
-                    def: 0,
-                    foo: 0,
-                    bar: 0
-                };
+            });
+            var calls = {
+                def: 0,
+                foo: 0,
+                bar: 0
+            };
 
             worker.enqueue(function () { calls.def++; return Q.defer().promise; });
             worker.enqueue(function () { next(new Error('Should not be called!')); });
@@ -119,8 +119,8 @@ describe('Worker', function () {
         it('should clear the whole queue', function (next) {
             var worker = new Worker(1, {
                 foo: 2
-            }),
-                calls = 0;
+            });
+            var calls = 0;
 
             worker.enqueue(function () { calls++; return Q.resolve(); });
             worker.enqueue(function () { next(new Error('Should not be called!')); });
@@ -141,8 +141,8 @@ describe('Worker', function () {
         it('should wait for currently running functions to finish', function (next) {
             var worker = new Worker(1, {
                 foo: 2
-            }),
-                calls = [];
+            });
+            var calls = [];
 
             worker.enqueue(function () { calls.push(1); return Q.resolve(); });
             worker.enqueue(function () { calls.push(2); return Q.resolve(); });
@@ -171,8 +171,8 @@ describe('Worker', function () {
         it('should start remaining tasks when one ends', function (next) {
             var worker = new Worker(1, {
                 foo: 2
-            }),
-                calls = 0;
+            });
+            var calls = 0;
 
             worker.enqueue(function () { calls++; return Q.resolve(); });
             worker.enqueue(function () { calls++; return Q.resolve(); }, 'foo');
@@ -187,9 +187,9 @@ describe('Worker', function () {
         });
 
         it('should respect the enqueue order', function (next) {
-            var worker = new Worker(1),
-                defCalls = [],
-                fooCalls = [];
+            var worker = new Worker(1);
+            var defCalls = [];
+            var fooCalls = [];
 
             worker.enqueue(function () {
                 defCalls.push(1);
@@ -232,8 +232,8 @@ describe('Worker', function () {
             var worker = new Worker(1, {
                 foo: 1,
                 bar: 2
-            }),
-                calls = 0;
+            });
+            var calls = 0;
 
             worker.enqueue(function () { return Q.defer().promise; }, 'foo');
             worker.enqueue(function () { return Q.defer().promise; }, 'bar');
@@ -253,8 +253,8 @@ describe('Worker', function () {
             var worker = new Worker(1, {
                 foo: 1,
                 bar: 2
-            }),
-                calls = 0;
+            });
+            var calls = 0;
 
             worker.enqueue(function () { return Q.defer().promise; }, 'bar');
             worker.enqueue(function () { calls++; return Q.resolve(); }, ['foo', 'bar']);

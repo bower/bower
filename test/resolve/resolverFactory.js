@@ -23,8 +23,8 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize git remote endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = {
             'git://github.com/user/project.git': {
@@ -102,8 +102,8 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize local fs git endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = [
             path.resolve(__dirname, '../assets/github-test-package'),
@@ -129,8 +129,8 @@ describe('resolverFactory', function () {
         fs.mkdirSync(tempSource);
         fs.writeFileSync(path.join(tempSource, '.git'), 'foo');
 
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = [
             tempSource,                                            // folder with .git file (not folder!)
@@ -153,8 +153,8 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize URL endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = [
             'http://bower.io/foo.js',
