@@ -47,7 +47,7 @@
 - url resolver should work with fonts, e.g.: http://fonts.googleapis.com/css?family=Noto+Serif
 - discuss ability to specify folders inside bower_components.. e.g. components/fonts/
 - discuss namespaces in the registry
-
+- cache dir location: https://github.com/bower/bower/issues/448
 
 Not BC changes:
 - shorthand_resolver -> shorthandResolver
