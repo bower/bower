@@ -5,10 +5,12 @@ var util = require('util');
 var rimraf = require('rimraf');
 var tmp = require('tmp');
 var cmd = require('../../lib/util/cmd');
+var copy = require('../../lib/util/copy');
 var Resolver = require('../../lib/resolve/Resolver');
 
 describe('Resolver', function () {
-    var tempDir = path.resolve(__dirname, '../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../assets/tmp'),
+        testPackage = path.resolve(__dirname, '../assets/github-test-package');
 
     describe('.getSource', function () {
         it('should return the resolver source', function () {
@@ -439,10 +441,6 @@ describe('Resolver', function () {
     });
 
     describe('._readJson', function () {
-        beforeEach(function () {
-            fs.mkdirSync(tempDir);
-        });
-
         afterEach(function (next) {
             rimraf(tempDir, next);
         });
@@ -450,6 +448,7 @@ describe('Resolver', function () {
         it('should read the bower.json file', function (next) {
             var resolver = new Resolver('foo');
 
+            fs.mkdirSync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
 
@@ -467,6 +466,7 @@ describe('Resolver', function () {
             var resolver = new Resolver('foo'),
                 notified = false;
 
+            fs.mkdirSync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
 
             resolver._readJson(tempDir)
@@ -502,7 +502,13 @@ describe('Resolver', function () {
     });
 
     describe('._applyPkgMeta', function () {
+        afterEach(function (next) {
+            rimraf(tempDir, next);
+        });
+
         it('should resolve with the same package meta', function (next) {
+            fs.mkdirSync(tempDir);
+
             var resolver = new Resolver('foo'),
                 meta = { name: 'foo' };
 
@@ -514,12 +520,12 @@ describe('Resolver', function () {
 
                 // Test also with the ignore property because the code is different
                 meta = { name: 'foo', ignore: ['somefile'] };
-                resolver._applyPkgMeta(meta)
+
+                return resolver._applyPkgMeta(meta)
                 .then(function (retMeta) {
                     expect(retMeta).to.equal(meta);
                     next();
-                })
-                .done();
+                });
             })
             .done();
         });
@@ -548,6 +554,36 @@ describe('Resolver', function () {
             .done();
         });
 
+        it('should remove files that match the ignore patterns', function (next) {
+            fs.mkdirSync(tempDir);
+
+            var resolver = new Resolver('foo', { name: 'foo' });
+
+            // Checkout test package version 0.2.1 which has a bower.json
+            // with ignores
+            cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })
+            // Copy its contents to the temporary dir
+            .then(function () {
+                return copy.copyDir(testPackage, tempDir);
+            })
+            .then(function () {
+                var json;
+
+                // This is a very rudimentary check
+                // Complete checks are made in the 'describe' below
+                resolver._tempDir = tempDir;
+                json = JSON.parse(fs.readFileSync(path.join(tempDir, 'bower.json')).toString());
+
+                return resolver._applyPkgMeta(json)
+                .then(function () {
+                    expect(fs.existsSync(path.join(tempDir, 'foo'))).to.be(true);
+                    expect(fs.existsSync(path.join(tempDir, 'test'))).to.be(false);
+                    next();
+                });
+            })
+            .done();
+        });
+
         describe('handling of ignore property according to the .gitignore spec', function () {
             it.skip('A blank line matches no files, so it can serve as a separator for readability.');
             it.skip('A line starting with # serves as a comment.');
@@ -565,11 +601,15 @@ describe('Resolver', function () {
     });
 
     describe('._savePkgMeta', function () {
-        beforeEach(function () {
+        before(function () {
             fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
+            rimraf(path.join(tempDir, '.bower.json'), next);
+        });
+
+        after(function (next) {
             rimraf(tempDir, next);
         });
 

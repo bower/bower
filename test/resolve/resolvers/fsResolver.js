@@ -13,7 +13,7 @@ describe('FsResolver', function () {
         tempSource;
 
     before(function (next) {
-        // Checkout test package to version 0.2.1 which has a bower.json
+        // Checkout test package version 0.2.1 which has a bower.json
         // with ignores
         cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })
         .then(next.bind(next, null), next);

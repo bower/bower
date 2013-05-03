@@ -13,8 +13,7 @@ describe('UrlResolver', function () {
         tempDir = path.resolve(__dirname, '../../assets/tmp');
 
     before(function (next) {
-        // Checkout test package to version 0.2.1 which has a bower.json
-        // with ignores
+        // Checkout test package version 0.2.1
         cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })
         .then(next.bind(next, null), next);
     });
@@ -64,11 +63,15 @@ describe('UrlResolver', function () {
     });
 
     describe('.hasNew', function () {
-        beforeEach(function () {
+        before(function () {
             fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
+            rimraf(path.join(tempDir, '.bower.json'), next);
+        });
+
+        after(function (next) {
             rimraf(tempDir, next);
         });
 

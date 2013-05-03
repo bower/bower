@@ -19,14 +19,19 @@ describe('GitResolver', function () {
     }
 
     describe('.hasNew', function () {
-        beforeEach(function () {
+        before(function () {
             fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
             clearResolverRuntimeCache();
+            rimraf(path.join(tempDir, '.bower.json'), next);
+        });
+
+        after(function (next) {
             rimraf(tempDir, next);
         });
+
 
         it('should be true when the resolution type is different', function (next) {
             var resolver;
@@ -694,11 +699,15 @@ describe('GitResolver', function () {
     });
 
     describe('._savePkgMeta', function () {
-        beforeEach(function () {
+        before(function () {
             fs.mkdirSync(tempDir);
         });
 
         afterEach(function (next) {
+            rimraf(path.join(tempDir, '.bower.json'), next);
+        });
+
+        after(function (next) {
             rimraf(tempDir, next);
         });
 
