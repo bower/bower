@@ -9,8 +9,8 @@ var copy = require('../../../lib/util/copy');
 var FsResolver = require('../../../lib/resolve/resolvers/FsResolver');
 
 describe('FsResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package'),
-        tempSource;
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var tempSource;
 
     before(function (next) {
         // Checkout test package version 0.2.1 which has a bower.json
@@ -157,8 +157,8 @@ describe('FsResolver', function () {
         });
 
         it('should copy the source directory permissions', function (next) {
-            var mode0777,
-                resolver;
+            var mode0777;
+            var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
             resolver = new FsResolver(tempSource);
@@ -181,8 +181,8 @@ describe('FsResolver', function () {
         });
 
         it('should copy the source file permissions', function (next) {
-            var mode0777,
-                resolver;
+            var mode0777;
+            var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/temp');
             resolver = new FsResolver(tempSource);
