@@ -45,6 +45,9 @@ describe('FsResolver', function () {
             expect(resolver.getSource()).to.equal(testPackage);
         });
 
+        it.skip('should use config.cwd for resolving relative paths', function () {
+        });
+
         it('should error out if a target was specified', function (next) {
             var resolver;
 

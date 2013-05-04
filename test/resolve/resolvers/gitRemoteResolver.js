@@ -37,6 +37,9 @@ describe('GitRemoteResolver', function () {
             resolver = new GitRemoteResolver('git://github.com/twitter/bower.git');
             expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
 
+            resolver = new GitRemoteResolver('git://github.com/twitter/bower.git/');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+
             resolver = new GitRemoteResolver('file://' + testPackage);
             expect(resolver.getSource()).to.equal('file://' + testPackage);
         });

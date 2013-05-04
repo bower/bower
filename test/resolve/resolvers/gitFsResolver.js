@@ -47,6 +47,9 @@ describe('GitFsResolver', function () {
             resolver = new GitFsResolver(testPackage + '/something/..');
             expect(resolver.getSource()).to.equal(testPackage);
         });
+
+        it.skip('should use config.cwd for resolving relative paths', function () {
+        });
     });
 
     describe('.resolve', function () {
