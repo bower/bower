@@ -39,13 +39,14 @@ Main issues are:
 - **Source:** URL, git endpoint, etc.
 - **Target:** `semver` range, commit hash, branch (indicates a version).
 - **Endpoint:** source#target
-- **Named endpoint:** name@endpoint#target
+- **Named endpoint:** name|endpoint#target
+- **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
 - **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/2z0u3B1817341P0q0H3M/bower_diagram2.jpg "Don't over think it! We already did! :P")
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/360W352L1r3V0h1T3C2Y/resolve_diagram.jpg "Don't over think it! We already did! :P")
 
 Bower is composed of the following components:
 
@@ -76,7 +77,7 @@ Here's an overview of the dependency resolve process:
 
 2. **ANALIZE COMPONENTS FOLDER** -  `Manager` starts by reading the *components folder* and understanding which packages are already installed.
 
-3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the *named endpoints*/endpoints in the `PackageRepository`. Some considerations:
+3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the *decomposed endpoints* in the `PackageRepository`. Some considerations:
     - If a package should be fetched or not depends on the following conditions:
         - What operation is being done (install/update).
         - If package is already installed.
@@ -84,7 +85,6 @@ Here's an overview of the dependency resolve process:
         - Additional flags (force, etc).
 
 4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
-    - The factory method takes the source string as its main argument, and is also provided with target, and package name if possible (all this information is extracted from the *named endpoint*/endpoint).
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
     - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
 
@@ -140,15 +140,17 @@ Aborts any queued package lookup as soon as possible, and returns a promise that
 
 #### ResolverFactory
 
-Simple function that takes a *named endpoint*/endpoint with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
+Simple function that takes a *decomposed endpoint* with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
 
 ```js
-function createResolver(endpoint, options) -> Promise
+function createResolver(decEndpoint, options) -> Promise
 ```
 
-This function will perform transformations/normalisations to the endpoint, like expanding shorthand endpoints.
-The function is async to allow querying the Bower registry, etc.
+The function is async to allow querying the Bower registry, etc.   
+Options:
 
+- `skipCache` - true to not use cache (e.g.: bypass registry cache)
+- `config` - the config to use (defaults to the global config)
 
 #### ResolveCache
 
