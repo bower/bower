@@ -9,8 +9,8 @@ var cmd = require('../../../lib/util/cmd');
 var UrlResolver = require('../../../lib/resolve/resolvers/UrlResolver');
 
 describe('UrlResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package'),
-        tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var tempDir = path.resolve(__dirname, '../../assets/tmp');
 
     before(function (next) {
         // Checkout test package version 0.2.1
@@ -178,17 +178,17 @@ describe('UrlResolver', function () {
         });
 
         it('should work with redirects', function (next) {
-            var redirectingUrl = 'http://redirecting-url.com',
-                redirectingToUrl = 'http://bower.io',
-                resolver;
+            var redirectingUrl = 'http://redirecting-url.com';
+            var redirectingToUrl = 'http://bower.io';
+            var resolver;
 
             nock(redirectingUrl)
-              .head('/foo.js')
-              .reply(302, '', { location: redirectingToUrl + '/foo.js' });
+            .head('/foo.js')
+            .reply(302, '', { location: redirectingToUrl + '/foo.js' });
 
             nock(redirectingToUrl)
-              .head('/foo.js')
-              .reply(200, 'foo contents', {
+            .head('/foo.js')
+            .reply(200, 'foo contents', {
                 'ETag': '686897696a7c876b7e',
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
@@ -427,17 +427,19 @@ describe('UrlResolver', function () {
         });
 
         it('should work with redirects', function (next) {
-            var redirectingUrl = 'http://redirecting-url.com',
-                redirectingToUrl = 'http://bower.io',
-                resolver;
+            var redirectingUrl = 'http://redirecting-url.com';
+            var redirectingToUrl = 'http://bower.io';
+            var resolver;
 
             nock(redirectingUrl)
-              .get('/foo.js')
-              .reply(302, '', { location: redirectingToUrl + '/foo.js' });
+            .get('/foo.js')
+            .reply(302, '', {
+                location: redirectingToUrl + '/foo.js'
+            });
 
             nock(redirectingToUrl)
-              .get('/foo.js')
-              .reply(200, 'foo contents');
+            .get('/foo.js')
+            .reply(200, 'foo contents');
 
             resolver = new UrlResolver(redirectingUrl + '/foo.js');
 

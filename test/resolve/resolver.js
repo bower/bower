@@ -9,8 +9,8 @@ var copy = require('../../lib/util/copy');
 var Resolver = require('../../lib/resolve/Resolver');
 
 describe('Resolver', function () {
-    var tempDir = path.resolve(__dirname, '../assets/tmp'),
-        testPackage = path.resolve(__dirname, '../assets/github-test-package');
+    var tempDir = path.resolve(__dirname, '../assets/tmp');
+    var testPackage = path.resolve(__dirname, '../assets/github-test-package');
 
     describe('.getSource', function () {
         it('should return the resolver source', function () {
@@ -50,13 +50,13 @@ describe('Resolver', function () {
 
     describe('.hasNew', function () {
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo'),
-                succeeded;
+            var resolver = new Resolver('foo');
+            var succeeded;
 
             resolver._resolve = function () {};
 
             resolver.resolve()
-            .then(function () {
+            .then(function () {
                 // Test if resolve can be called again when done
                 resolver.resolve()
                 .then(function () {
@@ -76,11 +76,11 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (checking for newer version)', function (next) {
-            var resolver = new Resolver('foo'),
-                succeeded;
+            var resolver = new Resolver('foo');
+            var succeeded;
 
             resolver.hasNew()
-            .then(function () {
+            .then(function () {
                 // Test if hasNew can be called again when done
                 resolver.hasNew()
                 .then(function () {
@@ -127,13 +127,13 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo'),
-                succeeded;
+            var resolver = new Resolver('foo');
+            var succeeded;
 
             resolver._resolve = function () {};
 
             resolver.resolve()
-            .then(function () {
+            .then(function () {
                 // Test if resolve can be called again when done
                 resolver.resolve()
                 .then(function () {
@@ -153,13 +153,13 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (checking newer version)', function (next) {
-            var resolver = new Resolver('foo'),
-                succeeded;
+            var resolver = new Resolver('foo');
+            var succeeded;
 
             resolver._resolve = function () {};
 
             resolver.hasNew()
-            .then(function () {
+            .then(function () {
                 // Test if hasNew can be called again when done
                 resolver.hasNew()
                 .then(function () {
@@ -179,6 +179,8 @@ describe('Resolver', function () {
         });
 
         it('should call all the functions necessary to resolve by the correct order', function (next) {
+            var resolver;
+
             function DummyResolver() {
                 Resolver.apply(this, arguments);
                 this._stack = [];
@@ -229,7 +231,7 @@ describe('Resolver', function () {
                 }.bind(this));
             };
 
-            var resolver = new DummyResolver('foo');
+            resolver = new DummyResolver('foo');
 
             resolver.resolve()
             .then(function () {
@@ -260,7 +262,7 @@ describe('Resolver', function () {
                 expect(fs.existsSync(folder)).to.be(true);
                 next();
             })
-             .done();
+            .done();
         });
     });
 
@@ -361,8 +363,8 @@ describe('Resolver', function () {
 
             resolver._createTempDir()
             .then(function (dir) {
-                var dirname,
-                    osTempDir;
+                var dirname;
+                var osTempDir;
 
                 expect(dir).to.be.a('string');
                 expect(fs.existsSync(dir)).to.be(true);
@@ -382,8 +384,8 @@ describe('Resolver', function () {
 
             resolver._createTempDir()
             .then(function (dir) {
-                var stat = fs.statSync(dir),
-                    expectedMode = dirMode0777 & ~process.umask();
+                var stat = fs.statSync(dir);
+                var expectedMode = dirMode0777 & ~process.umask();
 
                 expect(stat.mode).to.equal(expectedMode);
                 next();
@@ -463,8 +465,8 @@ describe('Resolver', function () {
         });
 
         it('should fallback to component.json (notifying a warn)', function (next) {
-            var resolver = new Resolver('foo'),
-                notified = false;
+            var resolver = new Resolver('foo');
+            var notified = false;
 
             fs.mkdirSync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
@@ -507,11 +509,10 @@ describe('Resolver', function () {
         });
 
         it('should resolve with the same package meta', function (next) {
+            var resolver = new Resolver('foo');
+            var meta = { name: 'foo' };
+
             fs.mkdirSync(tempDir);
-
-            var resolver = new Resolver('foo'),
-                meta = { name: 'foo' };
-
             resolver._tempDir = tempDir;
 
             resolver._applyPkgMeta(meta)
@@ -555,9 +556,9 @@ describe('Resolver', function () {
         });
 
         it('should remove files that match the ignore patterns', function (next) {
-            fs.mkdirSync(tempDir);
-
             var resolver = new Resolver('foo', { name: 'foo' });
+
+            fs.mkdirSync(tempDir);
 
             // Checkout test package version 0.2.1 which has a bower.json
             // with ignores
@@ -613,9 +614,9 @@ describe('Resolver', function () {
             rimraf(tempDir, next);
         });
 
-        it('should resolve with the same package meta', function (next) {
-            var resolver = new Resolver('foo'),
-                meta = { name: 'foo' };
+        it('should resolve with the same package meta', function (next) {
+            var resolver = new Resolver('foo');
+            var meta = { name: 'foo' };
 
             resolver._tempDir = tempDir;
 

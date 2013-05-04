@@ -24,8 +24,8 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize git remote endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = {
             // git:
@@ -118,18 +118,18 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize local fs git endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints,
-            tmp;
+        var promise = Q.resolve();
+        var endpoints;
+        var temp;
 
         endpoints = {};
 
         // Absolute path
-        tmp = path.resolve(__dirname, '../assets/github-test-package');
-        endpoints[tmp] = tmp;
+        temp = path.resolve(__dirname, '../assets/github-test-package');
+        endpoints[temp] = temp;
 
         // Relative path
-        endpoints[__dirname + '/../assets/github-test-package'] = tmp;
+        endpoints[__dirname + '/../assets/github-test-package'] = temp;
 
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
@@ -161,13 +161,13 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize local fs files/folder endpoints correctly', function (next) {
+        var promise = Q.resolve();
+        var endpoints;
+        var temp;
+
         tempSource = path.resolve(__dirname, '../assets/tmp');
         fs.mkdirSync(tempSource);
         fs.writeFileSync(path.join(tempSource, '.git'), 'foo');
-
-        var promise = Q.resolve(),
-            endpoints,
-            tmp;
 
         endpoints = {};
 
@@ -177,16 +177,16 @@ describe('resolverFactory', function () {
         endpoints[__dirname + '/../assets/tmp'] = tempSource;
 
         // Absolute path to folder
-        tmp = path.resolve(__dirname, '../assets/test-temp-dir');
-        endpoints[tmp] = tmp;
+        temp = path.resolve(__dirname, '../assets/test-temp-dir');
+        endpoints[temp] = temp;
         // Relative path to folder
-        endpoints[__dirname + '/../assets/test-temp-dir'] = tmp;
+        endpoints[__dirname + '/../assets/test-temp-dir'] = temp;
 
         // Absolute path to file
-        tmp = path.resolve(__dirname, '../assets/package-zip.zip');
-        endpoints[tmp] = tmp;
+        temp = path.resolve(__dirname, '../assets/package-zip.zip');
+        endpoints[temp] = temp;
         // Relative path to file
-        endpoints[__dirname + '/../assets/package-zip.zip'] = tmp;
+        endpoints[__dirname + '/../assets/package-zip.zip'] = temp;
 
         // Relative with just one slash, to test fs resolution
         // priority against shorthands
@@ -228,8 +228,8 @@ describe('resolverFactory', function () {
 
 
     it('should recognize URL endpoints correctly', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = [
             'http://bower.io/foo.js',
@@ -289,8 +289,8 @@ describe('resolverFactory', function () {
     });
 
     it('should not swallow constructor errors when instantiating resolvers', function (next) {
-        var promise = Q.resolve(),
-            endpoints;
+        var promise = Q.resolve();
+        var endpoints;
 
         endpoints = [
             'http://bower.io/foo.js',
@@ -318,3 +318,4 @@ describe('resolverFactory', function () {
         .done();
     });
 });
+

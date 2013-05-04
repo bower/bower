@@ -60,8 +60,8 @@ describe('GitFsResolver', function () {
             .then(function (dir) {
                 expect(dir).to.be.a('string');
 
-                var files = fs.readdirSync(dir),
-                    fooContents;
+                var files = fs.readdirSync(dir);
+                var fooContents;
 
                 expect(files).to.contain('foo');
                 expect(files).to.contain('baz');
@@ -112,9 +112,9 @@ describe('GitFsResolver', function () {
         });
 
         it('should remove any untracked files and directories', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' }),
-                file = path.join(testPackage, 'new-file'),
-                dir = path.join(testPackage, 'new-dir');
+            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var file = path.join(testPackage, 'new-file');
+            var dir = path.join(testPackage, 'new-dir');
 
             fs.writeFileSync(file, 'foo');
             fs.mkdir(dir);
@@ -172,8 +172,8 @@ describe('GitFsResolver', function () {
         });
 
         it('should copy source folder permissions', function (next) {
-            var mode0777,
-                resolver;
+            var mode0777;
+            var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
             resolver = new GitFsResolver(tempSource, { target: 'some-branch' });
@@ -250,8 +250,8 @@ describe('GitFsResolver', function () {
         });
 
         it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise1,
-                promise2;
+            var promise1;
+            var promise2;
 
             promise1 = GitFsResolver.fetchRefs(testPackage);
             promise2 = GitFsResolver.fetchRefs(testPackage);
