@@ -257,6 +257,8 @@ describe('GitResolver', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should call the necessary functions by the correct order', function (next) {
+            var resolver;
+
             function DummyResolver() {
                 GitResolver.apply(this, arguments);
                 this._stack = [];
@@ -307,7 +309,7 @@ describe('GitResolver', function () {
                 }.bind(this));
             };
 
-            var resolver = new DummyResolver('foo', { target: 'master' });
+            resolver = new DummyResolver('foo', { target: 'master' });
 
             resolver.resolve()
             .then(function () {
