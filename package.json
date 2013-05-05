@@ -29,7 +29,8 @@
     "unzip": "~0.1.7",
     "tar": "~0.1.17",
     "fstream": "~0.1.22",
-    "fstream-ignore": "0.0.6"
+    "fstream-ignore": "0.0.6",
+    "junk": "~0.2.0"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
