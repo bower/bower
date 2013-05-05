@@ -38,15 +38,14 @@ Main issues are:
 - **Canonical package:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
 - **Source:** URL, git endpoint, etc.
 - **Target:** `semver` range, commit hash, branch (indicates a version).
-- **Endpoint:** source#target
-- **Named endpoint:** name|endpoint#target
+- **Endpoint:** name|source#target
 - **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
 - **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/360W352L1r3V0h1T3C2Y/resolve_diagram.jpg "Don't over think it! We already did! :P")
+![Really nicely drawn architecture diagram](http://f.cl.ly/items/01370R0d3u2K3B381E2J/resolve_diagram.jpg "Don't over think it! We already did! :P")
 
 Bower is composed of the following components:
 
@@ -73,7 +72,7 @@ You can find additional details about each of these components below, in [Archit
 
 Here's an overview of the dependency resolve process:
 
-1. **INSTALL/UPDATE** - A set of named endpoints and/or endpoints is requested to be installed/updated, and these are passed to the `Manager`.
+1. **INSTALL/UPDATE** - A set of endpoints is requested to be installed/updated, and these are passed to the `Manager`.
 
 2. **ANALIZE COMPONENTS FOLDER** -  `Manager` starts by reading the *components folder* and understanding which packages are already installed.
 
@@ -81,7 +80,7 @@ Here's an overview of the dependency resolve process:
     - If a package should be fetched or not depends on the following conditions:
         - What operation is being done (install/update).
         - If package is already installed.
-        - If `Manager` has already enqueued that *named endpoint*/endpoint in the current runtime (regardless of the fetch being currently in progress, already complete, or failed).
+        - If `Manager` has already enqueued that endpoint in the current runtime (regardless of the fetch being currently in progress, already complete, or failed).
         - Additional flags (force, etc).
 
 4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
@@ -125,9 +124,9 @@ TODO
 
 ##### Public methods
 
-`PackageRepository#get(endpoint)`: Promise
+`PackageRepository#get(decEndpoint)`: Promise
 
-Enqueues an endpoint to be fetched, and returns a promise of a *canonical package*.
+Enqueues an decomposed endpoint to be fetched, and returns a promise of a *canonical package*.
 
 `PackageRepository#abort()`: Promise
 
