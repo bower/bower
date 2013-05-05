@@ -148,7 +148,7 @@ function createResolver(decEndpoint, options) -> Promise
 The function is async to allow querying the Bower registry, etc.   
 Options:
 
-- `skipCache` - true to not use cache (e.g.: bypass registry cache)
+- `skipCache` - true to not use cache (e.g.: bypass registry cache, defaults to false)
 - `config` - the config to use (defaults to the global config)
 
 #### ResolveCache
