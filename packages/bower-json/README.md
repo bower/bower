@@ -10,6 +10,7 @@ Read `bower.json` files with semantics, normalisation, defaults and validation.
 Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.   
 If the passed `file` does not exists, the callback is called with `error.code` equal to `ENOENT`.   
 If the passed `file` contents are not a valid JSON, the callback is called with `error.code` equal to `EMALFORMED`.
+If the `json` does not comply with the `bower.json` spec, the callback is called with `error.code` equal to `EINVALID`.
 
 ```js
 var bowerJson = require('bower-json');
@@ -30,7 +31,7 @@ bowerJson.read('/path/to/bower.json', function (err, json) {
 #### .parse(json, callback)
 
 Parses an object. Useful when you want to apply normalisation, defaults and validation directly to an object.   
-If the `json` is invalid, the callback is called with `error.code` equal to `EINVALID`.
+If the `json` does not comply with the `bower.json` spec, the callback is called with `error.code` equal to `EINVALID`.
 
 ```js
 var bowerJson = require('bower-json');
