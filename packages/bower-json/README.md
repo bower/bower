@@ -9,7 +9,7 @@ Read `bower.json` files with semantics, normalisation, defaults and validation.
 
 Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.   
 If the passed `file` does not exists, the callback is called with `error.code` equal to `ENOENT`.   
-If the passed `file` contents are not a valid JSON, the callback is called with `error.code` equal to `EMALFORMED`.
+If the passed `file` contents are not a valid JSON, the callback is called with `error.code` equal to `EMALFORMED`.   
 If the `json` does not comply with the `bower.json` spec, the callback is called with `error.code` equal to `EINVALID`.
 
 ```js
