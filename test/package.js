@@ -577,7 +577,30 @@ describe('package', function () {
   it('Should resolve filetype based on header content-disposition from URL packages', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package/zipball')
-      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {'Content-Disposition': 'attachment; filename=package.zip'});
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {
+        'Content-Disposition': 'attachment; filename=package.zip'
+      });
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
+
+    pkg.on('resolve', function () {
+      assert.equal(pkg.assetType, '.zip');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should resolve filetype based on header content-type from URL packages', function (next) {
+    nock('http://someawesomedomain.com')
+      .get('/package/zipball')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {
+        'Content-Type': 'application/zip; charset=UTF-8'
+      });
 
     var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
 
