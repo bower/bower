@@ -522,7 +522,9 @@ describe('package', function () {
   it('Should emit a warning on .tar.gz files, as it is not able to extract them', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package-folder.tar.gz')
-      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'), {'Content-Disposition': 'attachment; filename=package.tar.gz'});
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'), {
+        'Content-Disposition': 'attachment; filename=package.tar.gz'
+      });
 
     var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-folder.tar.gz');
     var warn = [];
