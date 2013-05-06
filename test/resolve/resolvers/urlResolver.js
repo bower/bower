@@ -363,6 +363,16 @@ describe('UrlResolver', function () {
             .get('/package-zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
                 'Content-Type': 'application/zip'
+            })
+
+            .get('/package-zip2')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
+                'Content-Type': 'application/zip; charset=UTF-8'
+            })
+
+            .get('/package-zip3')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
+                'Content-Type': ' application/zip ; charset=UTF-8'
             });
 
             resolver = new UrlResolver('http://bower.io/package-zip');
@@ -373,6 +383,27 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
+
+                resolver = new UrlResolver('http://bower.io/package-zip2');
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip2.zip'))).to.be(false);
+
+                resolver = new UrlResolver('http://bower.io/package-zip3');
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip3.zip'))).to.be(false);
+
                 next();
             })
             .done();
