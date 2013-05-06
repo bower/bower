@@ -712,7 +712,7 @@ describe('package', function () {
     var warn = [];
 
     pkg.on('resolve', function () {
-      assert.equal(warn.length, 3);
+      assert.equal(warn.length, 2);
       next();
     });
 
