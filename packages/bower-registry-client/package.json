@@ -1,7 +1,7 @@
 {
   "name": "bower-courier",
   "version": "0.0.0-rc0",
-  "description": "Provides easily interaction with the Bower server API.",
+  "description": "Provides easy interaction with the Bower server API.",
   "author": "Twitter",
   "licenses": [
     {
