@@ -1,4 +1,4 @@
-# bower-json
+# bower-json [![Build Status](https://secure.travis-ci.org/bower/bower-json.png?branch=master)](http://travis-ci.org/bower/bower-json)
 
 Read `bower.json` files with semantics, normalisation, defaults and validation.
 
