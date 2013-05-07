@@ -1,0 +1,23 @@
+{
+  "name": "bower-courier",
+  "version": "0.0.0-rc0",
+  "description": "Provides easily interaction with the Bower server API.",
+  "author": "Twitter",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bower/bower-courier/blob/master/LICENSE"
+    }
+  ],
+  "main": "lib/courier",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.8.2",
+    "expect.js": "~0.2.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  }
+}
