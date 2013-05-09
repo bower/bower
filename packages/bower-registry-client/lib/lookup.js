@@ -59,10 +59,12 @@ function lookup(name, options, callback) {
                 return next(createError('Response of request to "' + requestUrl + '" is not a valid json', 'EINVRES'));
             }
 
-            callback(null, body.url);
+            url = body.url;
+            next();
         });
     }, function () {
-        return !url && current++ < total;
+        // Until the url is unknown or there's still registries to tests
+        return !!url || current++ < total;
     }, function (err) {
         // If some of the registry entries failed, error out
         if (err) {
