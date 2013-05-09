@@ -8,7 +8,7 @@ This module allows you to easily interact with the Bower server API.
 
 #### .lookup(name, options, callback)
 
-Looks the package `name`, giving you the associated registered URL.   
+Looks the registry for the package `name`, giving you the associated registered URL.   
 The `options` argument is optional.
 
 Available options:

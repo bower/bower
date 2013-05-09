@@ -9,7 +9,7 @@
       "url": "https://github.com/bower/bower-courier/blob/master/LICENSE"
     }
   ],
-  "main": "lib/courier",
+  "main": "lib",
   "engines": {
     "node": ">=0.8.0"
   },
@@ -19,5 +19,9 @@
   },
   "scripts": {
     "test": "mocha -R spec"
+  },
+  "dependencies": {
+    "async": "~0.2.8",
+    "request": "~2.21.0"
   }
 }
