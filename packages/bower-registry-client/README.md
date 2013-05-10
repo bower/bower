@@ -23,9 +23,11 @@ Available constructor options:
 - httpsProxy: the proxy to use for https requests (defaults to null)
 - strictSsl: whether or not to do SSL key validation when making requests via https (defaults to true).
 - userAgent: the user agent to use for the requests (defaults to null)
-- cache: the cache folder to use for some operations, null value will disable cache (defaults to OS temp folder)
+- cache: the cache folder to use for some operations; using null will disable cache (defaults to OS temp folder)
 - timeout: the timeout for the requests to finish (defaults to 5000)
 
+The cache will speedup operations such as `lookup` and `info`.
+Different operations may have different cache expiration times.
 
 #### .lookup(name, force, callback)
 
@@ -44,11 +46,11 @@ registry.lookup(name, function (err, url) {
 });
 ```
 
-#### .register(name, url, options, callback)
+#### .register(name, url, callback)
 
-#### .search(str, options, callback)
+#### .search(str, force, callback)
 
-#### .info(name, options, callback)
+#### .info(name, force, callback)
 
 #### .clearCache(name, callback)
 
