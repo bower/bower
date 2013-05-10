@@ -1,24 +1,23 @@
 var async = require('async');
 var request = require('request');
-var parseOptions = require('./util/parseOptions');
+var url = require('url');
 var createError = require('./util/createError');
 
-function lookup(name, options, callback) {
-    var url;
+function lookup(name, force, callback) {
+    var packageUrl;
     var total;
-    var current = 0;
+    var index = 0;
+    var options = this._options;
+    var registry = options.registry.search;
 
-    if (typeof options === 'function') {
-        callback = options;
-        options = {};
+    if (typeof force === 'function') {
+        callback = force;
+        force = false;
     }
-
-    // Parse and set default options
-    options = parseOptions.forRead(options);
 
     // If no registry entries were passed, simply
     // error with package not found
-    total = options.registry.length;
+    total = registry.length;
     if (!total) {
         return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
     }
@@ -31,10 +30,18 @@ function lookup(name, options, callback) {
 
     // Lookup package in series until we got the URL
     async.doUntil(function (next) {
-        var requestUrl = options.registry[current] + '/packages/' + encodeURIComponent(name);
+        var requestUrl = registry[index] + '/packages/' + encodeURIComponent(name);
+        var remote = url.parse(requestUrl);
+        var headers = {};
+
+        if (options.userAgent) {
+            headers['User-Agent'] = options.userAgent;
+        }
 
         request.get(requestUrl, {
-            proxy: options.proxy,
+            proxy: remote.protocol === 'https:' ? options.httpsProxy : options.proxy,
+            ca: options.ca.search[index],
+            strictSSL: options.strictSsl,
             timeout: options.timeout,
             json: true
         }, function (err, response, body) {
@@ -59,12 +66,12 @@ function lookup(name, options, callback) {
                 return next(createError('Response of request to "' + requestUrl + '" is not a valid json', 'EINVRES'));
             }
 
-            url = body.url;
+            packageUrl = body.url;
             next();
         });
     }, function () {
         // Until the url is unknown or there's still registries to tests
-        return !!url || current++ < total;
+        return !!packageUrl || index++ < total;
     }, function (err) {
         // If some of the registry entries failed, error out
         if (err) {
@@ -72,12 +79,17 @@ function lookup(name, options, callback) {
         }
 
         // If at the end we still have no URL, create an appropriate error
-        if (!url) {
+        if (!packageUrl) {
             return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
         }
 
-        callback(null, url);
+        callback(null, packageUrl);
     });
 }
 
+function clearCache(name) {
+    // TODO
+}
+
 module.exports = lookup;
+module.exports.clearCache = clearCache;

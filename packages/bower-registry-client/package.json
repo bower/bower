@@ -1,15 +1,15 @@
 {
-  "name": "bower-courier",
+  "name": "bower-registry-client",
   "version": "0.0.0-rc0",
-  "description": "Provides easy interaction with the Bower server API.",
+  "description": "Provides easy interaction with the Bower registry.",
   "author": "Twitter",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/bower/bower-courier/blob/master/LICENSE"
+      "url": "https://github.com/bower/bower-registry/blob/master/LICENSE"
     }
   ],
-  "main": "lib",
+  "main": "client",
   "engines": {
     "node": ">=0.8.0"
   },
@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "request": "~2.21.0"
+    "request": "~2.21.0",
+    "rimraf": "~2.1.4"
   }
 }
