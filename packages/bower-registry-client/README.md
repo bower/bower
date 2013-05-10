@@ -8,11 +8,10 @@ This module allows you to easily interact with the Bower server API.
 ```js
 
 var RegistryClient = require('bower-registry-client');
-var courier = new RegistryClient(options);
-
+var registry = new RegistryClient(options);
 ```
 
-Available options:
+Available constructor options:
 
 - registry.search: an array of registry search endpoints (defaults to the Bower server)
 - registry.register: the endpoint to use when registering packages (defaults to the Bower server)
@@ -35,7 +34,7 @@ The `force` argument is optional and defaults to `false`. If set to `true`, cach
 
 
 ```js
-courier.lookup(name, function (err, url) {
+registry.lookup(name, function (err, url) {
     if (err) {
         console.error(err.message);
         return;
@@ -53,5 +52,27 @@ courier.lookup(name, function (err, url) {
 
 #### .clearCache(name, callback)
 
-Clear the cache associated with the `name` package.
-If `name` is null, clears all the cache;
+Clear the cache associated with the `name` package.   
+If `name` is null, clears all the cache.
+
+```js
+// Clear jquery cache
+registry.clearCache('jquery', function (err) {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+
+    console.log('Done');
+});
+
+// Clear all cache
+registry.clearCache(function (err) {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+
+    console.log('Done');
+});
+```
