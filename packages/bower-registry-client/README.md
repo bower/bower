@@ -42,15 +42,15 @@ Available options:
 Note that `force` and `offline` are mutually exclusive.
 
 ```js
-registry.lookup(name, function (err, resp) {
+registry.lookup(name, function (err, entry) {
     if (err) {
         console.error(err.message);
         return;
     }
 
     // For now resp.type is always 'alias'
-    console.log('type', resp.type);
-    console.log('url: ', resp.url);
+    console.log('type', entry.type);
+    console.log('url: ', entry.url);
 });
 ```
 

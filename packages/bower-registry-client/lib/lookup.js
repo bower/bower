@@ -44,29 +44,29 @@ function lookup(name, options, callback) {
                     return next(err);
                 }
 
-                doRequest(name, index, that._config, function (err, info) {
+                doRequest(name, index, that._config, function (err, entry) {
                     if (err) {
                         return next(err);
                     }
 
-                    data = info;
+                    data = entry;
 
                     // Store in cache
-                    that._lookupCache[remote.host].set(name, info, getMaxAge(info), next);
+                    that._lookupCache[remote.host].set(name, entry, getMaxAge(entry), next);
                 });
             });
         // Otherwise, we totally bypass the cache and
         // make only the request
         } else {
-            doRequest(name, index, that._config, function (err, info) {
+            doRequest(name, index, that._config, function (err, entry) {
                 if (err) {
                     return next(err);
                 }
 
-                data = info;
+                data = entry;
 
                 // Store in cache
-                that._lookupCache[remote.host].set(name, info, getMaxAge(info), next);
+                that._lookupCache[remote.host].set(name, entry, getMaxAge(entry), next);
             });
         }
     }, function () {
@@ -131,9 +131,9 @@ function doRequest(name, index, config, callback) {
     });
 }
 
-function getMaxAge(info) {
+function getMaxAge(entry) {
     // If type is alias, make it 5 days
-    if (info.type === 'alias') {
+    if (entry.type === 'alias') {
         return 5 * 24 * 60 * 60 * 1000;
     }
 
