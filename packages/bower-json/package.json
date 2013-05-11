@@ -9,7 +9,7 @@
       "url": "https://github.com/bower/bower-json/blob/master/LICENSE"
     }
   ],
-  "main": "lib/bower-json",
+  "main": "lib/json",
   "engines": {
     "node": ">=0.8.0"
   },
