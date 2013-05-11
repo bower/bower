@@ -1,14 +1,14 @@
 var os = require('os');
 var path = require('path');
-var rimraf = require('rimraf');
-var info = require('./lib/info');
-var lookup = require('./lib/lookup');
-var search = require('./lib/search');
-var register = require('./lib/register');
+var info = require('./info');
+var lookup = require('./lookup');
+var search = require('./search');
+var register = require('./register');
 
 var RegistryClient = function (options) {
     options = options || {};
 
+    // Parse options
     // Registry
     options.registry = options.registry || 'https://bower.herokuapp.com';
     if (typeof options.registry !== 'object') {
@@ -50,28 +50,31 @@ var RegistryClient = function (options) {
     }
 
     // Strict ssl
-    options.strictSsl = options.strictSsl == null ? true : !! options.strictSsl;
+    options.strictSsl = options.strictSsl == null ? true : !!options.strictSsl;
 
-    this._options = options;
-};
-
-RegistryClient.prototype.clearCache = function (name, callback) {
-    if (typeof name === 'function') {
-        callback = name;
-        name = null;
-    }
-
-    if (!name) {
-        rimraf(this._options.cache, callback);
-    } else {
-        // TODO: switch to async parallel and call clear cache of all commands
-        this.lookup.clearCache(name, callback);
-    }
+    // Store config and init the cache
+    this._config = options;
+    this._initCache();
 };
 
 RegistryClient.prototype.lookup = lookup;
+
 RegistryClient.prototype.search = search;
+
 RegistryClient.prototype.register = register;
+
 RegistryClient.prototype.info = info;
+
+RegistryClient.prototype.clearCache = function (name, callback) {
+    // TODO: call other methods once they are done
+    this.lookup.clearCache.call(this, name, callback);
+};
+
+// -----------------------------
+
+RegistryClient.prototype._initCache = function () {
+    // TODO: call other methods once they are done
+    this.lookup.initCache.call(this, this._config.cache);
+};
 
 module.exports = RegistryClient;

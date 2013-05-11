@@ -29,33 +29,41 @@ Available constructor options:
 The cache will speedup operations such as `lookup` and `info`.
 Different operations may have different cache expiration times.
 
-#### .lookup(name, force, callback)
+#### .lookup(name, options, callback)
 
-Looks the registry for the package `name`, giving you the associated registered URL.   
-The `force` argument is optional and defaults to `false`. If set to `true`, cache will be bypassed and remotes will always be hit.
+Looks the registry for the package `name`,   
+The `options` argument is optional.
 
+Available options:
+
+- force: If set to `true`, cache will be bypassed and remotes will always be hit (defaults to `false`).
+- offline: If set to `true`, only the cache will be used (defaults to `false`).
+
+Note that `force` and `offline` are mutually exclusive.
 
 ```js
-registry.lookup(name, function (err, url) {
+registry.lookup(name, function (err, resp) {
     if (err) {
         console.error(err.message);
         return;
     }
 
-    console.log('URL: ', url);
+    // For now resp.type is always 'alias'
+    console.log('type', resp.type);
+    console.log('url: ', resp.url);
 });
 ```
 
 #### .register(name, url, callback)
 
-#### .search(str, force, callback)
+#### .search(str, options, callback)
 
-#### .info(name, force, callback)
+#### .info(name, options, callback)
 
 #### .clearCache(name, callback)
 
 Clear the cache associated with the `name` package.   
-If `name` is null, clears all the cache.
+If `name` is null, clears the cache for every package.
 
 ```js
 // Clear jquery cache

@@ -1,95 +1,173 @@
+var path = require('path');
+var url = require('url');
 var async = require('async');
 var request = require('request');
-var url = require('url');
+var mkdirp = require('mkdirp');
 var createError = require('./util/createError');
+var Cache = require('./util/Cache');
 
-function lookup(name, force, callback) {
-    var packageUrl;
-    var total;
+function lookup(name, options, callback) {
+    var data;
+    var that = this;
+    var registry = this._config.registry.search;
+    var total = registry.length;
     var index = 0;
-    var options = this._options;
-    var registry = options.registry.search;
 
-    if (typeof force === 'function') {
-        callback = force;
-        force = false;
+    if (typeof options === 'function') {
+        callback = options;
+        options = {};
+    } else if (!options) {
+        options = {};
     }
 
     // If no registry entries were passed, simply
     // error with package not found
-    total = registry.length;
     if (!total) {
         return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
     }
 
-    // TODO: Add cache layer to avoid querying the registry always
-    //       The cache should be persistent and by-passable with a skipCache option
-    //       Beware that cache should take the configured registries in account
-    //       Ideally each registry should have an independent cache, so that each step
-    //       below would query the cache individually
-
-    // Lookup package in series until we got the URL
+    // Lookup package in series in each registry
+    // endpoint until we got the data
     async.doUntil(function (next) {
-        var requestUrl = registry[index] + '/packages/' + encodeURIComponent(name);
-        var remote = url.parse(requestUrl);
-        var headers = {};
+        var remote = url.parse(registry[index]);
 
-        if (options.userAgent) {
-            headers['User-Agent'] = options.userAgent;
+        // If force flag is disabled we check the cache
+        // and fallback to a request if the offline flag is disabled
+        if (!options.force) {
+            that._lookupCache[remote.host].get(name, function (err, value) {
+                data = value;
+
+                // Don't proceed with making a request if we got
+                // an error, a value from the cache or if the offline flag is
+                // enabled
+                if (err || data || options.offline) {
+                    return next(err);
+                }
+
+                doRequest(name, index, that._config, function (err, response) {
+                    if (err) {
+                        return next(err);
+                    }
+
+                    // Store in cache
+                    that._lookupCache[remote.host].set(name, data = response, next);
+                });
+            });
+        // Otherwise, we totally bypass the cache and
+        // make only the request
+        } else {
+            doRequest(name, index, that._config, function (err, response) {
+                if (err) {
+                    return next(err);
+                }
+
+                // Store in cache
+                that._lookupCache[remote.host].set(name, data = response, next);
+            });
         }
-
-        request.get(requestUrl, {
-            proxy: remote.protocol === 'https:' ? options.httpsProxy : options.proxy,
-            ca: options.ca.search[index],
-            strictSSL: options.strictSsl,
-            timeout: options.timeout,
-            json: true
-        }, function (err, response, body) {
-            // If there was an internal error (e.g. timeout)
-            if (err) {
-                return next(createError('Request to "' + requestUrl + '" failed: ' + err.message, err.code));
-            }
-
-            // If not found, try next
-            if (response.statusCode === 404) {
-                return next();
-            }
-
-            // Abort if there was an error (range different than 2xx)
-            if (response.statusCode < 200 || response.statusCode > 299) {
-                return next(createError('Request to "' + requestUrl + '" failed with ' + response.statusCode, 'EINVRES'));
-            }
-
-            // Validate response body, since we are expecting a JSON object
-            // If the server returns an invalid JSON, it's still a string
-            if (typeof body !== 'object') {
-                return next(createError('Response of request to "' + requestUrl + '" is not a valid json', 'EINVRES'));
-            }
-
-            packageUrl = body.url;
-            next();
-        });
     }, function () {
-        // Until the url is unknown or there's still registries to tests
-        return !!packageUrl || index++ < total;
+        // Until the data is unknown or there's still registries to test
+        return !!data || index++ < total;
     }, function (err) {
         // If some of the registry entries failed, error out
         if (err) {
             return callback(err);
         }
 
-        // If at the end we still have no URL, create an appropriate error
-        if (!packageUrl) {
+        // If at the end we still have no data, create an appropriate error
+        if (!data) {
             return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
         }
 
-        callback(null, packageUrl);
+        callback(null, data);
     });
 }
 
-function clearCache(name) {
-    // TODO
+function doRequest(name, index, config, callback) {
+    var requestUrl = config.registry.search[index] + '/packages/' + encodeURIComponent(name);
+    var remote = url.parse(requestUrl);
+    var headers = {};
+
+    if (config.userAgent) {
+        headers['User-Agent'] = config.userAgent;
+    }
+
+    request.get(requestUrl, {
+        proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
+        ca: config.ca.search[index],
+        strictSSL: config.strictSsl,
+        timeout: config.timeout,
+        json: true
+    }, function (err, response, body) {
+        // If there was an internal error (e.g. timeout)
+        if (err) {
+            return callback(createError('Request to "' + requestUrl + '" failed: ' + err.message, err.code));
+        }
+
+        // If not found, try next
+        if (response.statusCode === 404) {
+            return callback();
+        }
+
+        // Abort if there was an error (range different than 2xx)
+        if (response.statusCode < 200 || response.statusCode > 299) {
+            return callback(createError('Request to "' + requestUrl + '" failed with ' + response.statusCode, 'EINVRES'));
+        }
+
+        // Validate response body, since we are expecting a JSON object
+        // If the server returns an invalid JSON, it's still a string
+        if (typeof body !== 'object') {
+            return callback(createError('Response of request to "' + requestUrl + '" is not a valid json', 'EINVRES'));
+        }
+
+        callback(null, {
+            type: 'alias',
+            url: body.url
+        });
+    });
+}
+
+function initCache() {
+    this._lookupCache = {};
+
+    // Generate a cache instance for each registry endpoint
+    this._config.registry.search.forEach(function (registry) {
+        var cacheDir;
+        var host = url.parse(registry).host;
+
+        // Skip if there's a cache for the same host
+        if (this._lookupCache[host]) {
+            return;
+        }
+
+        if (this._config.cache) {
+            cacheDir = path.join(this._config.cache, encodeURIComponent(host));
+            mkdirp.sync(cacheDir);
+        }
+
+        this._lookupCache[host] = new Cache(cacheDir);
+    }, this);
+}
+
+function clearCache(name, callback) {
+    var key;
+
+    if (typeof name === 'function') {
+        callback = name;
+        name = null;
+    }
+
+    if (name) {
+        for (key in this._lookupCache) {
+            this._lookupCache[key].del(name);
+        }
+    } else {
+        for (key in this._lookupCache) {
+            this._lookupCache[key].clear();
+        }
+    }
 }
 
 module.exports = lookup;
+module.exports.initCache = initCache;
 module.exports.clearCache = clearCache;
