@@ -1,6 +1,6 @@
 var path = require('path');
 var expect = require('expect.js');
-var bowerJson = require('../lib/bower-json');
+var bowerJson = require('../lib/json');
 
 describe('.find', function () {
     it('should find the bower.json file', function (done) {
