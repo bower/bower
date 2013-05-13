@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var async = require('async');
+var mkdirp = require('mkdirp');
 
 var hasOwn =  Object.prototype.hasOwnProperty;
 
@@ -15,6 +16,10 @@ var Cache = function (dir, options) {
     this._dir = dir;
     this._options = options;
     this._cache = {};  // TODO: switch to LRU
+
+    if (dir) {
+        mkdirp.sync(dir);
+    }
 };
 
 Cache.prototype.get = function (key, callback) {

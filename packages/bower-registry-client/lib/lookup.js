@@ -2,7 +2,6 @@ var path = require('path');
 var url = require('url');
 var async = require('async');
 var request = require('request');
-var mkdirp = require('mkdirp');
 var createError = require('./util/createError');
 var Cache = require('./util/Cache');
 
@@ -30,11 +29,12 @@ function lookup(name, options, callback) {
     // endpoint until we got the data
     async.doUntil(function (next) {
         var remote = url.parse(registry[index]);
+        var lookupCache = that._lookupCache[remote.host];
 
         // If force flag is disabled we check the cache
         // and fallback to a request if the offline flag is disabled
         if (!options.force) {
-            that._lookupCache[remote.host].get(name, function (err, value) {
+            lookupCache.get(name, function (err, value) {
                 data = value;
 
                 // Don't proceed with making a request if we got
@@ -52,7 +52,7 @@ function lookup(name, options, callback) {
                     data = entry;
 
                     // Store in cache
-                    that._lookupCache[remote.host].set(name, entry, getMaxAge(entry), next);
+                    lookupCache.set(name, entry, getMaxAge(entry), next);
                 });
             });
         // Otherwise, we totally bypass the cache and
@@ -66,7 +66,7 @@ function lookup(name, options, callback) {
                 data = entry;
 
                 // Store in cache
-                that._lookupCache[remote.host].set(name, entry, getMaxAge(entry), next);
+                lookupCache.set(name, entry, getMaxAge(entry), next);
             });
         }
     }, function () {
@@ -156,7 +156,6 @@ function initCache() {
 
         if (this._config.cache) {
             cacheDir = path.join(this._config.cache, encodeURIComponent(host));
-            mkdirp.sync(cacheDir);
         }
 
         this._lookupCache[host] = new Cache(cacheDir);
