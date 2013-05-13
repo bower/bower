@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "bower-json": "~0.0.0",
+    "bower-registry-client": "~0.0.0",
     "mout": "~0.4.0",
     "q": "~0.9.2",
     "tmp": "0.0.17",
@@ -30,7 +31,8 @@
     "tar": "~0.1.17",
     "fstream": "~0.1.22",
     "fstream-ignore": "0.0.6",
-    "junk": "~0.2.0"
+    "junk": "~0.2.0",
+    "glob": "~3.2.1"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
@@ -41,7 +43,7 @@
     "test": "node test/assets/downloader && mocha -R spec"
   },
   "bin": {
-    "bower": "bin/bower"
+    "bower_new": "bin/bower"
   },
   "preferGlobal": true,
   "private": true

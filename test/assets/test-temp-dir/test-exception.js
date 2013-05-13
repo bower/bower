@@ -1,6 +1,6 @@
 var fs = require('fs');
 var path = require('path');
-var Resolver = require('../../../lib/resolve/Resolver');
+var Resolver = require('../../../lib/core/resolvers/Resolver');
 
 var resolver = new Resolver('foo');
 resolver._createTempDir()

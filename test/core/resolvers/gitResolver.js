@@ -7,7 +7,7 @@ var rimraf = require('rimraf');
 var Q = require('q');
 var mout = require('mout');
 var copy = require('../../../lib/util/copy');
-var GitResolver = require('../../../lib/resolve/resolvers/GitResolver');
+var GitResolver = require('../../../lib/core/resolvers/GitResolver');
 
 describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
@@ -718,7 +718,7 @@ describe('GitResolver', function () {
         it('should save the resolution to the .bower.json to be used later by .hasNew', function (next) {
             var resolver = new GitResolver('foo');
 
-            resolver._resolution = { type: 'version', version: '0.0.1', tag: '0.0.1' };
+            resolver._resolution = { type: 'version', tag: '0.0.1' };
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
@@ -737,7 +737,7 @@ describe('GitResolver', function () {
         it('should add the version to the package meta if not present and resolution is a version', function (next) {
             var resolver = new GitResolver('foo');
 
-            resolver._resolution = { type: 'version', version: '0.0.1', tag: '0.0.1' };
+            resolver._resolution = { type: 'version', tag: 'v0.0.1' };
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'foo' })
@@ -776,7 +776,7 @@ describe('GitResolver', function () {
             var resolver = new GitResolver('foo');
             var notified = false;
 
-            resolver._resolution = { type: 'version', version: '0.0.1', tag: '0.0.1' };
+            resolver._resolution = { type: 'version', tag: '0.0.1' };
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.0' })
@@ -793,6 +793,27 @@ describe('GitResolver', function () {
                 var json = JSON.parse(contents.toString());
                 expect(json.version).to.equal('0.0.1');
                 expect(notified).to.be(true);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should not warn if the resolution version and the package meta version are the same', function (next) {
+            var resolver = new GitResolver('foo');
+            var notified = false;
+
+            resolver._resolution = { type: 'version', tag: 'v0.0.1' };
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
+            .then(function () {
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+            }, null)
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json.version).to.equal('0.0.1');
+                expect(notified).to.be(false);
 
                 next();
             })

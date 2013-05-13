@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var Q = require('q');
-var Worker = require('../../lib/resolve/Worker');
+var Worker = require('../../lib/core/Worker');
 
 describe('Worker', function () {
     var timeout;

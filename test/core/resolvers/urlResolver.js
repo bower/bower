@@ -6,7 +6,7 @@ var nock = require('nock');
 var Q = require('q');
 var rimraf = require('rimraf');
 var cmd = require('../../../lib/util/cmd');
-var UrlResolver = require('../../../lib/resolve/resolvers/UrlResolver');
+var UrlResolver = require('../../../lib/core/resolvers/UrlResolver');
 
 describe('UrlResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
@@ -299,6 +299,10 @@ describe('UrlResolver', function () {
             .get('/package-zip-folder.zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
 
+            nock('http://bower.io')
+            .get('/package-zip.zip')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
+
             resolver = new UrlResolver('http://bower.io/package-zip-folder.zip');
 
             resolver.resolve()
@@ -308,6 +312,17 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder.zip'))).to.be(false);
+
+                resolver = new UrlResolver('http://bower.io/package-zip.zip', { name: 'package-zip' });
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
+
                 next();
             })
             .done();

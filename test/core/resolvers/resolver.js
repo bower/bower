@@ -4,13 +4,13 @@ var path = require('path');
 var util = require('util');
 var rimraf = require('rimraf');
 var tmp = require('tmp');
-var cmd = require('../../lib/util/cmd');
-var copy = require('../../lib/util/copy');
-var Resolver = require('../../lib/resolve/Resolver');
+var cmd = require('../../../lib/util/cmd');
+var copy = require('../../../lib/util/copy');
+var Resolver = require('../../../lib/core/resolvers/Resolver');
 
 describe('Resolver', function () {
-    var tempDir = path.resolve(__dirname, '../assets/tmp');
-    var testPackage = path.resolve(__dirname, '../assets/github-test-package');
+    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
 
     describe('.getSource', function () {
         it('should return the resolver source', function () {
@@ -42,6 +42,12 @@ describe('Resolver', function () {
         });
 
         it('should return * if none was configured', function () {
+            var resolver = new Resolver('foo');
+
+            expect(resolver.getTarget()).to.equal('*');
+        });
+
+        it('should return * if latest was configured (for backwards compatibility)', function () {
             var resolver = new Resolver('foo');
 
             expect(resolver.getTarget()).to.equal('*');
@@ -399,7 +405,7 @@ describe('Resolver', function () {
             rimraf(bowerOsTempDir, function (err) {
                 if (err) return next(err);
 
-                cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: path.resolve(__dirname, '../..') })
+                cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
                     expect(fs.existsSync(bowerOsTempDir)).to.be(true);
                     expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
@@ -417,7 +423,7 @@ describe('Resolver', function () {
             rimraf(bowerOsTempDir, function (err) {
                 if (err) return next(err);
 
-                cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: path.resolve(__dirname, '../..') })
+                cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
                     next(new Error('The command should have failed'));
                 }, function () {
@@ -531,30 +537,6 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should use the json name if the name was guessed', function (next) {
-            var resolver = new Resolver('foo');
-
-            resolver._applyPkgMeta({ name: 'bar' })
-            .then(function (retMeta) {
-                expect(retMeta.name).to.equal('bar');
-                expect(resolver.getName()).to.equal('bar');
-                next();
-            })
-            .done();
-        });
-
-        it('should not use the json name if a name was passed in the constructor', function (next) {
-            var resolver = new Resolver('foo', { name: 'foo' });
-
-            resolver._applyPkgMeta({ name: 'bar' })
-            .then(function (retMeta) {
-                expect(retMeta.name).to.equal('foo');
-                expect(resolver.getName()).to.equal('foo');
-                next();
-            })
-            .done();
-        });
-
         it('should remove files that match the ignore patterns', function (next) {
             var resolver = new Resolver('foo', { name: 'foo' });
 
@@ -627,6 +609,8 @@ describe('Resolver', function () {
             })
             .done();
         });
+
+        it.skip('should set the original source in package meta file');
 
         it('should save the package meta to the package meta file (.bower.json)', function (next) {
             var resolver = new Resolver('foo');

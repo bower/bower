@@ -2,14 +2,14 @@
 // It messes with the mocha uncaughtException event to caught errors
 // Please note that is the Resolver that calls tmp.setGracefulCleanup()
 // so we need to require that before
-require('../lib/resolve/Resolver');
+require('../lib/core/resolvers/Resolver');
 process.removeAllListeners('uncaughtException');
 
-require('./resolve/resolver');
-require('./resolve/resolvers/urlResolver');
-require('./resolve/resolvers/fsResolver');
-require('./resolve/resolvers/gitResolver');
-require('./resolve/resolvers/gitFsResolver');
-require('./resolve/resolvers/gitRemoteResolver');
-require('./resolve/resolverFactory');
-require('./resolve/worker');
+require('./core/resolvers/resolver');
+require('./core/resolvers/urlResolver');
+require('./core/resolvers/fsResolver');
+require('./core/resolvers/gitResolver');
+require('./core/resolvers/gitFsResolver');
+require('./core/resolvers/gitRemoteResolver');
+require('./core/resolverFactory');
+require('./core/worker');

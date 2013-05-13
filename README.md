@@ -41,7 +41,7 @@ Main issues are:
 - **Endpoint:** name|source#target
 - **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
-- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is usually stored in a `.bower.json` file, inside a canonical package.
+- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is stored in a `.bower.json` file, inside a canonical package.
 
 ### Overall strategy
 
@@ -53,15 +53,15 @@ Bower is composed of the following components:
 - `.bowerrc`: Allows for customisations of Bower behaviour at the project/user level.
 - `bower.json`: Main purpose is to declare the component dependencies and other component related information.
 - `Manager`: Main coordinator, responsible for:
-    - Checking which packages are already installed in the current `bower folder`.
     - Deciding which version of the dependencies should be fetched from the `PackageRepository`, while keeping every dependant compatible (note that the `Manager` is `semver` aware).
     - Tracking which dependencies have been fetched, which ones failed to fetch, and which ones are being fetched.
-    - Requesting the `PackageRepository` to fail-fast, in case it realises there is no resolution for the current dependency tree.
+    - Expanding the dependency tree, analysing the dependencies of each fetched package.
 - `PackageRepository`: Abstraction to the underlying complexity of heterogeneous source types. Responsible for:
+  - Collecting concrete `Resolver`s for each endpoint
+  - Querying the `Resolve` cache for already resolved packages of the same target
+  - Decide if the cached package can be used.
   - Storing new entries in `ResolveCache`.
-  - Queueing resolvers into the `Worker`, if no suitable entry is found in the `ResolveCache`.
 - `ResolveCache`: Keeps a cache of previously resolved endpoints. Lookup can be done using an endpoint.
-- `Worker`: A service responsible for limiting amount of parallel executions of tasks of the same type.
 - `ResolverFactory`: Parses an endpoint and returns a `Resolver` capable of resolving the source type.
 - `Resolver`: Base resolver, which can be extended by concrete resolvers, like `UrlResolver`, `GitRemoteResolver`, etc.
 
@@ -113,28 +113,68 @@ Here's an overview of the dependency resolve process:
 
 #### Manager
 
+Main resolve coordinator.
+
+
+##### Constructor
+
+`Manager(options)`
+
+Available options:
+
+- `force` - true to force fetch remote sources (e.g.: bypass registry cache, defaults to false)
+- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
+- `config` - the config to use (defaults to the global config)
+
+Note that `force` and `offline` are mutually exclusive.
+
+##### Public methods
+
+`Manager#configure(targets, resolved)`: Promise
+
+Configures the manager with an array of *decomposed endpoint*s (`targets`) and
+an array of *decomposed endpoint*s that are considered `resolved` (optional).
+
+If the Manager is already resolving, the promise is immediately rejected.
+
+`Manager#resolve()`: Promise
+
+Starts the resolve promise, returning a promise of an object which keys are package names and
+values the associated resolve info (decomposed endpoints plus package meta and other info).
+
+If the Manager is already resolving, the promise is immediately rejected.
+
+`Manager#areCompatible(source, subject)`: Boolean
+
 TODO
 
 
 #### PackageRepository
 
+Abstraction to the underlying complexity of heterogeneous source types
+
+
 ##### Constructor
 
-`PackageRepository()`
+`PackageRepository(options)`
+
+Available options:
+
+- `force` - true to force fetch remote sources (e.g.: bypass registry cache, resolve cache, defaults to false)
+- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
+- `config` - the config to use (defaults to the global config)
+
+Note that `force` and `offline` are mutually exclusive.
 
 ##### Public methods
 
-`PackageRepository#get(decEndpoint)`: Promise
+`PackageRepository#fetch(decEndpoint)`: Promise
 
 Enqueues an decomposed endpoint to be fetched, and returns a promise of a *canonical package*.
 
-`PackageRepository#abort()`: Promise
+`PackageRepository#empty(name)`: Promise
 
-Aborts any queued package lookup as soon as possible, and returns a promise that everything has been aborted.
-
-##### Protected methods
-
-*CONTINUE HERE*
+Empties any resolved cache for package `name` or all the resolved cache if no `name` is passed.
 
 
 #### ResolverFactory
@@ -148,12 +188,46 @@ function createResolver(decEndpoint, options) -> Promise
 The function is async to allow querying the Bower registry, etc.   
 Options:
 
-- `skipCache` - true to not use cache (e.g.: bypass registry cache, defaults to false)
+- `force` - true to force fetch remote sources (e.g.: bypass registry cache, defaults to false)
+- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
 - `config` - the config to use (defaults to the global config)
+
+Note that `force` and `offline` are mutually exclusive.
+
 
 #### ResolveCache
 
-TODO
+The cache, stored in disk, of resolved packages (canonical packages).
+
+##### Constructor
+
+`ResolveCache(cacheDir, options)`
+
+TODO: options, such as max size in MB, etc
+
+------------
+
+##### Public functions
+
+`ResolveCache#retrieve(source, target)`: Promise
+
+Retrieves *canonical package* for a given `source` and `target` (optional, defaults to `*`).   
+The promise is resolved with both the *canonical package* and *package meta*.
+
+`ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
+
+Stores `canonicalPackage` into the cache.   
+The `pkgMeta` is optional and will be read if not passed.
+
+`ResolveCache#eliminate(source, version)`: Promise
+
+Eliminates entry with given `source` and `version` from the cache.   
+Note that `version` can be empty because some *canonical package*s do not have a version associated.
+In that case, only the unversioned entry will be removed.
+
+`ResolveCache#empty(source)`: Promise
+
+Eliminates *canonical package*s that match the `source` or everything if `source` is not passed.
 
 
 #### Resolver
@@ -302,6 +376,8 @@ This architecture makes it very easy for the community to create others package 
 A worker responsible for limiting execution of parallel tasks.
 The number of parallel tasks may be limited and configured per type.
 This component will be a service that can be accessed to perform tasks.
+
+*NOTE*: This component is not being used YET
 
 ------------
 

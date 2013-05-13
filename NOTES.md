@@ -44,11 +44,19 @@
 - bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
 - in prod dont forget to Q.longStackJumpLimit = 0;
 - add perf tests
+  - http://trace.gl
 - url resolver should work with fonts, e.g.: http://fonts.googleapis.com/css?family=Noto+Serif
 - discuss ability to specify folders inside bower_components.. e.g. components/fonts/
 - discuss namespaces in the registry
 - cache dir location: https://github.com/bower/bower/issues/448
+- implement shrinkwrap?
+- switch everything related with fs. to .graceful-fs
+  - don't forget to do the same on all bower org modules
+- use dependency injection more? we are passing a lot of options around for deep arch components..
 
 Not BC changes:
 - shorthand_resolver -> shorthandResolver
 - shorthand resolver syntax {{{}}} to just {{}}
+- "latest" targets are no longer supported, they might conflict with branches or tags
+- remove json property from the config
+- remove read of local .bowerrc in favor of bower.json config key

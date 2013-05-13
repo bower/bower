@@ -6,7 +6,7 @@ var rimraf = require('rimraf');
 var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
-var GitFsResolver = require('../../../lib/resolve/resolvers/GitFsResolver');
+var GitFsResolver = require('../../../lib/core/resolvers/GitFsResolver');
 
 describe('GitFsResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package'),
