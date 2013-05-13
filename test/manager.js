@@ -187,6 +187,21 @@ describe('manager', function () {
     manager.resolve();
   });
 
+  it('Should resolve to latest version if version is blank in the JSON', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-blank-version';
+
+    manager.on('error', function (err) {
+      throw err;
+    });
+    manager.on('resolve', function () {
+      assert.ok(semver.gte(manager.dependencies.jquery[0].version, '2.0.0'));
+      next();
+    });
+
+    manager.resolve();
+  });
+
   it('Should fetch remote sources if the force option is passed', function (next) {
     this.timeout(40000);  // Increase the timeout because this one takes longer
 
