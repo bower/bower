@@ -819,6 +819,8 @@ describe('GitResolver', function () {
             })
             .done();
         });
+
+        it.skip('should save the release (under _release)');
     });
 
     describe('#fetchBranches', function () {

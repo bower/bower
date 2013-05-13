@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+process.title = 'bower';
+
+var path = require('path');
+var nopt = require('nopt');
+var pkg = require(path.join(__dirname, '..', 'package.json'));
+var colors = require('colors');
+
+// --------
+
+var options = nopt({
+    version: Boolean
+}, {
+    'v': ['--version']
+}, process.argv);
+
+// Handle print of version
+if (options.version) {
+    process.stdout.write(pkg.version + '\n');
+    process.exit();
+}
+
+// TODO: remove this later to appropriate command.
+var Q = require('q');
+var Project = require('../lib/core/Project');
+
+Q.longStackJumpLimit = 0;
+
+var test = new Project({
+    offline: options.offline,
+    force: options.force
+});
+
+test.install(/*['jquery-ui']*/)
+.progress(function (notification) {
+    var id = notification.from + '#' + notification.endpoint.target;
+    id = notification.type === 'warn' ? id.yellow : id.cyan;
+
+    process.stdout.write('bower ' + id + ' ' + notification.data + '\n');
+})
+.then(function () {
+    process.exit();
+}, function (err) {
+    process.stderr.write(err.message + '\n');
+    process.exit(1);
+});

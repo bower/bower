@@ -1,5 +1,5 @@
 {
-  "name": "bower",
+  "name": "bower_new",
   "version": "0.0.0",
   "description": "The browser package manager.",
   "author": "Twitter",
@@ -32,7 +32,9 @@
     "fstream": "~0.1.22",
     "fstream-ignore": "0.0.6",
     "junk": "~0.2.0",
-    "glob": "~3.2.1"
+    "glob": "~3.2.1",
+    "colors": "~0.6.0-1",
+    "ncp": "~0.4.2"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
@@ -43,7 +45,7 @@
     "test": "node test/assets/downloader && mocha -R spec"
   },
   "bin": {
-    "bower_new": "bin/bower"
+    "bower_new": "bin/bower_new"
   },
   "preferGlobal": true,
   "private": true
