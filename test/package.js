@@ -639,7 +639,7 @@ describe('package', function () {
     var warn = [];
 
     pkg.on('resolve', function () {
-      assert.equal(warn.length, 3);
+      assert.equal(warn.length, 2);
       next();
     });
 
@@ -691,7 +691,7 @@ describe('package', function () {
       next();
     });
 
-    pkg.on('checkout', function () {
+    pkg.on('install', function () {
       assert(false);
       next();
     });
@@ -711,7 +711,7 @@ describe('package', function () {
       throw err;
     });
 
-    pkg.on('checkout', function () {
+    pkg.on('install', function () {
       assert(fs.existsSync(pkg.gitPath));
       assert.equal(fs.readFileSync(path.join(pkg.gitPath, '.git/HEAD'), 'UTF-8'), commit + '\n');
       next();
