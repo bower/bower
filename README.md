@@ -329,6 +329,7 @@ Thanks for assistance and contributions:
 * [@carsonmcdonald](https://github/@carsonmcdonald)
 * [@chriseppstein](https://github.com/chriseppstein)
 * [@danwrong](https://github.com/danwrong)
+* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
 * [@desandro](https://github.com/desandro)
 * [@hemanth](https://github.com/hemanth)
 * [@isaacs](https://github.com/isaacs)
@@ -348,7 +349,6 @@ Thanks for assistance and contributions:
 * [@wagenet](https://github.com/wagenet)
 * [@wibblymat](https://github.com/wibblymat)
 * [@wycats](https://github.com/wycats)
-* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
 
 
 ## License
