@@ -348,6 +348,7 @@ Thanks for assistance and contributions:
 * [@wagenet](https://github.com/wagenet)
 * [@wibblymat](https://github.com/wibblymat)
 * [@wycats](https://github.com/wycats)
+* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
 
 
 ## License
