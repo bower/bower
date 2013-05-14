@@ -174,6 +174,8 @@ root, and specify all of its dependencies. This is similar to Node's
 `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's
 dependencies.
 
+*NOTE:* In versions of Bower before 0.9.0 the package metadata file was called `component.json` rather than `bower.json`. This has changed to avoid a name clash with another tool. You can still use `component.json` for now but it is deprecated and the automatic fallback is likely to be removed in an upcoming release.
+
 You can interactively create a `bower.json` with the following command:
 
 ```
