@@ -74,9 +74,9 @@ Here's an overview of the dependency resolve process:
 
 1. **INSTALL/UPDATE** - A set of endpoints is requested to be installed/updated, and these are passed to the `Manager`.
 
-2. **ANALIZE COMPONENTS FOLDER** -  `Manager` starts by reading the *components folder* and understanding which packages are already installed.
+2. **ANALIZE COMPONENTS FOLDER** - `Manager` starts by reading the `components folder` and understanding which packages are already installed.
 
-3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the *decomposed endpoints* in the `PackageRepository`. Some considerations:
+3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the `decomposed endpoints` in the `PackageRepository`. Some considerations:
     - If a package should be fetched or not depends on the following conditions:
         - What operation is being done (install/update).
         - If package is already installed.
@@ -87,7 +87,7 @@ Here's an overview of the dependency resolve process:
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
     - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
 
-5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached *canonical package* that complies to the endpoint target. Some considerations:
+5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical package` that complies to the endpoint target. Some considerations:
     - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
     - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
 
@@ -132,8 +132,8 @@ Note that `force` and `offline` are mutually exclusive.
 
 `Manager#configure(targets, resolved)`: Promise
 
-Configures the manager with an array of *decomposed endpoint*s (`targets`) and
-an array of *decomposed endpoint*s that are considered `resolved` (optional).
+Configures the manager with an array of `decomposed endpoint` (`targets`) and
+an array of `decomposed endpoint`s that are considered `resolved` (optional).
 
 If the Manager is already resolving, the promise is immediately rejected.
 
@@ -170,7 +170,7 @@ Note that `force` and `offline` are mutually exclusive.
 
 `PackageRepository#fetch(decEndpoint)`: Promise
 
-Enqueues an decomposed endpoint to be fetched, and returns a promise of a *canonical package*.
+Enqueues an decomposed endpoint to be fetched, and returns a promise of a `canonical package`.
 
 `PackageRepository#empty(name)`: Promise
 
@@ -179,7 +179,7 @@ Empties any resolved cache for package `name` or all the resolved cache if no `n
 
 #### ResolverFactory
 
-Simple function that takes a *decomposed endpoint* with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
+Simple function that takes a `decomposed endpoint` with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
 
 ```js
 function createResolver(decEndpoint, options) -> Promise
@@ -211,8 +211,8 @@ TODO: options, such as max size in MB, etc
 
 `ResolveCache#retrieve(source, target)`: Promise
 
-Retrieves *canonical package* for a given `source` and `target` (optional, defaults to `*`).   
-The promise is resolved with both the *canonical package* and *package meta*.
+Retrieves `canonical package` for a given `source` and `target` (optional, defaults to `*`).   
+The promise is resolved with both the `canonical package` and `package meta`.
 
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
@@ -222,12 +222,12 @@ The `pkgMeta` is optional and will be read if not passed.
 `ResolveCache#eliminate(source, version)`: Promise
 
 Eliminates entry with given `source` and `version` from the cache.   
-Note that `version` can be empty because some *canonical package*s do not have a version associated.
+Note that `version` can be empty because some `canonical package`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
 `ResolveCache#empty(source)`: Promise
 
-Eliminates *canonical package*s that match the `source` or everything if `source` is not passed.
+Eliminates `canonical package`s that match the `source` or everything if `source` is not passed.
 
 
 #### Resolver
