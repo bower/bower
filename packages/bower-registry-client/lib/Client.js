@@ -11,7 +11,7 @@ var RegistryClient = function (options) {
     // Parse options
     // Registry
     options.registry = options.registry || 'https://bower.herokuapp.com';
-    if (typeof options.registry !== 'object') {
+    if (typeof options.registry === 'string') {
         options.registry = {
             search: [options.registry],
             register: options.registry,
@@ -29,7 +29,7 @@ var RegistryClient = function (options) {
     options.registry.publish = options.registry.publish.replace(/\/+$/, '');
 
     // CA
-    if (typeof options.ca !== 'object') {
+    if (!options.ca || typeof options.ca === 'string') {
         options.ca = {
             search: [options.ca],
             register: options.ca,

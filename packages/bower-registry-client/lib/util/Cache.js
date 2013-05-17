@@ -30,7 +30,7 @@ Cache.prototype.get = function (key, callback) {
         if (this._hasExpired(this._cache[key])) {
             this.del(key, callback);
         } else {
-            callback(null, this._cache[key]);
+            callback(null, this._cache[key].value);
         }
 
         return;
