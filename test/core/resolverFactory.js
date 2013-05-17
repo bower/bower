@@ -5,6 +5,7 @@ var mkdirp = require('mkdirp');
 var mout = require('mout');
 var Q = require('q');
 var rimraf = require('rimraf');
+var RegistryClient = require('bower-registry-client');
 var defaultConfig = require('../../lib/config');
 var resolverFactory = require('../../lib/core/resolverFactory');
 var FsResolver = require('../../lib/core/resolvers/FsResolver');
@@ -14,6 +15,11 @@ var UrlResolver = require('../../lib/core/resolvers/UrlResolver');
 
 describe('resolverFactory', function () {
     var tempSource;
+    var options = {};
+
+    options.registry = new RegistryClient(mout.object.fillIn({
+        cache: defaultConfig._registry
+    }, defaultConfig));
 
     afterEach(function (next) {
         if (tempSource) {
@@ -78,7 +84,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -91,7 +97,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     source: key,
                     target: 'commit-ish'
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -104,12 +110,13 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
                 expect(resolver.getSource()).to.equal(value);
                 expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
             });
         });
 
@@ -137,10 +144,11 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
+                expect(resolver.getTarget()).to.equal('*');
             });
 
             // Test with name
@@ -148,11 +156,12 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
                 expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
             });
         });
 
@@ -198,10 +207,11 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
+                expect(resolver.getTarget()).to.equal('*');
             });
 
             // Test with name
@@ -209,11 +219,12 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
                 expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
             });
         });
 
@@ -222,11 +233,6 @@ describe('resolverFactory', function () {
         .then(next.bind(next, null))
         .done();
     });
-
-    it.skip('should use config.cwd when resolving relative paths', function () {
-
-    });
-
 
     it('should recognize URL endpoints correctly', function (next) {
         var promise = Q.resolve();
@@ -242,7 +248,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: source
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -253,7 +259,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: source
-                });
+                }, options);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -265,7 +271,41 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it.skip('should recognize registry endpoints correctly');
+    it('should recognize registry endpoints correctly', function (next) {
+        resolverFactory({
+            source: 'dejavu'
+        }, options)
+        .then(function (resolver) {
+            expect(resolver).to.be.a(GitRemoteResolver);
+            expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
+            expect(resolver.getTarget()).to.equal('*');
+        })
+        .then(function () {
+            return resolverFactory({
+                source: 'dejavu',
+                name: 'foo'
+            }, options)
+            .then(function (resolver) {
+                expect(resolver).to.be.a(GitRemoteResolver);
+                expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
+                expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
+            });
+        })
+        .then(function () {
+            return resolverFactory({
+                source: 'dejavu',
+                target: '~2.0.0'
+            }, options)
+            .then(function (resolver) {
+                expect(resolver).to.be.a(GitRemoteResolver);
+                expect(resolver.getTarget()).to.equal('~2.0.0');
+
+                next();
+            });
+        })
+        .done();
+    });
 
     it('should use the configured shorthand resolver', function (next) {
         resolverFactory({
@@ -289,10 +329,17 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it.skip('should use config.cwd when resolving relative paths', function () {
+
+    });
+
+    it.skip('should pass offline and force options to the registry lookup');
+
     it('should not swallow constructor errors when instantiating resolvers', function (next) {
         var promise = Q.resolve();
         var endpoints;
 
+        // TODO: test with others
         endpoints = [
             'http://bower.io/foo.js',
             path.resolve(__dirname, '../assets/test-temp-dir')

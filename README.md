@@ -190,6 +190,7 @@ Options:
 
 - `force` - true to force fetch remote sources (e.g.: bypass registry cache, defaults to false)
 - `offline` - true to not fetch remote sources and use only the cache (defaults to false)
+- `registry` - an instance of [`RegistryClient`](https://github.com/bower/registry-client) to be used (defaults to null, which means that the registry will not be queried)
 - `config` - the config to use (defaults to the global config)
 
 Note that `force` and `offline` are mutually exclusive.
