@@ -3,7 +3,9 @@ var fs = require('fs');
 var path = require('path');
 var util = require('util');
 var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var tmp = require('tmp');
+var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var Resolver = require('../../../lib/core/resolvers/Resolver');
@@ -55,6 +57,20 @@ describe('Resolver', function () {
     });
 
     describe('.hasNew', function () {
+        before(function () {
+            mkdirp.sync(tempDir);
+        });
+
+        beforeEach(function () {
+            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+                name: 'test'
+            }));
+        });
+
+        after(function (next) {
+            rimraf(tempDir, next);
+        });
+
         it('should throw an error if already working (resolving)', function (next) {
             var resolver = new Resolver('foo');
             var succeeded;
@@ -71,7 +87,7 @@ describe('Resolver', function () {
             })
             .done();
 
-            resolver.hasNew()
+            resolver.hasNew(tempDir)
             .then(function () {
                 succeeded = true;
             }, function (err) {
@@ -85,17 +101,17 @@ describe('Resolver', function () {
             var resolver = new Resolver('foo');
             var succeeded;
 
-            resolver.hasNew()
+            resolver.hasNew(tempDir)
             .then(function () {
                 // Test if hasNew can be called again when done
-                resolver.hasNew()
+                resolver.hasNew(tempDir)
                 .then(function () {
                     next(succeeded ? new Error('Should have failed') : null);
                 });
             })
             .done();
 
-            resolver.hasNew()
+            resolver.hasNew(tempDir)
             .then(function () {
                 succeeded = true;
             }, function (err) {
@@ -108,9 +124,62 @@ describe('Resolver', function () {
         it('should resolve to true by default', function (next) {
             var resolver = new Resolver('foo');
 
-            resolver.hasNew('.')
+            resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.equal(true);
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to true if the there\'s an error reading the package meta', function (next) {
+            var resolver = new Resolver('foo');
+
+            rimraf.sync(path.join(tempDir, '.bower.json'));
+            resolver.hasNew(tempDir)
+            .then(function (hasNew) {
+                expect(hasNew).to.equal(true);
+                next();
+            })
+            .done();
+        });
+
+        it('should call _hasNew with the canonical package and the package meta', function (next) {
+            var resolver = new Resolver('foo');
+            var canonical;
+            var meta;
+
+            resolver._hasNew = function (canonicalPkg, pkgMeta) {
+                canonical = canonicalPkg;
+                meta = pkgMeta;
+                return Q.resolve(true);
+            };
+
+            resolver.hasNew(tempDir)
+            .then(function () {
+                expect(canonical).to.equal(tempDir);
+                expect(meta).to.be.an('object');
+                expect(meta.name).to.equal('test');
+                next();
+            })
+            .done();
+        });
+
+        it('should not read the package meta if already passed', function (next) {
+            var resolver = new Resolver('foo');
+            var meta;
+
+            resolver._hasNew = function (canonicalPkg, pkgMeta) {
+                meta = pkgMeta;
+                return Q.resolve(true);
+            };
+
+            resolver.hasNew(tempDir, {
+                name: 'foo'
+            })
+            .then(function () {
+                expect(meta).to.be.an('object');
+                expect(meta.name).to.equal('foo');
                 next();
             })
             .done();
@@ -164,10 +233,10 @@ describe('Resolver', function () {
 
             resolver._resolve = function () {};
 
-            resolver.hasNew()
+            resolver.hasNew(tempDir)
             .then(function () {
                 // Test if hasNew can be called again when done
-                resolver.hasNew()
+                resolver.hasNew(tempDir)
                 .then(function () {
                     next(succeeded ? new Error('Should have failed') : null);
                 });
@@ -355,7 +424,7 @@ describe('Resolver', function () {
         before(function () {
             var stat;
 
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
             stat = fs.statSync(tempDir);
             dirMode0777 = stat.mode;
         });
@@ -456,7 +525,7 @@ describe('Resolver', function () {
         it('should read the bower.json file', function (next) {
             var resolver = new Resolver('foo');
 
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
 
@@ -474,7 +543,7 @@ describe('Resolver', function () {
             var resolver = new Resolver('foo');
             var notified = false;
 
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
 
             resolver._readJson(tempDir)
@@ -518,7 +587,7 @@ describe('Resolver', function () {
             var resolver = new Resolver('foo');
             var meta = { name: 'foo' };
 
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
             resolver._tempDir = tempDir;
 
             resolver._applyPkgMeta(meta)
@@ -540,7 +609,7 @@ describe('Resolver', function () {
         it('should remove files that match the ignore patterns', function (next) {
             var resolver = new Resolver('foo', { name: 'foo' });
 
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
 
             // Checkout test package version 0.2.1 which has a bower.json
             // with ignores
@@ -585,7 +654,7 @@ describe('Resolver', function () {
 
     describe('._savePkgMeta', function () {
         before(function () {
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
         });
 
         afterEach(function (next) {

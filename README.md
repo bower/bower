@@ -274,14 +274,14 @@ Returns the target.
 
 Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
 
-`Resolver#hasNew(canonicalPkg)`: Promise
+`Resolver#hasNew(canonicalPkg, pkgMeta)`: Promise
 
 Checks if there is a version more recent than the provided `canonicalPkg` (folder) that complies with the resolver target.
 The hasNew process is as follows:
 
-- Reads the `package meta` from the `canonicalPkg`
-- Resolves to `true if it doesn't exist
-- Otherwise, calls _hasNew with the `package meta` and the `canonicalPkg` as arguments
+- Reads the `package meta` from the `canonical package` if not supplied
+- If there's an error while reading the `package meta`, it resolves to `true` because the package might be broken
+- Otherwise, calls `_hasNew()` with the `canonical package` and `package meta` as arguments
 
 If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
 rejected.

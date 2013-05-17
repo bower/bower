@@ -5,6 +5,7 @@ var path = require('path');
 var nock = require('nock');
 var Q = require('q');
 var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var cmd = require('../../../lib/util/cmd');
 var UrlResolver = require('../../../lib/core/resolvers/UrlResolver');
 
@@ -64,7 +65,7 @@ describe('UrlResolver', function () {
 
     describe('.hasNew', function () {
         before(function () {
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
         });
 
         afterEach(function (next) {

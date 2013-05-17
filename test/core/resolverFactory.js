@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var fs = require('fs');
 var path = require('path');
+var mkdirp = require('mkdirp');
 var mout = require('mout');
 var Q = require('q');
 var rimraf = require('rimraf');
@@ -166,7 +167,7 @@ describe('resolverFactory', function () {
         var temp;
 
         tempSource = path.resolve(__dirname, '../assets/tmp');
-        fs.mkdirSync(tempSource);
+        mkdirp.sync(tempSource);
         fs.writeFileSync(path.join(tempSource, '.git'), 'foo');
 
         endpoints = {};

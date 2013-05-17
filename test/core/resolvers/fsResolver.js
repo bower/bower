@@ -3,6 +3,7 @@ var path = require('path');
 var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
@@ -68,9 +69,15 @@ describe('FsResolver', function () {
 
     describe('.hasNew', function () {
         it('should resolve always to true (for now..)', function (next) {
-            var resolver = new FsResolver(path.relative(process.cwd(), testPackage));
+            var resolver = new FsResolver(testPackage);
 
-            resolver.hasNew()
+            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            mkdirp.sync(tempSource);
+            fs.writeFileSync(path.join(tempSource, '.bower.json'), JSON.stringify({
+                name: 'test'
+            }));
+
+            resolver.hasNew(tempSource)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -145,7 +152,7 @@ describe('FsResolver', function () {
 
             tempSource = path.resolve(__dirname, '../../assets/tmp');
 
-            fs.mkdirSync(tempSource);
+            mkdirp.sync(tempSource);
             resolver = new FsResolver(tempSource);
 
             copy.copyFile(path.join(testPackage, 'foo'), path.join(tempSource, 'foo'))

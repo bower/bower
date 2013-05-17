@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs');
 var chmodr = require('chmodr');
 var rimraf = require('rimraf');
+var mkdirp = require('mkdirp');
 var Q = require('q');
 var mout = require('mout');
 var copy = require('../../../lib/util/copy');
@@ -20,7 +21,7 @@ describe('GitResolver', function () {
 
     describe('.hasNew', function () {
         before(function () {
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
         });
 
         afterEach(function (next) {
@@ -625,7 +626,7 @@ describe('GitResolver', function () {
 
     describe('._cleanup', function () {
         beforeEach(function () {
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
         });
 
         afterEach(function (next) {
@@ -704,7 +705,7 @@ describe('GitResolver', function () {
 
     describe('._savePkgMeta', function () {
         before(function () {
-            fs.mkdirSync(tempDir);
+            mkdirp.sync(tempDir);
         });
 
         afterEach(function (next) {
@@ -729,6 +730,63 @@ describe('GitResolver', function () {
                 var json = JSON.parse(contents.toString());
 
                 expect(json._resolution).to.eql(resolver._resolution);
+                next();
+            })
+            .done();
+        });
+
+        it('should save the release (under _release)', function (next) {
+            var resolver = new GitResolver('foo');
+            var metaFile = path.join(tempDir, '.bower.json');
+
+            // Test with type 'version'
+            resolver._resolution = { type: 'version', tag: '0.0.1', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('0.0.1');
+            })
+            // Test with type 'tag'
+            .then(function () {
+                resolver._resolution = { type: 'tag', tag: '0.0.1', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                return resolver._savePkgMeta({ name: 'foo' });
+            })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('0.0.1');
+            })
+            // Test with type 'branch'
+            // In this case, it should be the commit
+            .then(function () {
+                resolver._resolution = { type: 'branch', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                return resolver._savePkgMeta({ name: 'foo' });
+            })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+            })
+            // Test with type 'commit'
+            .then(function () {
+                resolver._resolution = { type: 'commit', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                return resolver._savePkgMeta({ name: 'foo' });
+            })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
                 next();
             })
             .done();
@@ -819,8 +877,6 @@ describe('GitResolver', function () {
             })
             .done();
         });
-
-        it.skip('should save the release (under _release)');
     });
 
     describe('#fetchBranches', function () {
