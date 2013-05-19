@@ -71,7 +71,7 @@ bowerJson.find('/path/to/folder', function (err, filename) {
     console.log('Filename: ', filename);
 
     // Now that we got the filename, we can read its contents
-    bowerJson.read(filename, function () {
+    bowerJson.read(filename, function (err, json) {
         if (err) {
             console.error('There was an error reading the file');
             console.error(err.message);
