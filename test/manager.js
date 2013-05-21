@@ -187,16 +187,16 @@ describe('manager', function () {
     manager.resolve();
   });
 
-  it('Should resolve to latest version if version is blank in the JSON', function (next) {
+  it('Should error if version is blank in the JSON', function (next) {
     var manager = new Manager([]);
     manager.cwd = __dirname + '/assets/project-blank-version';
 
     manager.on('error', function (err) {
-      throw err;
+      assert(/The version for jquery is blank/.test(err.message));
+      next();
     });
     manager.on('resolve', function () {
-      assert.ok(semver.gte(manager.dependencies.jquery[0].version, '2.0.0'));
-      next();
+      throw new Error('installing with blank version should have failed');
     });
 
     manager.resolve();
