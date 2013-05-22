@@ -130,19 +130,30 @@ Note that `force` and `offline` are mutually exclusive.
 
 ##### Public methods
 
-`Manager#configure(unresolved, resolved)`: Promise
+`Manager#configure(targets, installed)`: Promise
 
-Configures the manager with an array of unresolved `decomposed endpoint`s and
-an array of resolved `decomposed endpoint`s (optional).
+Configures the manager with `targets` and `installed`:
 
-If the Manager is already resolving, the promise is immediately rejected.
+- `targets`: array where keys are names and values the decomposed endpoints
+- `installed`: object where keys are names and values the canonical package or the package metas
+
+If the Manager is already working, the promise is immediately rejected.
 
 `Manager#resolve()`: Promise
 
 Starts the resolve promise, returning a promise of an object which keys are package names and
 values the associated resolve info (decomposed endpoints plus package meta and other info).
 
-If the Manager is already resolving, the promise is immediately rejected.
+If the Manager is already working, the promise is immediately rejected.
+
+`Manager#install()`: Promise
+
+Installs packages that result from the dissection of the resolve process.
+The promise is resolved with an object where keys are package names and values the package meta's.
+
+If the Manager is already working, the promise is immediately rejected.
+
+TODO
 
 `Manager#areCompatible(source, subject)`: Boolean
 

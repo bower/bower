@@ -34,7 +34,7 @@ var test = new Project({
 
 test.install(/*['jquery-ui']*/)
 .progress(function (notification) {
-    var id = notification.from + '#' + notification.endpoint.target;
+    var id = notification.origin + '#' + notification.endpoint.target;
     id = notification.type === 'warn' ? id.yellow : id.cyan;
 
     process.stdout.write('bower ' + id + ' ' + notification.data + '\n');
