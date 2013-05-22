@@ -130,10 +130,10 @@ Note that `force` and `offline` are mutually exclusive.
 
 ##### Public methods
 
-`Manager#configure(targets, resolved)`: Promise
+`Manager#configure(unresolved, resolved)`: Promise
 
-Configures the manager with an array of `decomposed endpoint` (`targets`) and
-an array of `decomposed endpoint`s that are considered `resolved` (optional).
+Configures the manager with an array of unresolved `decomposed endpoint`s and
+an array of resolved `decomposed endpoint`s (optional).
 
 If the Manager is already resolving, the promise is immediately rejected.
 
