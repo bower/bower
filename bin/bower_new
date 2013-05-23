@@ -33,6 +33,8 @@ if (levels) {
     levels = levels
     .split(',')
     .map(function (level) { return level.trim(); });
+} else {
+    levels = ['action', 'warn'];
 }
 
 // Get the command to execute
