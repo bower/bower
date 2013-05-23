@@ -57,9 +57,9 @@ command.line(process.argv)
     }
 
     // Attempt to use renderer function specified by the tag
-    // Tags can be namespaced; this means that if the tag is
-    // "help.install" it will call "renderer.help.install()"
-    // Fallback to data if not found
+    // Tags can be namespaced, this means that if the tag is
+    // help.install it will call renderer.help.install()
+    // Fallback to renderer.data if not found
     renderFuncName = data.tag
     .split('.')
     .map(function (slice) { return mout.string.camelCase(slice); })
@@ -68,8 +68,8 @@ command.line(process.argv)
     renderFunc = mout.object.get(renderer, renderFuncName) || renderer.data;
     str = renderFunc(data);
 
-    // If type is warn, print to stderr instead
-    process[data.type === 'warn' ? 'stderr' : 'stdout'].write(str);
+    // If level is warn, print to stderr instead
+    process[data.level === 'warn' ? 'stderr' : 'stdout'].write(str);
 })
 .on('end', function (data) {
     process.stdout.write(renderer.end(data));
