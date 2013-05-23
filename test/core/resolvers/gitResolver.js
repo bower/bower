@@ -843,7 +843,7 @@ describe('GitResolver', function () {
             }, null, function (notification) {
                 expect(notification).to.be.an('object');
 
-                if (notification.type === 'warn' && /\(0\.0\.0\).*different.*\(0\.0\.1\)/.test(notification.data)) {
+                if (notification.level === 'warn' && /\(0\.0\.0\).*different.*\(0\.0\.1\)/.test(notification.data)) {
                     notified = true;
                 }
             })
