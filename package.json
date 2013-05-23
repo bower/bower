@@ -34,8 +34,7 @@
     "junk": "~0.2.0",
     "glob": "~3.2.1",
     "colors": "~0.6.0-1",
-    "ncp": "~0.4.2",
-    "circular-json": "~0.1.2"
+    "ncp": "~0.4.2"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
