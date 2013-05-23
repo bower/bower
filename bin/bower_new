@@ -1,19 +1,25 @@
 #!/usr/bin/env node
 
-process.title = 'bower';
-
-var path = require('path');
-var nopt = require('nopt');
-var pkg = require(path.join(__dirname, '..', 'package.json'));
 require('colors');
+var path = require('path');
+var mout = require('mout');
+var pkg = require(path.join(__dirname, '..', 'package.json'));
+var cli = require('../lib/util/cli');
+var commands = require('../lib/commands');
 
 // --------
 
-var options = nopt({
-    version: Boolean
-}, {
-    'v': ['--version']
-}, process.argv);
+var options;
+var command;
+var renderer;
+var levels;
+
+process.title = 'bower';
+
+// Read CLI options
+options = cli.readOptions(process.argv, {
+    version: { type: Boolean, shorthand: 'v' }
+});
 
 // Handle print of version
 if (options.version) {
@@ -21,28 +27,56 @@ if (options.version) {
     process.exit();
 }
 
-// TODO: remove this later to appropriate command.
-var Q = require('q');
-var Project = require('../lib/core/Project');
+// Parse log levels
+levels = options['log-levels'];
+if (levels) {
+    levels = levels
+    .split(',')
+    .map(function (level) { return level.trim(); });
+}
 
-Q.longStackJumpLimit = 0;
+// Get the command to execute
+// TODO: abbreviations
+command = options.argv.remain && options.argv.remain.shift();
+command = commands[command] || commands.help;
 
-var test = new Project({
-    offline: options.offline,
-    force: options.force
-});
+// Get the renderer
+renderer = cli.createRenderer(options);
 
-test.install(/*['jquery-ui']*/)
-.progress(function (notification) {
-    var id = notification.origin + '#' + notification.endpoint.target;
-    id = notification.type === 'warn' ? id.yellow : id.cyan;
+// Execute the command
+process.stdout.write(renderer.head());
+command.line(process.argv)
+.on('data', function (data) {
+    var renderFuncName;
+    var renderFunc;
+    var str;
 
-    process.stdout.write('bower ' + id + ' ' + notification.data + '\n');
+    // Check if this log level is allowed
+    if (levels && levels.indexOf(data.level) === -1) {
+        return;
+    }
+
+    // Attempt to use renderer function specified by the tag
+    // Tags can be namespaced; this means that if the tag is
+    // "help.install" it will call "renderer.help.install()"
+    // Fallback to data if not found
+    renderFuncName = data.tag
+    .split('.')
+    .map(function (slice) { return mout.string.camelCase(slice); })
+    .join('.');
+
+    renderFunc = mout.object.get(renderer, renderFuncName) || renderer.data;
+    str = renderFunc(data);
+
+    // If type is warn, print to stderr instead
+    process[data.type === 'warn' ? 'stderr' : 'stdout'].write(str);
 })
-.then(function () {
-    process.exit();
-}, function (err) {
-    throw err;
-    //process.stderr.write(err.message + '\n');
-    //process.exit(1);
+.on('end', function (data) {
+    process.stdout.write(renderer.end(data));
+    process.stdout.write(renderer.tail());
+})
+.on('error', function (err)  {
+    process.stderr.write(renderer.error(err));
+    process.stdout.write(renderer.tail());
+    process.exit(1);
 });

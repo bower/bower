@@ -17,7 +17,7 @@ describe('resolverFactory', function () {
     var tempSource;
     var options = {};
 
-    options.registry = new RegistryClient(mout.object.fillIn({
+    options.registryClient = new RegistryClient(mout.object.fillIn({
         cache: defaultConfig._registry
     }, defaultConfig));
 

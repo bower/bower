@@ -735,7 +735,7 @@ describe('GitResolver', function () {
             .done();
         });
 
-        it('should save the release (under _release)', function (next) {
+        it('should save the release in the package meta', function (next) {
             var resolver = new GitResolver('foo');
             var metaFile = path.join(tempDir, '.bower.json');
 
@@ -774,7 +774,7 @@ describe('GitResolver', function () {
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
-                expect(json._release).to.equal('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                expect(json._release).to.equal('aaaaaaaaaa');
             })
             // Test with type 'commit'
             .then(function () {
@@ -786,7 +786,7 @@ describe('GitResolver', function () {
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
-                expect(json._release).to.equal('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+                expect(json._release).to.equal('aaaaaaaaaa');
                 next();
             })
             .done();

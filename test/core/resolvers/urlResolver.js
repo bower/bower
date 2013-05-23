@@ -447,7 +447,9 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it('should store cache headers in the package meta', function (next) {
+        it.skip('should save the release if there\'s a E-Tag');
+
+        it('should save cache headers', function (next) {
             var resolver;
 
             nock('http://bower.io')
