@@ -162,6 +162,20 @@ describe('package', function () {
     pkg.resolve();
   });
 
+  it('Should error if no endpoint is given', function (next) {
+    var pkg = new Package('jquery');
+
+    pkg.on('resolve', function () {
+      throw new Error('Should have given an error');
+    });
+
+    pkg.on('error', function () {
+      next();
+    });
+
+    pkg.resolve();
+  });
+
   it('Should clone git packages', function (next) {
     var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git');
 

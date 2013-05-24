@@ -187,6 +187,21 @@ describe('manager', function () {
     manager.resolve();
   });
 
+  it('Should error if version is blank in the JSON', function (next) {
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-blank-version';
+
+    manager.on('error', function (err) {
+      assert(/The version for jquery is blank/.test(err.message));
+      next();
+    });
+    manager.on('resolve', function () {
+      throw new Error('installing with blank version should have failed');
+    });
+
+    manager.resolve();
+  });
+
   it('Should fetch remote sources if the force option is passed', function (next) {
     this.timeout(40000);  // Increase the timeout because this one takes longer
 
