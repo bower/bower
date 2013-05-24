@@ -40,7 +40,7 @@ if (mout.object.hasOwn(options, 'log-levels')) {
         levels = null;
     }
 } else {
-    levels = ['action', 'warn'];
+    levels = ['action', 'info', 'warn'];
 }
 
 // Get the command to execute
