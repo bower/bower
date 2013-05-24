@@ -34,6 +34,11 @@ if (mout.object.hasOwn(options, 'log-levels')) {
     levels = (options['log-levels'] || '')
     .split(',')
     .map(function (level) { return level.trim(); });
+
+    // Check if the special keyword "all" was specified
+    if (levels.indexOf('all') !== -1) {
+        levels = null;
+    }
 } else {
     levels = ['action', 'warn'];
 }
