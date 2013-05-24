@@ -2,6 +2,7 @@
 
 var assert   = require('assert');
 var rimraf   = require('rimraf');
+var path   = require('path');
 
 var Manager  = require('../lib/core/manager');
 var list     = require('../lib/commands/list');
@@ -151,6 +152,29 @@ describe('list', function () {
             ],
             '.html': [ 'components/a2/a2.html', 'components/b/b.html' ]
           });
+
+          next();
+        });
+      })
+      .resolve();
+  });
+
+  it('Should list versions & paths', function (next) {
+    // install project
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets/project-nested';
+
+    manager
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('resolve', function () {
+        list({ versions: true }).on('data', function (data) {
+          assert.equal(data.jquery.version, '1.7.2');
+          assert.equal(data['jquery-pjax'].version, '1.0.0');
+
+          assert.equal(data.jquery.path, path.join(process.cwd(), 'components', 'jquery'));
+          assert.equal(data['jquery-pjax'].path, path.join(process.cwd(), 'components', 'jquery-pjax'));
 
           next();
         });
