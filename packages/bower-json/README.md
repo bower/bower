@@ -41,14 +41,14 @@ var json = {
     version: '0.0.1'
 };
 
-bowerJson.parse(json, function (err, filename) {
+bowerJson.parse(json, function (err, json) {
     if (err) {
         console.error('There was an error parsing the object');
         console.error(err.message);
         return;
     }
 
-    console.log('JSON: ', json);
+    console.log('Parsed: ', json);
 });
 ```
 
@@ -71,7 +71,7 @@ bowerJson.find('/path/to/folder', function (err, filename) {
     console.log('Filename: ', filename);
 
     // Now that we got the filename, we can read its contents
-    bowerJson.read(filename, function () {
+    bowerJson.read(filename, function (err, json) {
         if (err) {
             console.error('There was an error reading the file');
             console.error(err.message);
