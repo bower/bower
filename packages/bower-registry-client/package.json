@@ -1,17 +1,27 @@
 {
   "name": "bower-registry-client",
-  "version": "0.0.0-rc1",
+  "version": "0.0.0-rc2",
   "description": "Provides easy interaction with the Bower registry.",
   "author": "Twitter",
   "licenses": [
     {
       "type": "MIT",
-      "url": "https://github.com/bower/bower-registry/blob/master/LICENSE"
+      "url": "https://github.com/bower/registry-client/blob/master/LICENSE"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bower/registry-client.git"
+  },
   "main": "lib/Client",
   "engines": {
     "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "async": "~0.2.8",
+    "request": "~2.21.0",
+    "rimraf": "~2.1.4",
+    "mkdirp": "~0.3.5"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
@@ -19,11 +29,5 @@
   },
   "scripts": {
     "test": "mocha -R spec"
-  },
-  "dependencies": {
-    "async": "~0.2.8",
-    "request": "~2.21.0",
-    "rimraf": "~2.1.4",
-    "mkdirp": "~0.3.5"
   }
 }
