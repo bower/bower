@@ -6,6 +6,7 @@ var mout = require('mout');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
 var commands = require('../lib/commands');
+var updateNotifier = require('update-notifier');
 
 // --------
 
@@ -15,6 +16,8 @@ var renderer;
 var levels;
 
 process.title = 'bower';
+
+var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
 
 // Read CLI options
 options = cli.readOptions(process.argv, {
@@ -75,3 +78,13 @@ command.line(process.argv)
     renderer.error(err);
     process.exit(1);
 });
+
+if (notifier.update) {
+    // This single line is inadequate. Make it more like it is in master. I
+    // haven't done that until we have templating sorted.
+    renderer.data({
+        level: 'warn',
+        tag: 'update available',
+        data: notifier.update.latest + ' (current: ' + notifier.update.current + ')'
+    });
+}

@@ -35,6 +35,7 @@
     "glob": "~3.2.1",
     "colors": "~0.6.0-1",
     "ncp": "~0.4.2"
+    "update-notifier": "~0.1.3"
   },
   "devDependencies": {
     "mocha": "~1.8.2",
