@@ -9,6 +9,10 @@
       "url": "https://github.com/bower/bower/blob/master/LICENSE"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bower/bower.git"
+  },
   "main": "lib",
   "homepage": "http://bower.io",
   "engines": {
