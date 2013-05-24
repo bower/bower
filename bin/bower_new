@@ -14,10 +14,9 @@ var options;
 var command;
 var renderer;
 var levels;
+var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
 
 process.title = 'bower';
-
-var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
 
 // Read CLI options
 options = cli.readOptions(process.argv, {
@@ -80,8 +79,8 @@ command.line(process.argv)
 });
 
 if (notifier.update) {
-    // This single line is inadequate. Make it more like it is in master. I
-    // haven't done that until we have templating sorted.
+    // TODO: This single line is inadequate. Make it more like it is in master.
+    //       I haven't done that until we have templating sorted.
     renderer.data({
         level: 'warn',
         tag: 'update available',

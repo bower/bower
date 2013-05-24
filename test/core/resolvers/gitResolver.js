@@ -1086,7 +1086,7 @@ describe('GitResolver', function () {
     describe('#clearRuntimeCache', function () {
         // Use a class that inherit the GitResolver to see if it uses
         // late binding when clearing the cache
-        var CustomGitResolver = function () {};
+        function CustomGitResolver() {}
         util.inherits(CustomGitResolver, GitResolver);
         mout.object.mixIn(CustomGitResolver, GitResolver);
 
