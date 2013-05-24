@@ -45,7 +45,7 @@ function lookup(name, options, callback) {
                 }
 
                 doRequest(name, index, that._config, function (err, entry) {
-                    if (err) {
+                    if (err || !entry) {
                         return next(err);
                     }
 
@@ -59,7 +59,7 @@ function lookup(name, options, callback) {
         // make only the request
         } else {
             doRequest(name, index, that._config, function (err, entry) {
-                if (err) {
+                if (err || !entry) {
                     return next(err);
                 }
 
