@@ -45,7 +45,8 @@
     "grunt-contrib-watch": "~0.4.3",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.5.4",
-    "grunt-execute": "~0.1.4"
+    "grunt-execute": "~0.1.4",
+    "which": "~1.0.5"
   },
   "scripts": {
     "test": "grunt test"
