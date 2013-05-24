@@ -28,9 +28,8 @@ if (options.version) {
 }
 
 // Parse log levels
-levels = options['log-levels'];
-if (levels) {
-    levels = levels
+if (mout.object.hasOwn(options, 'log-levels')) {
+    levels = (options['log-levels'] || '')
     .split(',')
     .map(function (level) { return level.trim(); });
 } else {
@@ -43,15 +42,14 @@ command = options.argv.remain && options.argv.remain.shift();
 command = commands[command] || commands.help;
 
 // Get the renderer
-renderer = cli.createRenderer(options);
+renderer = cli.getRenderer(options);
 
 // Execute the command
-process.stdout.write(renderer.head());
+renderer.begin();
+
 command.line(process.argv)
 .on('data', function (data) {
-    var renderFuncName;
-    var renderFunc;
-    var str;
+    var func;
 
     // Check if this log level is allowed
     if (levels && levels.indexOf(data.level) === -1) {
@@ -59,26 +57,21 @@ command.line(process.argv)
     }
 
     // Attempt to use renderer function specified by the tag
-    // Tags can be namespaced, this means that if the tag is
-    // help.install it will call renderer.help.install()
     // Fallback to renderer.data if not found
-    renderFuncName = data.tag
-    .split('.')
-    .map(function (slice) { return mout.string.camelCase(slice); })
-    .join('.');
+    func = mout.string.camelCase(data.tag);
+    if (!renderer[func]) {
+        func = 'data';
+    }
 
-    renderFunc = mout.object.get(renderer, renderFuncName) || renderer.data;
-    str = renderFunc(data);
-
-    // If level is warn, print to stderr instead
-    process[data.level === 'warn' ? 'stderr' : 'stdout'].write(str);
+    renderer[func](data);
 })
 .on('end', function (data) {
-    process.stdout.write(renderer.end(data));
-    process.stdout.write(renderer.tail());
+    renderer.end(data);
 })
 .on('error', function (err)  {
-    process.stderr.write(renderer.error(err));
-    process.stdout.write(renderer.tail());
+    err.label = 'error';
+    err.tag = err.code || 'error';
+
+    renderer.error(err);
     process.exit(1);
 });
