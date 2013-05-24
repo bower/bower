@@ -70,7 +70,7 @@ command.line(process.argv)
 })
 .on('error', function (err)  {
     err.label = 'error';
-    err.tag = err.code || 'error';
+    err.tag = err.code ? err.code.toLowerCase() : 'error';
 
     renderer.error(err);
     process.exit(1);
