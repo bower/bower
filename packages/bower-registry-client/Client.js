@@ -6,6 +6,7 @@ var name;
 
 function RegistryClient(config) {
     config = config || {};
+    this._config = config;
 
     // Parse config
     // Registry
@@ -51,8 +52,7 @@ function RegistryClient(config) {
     // Strict ssl
     config.strictSsl = config.strictSsl == null ? true : !!config.strictSsl;
 
-    // Store config and init the cache
-    this._config = config;
+    // Init the cache
     this._initCache();
 }
 
