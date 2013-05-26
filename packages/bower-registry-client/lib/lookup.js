@@ -5,19 +5,12 @@ var request = require('request');
 var createError = require('./util/createError');
 var Cache = require('./util/Cache');
 
-function lookup(name, options, callback) {
+function lookup(name, callback) {
     var data;
     var that = this;
     var registry = this._config.registry.search;
     var total = registry.length;
     var index = 0;
-
-    if (typeof options === 'function') {
-        callback = options;
-        options = {};
-    } else if (!options) {
-        options = {};
-    }
 
     // If no registry entries were passed, simply
     // error with package not found
@@ -33,14 +26,14 @@ function lookup(name, options, callback) {
 
         // If force flag is disabled we check the cache
         // and fallback to a request if the offline flag is disabled
-        if (!options.force) {
+        if (!that._config.force) {
             lookupCache.get(name, function (err, value) {
                 data = value;
 
                 // Don't proceed with making a request if we got
                 // an error, a value from the cache or if the offline flag is
                 // enabled
-                if (err || data || options.offline) {
+                if (err || data || that._config.offline) {
                     return next(err);
                 }
 

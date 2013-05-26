@@ -13,6 +13,7 @@ var registry = new RegistryClient(options);
 
 Available constructor options:
 
+- cache: the cache folder to use for some operations; using null will disable  persistent cache (defaults to OS temp folder)
 - registry.search: an array of registry search endpoints (defaults to the Bower server)
 - registry.register: the endpoint to use when registering packages (defaults to the Bower server)
 - registry.publish: the endpoint to use when publishing packages (defaults to the Bower server)
@@ -23,23 +24,18 @@ Available constructor options:
 - httpsProxy: the proxy to use for https requests (defaults to null)
 - strictSsl: whether or not to do SSL key validation when making requests via https (defaults to true).
 - userAgent: the user agent to use for the requests (defaults to null)
-- cache: the cache folder to use for some operations; using null will disable cache (defaults to OS temp folder)
 - timeout: the timeout for the requests to finish (defaults to 5000)
+- force: If set to true, cache will be bypassed and remotes will always be hit (defaults to false).
+- offline: If set to true, only the cache will be used (defaults to false).
 
+Note that `force` and `offline` are mutually exclusive.
 The cache will speedup operations such as `lookup` and `info`.
 Different operations may have different cache expiration times.
 
-#### .lookup(name, options, callback)
 
-Looks the registry for the package `name`,   
-The `options` argument is optional.
+#### .lookup(name, callback)
 
-Available options:
-
-- force: If set to `true`, cache will be bypassed and remotes will always be hit (defaults to `false`).
-- offline: If set to `true`, only the cache will be used (defaults to `false`).
-
-Note that `force` and `offline` are mutually exclusive.
+Looks the registry for the package `name`,
 
 ```js
 registry.lookup(name, function (err, entry) {
@@ -56,9 +52,9 @@ registry.lookup(name, function (err, entry) {
 
 #### .register(name, url, callback)
 
-#### .search(str, options, callback)
+#### .search(str, callback)
 
-#### .info(name, options, callback)
+#### .info(name, callback)
 
 #### .clearCache(name, callback)
 

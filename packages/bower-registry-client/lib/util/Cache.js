@@ -15,7 +15,11 @@ function Cache(dir, options) {
 
     this._dir = dir;
     this._options = options;
-    this._cache = {};  // TODO: switch to LRU
+    this._cache = {};
+
+    // TODO: Switch to LRU
+    //       Though, we need to get this merged before:
+    //       https://github.com/isaacs/node-lru-cache/pull/11
 
     if (dir) {
         mkdirp.sync(dir);
