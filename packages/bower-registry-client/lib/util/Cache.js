@@ -5,7 +5,7 @@ var mkdirp = require('mkdirp');
 
 var hasOwn =  Object.prototype.hasOwnProperty;
 
-var Cache = function (dir, options) {
+function Cache(dir, options) {
     options = options || {};
 
     // Default max age of 5 days
@@ -20,7 +20,7 @@ var Cache = function (dir, options) {
     if (dir) {
         mkdirp.sync(dir);
     }
-};
+}
 
 Cache.prototype.get = function (key, callback) {
     var file;

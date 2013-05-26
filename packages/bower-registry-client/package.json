@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git://github.com/bower/registry-client.git"
   },
-  "main": "lib/Client",
+  "main": "Client",
   "engines": {
     "node": ">=0.8.0"
   },

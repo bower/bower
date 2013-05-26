@@ -181,6 +181,9 @@ function clearCache(name, callback) {
     }
 }
 
+// ---------------
+
+lookup.initCache = initCache;
+lookup.clearCache = clearCache;
+
 module.exports = lookup;
-module.exports.initCache = initCache;
-module.exports.clearCache = clearCache;
