@@ -53,6 +53,7 @@
 - switch everything related with fs. to .graceful-fs
   - don't forget to do the same on all bower org modules
 - use dependency injection more? we are passing a lot of options around for deep arch components..
+- look at https://github.com/bower/bower/issues/475
 
 Not BC changes:
 - shorthand_resolver -> shorthandResolver

@@ -29,9 +29,9 @@ if (options.version) {
     process.exit();
 }
 
-// Parse log levels
-if (mout.object.hasOwn(options, 'log-levels')) {
-    levels = (options['log-levels'] || '')
+// Parse log level
+if (options.logLevel) {
+    levels = options.logLevel
     .split(',')
     .map(function (level) { return level.trim(); });
 
@@ -76,9 +76,6 @@ command.line(process.argv)
     renderer.end(data);
 })
 .on('error', function (err)  {
-    err.label = 'error';
-    err.tag = err.code ? err.code.toLowerCase() : 'error';
-
     renderer.error(err);
     process.exit(1);
 });
