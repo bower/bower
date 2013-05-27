@@ -39,7 +39,7 @@ if (options.version) {
 if (config.silent) {
     loglevel = Infinity;
 } else if (config.verbose) {
-    loglevel = levels.debug;
+    loglevel = -Infinity;
 } else if (config.quiet) {
     loglevel = levels.warn;
 } else {
