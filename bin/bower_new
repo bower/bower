@@ -35,7 +35,7 @@ if (options.version) {
     process.exit();
 }
 
-// Set log level
+// Set loglevel
 if (config.silent) {
     loglevel = Infinity;
 } else if (config.verbose) {

@@ -128,14 +128,14 @@ If `config` is not passed, the default one will be used.
 
 Configures the manager with `targets` and `installed`:
 
-- `targets`: array where keys are names and values the decomposed endpoints
+- `targets`: array of decomposed endpoints that need to be installed
 - `installed`: object where keys are names and values the canonical package or the package metas
 
 If the Manager is already working, the promise is immediately rejected.
 
 `Manager#resolve()`: Promise
 
-Starts the resolve promise, returning a promise of an object which keys are package names and
+Starts the resolve process, returning a promise of an object which keys are package names and
 values the associated resolve info (decomposed endpoints plus package meta and other info).
 
 If the Manager is already working, the promise is immediately rejected.
