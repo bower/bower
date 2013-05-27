@@ -118,15 +118,9 @@ Main resolve coordinator.
 
 ##### Constructor
 
-`Manager(options)`
+`Manager(config)`
 
-Available options:
-
-- `force` - true to force fetch remote sources (e.g.: bypass registry cache, defaults to false)
-- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
-- `config` - the config to use (defaults to the global config)
-
-Note that `force` and `offline` are mutually exclusive.
+If `config` is not passed, the default one will be used.
 
 ##### Public methods
 
@@ -167,15 +161,9 @@ Abstraction to the underlying complexity of heterogeneous source types
 
 ##### Constructor
 
-`PackageRepository(options)`
+`PackageRepository(config)`
 
-Available options:
-
-- `force` - true to force fetch remote sources (e.g.: bypass registry cache, resolve cache, defaults to false)
-- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
-- `config` - the config to use (defaults to the global config)
-
-Note that `force` and `offline` are mutually exclusive.
+If `config` is not passed, the default one will be used.
 
 ##### Public methods
 
@@ -190,21 +178,15 @@ Empties any resolved cache for package `name` or all the resolved cache if no `n
 
 #### ResolverFactory
 
-Simple function that takes a `decomposed endpoint` with options and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
+Simple function that takes a `decomposed endpoint` and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
 
 ```js
-function createResolver(decEndpoint, options) -> Promise
+function createResolver(decEndpoint, registryClient, config) -> Promise
 ```
 
 The function is async to allow querying the Bower registry, etc.   
-Options:
-
-- `force` - true to force fetch remote sources (e.g.: bypass registry cache, defaults to false)
-- `offline` - true to not fetch remote sources and use only the cache (defaults to false)
-- `registry` - an instance of [`RegistryClient`](https://github.com/bower/registry-client) to be used (defaults to null, which means that the registry will not be queried)
-- `config` - the config to use (defaults to the global config)
-
-Note that `force` and `offline` are mutually exclusive.
+The `registryClient` is an instance of [`RegistryClient`](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
+If `config` is not passed, the default config will be used.
 
 
 #### ResolveCache
@@ -213,7 +195,7 @@ The cache, stored in disk, of resolved packages (canonical packages).
 
 ##### Constructor
 
-`ResolveCache(cacheDir, options)`
+`ResolveCache(dir, options)`
 
 TODO: options, such as max size in MB, etc
 
@@ -264,7 +246,7 @@ Options:
 
 - `name` - the name (if none is passed, one will be guessed from the source)
 - `target` - the target (defaults to *)
-- `config` - the config to use (defaults to the global config)
+- `config` - the config to use (defaults to the default config)
 
 ------------
 
@@ -381,53 +363,3 @@ The following resolvers will extend from `Resolver.js` and obey its interface.
 The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
 
 This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
-
-
-#### Worker
-
-A worker responsible for limiting execution of parallel tasks.
-The number of parallel tasks may be limited and configured per type.
-This component will be a service that can be accessed to perform tasks.
-
-*NOTE*: This component is not being used YET
-
-------------
-
-#### Constructor
-
-`Worker(defaultConcurrency, [types])`
-
-The `defaultConcurrency` is the default maximum concurrent functions being run (-1 to specify no limits).   
-The `types` allows you to specify different concurrencies for different types.   
-
-Example:
-
-```js
-var worker = new Worker(15, {
-    'network_io': 10,
-    'disk_io': 50
-});
-```
-
-------------
-
-#### Public methods.
-
-`Worker#enqueue(func, [type])`: Promise
-
-Enqueues a function to be ran. The function is expected to return a promise or a value.   
-The returned promise is resolved when the function finishes execution.
-
-The `type` argument is optional and can be a `string` or an array of `strings`.   
-Use it to specify the type(s) associated with the function.   
-
-The function will run as soon as a free slot is available for every `type`.  
-If no `type` is passed or is unknown, the `defaultConcurrency` is used.  
-
-The execution order is guaranteed for functions enqueued with the exact same `type` argument.
-
-`Worker#abort()`: Promise
-
-Aborts all current work being done.
-Returns a promise that is resolved when the current running functions finish to execute.   
-Any function that was in the queue waiting to be ran is removed immediately.

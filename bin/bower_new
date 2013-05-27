@@ -2,8 +2,8 @@
 
 require('colors');
 var path = require('path');
-var mout = require('mout');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
+var config = require('../lib/config');
 var cli = require('../lib/util/cli');
 var commands = require('../lib/commands');
 var updateNotifier = require('update-notifier');
@@ -11,81 +11,85 @@ var updateNotifier = require('update-notifier');
 // --------
 
 var options;
-var command;
 var renderer;
-var levels;
-var notifier = updateNotifier({ packageName: pkg.name, packageVersion: pkg.version });
+var loglevel;
+var command;
+var notifier;
+var levels = {
+    'error': 5,
+    'warn': 4,
+    'action': 3,
+    'info': 2,
+    'debug': 1
+};
 
 process.title = 'bower';
 
-// Read CLI options
-options = cli.readOptions(process.argv, {
+// Handle print of version
+options = cli.readOptions({
     version: { type: Boolean, shorthand: 'v' }
 });
 
-// Handle print of version
 if (options.version) {
     process.stdout.write(pkg.version + '\n');
     process.exit();
 }
 
-// Parse log level
-if (options.logLevel) {
-    levels = options.logLevel
-    .split(',')
-    .map(function (level) { return level.trim(); });
-
-    // Check if the special keyword "all" was specified
-    if (levels.indexOf('all') !== -1) {
-        levels = null;
-    }
+// Set log level
+if (config.silent) {
+    loglevel = Infinity;
+} else if (config.verbose) {
+    loglevel = levels.debug;
+} else if (config.quiet) {
+    loglevel = levels.warn;
 } else {
-    levels = ['action', 'info', 'warn'];
+    loglevel = levels[config.loglevel] || levels.info;
+}
+
+// Get the renderer
+renderer = cli.getRenderer(config);
+
+// Check for newer version of Bower
+notifier = updateNotifier({
+    packageName: pkg.name,
+    packageVersion: pkg.version
+});
+
+if (notifier.update && levels.info >= loglevel) {
+    renderer.updateAvailable(notifier.update);
 }
 
 // Get the command to execute
 // TODO: abbreviations
 command = options.argv.remain && options.argv.remain.shift();
-command = commands[command] || commands.help;
-
-// Get the renderer
-renderer = cli.getRenderer(options);
+if (!commands[command]) {
+    command = 'help';
+}
 
 // Execute the command
-renderer.begin();
-
-command.line(process.argv)
-.on('data', function (data) {
-    var func;
-
-    // Check if this log level is allowed
-    if (levels && levels.indexOf(data.level) === -1) {
+commands[command].line(process.argv)
+.on('end', function (data) {
+    if (config.silent) {
         return;
     }
 
-    // Attempt to use renderer function specified by the tag
-    // Fallback to renderer.data if not found
-    func = mout.string.camelCase(data.tag);
-    if (!renderer[func]) {
-        func = 'data';
+    // Execute the specific render method for the command
+    if (renderer[command]) {
+        renderer[command](data);
+    // Fallback to the generic end method
+    } else {
+        renderer.end(data);
     }
-
-    renderer[func](data);
-})
-.on('end', function (data) {
-    renderer.end(data);
 })
 .on('error', function (err)  {
-    renderer.error(err);
-    process.exit(1);
-});
+    if (levels.error >= loglevel) {
+        renderer.error(err);
+    }
 
-if (notifier.update) {
-    // TODO: This single line is inadequate. Make it more like it is in master.
-    //       I haven't done that until we have templating sorted.
-    renderer.data({
-        level: 'warn',
-        tag: 'update available',
-        data: notifier.update.latest + ' (current: ' + notifier.update.current + ')'
-    });
-}
+    process.exit(1);
+})
+.on('notification', function (notification) {
+    if (levels[notification.level] >= loglevel) {
+        renderer.notification(notification);
+    }
+});

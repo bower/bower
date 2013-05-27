@@ -555,7 +555,7 @@ describe('Resolver', function () {
                 next();
             }, null, function (notification) {
                 expect(notification).to.be.an('object');
-                if (notification.level === 'warn' && /deprecated/i.test(notification.data)) {
+                if (notification.level === 'warn' && /deprecated/i.test(notification.message)) {
                     notified = true;
                 }
                 return notification;

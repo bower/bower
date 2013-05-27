@@ -15,9 +15,7 @@ var UrlResolver = require('../../lib/core/resolvers/UrlResolver');
 
 describe('resolverFactory', function () {
     var tempSource;
-    var options = {};
-
-    options.registryClient = new RegistryClient(mout.object.fillIn({
+    var registryClient = new RegistryClient(mout.object.fillIn({
         cache: defaultConfig._registry
     }, defaultConfig));
 
@@ -84,7 +82,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -97,7 +95,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     source: key,
                     target: 'commit-ish'
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -110,7 +108,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -144,7 +142,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
@@ -156,7 +154,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
@@ -207,7 +205,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
@@ -219,7 +217,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: key
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
@@ -248,7 +246,7 @@ describe('resolverFactory', function () {
             promise = promise.then(function () {
                 return resolverFactory({
                     source: source
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -259,7 +257,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     name: 'foo',
                     source: source
-                }, options);
+                }, registryClient);
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -274,7 +272,7 @@ describe('resolverFactory', function () {
     it('should recognize registry endpoints correctly', function (next) {
         resolverFactory({
             source: 'dejavu'
-        }, options)
+        }, registryClient)
         .then(function (resolver) {
             expect(resolver).to.be.a(GitRemoteResolver);
             expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
@@ -284,7 +282,7 @@ describe('resolverFactory', function () {
             return resolverFactory({
                 source: 'dejavu',
                 name: 'foo'
-            }, options)
+            }, registryClient)
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
                 expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
@@ -296,7 +294,7 @@ describe('resolverFactory', function () {
             return resolverFactory({
                 source: 'dejavu',
                 target: '~2.0.0'
-            }, options)
+            }, registryClient)
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
                 expect(resolver.getTarget()).to.equal('~2.0.0');
@@ -310,17 +308,15 @@ describe('resolverFactory', function () {
     it('should use the configured shorthand resolver', function (next) {
         resolverFactory({
             source: 'bower/bower'
-        })
+        }, registryClient)
         .then(function (resolver) {
             expect(resolver.getSource()).to.equal('git://github.com/bower/bower.git');
 
             return resolverFactory({
                 source: 'IndigoUnited/promptly'
-            }, {
-                config: mout.object.fillIn({
-                    shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
-                }, defaultConfig)
-            });
+            }, registryClient, mout.object.fillIn({
+                shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
+            }, defaultConfig));
         })
         .then(function (resolver) {
             expect(resolver.getSource()).to.equal('git://bower.io/IndigoUnited/promptly/IndigoUnited/promptly.git');
@@ -350,7 +346,7 @@ describe('resolverFactory', function () {
                 return resolverFactory({
                     source: source,
                     target: 'bleh'
-                });
+                }, registryClient);
             })
             .then(function () {
                 throw new Error('Should have failed');
