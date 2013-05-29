@@ -168,8 +168,7 @@ package manifest, the following data can be referenced from within the
 * `package`: `flight`
 
 **N.B.** To run your own Bower Endpoint for custom packages that are behind a
-firewall, you can use a simple implementation of the [Bower
-Server](https://github.com/bower/bower-server).
+firewall, you can use a simple implementation of the [Bower Registry](https://github.com/bower/registry).
 
 
 ## Defining a package
