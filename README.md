@@ -38,7 +38,7 @@ Main issues are:
 - **Canonical package:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
 - **Source:** URL, git endpoint, etc.
 - **Target:** `semver` range, commit hash, branch (indicates a version).
-- **Endpoint:** name|source#target
+- **Endpoint:** name=source#target
 - **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
 - **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is stored in a `.bower.json` file, inside a canonical package.
@@ -124,12 +124,13 @@ If `config` is not passed, the default one will be used.
 
 ##### Public methods
 
-`Manager#configure(targets, installed)`: Promise
+`Manager#configure(targets, resolved, installed)`: Promise
 
 Configures the manager with `targets` and `installed`:
 
 - `targets`: array of decomposed endpoints that need to be installed
-- `installed`: object where keys are names and values the canonical package or the package metas
+- `resolved`: object of resolved packages (keys are names and values the canonical package or the package metas)
+- `installed`: object of currently installed packages (keys are names and values the canonical package or the package metas)
 
 If the Manager is already working, the promise is immediately rejected.
 
