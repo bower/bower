@@ -672,7 +672,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    var pkgInstallPath = path.join(__dirname, '/../components/turtles/');
+    var pkgInstallPath = path.join(__dirname, '/../bower_components/turtles/');
     pkg.on('install', function () {
       // these files should have been deleted
       assert(!fs.existsSync(pkgInstallPath + 'don.txt'));
@@ -686,7 +686,7 @@ describe('package', function () {
       assert(fs.existsSync(pkgInstallPath + 'index.js'));
       // all ignore file pattern should be removed
       async.forEach(pkg.json.ignore, function (ignorePattern, asyncNext) {
-        var pattern = path.join(__dirname, '/../components/turtles/' + ignorePattern);
+        var pattern = path.join(__dirname, '/../bower_components/turtles/' + ignorePattern);
         glob(pattern, function (err, globPath) {
           assert(globPath.length === 0);
           asyncNext();
@@ -713,7 +713,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    var pkgInstallPath = path.join(__dirname, '/../components/spark-md5/');
+    var pkgInstallPath = path.join(__dirname, '/../bower_components/spark-md5/');
     pkg.on('install', function () {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
       assert(!fs.existsSync(pkgInstallPath + '/.git/'));
