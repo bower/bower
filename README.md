@@ -48,7 +48,7 @@ Where `<package>` can be any one of the following:
   public or private. ‡
 * A local Git endpoint, i.e., a folder that's a Git repository. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
-* A URL to a file, including `zip` and `tar.gz` files. It's contents will be
+* A URL to a file, including `zip` and `tar` files. It's contents will be
   extracted.
 
 ‡ These types of `<package>` make Git tags available. You can specify a
