@@ -28,13 +28,17 @@ if (reqVer && !semver.satisfies(nodeVer, reqVer)) {
   throw new Error('Required: node ' + reqVer);
 }
 
+options = {
+  version: Boolean,
+  quiet: Boolean,
+  silent: Boolean
+};
 shorthand = {
   'v': ['--version'],
   'q': ['--quiet'],
   's': ['--silent']
 };
-options   = { version: Boolean };
-options   = nopt(options, shorthand, process.argv);
+options = nopt(options, shorthand, process.argv);
 
 bower.version = pkg.version;
 
