@@ -17,10 +17,11 @@ var command;
 var notifier;
 var levels = {
     'error': 5,
-    'warn': 4,
-    'action': 3,
-    'info': 2,
-    'debug': 1
+    'conflict': 4,
+    'warn': 3,
+    'action': 2,
+    'info': 1,
+    'debug': 0
 };
 
 process.title = 'bower';
@@ -46,8 +47,17 @@ if (config.silent) {
     loglevel = levels[config.loglevel] || levels.info;
 }
 
+config.interactive = loglevel <= levels.conflict;
+
+// Get the command to execute
+// TODO: abbreviations
+command = options.argv.remain && options.argv.remain.shift();
+if (!commands[command]) {
+    command = 'help';
+}
+
 // Get the renderer
-renderer = cli.getRenderer(config);
+renderer = cli.getRenderer(command, config);
 
 // Check for newer version of Bower
 notifier = updateNotifier({
@@ -59,13 +69,6 @@ if (notifier.update && levels.info >= loglevel) {
     renderer.updateAvailable(notifier.update);
 }
 
-// Get the command to execute
-// TODO: abbreviations
-command = options.argv.remain && options.argv.remain.shift();
-if (!commands[command]) {
-    command = 'help';
-}
-
 // Execute the command
 commands[command].line(process.argv)
 .on('end', function (data) {
@@ -73,13 +76,7 @@ commands[command].line(process.argv)
         return;
     }
 
-    // Execute the specific render method for the command
-    if (renderer[command]) {
-        renderer[command](data);
-    // Fallback to the generic end method
-    } else {
-        renderer.end(data);
-    }
+    renderer.end(data);
 })
 .on('error', function (err)  {
     if (levels.error >= loglevel) {
