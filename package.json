@@ -30,7 +30,7 @@
     "mkdirp": "~0.3.4",
     "nopt": "~2.0.0",
     "promptly": "~0.1.0",
-    "rc": "~0.0.6",
+    "rc": "~0.3.0",
     "read-package-json": "~0.1.8",
     "request": "~2.11.4",
     "rimraf": "~2.0.3",
