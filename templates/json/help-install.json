@@ -1,0 +1,14 @@
+{
+    "command": "install",
+    "description": "Installs the project dependencies or a specific set of endpoints",
+    "usage": [
+        "install",
+        "install [<endpoint> [, <endpoint>, ..]]"
+    ],
+    "options": {
+        "--save":           "Save installed packages into the project's bower.json dependencies",
+        "--save-dev":       "Save installed packages into the project's bower.json devDependencies",
+        "--force-latest":   "Force latest version on conflict",
+        "--production":     "Do not install project devDependencies"
+    }
+}

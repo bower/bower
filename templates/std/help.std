@@ -1,0 +1,26 @@
+
+Usage:
+
+{{#oneLiner}}
+{{#each usage}}
+    {{#cyan}}bower{{/cyan}} {{.}}
+{{/each}}
+{{/oneLiner}}
+
+Commands:
+
+{{#oneLiner}}
+{{#own commands}}
+    {{#rpad length="20"}}{{key}}{{/rpad}} {{value}}
+{{/own}}
+{{/oneLiner}}
+
+Options:
+
+{{#oneLiner}}
+{{#own options}}
+    {{#yellow}}{{#rpad length="20"}}{{key}}{{/rpad}}{{/yellow}} {{value}}
+{{/own}}
+{{/oneLiner}}
+
+See 'bower help <command>' for more information on a specific command.

@@ -26,6 +26,7 @@
     "fstream": "~0.1.22",
     "fstream-ignore": "0.0.6",
     "glob": "~3.2.1",
+    "handlebars": "~1.0.11",
     "junk": "~0.2.0",
     "mkdirp": "~0.3.5",
     "mout": "~0.6.0",

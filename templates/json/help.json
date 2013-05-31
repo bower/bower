@@ -1,0 +1,29 @@
+{
+    "usage": [
+        "<command> [<args>] [<options]"
+    ],
+    "commands": {
+        "cache-clean":      "Clean the Bower cache, or the specified package caches",
+        "completion":       "Tab Completion for Bower",
+        "help":             "Display help information about Bower",
+        "info":             "Version info and description of a particular package",
+        "init":             "Interactively create a bower.json file",
+        "install":          "Install a package locally",
+        "link":             "Symlink a package folder",
+        "list, ls":         "List all installed packages",
+        "lookup":           "Look up a package URL by name",
+        "register":         "Register a package",
+        "search":           "Search for a package by name",
+        "uninstall":        "Remove a package",
+        "update":           "Update a package"
+    },
+    "options": {
+        "-f, --force":      "Makes various commands more forceful",
+        "-o, --offline":    "Do not hit the network",
+        "-V, --verbose":    "Makes output more verbose",
+        "-q, --quiet":      "Only output important information",
+        "-l, --loglevel":   "What level of logs to report",
+        "-j, --json":       "Output consumable JSON output",
+        "-s, --silent":     "Do not output anything, besides errors"
+    }
+}

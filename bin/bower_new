@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-require('colors');
 var path = require('path');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var config = require('../lib/config');
@@ -38,7 +37,7 @@ if (options.version) {
 
 // Set loglevel
 if (config.silent) {
-    loglevel = Infinity;
+    loglevel = levels.error;
 } else if (config.verbose) {
     loglevel = -Infinity;
 } else if (config.quiet) {
@@ -56,27 +55,16 @@ if (!commands[command]) {
     command = 'help';
 }
 
-// Get the renderer
-renderer = cli.getRenderer(command, config);
-
-// Check for newer version of Bower
-notifier = updateNotifier({
-    packageName: pkg.name,
-    packageVersion: pkg.version
-});
-
-if (notifier.update && levels.info >= loglevel) {
-    renderer.updateAvailable(notifier.update);
-}
-
 // Execute the command
-commands[command].line(process.argv)
-.on('end', function (data) {
-    if (config.silent) {
-        return;
-    }
+command = commands[command].line(process.argv);
 
-    renderer.end(data);
+// Connect the command output to the renderer
+renderer = cli.getRenderer(command.name, config);
+command
+.on('end', function (data) {
+    if (!config.silent) {
+        renderer.end(data);
+    }
 })
 .on('error', function (err)  {
     if (levels.error >= loglevel) {
@@ -90,3 +78,13 @@ commands[command].line(process.argv)
         renderer.notification(notification);
     }
 });
+
+// Check for newer version of Bower
+notifier = updateNotifier({
+    packageName: pkg.name,
+    packageVersion: pkg.version
+});
+
+if (notifier.update && levels.info >= loglevel) {
+    renderer.updateAvailable(notifier.update);
+}

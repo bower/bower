@@ -1,0 +1,11 @@
+{
+    "command": "uninstall",
+    "description": "Uninstalls a browser package locally from your bower_components directory",
+    "usage": [
+        "uninstall <name> [<name>, ..]"
+    ],
+    "options": {
+        "--save":           "Remove uninstalled packages from the bower.json dependencies",
+        "--save-dev":       "Remove uninstalled packages from the bower.json devDependencies"
+    }
+}
