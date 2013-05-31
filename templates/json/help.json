@@ -47,11 +47,11 @@
             "shorthand": "-s",
             "flag": "--silent",
             "description": "Do not output anything, besides errors"
-        }
+        },
         {
             "shorthand": "-v",
             "flag": "--verbose",
             "description": "Makes output more verbose"
-        },
+        }
     ]
 }
