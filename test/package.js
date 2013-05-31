@@ -81,13 +81,13 @@ describe('package', function () {
   it('Should revert to HTTPS connections if git:// is not available (config.gitUseHTTPS)', function() {
       config.gitUseHTTPS = true;
       var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
-      assert.equal(pkg.gitUrl, 'https://github.com/jquery/jquery.git');
+      assert.equal(pkg.getCloneURL(), 'https://github.com/jquery/jquery.git');
   });
 
   it('Should not revert to HTTPS connections config.gitUseHTTPS is false', function() {
       config.gitUseHTTPS = false;
       var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
-      assert.notEqual(pkg.gitUrl, 'https://github.com/jquery/jquery.git');
+      assert.notEqual(pkg.getCloneURL(), 'https://github.com/jquery/jquery.git');
   });
     
   it('Should resolve git HTTP URLs properly', function () {
