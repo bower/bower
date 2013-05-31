@@ -5,7 +5,7 @@
         "uninstall <name> [<name>, ..]"
     ],
     "options": {
-        "--save":           "Remove uninstalled packages from the bower.json dependencies",
-        "--save-dev":       "Remove uninstalled packages from the bower.json devDependencies"
+        "-s, --save":           "Remove uninstalled packages from the bower.json dependencies",
+        "-D, --save-dev":       "Remove uninstalled packages from the bower.json devDependencies"
     }
 }

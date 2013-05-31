@@ -5,6 +5,6 @@
         "update <name> [<name>, ..]"
     ],
     "options": {
-        "--production":     "Do not update project devDependencies"
+        "-p, --production":     "Do not update project devDependencies"
     }
 }

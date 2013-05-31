@@ -6,9 +6,9 @@
         "install [<endpoint> [, <endpoint>, ..]]"
     ],
     "options": {
-        "--save":           "Save installed packages into the project's bower.json dependencies",
-        "--save-dev":       "Save installed packages into the project's bower.json devDependencies",
-        "--force-latest":   "Force latest version on conflict",
-        "--production":     "Do not install project devDependencies"
+        "-s, --save":           "Save installed packages into the project's bower.json dependencies",
+        "-D, --save-dev":       "Save installed packages into the project's bower.json devDependencies",
+        "-F, --force-latest":   "Force latest version on conflict",
+        "-p, --production":     "Do not install project devDependencies"
     }
 }
