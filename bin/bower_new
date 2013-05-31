@@ -13,6 +13,7 @@ var options;
 var renderer;
 var loglevel;
 var command;
+var emitter;
 var notifier;
 var levels = {
     'error': 5,
@@ -56,11 +57,11 @@ if (!commands[command]) {
 }
 
 // Execute the command
-command = commands[command].line(process.argv);
+emitter = commands[command].line(process.argv);
 
 // Connect the command output to the renderer
-renderer = cli.getRenderer(command.name, config);
-command
+renderer = cli.getRenderer(emitter.command, config);
+emitter
 .on('end', function (data) {
     if (!config.silent) {
         renderer.end(data);
