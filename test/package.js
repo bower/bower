@@ -86,8 +86,9 @@ describe('package', function () {
 
   it('Should not revert to HTTPS connections config.gitUseHTTPS is false', function() {
       config.gitUseHTTPS = false;
-      var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
-      assert.notEqual(pkg.getCloneURL(), 'https://github.com/jquery/jquery.git');
+      var url = 'git://github.com/jquery/jquery.git';
+      var pkg = new Package('jquery', url);
+      assert.equal(pkg.getCloneURL(), url);
   });
     
   it('Should resolve git HTTP URLs properly', function () {
