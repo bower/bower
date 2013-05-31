@@ -3,54 +3,54 @@
         "<command> [<args>] [<options]"
     ],
     "commands": {
-        "cache-clean":      "Clean the Bower cache, or the specified package caches",
-        "completion":       "Tab Completion for Bower",
-        "help":             "Display help information about Bower",
-        "info":             "Version info and description of a particular package",
-        "init":             "Interactively create a bower.json file",
-        "install":          "Install a package locally",
-        "link":             "Symlink a package folder",
-        "list":             "List all installed packages",
-        "lookup":           "Look up a package URL by name",
-        "register":         "Register a package",
-        "search":           "Search for a package by name",
-        "uninstall":        "Remove a package",
-        "update":           "Update a package"
+        "cache-clean":     "Clean the Bower cache, or the specified package caches",
+        "completion":      "Tab Completion for Bower",
+        "help":            "Display help information about Bower",
+        "info":            "Version info and description of a particular package",
+        "init":            "Interactively create a bower.json file",
+        "install":         "Install a package locally",
+        "link":            "Symlink a package folder",
+        "list":            "List all installed packages",
+        "lookup":          "Look up a package URL by name",
+        "register":        "Register a package",
+        "search":          "Search for a package by name",
+        "uninstall":       "Remove a package",
+        "update":          "Update a package"
     },
     "options": [
         {
-            "shorthand": "-f",
-            "flag": "--force",
+            "shorthand":   "-f",
+            "flag":        "--force",
             "description": "Makes various commands more forceful"
         },
         {
-            "shorthand": "-j",
-            "flag": "--json",
+            "shorthand":   "-j",
+            "flag":        "--json",
             "description": "Output consumable JSON output"
         },
         {
-            "shorthand": "-l",
-            "flag": "--log-level",
+            "shorthand":   "-l",
+            "flag":        "--log-level",
             "description": "What level of logs to report"
         },
         {
-            "shorthand": "-o",
-            "flag": "--offline",
+            "shorthand":   "-o",
+            "flag":        "--offline",
             "description": "Do not hit the network"
         },
         {
-            "shorthand": "-q",
-            "flag": "--quiet",
+            "shorthand":   "-q",
+            "flag":        "--quiet",
             "description": "Only output important information"
         },
         {
-            "shorthand": "-s",
-            "flag": "--silent",
+            "shorthand":   "-s",
+            "flag":        "--silent",
             "description": "Do not output anything, besides errors"
         },
         {
-            "shorthand": "-v",
-            "flag": "--verbose",
+            "shorthand":   "-v",
+            "flag":        "--verbose",
             "description": "Makes output more verbose"
         }
     ]

@@ -6,8 +6,8 @@
     ],
     "options": [
         {
-            "shorthand": "-p",
-            "flag": "--production",
+            "shorthand":   "-p",
+            "flag":        "--production",
             "description": "Do not install project devDependencies"
         }
     ]
