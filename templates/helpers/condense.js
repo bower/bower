@@ -2,8 +2,8 @@ var mout = require('mout');
 var leadLinesRegExp = /^\r?\n/;
 var multipleLinesRegExp = /\r?\n(\r?\n)+/mg;
 
-function oneLiner(Handlebars) {
-    Handlebars.registerHelper('oneLiner', function (context) {
+function condense(Handlebars) {
+    Handlebars.registerHelper('condense', function (context) {
         var str = context.fn(this);
 
         // Remove multiple lines
@@ -19,4 +19,4 @@ function oneLiner(Handlebars) {
     });
 }
 
-module.exports = oneLiner;
+module.exports = condense;

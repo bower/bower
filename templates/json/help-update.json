@@ -4,7 +4,11 @@
     "usage": [
         "update <name> [<name>, ..]"
     ],
-    "options": {
-        "-p, --production":     "Do not update project devDependencies"
-    }
+    "options": [
+        {
+            "shorthand": "-p",
+            "flag": "--production",
+            "description": "Do not install project devDependencies"
+        }
+    ]
 }

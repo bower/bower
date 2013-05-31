@@ -4,8 +4,16 @@
     "usage": [
         "uninstall <name> [<name>, ..]"
     ],
-    "options": {
-        "-s, --save":           "Remove uninstalled packages from the bower.json dependencies",
-        "-D, --save-dev":       "Remove uninstalled packages from the bower.json devDependencies"
-    }
+    "options": [
+        {
+            "shorthand": "-s",
+            "flag": "--save",
+            "description": "Save installed packages into the project's bower.json dependencies"
+        },
+        {
+            "shorthand": "-D",
+            "flag": "--save-dev",
+            "description": "Save installed packages into the project's bower.json devDependencies"
+        }
+    ]
 }

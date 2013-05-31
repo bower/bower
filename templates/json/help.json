@@ -10,20 +10,48 @@
         "init":             "Interactively create a bower.json file",
         "install":          "Install a package locally",
         "link":             "Symlink a package folder",
-        "list, ls":         "List all installed packages",
+        "list":             "List all installed packages",
         "lookup":           "Look up a package URL by name",
         "register":         "Register a package",
         "search":           "Search for a package by name",
         "uninstall":        "Remove a package",
         "update":           "Update a package"
     },
-    "options": {
-        "-f, --force":      "Makes various commands more forceful",
-        "-o, --offline":    "Do not hit the network",
-        "-V, --verbose":    "Makes output more verbose",
-        "-q, --quiet":      "Only output important information",
-        "-l, --loglevel":   "What level of logs to report",
-        "-j, --json":       "Output consumable JSON output",
-        "-s, --silent":     "Do not output anything, besides errors"
-    }
+    "options": [
+        {
+            "shorthand": "-f",
+            "flag": "--force",
+            "description": "Makes various commands more forceful"
+        },
+        {
+            "shorthand": "-o",
+            "flag": "--offline",
+            "description": "Do not hit the network"
+        },
+        {
+            "shorthand": "-v",
+            "flag": "--verbose",
+            "description": "Makes output more verbose"
+        },
+        {
+            "shorthand": "-q",
+            "flag": "--quiet",
+            "description": "Only output important information"
+        },
+        {
+            "shorthand": "-l",
+            "flag": "--log-level",
+            "description": "What level of logs to report"
+        },
+        {
+            "shorthand": "-j",
+            "flag": "--json",
+            "description": "Output consumable JSON output"
+        },
+        {
+            "shorthand": "-s",
+            "flag": "--silent",
+            "description": "Do not output anything, besides errors"
+        }
+    ]
 }

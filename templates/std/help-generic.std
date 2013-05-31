@@ -1,19 +1,19 @@
 
 Usage:
 
-{{#oneLiner}}
+{{#condense}}
 {{#each usage}}
     {{#cyan}}bower{{/cyan}} {{.}}
 {{/each}}
-{{/oneLiner}}
+{{/condense}}
 
 Options:
 
-{{#oneLiner}}
-{{#own options}}
-    {{#yellow}}{{#rpad length="20"}}{{key}}{{/rpad}}{{/yellow}} {{value}}
-{{/own}}
-{{/oneLiner}}
+{{#condense}}
+{{#each options}}
+    {{#yellow}}{{#rpad length="20"}}{{#if shorthand}}{{shorthand}}, {{/if}}{{flag}}{{/rpad}}{{/yellow}} {{description}}
+{{/each}}
+{{/condense}}
 
     Additionally all global options listed in 'bower -h' are available
 

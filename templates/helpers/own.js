@@ -1,11 +1,11 @@
 var mout = require('mout');
 
 function own(Handlebars) {
-    Handlebars.registerHelper('own', function (obj, hash) {
+    Handlebars.registerHelper('own', function (obj, options) {
         var str = '';
 
         mout.object.forOwn(obj, function (value, key) {
-            str += hash.fn({
+            str += options.fn({
                 key: key,
                 value: value
             });
