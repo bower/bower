@@ -86,5 +86,5 @@ notifier = updateNotifier({
 });
 
 if (notifier.update && levels.info >= loglevel) {
-    renderer.updateAvailable(notifier.update);
+    renderer.updateNotice(notifier.update);
 }
