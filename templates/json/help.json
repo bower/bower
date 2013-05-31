@@ -24,19 +24,9 @@
             "description": "Makes various commands more forceful"
         },
         {
-            "shorthand": "-o",
-            "flag": "--offline",
-            "description": "Do not hit the network"
-        },
-        {
-            "shorthand": "-v",
-            "flag": "--verbose",
-            "description": "Makes output more verbose"
-        },
-        {
-            "shorthand": "-q",
-            "flag": "--quiet",
-            "description": "Only output important information"
+            "shorthand": "-j",
+            "flag": "--json",
+            "description": "Output consumable JSON output"
         },
         {
             "shorthand": "-l",
@@ -44,14 +34,24 @@
             "description": "What level of logs to report"
         },
         {
-            "shorthand": "-j",
-            "flag": "--json",
-            "description": "Output consumable JSON output"
+            "shorthand": "-o",
+            "flag": "--offline",
+            "description": "Do not hit the network"
+        },
+        {
+            "shorthand": "-q",
+            "flag": "--quiet",
+            "description": "Only output important information"
         },
         {
             "shorthand": "-s",
             "flag": "--silent",
             "description": "Do not output anything, besides errors"
         }
+        {
+            "shorthand": "-v",
+            "flag": "--verbose",
+            "description": "Makes output more verbose"
+        },
     ]
 }
