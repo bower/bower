@@ -1,10 +1,3 @@
-- Offline usage
-- Config
-   - Allow `config.cwd` to be changed by an argument when using the CLI. Two ways of doing this:
-      - Read a --cwd or similar and change the `config.cwd` to it
-      - Allow any arbitrary `config.*` to be changed with --config.* arguments
-         - It seems that `rc` already does this, but is bugged.. see: https://github.com/dominictarr/rc/issues/9
-    - Codebase should access config directly and not use cached vars, see: https://github.com/twitter/bower/issues/232#issuecomment-16014467
 - Registry
     - Register model
         - Allow endpoints other than git?
@@ -15,7 +8,6 @@
           - But then.. how would versions be handled here?? different versions might have changed the deps
     - Publish model
 - Commands
-    - Abbreviations is supported in nopt.. don't need to install anything else
     - Bower script x
          - post-install (only useful for moving files around)
          - pre-publish
@@ -26,38 +18,28 @@
             - But then, how would a version be guessed from it?!
             - It would be ok project wise, but if used within a reusable package, it must have a version!
         - Option to install deps in a tree structure like npm? see: https://github.com/twitter/bower/issues/157
-        - Be smart when guessing the name out of the endpoint, see: https://github.com/twitter/bower/issues/192
-        - Allow a name to be specified when installing some endpoints, see: https://github.com/twitter/bower/issues/192#issuecomment-16014201
-            - Also try to `guess` version from the file contents? see: https://github.com/twitter/bower/issues/193
         - Print a tree like npm with the deps
-        - Root packages that resolve to same higher versions should always have priority!!
         - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
-        - Install only stable versions, see: https://github.com/twitter/bower/issues/266
-        - Expand also .gz files, see: https://github.com/twitter/bower/issues/347
 - Contributing.md
   - Copy from master
   - Tell users to learn about promises
   - Tell users to not forget to call .done() to throw unhandled promise errors in tests
-- Inter process locks? two processes running bower (either from the bin or programatically) might mess up the cache on write operations.. and possibly other write operations. Think about a solution for this (make the worker multi-process aware?!)
-- Use update-notifier!!
+
+- Add command to clear internal runtime cache (to be used programmatically on long running programs using bower)
 - Use yeomen insight!!
-- bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
-- in prod dont forget to Q.longStackJumpLimit = 0;
-- add perf tests
+- Bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
+- In prod dont forget to Q.longStackJumpLimit = 0;
+- Ddd perf tests
   - http://trace.gl
-- url resolver should work with fonts, e.g.: http://fonts.googleapis.com/css?family=Noto+Serif
-- discuss ability to specify folders inside bower_components.. e.g. components/fonts/
-- discuss namespaces in the registry
-- cache dir location: https://github.com/bower/bower/issues/448
-- implement shrinkwrap?
-- switch everything related with fs. to .graceful-fs
-  - don't forget to do the same on all bower org modules
-- use dependency injection more? we are passing a lot of options around for deep arch components..
-- look at https://github.com/bower/bower/issues/475
+- Discuss ability to specify folders inside bower_components.. e.g. components/fonts/
+- Discuss namespaces in the registry
+- Cache dir location: https://github.com/bower/bower/issues/448
+- Implement shrinkwrap?
+- Switch everything related with fs. to .graceful-fs??
+  - ifo so. don't forget to do the same on all bower org modules
 
 Not BC changes:
 - shorthand_resolver -> shorthandResolver
 - shorthand resolver syntax {{{}}} to just {{}}
 - "latest" targets are no longer supported, they might conflict with branches or tags
 - remove json property from the config
-- remove read of local .bowerrc in favor of bower.json config key
