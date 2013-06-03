@@ -9,14 +9,29 @@ var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var Resolver = require('../../../lib/core/resolvers/Resolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('Resolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var logger = new Logger();
+
+    afterEach(function () {
+        logger.removeAllListeners();
+    });
+
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new Resolver(decEndpoint, config || defaultConfig, logger);
+    }
 
     describe('.getSource', function () {
         it('should return the resolver source', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getSource()).to.equal('foo');
         });
@@ -24,13 +39,13 @@ describe('Resolver', function () {
 
     describe('.getName', function () {
         it('should return the resolver name', function () {
-            var resolver = new Resolver('foo', { name: 'bar' });
+            var resolver = create({ source: 'foo', name: 'bar' });
 
             expect(resolver.getName()).to.equal('bar');
         });
 
         it('should return the resolver source if none is specified (default guess mechanism)', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getName()).to.equal('foo');
         });
@@ -38,19 +53,19 @@ describe('Resolver', function () {
 
     describe('.getTarget', function () {
         it('should return the resolver target', function () {
-            var resolver = new Resolver('foo', { target: '~2.1.0' });
+            var resolver = create({ source: 'foo', target: '~2.1.0' });
 
             expect(resolver.getTarget()).to.equal('~2.1.0');
         });
 
         it('should return * if none was configured', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getTarget()).to.equal('*');
         });
 
         it('should return * if latest was configured (for backwards compatibility)', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getTarget()).to.equal('*');
         });
@@ -72,7 +87,7 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var succeeded;
 
             resolver._resolve = function () {};
@@ -98,7 +113,7 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (checking for newer version)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var succeeded;
 
             resolver.hasNew(tempDir)
@@ -122,7 +137,7 @@ describe('Resolver', function () {
         });
 
         it('should resolve to true by default', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
@@ -133,7 +148,7 @@ describe('Resolver', function () {
         });
 
         it('should resolve to true if the there\'s an error reading the package meta', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             rimraf.sync(path.join(tempDir, '.bower.json'));
             resolver.hasNew(tempDir)
@@ -145,7 +160,7 @@ describe('Resolver', function () {
         });
 
         it('should call _hasNew with the canonical package and the package meta', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var canonical;
             var meta;
 
@@ -166,7 +181,7 @@ describe('Resolver', function () {
         });
 
         it('should not read the package meta if already passed', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var meta;
 
             resolver._hasNew = function (canonicalPkg, pkgMeta) {
@@ -188,7 +203,7 @@ describe('Resolver', function () {
 
     describe('.resolve', function () {
         it('should reject the promise if _resolve is not implemented', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver.resolve()
             .then(function () {
@@ -202,7 +217,7 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (resolving)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var succeeded;
 
             resolver._resolve = function () {};
@@ -228,7 +243,7 @@ describe('Resolver', function () {
         });
 
         it('should throw an error if already working (checking newer version)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var succeeded;
 
             resolver._resolve = function () {};
@@ -306,7 +321,7 @@ describe('Resolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver('foo');
+            resolver = new DummyResolver({ source: 'foo'}, defaultConfig, logger);
 
             resolver.resolve()
             .then(function () {
@@ -327,7 +342,7 @@ describe('Resolver', function () {
         });
 
         it('should resolve with the canonical package (folder)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._resolve = function () {};
 
@@ -343,14 +358,14 @@ describe('Resolver', function () {
 
     describe('.getTempDir', function () {
         it('should return null if resolver is not yet resolved', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getTempDir() == null).to.be(true);
         });
 
         it('should still return null if resolve failed', function () {
             it('should still return null', function (next) {
-                var resolver = new Resolver('foo');
+                var resolver = create('foo');
 
                 resolver._resolve = function () {
                     throw new Error('I\'ve failed to resolve');
@@ -365,7 +380,7 @@ describe('Resolver', function () {
         });
 
         it('should return the canonical package (folder) if resolve succeeded', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._resolve = function () {};
 
@@ -383,14 +398,14 @@ describe('Resolver', function () {
 
     describe('.getPkgMeta', function () {
         it('should return null if resolver is not yet resolved', function () {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             expect(resolver.getPkgMeta() == null).to.be(true);
         });
 
         it('should still return null if resolve failed', function () {
             it('should still return null', function (next) {
-                var resolver = new Resolver('foo');
+                var resolver = create('foo');
 
                 resolver._resolve = function () {
                     throw new Error('I\'ve failed to resolve');
@@ -405,7 +420,7 @@ describe('Resolver', function () {
         });
 
         it('should return the package meta if resolve succeeded', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._resolve = function () {};
 
@@ -434,7 +449,7 @@ describe('Resolver', function () {
         });
 
         it('should create a directory inside a bower folder, located within the OS temp folder', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._createTempDir()
             .then(function (dir) {
@@ -455,7 +470,7 @@ describe('Resolver', function () {
         });
 
         it('should set the dir mode the same as the process', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._createTempDir()
             .then(function (dir) {
@@ -505,7 +520,7 @@ describe('Resolver', function () {
         });
 
         it('should set _tempDir with the created directory', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._createTempDir()
             .then(function (dir) {
@@ -523,7 +538,7 @@ describe('Resolver', function () {
         });
 
         it('should read the bower.json file', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             mkdirp.sync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
@@ -540,11 +555,19 @@ describe('Resolver', function () {
         });
 
         it('should fallback to component.json (notifying a warn)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var notified = false;
 
             mkdirp.sync(tempDir);
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
+
+            logger.on('log', function (log) {
+                expect(log).to.be.an('object');
+                if (log.level === 'warn' && /deprecated/i.test(log.id)) {
+                    expect(log.message).to.contain('component.json');
+                    notified = true;
+                }
+            });
 
             resolver._readJson(tempDir)
             .then(function (meta) {
@@ -553,18 +576,12 @@ describe('Resolver', function () {
                 expect(meta.version).to.equal('0.0.0');
                 expect(notified).to.be(true);
                 next();
-            }, null, function (notification) {
-                expect(notification).to.be.an('object');
-                if (notification.level === 'warn' && /deprecated/i.test(notification.message)) {
-                    notified = true;
-                }
-                return notification;
             })
             .done();
         });
 
         it('should resolve to an inferred json if no json file was found', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._readJson(tempDir)
             .then(function (meta) {
@@ -584,7 +601,7 @@ describe('Resolver', function () {
         });
 
         it('should resolve with the same package meta', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var meta = { name: 'foo' };
 
             mkdirp.sync(tempDir);
@@ -607,7 +624,7 @@ describe('Resolver', function () {
         });
 
         it('should remove files that match the ignore patterns', function (next) {
-            var resolver = new Resolver('foo', { name: 'foo' });
+            var resolver = create({ source: 'foo', name: 'foo' });
 
             mkdirp.sync(tempDir);
 
@@ -666,7 +683,7 @@ describe('Resolver', function () {
         });
 
         it('should resolve with the same package meta', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
             var meta = { name: 'foo' };
 
             resolver._tempDir = tempDir;
@@ -682,7 +699,7 @@ describe('Resolver', function () {
         it.skip('should set the original source in package meta file');
 
         it('should save the package meta to the package meta file (.bower.json)', function (next) {
-            var resolver = new Resolver('foo');
+            var resolver = create('foo');
 
             resolver._tempDir = tempDir;
 

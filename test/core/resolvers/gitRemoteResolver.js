@@ -3,51 +3,66 @@ var path = require('path');
 var fs = require('fs');
 var Q = require('q');
 var GitRemoteResolver = require('../../../lib/core/resolvers/GitRemoteResolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('GitRemoteResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var logger = new Logger();
+
+    afterEach(function () {
+        logger.removeAllListeners();
+    });
 
     function clearResolverRuntimeCache() {
         GitRemoteResolver.clearRuntimeCache();
+    }
+
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new GitRemoteResolver(decEndpoint, config || defaultConfig, logger);
     }
 
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
             var resolver;
 
-            resolver = new GitRemoteResolver('file://' + testPackage);
+            resolver = create('file://' + testPackage);
             expect(resolver.getName()).to.equal('github-test-package');
 
-            resolver = new GitRemoteResolver('git://github.com/twitter/bower.git');
+            resolver = create('git://github.com/twitter/bower.git');
             expect(resolver.getName()).to.equal('bower');
 
-            resolver = new GitRemoteResolver('git://github.com/twitter/bower');
+            resolver = create('git://github.com/twitter/bower');
             expect(resolver.getName()).to.equal('bower');
 
-            resolver = new GitRemoteResolver('git://github.com');
+            resolver = create('git://github.com');
             expect(resolver.getName()).to.equal('github.com');
         });
 
         it('should ensure .git in the source (except if protocol is file://)', function () {
             var resolver;
 
-            resolver = new GitRemoteResolver('git://github.com/twitter/bower');
+            resolver = create('git://github.com/twitter/bower');
             expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
 
-            resolver = new GitRemoteResolver('git://github.com/twitter/bower.git');
+            resolver = create('git://github.com/twitter/bower.git');
             expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
 
-            resolver = new GitRemoteResolver('git://github.com/twitter/bower.git/');
+            resolver = create('git://github.com/twitter/bower.git/');
             expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
 
-            resolver = new GitRemoteResolver('file://' + testPackage);
+            resolver = create('file://' + testPackage);
             expect(resolver.getSource()).to.equal('file://' + testPackage);
         });
     });
 
     describe('.resolve', function () {
         it('should checkout correctly if resolution is a branch', function (next) {
-            var resolver = new GitRemoteResolver('file://' + testPackage, { target: 'some-branch' });
+            var resolver = create({ source: 'file://' + testPackage, target: 'some-branch' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -69,7 +84,7 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should checkout correctly if resolution is a tag', function (next) {
-            var resolver = new GitRemoteResolver('file://' + testPackage, { target: '~0.0.1' });
+            var resolver = create({ source: 'file://' + testPackage, target: '~0.0.1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -87,7 +102,7 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should checkout correctly if resolution is a commit', function (next) {
-            var resolver = new GitRemoteResolver('file://' + testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var resolver = create({ source: 'file://' + testPackage, target: '7339c38f5874129504b83650fbb2d850394573e9' });
 
             resolver.resolve()
             .then(function (dir) {

@@ -8,10 +8,13 @@ var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var cmd = require('../../../lib/util/cmd');
 var UrlResolver = require('../../../lib/core/resolvers/UrlResolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('UrlResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var logger = new Logger();
 
     before(function (next) {
         // Checkout test package version 0.2.1
@@ -20,27 +23,35 @@ describe('UrlResolver', function () {
     });
 
     afterEach(function () {
+        logger.removeAllListeners();
+
         // Clean nocks
         nock.cleanAll();
     });
 
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new UrlResolver(decEndpoint, config || defaultConfig, logger);
+    }
+
     describe('.constructor', function () {
         it('should guess the name from the URL', function () {
-            var resolver = new UrlResolver('http://bower.io/foo.txt');
+            var resolver = create('http://bower.io/foo.txt');
 
             expect(resolver.getName()).to.equal('foo.txt');
         });
 
         it('should remove ?part from the URL when guessing the name', function () {
-            var resolver = new UrlResolver('http://bower.io/foo.txt?bar');
+            var resolver = create('http://bower.io/foo.txt?bar');
 
             expect(resolver.getName()).to.equal('foo.txt');
         });
 
         it('should not guess the name or remove ?part from the URL if not guessing', function () {
-            var resolver = new UrlResolver('http://bower.io/foo.txt?bar', {
-                name: 'baz'
-            });
+            var resolver = create({ source: 'http://bower.io/foo.txt?bar', name: 'baz' });
 
             expect(resolver.getName()).to.equal('baz');
         });
@@ -49,9 +60,7 @@ describe('UrlResolver', function () {
             var resolver;
 
             try {
-                resolver = new UrlResolver(testPackage, {
-                    target: '0.0.1'
-                });
+                resolver = create({ source: testPackage, target: '0.0.1' });
             } catch (err) {
                 expect(err).to.be.an(Error);
                 expect(err.message).to.match(/can\'t resolve targets/i);
@@ -77,7 +86,7 @@ describe('UrlResolver', function () {
         });
 
         it('should resolve to true if the response is not in the 2xx range', function (next) {
-            var resolver = new UrlResolver('http://bower.io/foo.js');
+            var resolver = create('http://bower.io/foo.js');
 
             nock('http://bower.io')
             .head('/foo.js')
@@ -97,7 +106,7 @@ describe('UrlResolver', function () {
         });
 
         it('should resolve to true if cache headers changed', function (next) {
-            var resolver = new UrlResolver('http://bower.io/foo.js');
+            var resolver = create('http://bower.io/foo.js');
 
             nock('http://bower.io')
             .head('/foo.js')
@@ -124,7 +133,7 @@ describe('UrlResolver', function () {
         });
 
         it('should resolve to false if cache headers haven\'t changed', function (next) {
-            var resolver = new UrlResolver('http://bower.io/foo.js');
+            var resolver = create('http://bower.io/foo.js');
 
             nock('http://bower.io')
             .head('/foo.js')
@@ -151,7 +160,7 @@ describe('UrlResolver', function () {
         });
 
         it('should resolve to true if server responds with 304 (ETag mechanism)', function (next) {
-            var resolver = new UrlResolver('http://bower.io/foo.js');
+            var resolver = create('http://bower.io/foo.js');
 
             nock('http://bower.io')
             .head('/foo.js')
@@ -204,7 +213,7 @@ describe('UrlResolver', function () {
                 }
             }));
 
-            resolver = new UrlResolver(redirectingUrl + '/foo.js');
+            resolver = create(redirectingUrl + '/foo.js');
 
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
@@ -237,7 +246,7 @@ describe('UrlResolver', function () {
             .get('/foo.js')
             .reply(200, 'foo contents');
 
-            resolver = new UrlResolver('http://bower.io/foo.js');
+            resolver = create('http://bower.io/foo.js');
 
             resolver.resolve()
             .then(function (dir) {
@@ -262,7 +271,7 @@ describe('UrlResolver', function () {
             .get('/package-zip.zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'));
 
-            resolver = new UrlResolver('http://bower.io/package-zip.zip');
+            resolver = create('http://bower.io/package-zip.zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -281,7 +290,7 @@ describe('UrlResolver', function () {
             .get('/package-zip.ZIP')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'));
 
-            resolver = new UrlResolver('http://bower.io/package-zip.ZIP');
+            resolver = create('http://bower.io/package-zip.ZIP');
 
             resolver.resolve()
             .then(function (dir) {
@@ -304,7 +313,7 @@ describe('UrlResolver', function () {
             .get('/package-zip.zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
 
-            resolver = new UrlResolver('http://bower.io/package-zip-folder.zip');
+            resolver = create('http://bower.io/package-zip-folder.zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -314,7 +323,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-folder.zip'))).to.be(false);
 
-                resolver = new UrlResolver('http://bower.io/package-zip.zip', { name: 'package-zip' });
+                resolver = create({ source: 'http://bower.io/package-zip.zip', name: 'package-zip' });
 
                 return resolver.resolve();
             })
@@ -336,7 +345,7 @@ describe('UrlResolver', function () {
             .get('/package-zip-single-file.zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-single-file.zip'));
 
-            resolver = new UrlResolver('http://bower.io/package-zip-single-file.zip');
+            resolver = create('http://bower.io/package-zip-single-file.zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -357,7 +366,7 @@ describe('UrlResolver', function () {
             .get('/package-zip-folder-single-file.zip')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-folder-single-file.zip'));
 
-            resolver = new UrlResolver('http://bower.io/package-zip-folder-single-file.zip');
+            resolver = create('http://bower.io/package-zip-folder-single-file.zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -391,7 +400,7 @@ describe('UrlResolver', function () {
                 'Content-Type': ' application/zip ; charset=UTF-8'
             });
 
-            resolver = new UrlResolver('http://bower.io/package-zip');
+            resolver = create('http://bower.io/package-zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -400,7 +409,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
 
-                resolver = new UrlResolver('http://bower.io/package-zip2');
+                resolver = create('http://bower.io/package-zip2');
 
                 return resolver.resolve();
             })
@@ -410,7 +419,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip2.zip'))).to.be(false);
 
-                resolver = new UrlResolver('http://bower.io/package-zip3');
+                resolver = create('http://bower.io/package-zip3');
 
                 return resolver.resolve();
             })
@@ -434,7 +443,7 @@ describe('UrlResolver', function () {
                 'Content-Disposition': 'attachment; filename="package-zip.zip"'
             });
 
-            resolver = new UrlResolver('http://bower.io/package-zip');
+            resolver = create('http://bower.io/package-zip');
 
             resolver.resolve()
             .then(function (dir) {
@@ -459,7 +468,7 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            resolver = new UrlResolver('http://bower.io/foo.js');
+            resolver = create('http://bower.io/foo.js');
 
             resolver.resolve()
             .then(function (dir) {
@@ -490,7 +499,7 @@ describe('UrlResolver', function () {
             .get('/foo.js')
             .reply(200, 'foo contents');
 
-            resolver = new UrlResolver(redirectingUrl + '/foo.js');
+            resolver = create(redirectingUrl + '/foo.js');
 
             resolver.resolve()
             .then(function (dir) {
@@ -518,7 +527,7 @@ describe('UrlResolver', function () {
                     'Content-Disposition': header
                 });
 
-                resolver = new UrlResolver('http://bower.io/package-zip');
+                resolver = create('http://bower.io/package-zip');
 
                 return resolver.resolve()
                 .then(function (dir) {

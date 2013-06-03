@@ -196,9 +196,7 @@ The cache, stored in disk, of resolved packages (canonical packages).
 
 ##### Constructor
 
-`ResolveCache(dir, options)`
-
-TODO: options, such as max size in MB, etc
+`ResolveCache(config)`
 
 ------------
 
@@ -241,13 +239,7 @@ Resolvers are responsible for the following:
 
 ##### Constructor
 
-`Resolver(source, options)`
-
-Options:
-
-- `name` - the name (if none is passed, one will be guessed from the source)
-- `target` - the target (defaults to *)
-- `config` - the config to use (defaults to the default config)
+`Resolver(decEndpoint, config)`
 
 ------------
 

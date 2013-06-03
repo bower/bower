@@ -9,14 +9,29 @@ var Q = require('q');
 var mout = require('mout');
 var copy = require('../../../lib/util/copy');
 var GitResolver = require('../../../lib/core/resolvers/GitResolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var originalFetchRefs = GitResolver.fetchRefs;
+    var logger = new Logger();
+
+    afterEach(function () {
+        logger.removeAllListeners();
+    });
 
     function clearResolverRuntimeCache() {
         GitResolver.fetchRefs = originalFetchRefs;
         GitResolver.clearRuntimeCache();
+    }
+
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new GitResolver(decEndpoint, config || defaultConfig, logger);
     }
 
     describe('.hasNew', function () {
@@ -52,7 +67,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -81,7 +96,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -109,7 +124,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -138,7 +153,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
@@ -167,7 +182,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -193,7 +208,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -219,7 +234,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
@@ -244,7 +259,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
@@ -310,7 +325,7 @@ describe('GitResolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver('foo', { target: 'master' });
+            resolver = new DummyResolver({ source: 'foo', target: 'master' }, defaultConfig, logger);
 
             resolver.resolve()
             .then(function () {
@@ -328,7 +343,7 @@ describe('GitResolver', function () {
         });
 
         it('should reject the promise if _checkout is not implemented', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
 
             GitResolver.fetchRefs = function () {
                 return Q.resolve([
@@ -348,7 +363,7 @@ describe('GitResolver', function () {
         });
 
         it('should reject the promise if #fetchRefs is not implemented', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
 
             resolver._checkout = function () {
                 return Q.resolve();
@@ -378,7 +393,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.be.an('object');
@@ -394,7 +409,7 @@ describe('GitResolver', function () {
                 return Q.resolve([]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('*')
             .then(function () {
                 next(new Error('Should have failed'));
@@ -419,7 +434,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -443,7 +458,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -469,7 +484,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('~0.2.0')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -493,7 +508,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('~0.2.0')
             .then(function () {
                 next(new Error('Should have failed'));
@@ -516,7 +531,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
 
             resolver._findResolution('~0.2.0')
             .then(function () {
@@ -540,7 +555,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -562,7 +577,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('some-tag')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -585,7 +600,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('some-branch')
             .then(function (resolution) {
                 expect(resolution).to.eql({
@@ -608,7 +623,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            resolver = new GitResolver('foo');
+            resolver = create('foo');
             resolver._findResolution('some-branch')
             .then(function () {
                 next(new Error('Should have failed'));
@@ -639,7 +654,7 @@ describe('GitResolver', function () {
         });
 
         it('should remove the .git folder from the temp dir', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var dest = path.join(tempDir, '.git');
 
             // Copy .git folder to the tempDir
@@ -659,7 +674,7 @@ describe('GitResolver', function () {
         });
 
         it('should not fail if .git does not exist for some reason', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var dest = path.join(tempDir, '.git');
 
             resolver._tempDir = tempDir;
@@ -673,7 +688,7 @@ describe('GitResolver', function () {
         });
 
         it('should sill run even if _checkout fails for some reason', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var called = false;
 
             GitResolver.fetchRefs = function () {
@@ -717,7 +732,7 @@ describe('GitResolver', function () {
         });
 
         it('should save the resolution to the .bower.json to be used later by .hasNew', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
 
             resolver._resolution = { type: 'version', tag: '0.0.1' };
             resolver._tempDir = tempDir;
@@ -736,7 +751,7 @@ describe('GitResolver', function () {
         });
 
         it('should save the release in the package meta', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var metaFile = path.join(tempDir, '.bower.json');
 
             // Test with type 'version'
@@ -793,7 +808,7 @@ describe('GitResolver', function () {
         });
 
         it('should add the version to the package meta if not present and resolution is a version', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
 
             resolver._resolution = { type: 'version', tag: 'v0.0.1' };
             resolver._tempDir = tempDir;
@@ -812,7 +827,7 @@ describe('GitResolver', function () {
         });
 
         it('should remove the version from the package meta if resolution is not a version', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
 
             resolver._resolution = { type: 'commit', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
             resolver._tempDir = tempDir;
@@ -831,21 +846,24 @@ describe('GitResolver', function () {
         });
 
         it('should warn if the resolution version is different than the package meta version', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var notified = false;
 
             resolver._resolution = { type: 'version', tag: '0.0.1' };
             resolver._tempDir = tempDir;
 
+            logger.on('log', function (log) {
+                expect(log).to.be.an('object');
+
+                if (log.level === 'warn' && log.id === 'mismatch') {
+                    expect(log.message).to.match(/\(0\.0\.0\).*different.*\(0\.0\.1\)/);
+                    notified = true;
+                }
+            });
+
             resolver._savePkgMeta({ name: 'foo', version: '0.0.0' })
             .then(function () {
                 return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
-            }, null, function (notification) {
-                expect(notification).to.be.an('object');
-
-                if (notification.level === 'warn' && /\(0\.0\.0\).*different.*\(0\.0\.1\)/.test(notification.message)) {
-                    notified = true;
-                }
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
@@ -858,7 +876,7 @@ describe('GitResolver', function () {
         });
 
         it('should not warn if the resolution version and the package meta version are the same', function (next) {
-            var resolver = new GitResolver('foo');
+            var resolver = create('foo');
             var notified = false;
 
             resolver._resolution = { type: 'version', tag: 'v0.0.1' };

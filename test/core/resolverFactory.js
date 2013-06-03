@@ -6,20 +6,24 @@ var mout = require('mout');
 var Q = require('q');
 var rimraf = require('rimraf');
 var RegistryClient = require('bower-registry-client');
-var defaultConfig = require('../../lib/config');
 var resolverFactory = require('../../lib/core/resolverFactory');
 var FsResolver = require('../../lib/core/resolvers/FsResolver');
 var GitFsResolver = require('../../lib/core/resolvers/GitFsResolver');
 var GitRemoteResolver = require('../../lib/core/resolvers/GitRemoteResolver');
 var UrlResolver = require('../../lib/core/resolvers/UrlResolver');
+var defaultConfig = require('../../lib/config');
+var Logger = require('../../lib/core/Logger');
 
-describe('resolverFactory', function () {
+describe('callFactory', function () {
     var tempSource;
+    var logger = new Logger();
     var registryClient = new RegistryClient(mout.object.fillIn({
         cache: defaultConfig._registry
     }, defaultConfig));
 
     afterEach(function (next) {
+        logger.removeAllListeners();
+
         if (tempSource) {
             rimraf(tempSource, next);
             tempSource = null;
@@ -27,6 +31,10 @@ describe('resolverFactory', function () {
             next();
         }
     });
+
+    function callFactory(decEndpoint, config) {
+        return resolverFactory(decEndpoint, config || defaultConfig, logger, registryClient);
+    }
 
     it('should recognize git remote endpoints correctly', function (next) {
         var promise = Q.resolve();
@@ -80,9 +88,7 @@ describe('resolverFactory', function () {
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name and target
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: key
-                }, registryClient);
+                return callFactory({ source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -92,10 +98,7 @@ describe('resolverFactory', function () {
 
             // Test with target
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: key,
-                    target: 'commit-ish'
-                }, registryClient);
+                return callFactory({ source: key, target: 'commit-ish' });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -105,10 +108,7 @@ describe('resolverFactory', function () {
 
             // Test with name
             promise = promise.then(function () {
-                return resolverFactory({
-                    name: 'foo',
-                    source: key
-                }, registryClient);
+                return callFactory({ name: 'foo', source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
@@ -140,9 +140,7 @@ describe('resolverFactory', function () {
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: key
-                }, registryClient);
+                return callFactory({ source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
@@ -151,10 +149,7 @@ describe('resolverFactory', function () {
 
             // Test with name
             promise = promise.then(function () {
-                return resolverFactory({
-                    name: 'foo',
-                    source: key
-                }, registryClient);
+                return callFactory({ name: 'foo', source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitFsResolver);
@@ -203,9 +198,7 @@ describe('resolverFactory', function () {
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: key
-                }, registryClient);
+                return callFactory({ source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
@@ -214,10 +207,7 @@ describe('resolverFactory', function () {
 
             // Test with name
             promise = promise.then(function () {
-                return resolverFactory({
-                    name: 'foo',
-                    source: key
-                }, registryClient);
+                return callFactory({ name: 'foo', source: key });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(FsResolver);
@@ -244,9 +234,7 @@ describe('resolverFactory', function () {
         endpoints.forEach(function (source) {
             // Test without name
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: source
-                }, registryClient);
+                return callFactory({ source: source });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -254,10 +242,7 @@ describe('resolverFactory', function () {
 
             // Test with name
             promise = promise.then(function () {
-                return resolverFactory({
-                    name: 'foo',
-                    source: source
-                }, registryClient);
+                return callFactory({ name: 'foo', source: source });
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(UrlResolver);
@@ -270,19 +255,14 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize registry endpoints correctly', function (next) {
-        resolverFactory({
-            source: 'dejavu'
-        }, registryClient)
+        callFactory({ source: 'dejavu' })
         .then(function (resolver) {
             expect(resolver).to.be.a(GitRemoteResolver);
             expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
             expect(resolver.getTarget()).to.equal('*');
         })
         .then(function () {
-            return resolverFactory({
-                source: 'dejavu',
-                name: 'foo'
-            }, registryClient)
+            return callFactory({ source: 'dejavu', name: 'foo' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
                 expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
@@ -291,10 +271,7 @@ describe('resolverFactory', function () {
             });
         })
         .then(function () {
-            return resolverFactory({
-                source: 'dejavu',
-                target: '~2.0.0'
-            }, registryClient)
+            return callFactory({ source: 'dejavu', target: '~2.0.0' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(GitRemoteResolver);
                 expect(resolver.getTarget()).to.equal('~2.0.0');
@@ -306,17 +283,16 @@ describe('resolverFactory', function () {
     });
 
     it('should use the configured shorthand resolver', function (next) {
-        resolverFactory({
-            source: 'bower/bower'
-        }, registryClient)
+        callFactory({ source: 'bower/bower' })
         .then(function (resolver) {
+            var config;
             expect(resolver.getSource()).to.equal('git://github.com/bower/bower.git');
 
-            return resolverFactory({
-                source: 'IndigoUnited/promptly'
-            }, registryClient, mout.object.fillIn({
+            config = mout.object.fillIn({
                 shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
-            }, defaultConfig));
+            }, defaultConfig);
+
+            return callFactory({ source: 'IndigoUnited/promptly' }, config);
         })
         .then(function (resolver) {
             expect(resolver.getSource()).to.equal('git://bower.io/IndigoUnited/promptly/IndigoUnited/promptly.git');
@@ -325,9 +301,7 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it.skip('should use config.cwd when resolving relative paths', function () {
-
-    });
+    it.skip('should use config.cwd when resolving relative paths');
 
     it.skip('should pass offline and force options to the registry lookup');
 
@@ -343,10 +317,7 @@ describe('resolverFactory', function () {
 
         endpoints.forEach(function (source) {
             promise = promise.then(function () {
-                return resolverFactory({
-                    source: source,
-                    target: 'bleh'
-                }, registryClient);
+                return callFactory({ source: source, target: 'bleh' });
             })
             .then(function () {
                 throw new Error('Should have failed');

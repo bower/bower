@@ -4,6 +4,7 @@ var path = require('path');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var config = require('../lib/config');
 var cli = require('../lib/util/cli');
+var Logger = require('../lib/core/Logger');
 var commands = require('../lib/commands');
 var updateNotifier = require('update-notifier');
 
@@ -15,14 +16,7 @@ var loglevel;
 var command;
 var emitter;
 var notifier;
-var levels = {
-    'error': 5,
-    'conflict': 4,
-    'warn': 3,
-    'action': 2,
-    'info': 1,
-    'debug': 0
-};
+var levels = Logger.LEVELS;
 
 process.title = 'bower';
 
@@ -74,9 +68,9 @@ emitter
 
     process.exit(1);
 })
-.on('notification', function (notification) {
-    if (levels[notification.level] >= loglevel) {
-        renderer.notification(notification);
+.on('log', function (log) {
+    if (levels[log.level] >= loglevel) {
+        renderer.log(log);
     }
 });
 

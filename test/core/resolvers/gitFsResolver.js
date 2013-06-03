@@ -7,16 +7,17 @@ var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var GitFsResolver = require('../../../lib/core/resolvers/GitFsResolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('GitFsResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package'),
-        tempSource;
-
-    function clearResolverRuntimeCache() {
-        GitFsResolver.clearRuntimeCache();
-    }
+    var tempSource;
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var logger = new Logger();
 
     afterEach(function (next) {
+        logger.removeAllListeners();
+
         if (tempSource) {
             rimraf(tempSource, next);
             tempSource = null;
@@ -25,15 +26,27 @@ describe('GitFsResolver', function () {
         }
     });
 
+    function clearResolverRuntimeCache() {
+        GitFsResolver.clearRuntimeCache();
+    }
+
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new GitFsResolver(decEndpoint, config || defaultConfig, logger);
+    }
+
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
-            var resolver = new GitFsResolver(testPackage);
+            var resolver = create(testPackage);
 
             expect(resolver.getName()).to.equal('github-test-package');
         });
 
         it('should not guess the name from the path if the name was specified', function () {
-            var resolver = new GitFsResolver(testPackage, { name: 'foo' });
+            var resolver = create({ source: testPackage, name: 'foo' });
 
             expect(resolver.getName()).to.equal('foo');
         });
@@ -41,20 +54,19 @@ describe('GitFsResolver', function () {
         it('should make paths absolute and normalized', function () {
             var resolver;
 
-            resolver = new GitFsResolver(path.relative(process.cwd(), testPackage));
+            resolver = create(path.relative(process.cwd(), testPackage));
             expect(resolver.getSource()).to.equal(testPackage);
 
-            resolver = new GitFsResolver(testPackage + '/something/..');
+            resolver = create(testPackage + '/something/..');
             expect(resolver.getSource()).to.equal(testPackage);
         });
 
-        it.skip('should use config.cwd for resolving relative paths', function () {
-        });
+        it.skip('should use config.cwd for resolving relative paths');
     });
 
     describe('.resolve', function () {
         it('should checkout correctly if resolution is a branch', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
+            var resolver = create({ source: testPackage, target: 'some-branch' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -76,7 +88,7 @@ describe('GitFsResolver', function () {
         });
 
         it('should checkout correctly if resolution is a tag', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: '~0.0.1' });
+            var resolver = create({ source: testPackage, target: '~0.0.1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -94,7 +106,7 @@ describe('GitFsResolver', function () {
         });
 
         it('should checkout correctly if resolution is a commit', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var resolver = create({ source: testPackage, target: '7339c38f5874129504b83650fbb2d850394573e9' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -112,7 +124,7 @@ describe('GitFsResolver', function () {
         });
 
         it('should remove any untracked files and directories', function (next) {
-            var resolver = new GitFsResolver(testPackage, { target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var resolver = create({ source: testPackage, target: '7339c38f5874129504b83650fbb2d850394573e9' });
             var file = path.join(testPackage, 'new-file');
             var dir = path.join(testPackage, 'new-dir');
 
@@ -149,7 +161,7 @@ describe('GitFsResolver', function () {
             cmd('git', ['checkout', 'master'], { cwd: testPackage })
             // Resolve to some-branch
             .then(function () {
-                var resolver = new GitFsResolver(testPackage, { target: 'some-branch' });
+                var resolver = create({ source: testPackage, target: 'some-branch' });
                 return resolver.resolve();
             })
             // Check if the original branch is still the master one
@@ -176,7 +188,7 @@ describe('GitFsResolver', function () {
             var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
-            resolver = new GitFsResolver(tempSource, { target: 'some-branch' });
+            resolver = create({ source: tempSource, target: 'some-branch' });
 
             copy.copyDir(testPackage, tempSource)
             .then(function () {

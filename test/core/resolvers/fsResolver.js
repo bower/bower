@@ -8,10 +8,13 @@ var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var FsResolver = require('../../../lib/core/resolvers/FsResolver');
+var Logger = require('../../../lib/core/Logger');
+var defaultConfig = require('../../../lib/config');
 
 describe('FsResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
     var tempSource;
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var logger = new Logger();
 
     before(function (next) {
         // Checkout test package version 0.2.1 which has a bower.json
@@ -21,6 +24,8 @@ describe('FsResolver', function () {
     });
 
     afterEach(function (next) {
+        logger.removeAllListeners();
+
         if (tempSource) {
             rimraf(tempSource, next);
             tempSource = null;
@@ -29,9 +34,17 @@ describe('FsResolver', function () {
         }
     });
 
+    function create(decEndpoint, config) {
+        if (typeof decEndpoint === 'string') {
+            decEndpoint = { source: decEndpoint };
+        }
+
+        return new FsResolver(decEndpoint, config || defaultConfig, logger);
+    }
+
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
-            var resolver = new FsResolver(testPackage);
+            var resolver = create(testPackage);
 
             expect(resolver.getName()).to.equal('github-test-package');
         });
@@ -39,23 +52,20 @@ describe('FsResolver', function () {
         it('should make paths absolute and normalized', function () {
             var resolver;
 
-            resolver = new FsResolver(path.relative(process.cwd(), testPackage));
+            resolver = create(path.relative(process.cwd(), testPackage));
             expect(resolver.getSource()).to.equal(testPackage);
 
-            resolver = new FsResolver(testPackage + '/something/..');
+            resolver = create(testPackage + '/something/..');
             expect(resolver.getSource()).to.equal(testPackage);
         });
 
-        it.skip('should use config.cwd for resolving relative paths', function () {
-        });
+        it.skip('should use config.cwd for resolving relative paths');
 
         it('should error out if a target was specified', function (next) {
             var resolver;
 
             try {
-                resolver = new FsResolver(testPackage, {
-                    target: '0.0.1'
-                });
+                resolver = create({ source: testPackage, target: '0.0.1' });
             } catch (err) {
                 expect(err).to.be.an(Error);
                 expect(err.message).to.match(/can\'t resolve targets/i);
@@ -69,7 +79,7 @@ describe('FsResolver', function () {
 
     describe('.hasNew', function () {
         it('should resolve always to true (for now..)', function (next) {
-            var resolver = new FsResolver(testPackage);
+            var resolver = create(testPackage);
 
             tempSource = path.resolve(__dirname, '../../assets/tmp');
             mkdirp.sync(tempSource);
@@ -108,7 +118,7 @@ describe('FsResolver', function () {
         }
 
         it('should copy the source directory contents', function (next) {
-            var resolver = new FsResolver(testPackage);
+            var resolver = create(testPackage);
 
             resolver.resolve()
             .then(function (dir) {
@@ -124,7 +134,7 @@ describe('FsResolver', function () {
         });
 
         it('should copy the source file, renaming it to index', function (next) {
-            var resolver = new FsResolver(path.join(testPackage, 'foo'));
+            var resolver = create(path.join(testPackage, 'foo'));
 
             resolver.resolve()
             .then(function (dir) {
@@ -134,7 +144,7 @@ describe('FsResolver', function () {
             })
             .then(function () {
                 // Test with extension
-                var resolver = new FsResolver(path.join(testPackage, 'README.md'));
+                var resolver = create(path.join(testPackage, 'README.md'));
                 return resolver.resolve();
             })
             .then(function (dir) {
@@ -153,7 +163,7 @@ describe('FsResolver', function () {
             tempSource = path.resolve(__dirname, '../../assets/tmp');
 
             mkdirp.sync(tempSource);
-            resolver = new FsResolver(tempSource);
+            resolver = create(tempSource);
 
             copy.copyFile(path.join(testPackage, 'foo'), path.join(tempSource, 'foo'))
             .then(resolver.resolve.bind(resolver))
@@ -172,7 +182,7 @@ describe('FsResolver', function () {
             var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
-            resolver = new FsResolver(tempSource);
+            resolver = create(tempSource);
 
             copy.copyDir(testPackage, tempSource)
             .then(function () {
@@ -196,7 +206,7 @@ describe('FsResolver', function () {
             var resolver;
 
             tempSource = path.resolve(__dirname, '../../assets/temp');
-            resolver = new FsResolver(tempSource);
+            resolver = create(tempSource);
 
             copy.copyFile(path.join(testPackage, 'foo'), tempSource)
             .then(function () {
@@ -216,7 +226,7 @@ describe('FsResolver', function () {
         });
 
         it('should not copy ignored paths (to speed up copying)', function (next) {
-            var resolver = new FsResolver(testPackage);
+            var resolver = create(testPackage);
 
             // Override the _applyPkgMeta function to prevent it from deleting ignored files
             resolver._applyPkgMeta = function () {};
@@ -231,7 +241,7 @@ describe('FsResolver', function () {
         });
 
         it('should extract if source is an archive', function (next) {
-            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip.zip'));
+            var resolver = create(path.resolve(__dirname, '../../assets/package-zip.zip'));
 
             resolver.resolve()
             .then(function (dir) {
@@ -244,7 +254,7 @@ describe('FsResolver', function () {
         });
 
         it('should copy extracted folder contents if archive contains only a folder inside', function (next) {
-            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
+            var resolver = create(path.resolve(__dirname, '../../assets/package-zip-folder.zip'));
 
             resolver.resolve()
             .then(function (dir) {
@@ -260,7 +270,7 @@ describe('FsResolver', function () {
 
 
         it('should extract if source is an archive and rename to index if it\'s only one file inside', function (next) {
-            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip-single-file.zip'));
+            var resolver = create(path.resolve(__dirname, '../../assets/package-zip-single-file.zip'));
 
             resolver.resolve()
             .then(function (dir) {
@@ -276,7 +286,7 @@ describe('FsResolver', function () {
         });
 
         it('should rename single file from a single folder to index when source is an archive', function (next) {
-            var resolver = new FsResolver(path.resolve(__dirname, '../../assets/package-zip-folder-single-file.zip'));
+            var resolver = create(path.resolve(__dirname, '../../assets/package-zip-folder-single-file.zip'));
 
             resolver.resolve()
             .then(function (dir) {
