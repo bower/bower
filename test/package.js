@@ -77,7 +77,20 @@ describe('package', function () {
     assert.equal(pkg.gitUrl, 'git://example.com/jquery/jquery.git');
     assert.equal(pkg.tag, '1.0.0');
   });
+    
+  it('Should revert to HTTPS connections if git:// is not available (config.gitUseHTTPS)', function() {
+      config.gitUseHTTPS = true;
+      var pkg = new Package('jquery', 'git://github.com/jquery/jquery.git');
+      assert.equal(pkg.getCloneURL(), 'https://github.com/jquery/jquery.git');
+  });
 
+  it('Should not revert to HTTPS connections config.gitUseHTTPS is false', function() {
+      config.gitUseHTTPS = false;
+      var url = 'git://github.com/jquery/jquery.git';
+      var pkg = new Package('jquery', url);
+      assert.equal(pkg.getCloneURL(), url);
+  });
+    
   it('Should resolve git HTTP URLs properly', function () {
     var pkg = new Package('jquery', 'git+http://example.com/project.git');
     assert.equal(pkg.gitUrl, 'http://example.com/project.git');
