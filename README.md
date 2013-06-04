@@ -124,13 +124,17 @@ If `config` is not passed, the default one will be used.
 
 ##### Public methods
 
-`Manager#configure(targets, resolved, installed)`: Promise
+`Manager#setProduction(production)`: Manager
+
+Enable/disable production (read of devDependencies).
+
+`Manager#configure(targets, resolved, installed)`: Manager
 
 Configures the manager with `targets` and `installed`:
 
 - `targets`: array of decomposed endpoints that need to be installed
-- `resolved`: object of resolved packages (keys are names and values the canonical package or the package metas)
-- `installed`: object of currently installed packages (keys are names and values the canonical package or the package metas)
+- `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
+- `installed`: object of currently installed packages (keys are names and values the package metas)
 
 If the Manager is already working, the promise is immediately rejected.
 

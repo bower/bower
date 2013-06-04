@@ -7,11 +7,6 @@
     ],
     "options": [
         {
-            "shorthand":   "-F",
-            "flag":        "--force-latest",
-            "description": "Force latest version on conflict"
-        },
-        {
             "shorthand":   "-p",
             "flag":        "--production",
             "description": "Do not install project devDependencies"

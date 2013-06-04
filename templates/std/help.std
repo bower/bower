@@ -10,9 +10,9 @@ Usage:
 Commands:
 
 {{#condense}}
-{{#own commands}}
-    {{#rpad length="20"}}{{key}}{{/rpad}} {{value}}
-{{/own}}
+{{#each commands}}
+    {{#rpad length="20"}}{{@key}}{{/rpad}} {{.}}
+{{/each}}
 {{/condense}}
 
 Options:

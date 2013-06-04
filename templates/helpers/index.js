@@ -1,6 +1,6 @@
 module.exports = {
     colors: require('./colors'),
-    own: require('./own'),
+    sum: require('./sum'),
     rpad: require('./rpad'),
     condense: require('./condense')
 };
