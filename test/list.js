@@ -87,6 +87,25 @@ describe('list', function () {
       .resolve();
   });
 
+  it('Should list empty set for non-bower project', function (next) {
+    // install project. Using assets as arbitrary "non-bower" folder
+    var manager = new Manager([]);
+    manager.cwd = __dirname + '/assets';
+
+    manager
+      .on('error', function (err) {
+        throw err;
+      })
+      .on('resolve', function () {
+        list({ paths: true }).on('data', function (data) {
+          assert.deepEqual(normalize(data), {});
+
+          next();
+        });
+      })
+      .resolve();
+  });
+
   it('Should list nested map', function (next) {
     // install project
     var manager = new Manager([]);
