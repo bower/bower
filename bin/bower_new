@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
 var path = require('path');
+var tty = require('tty');
+var updateNotifier = require('update-notifier');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var config = require('../lib/config');
 var cli = require('../lib/util/cli');
 var Logger = require('../lib/core/Logger');
 var commands = require('../lib/commands');
-var updateNotifier = require('update-notifier');
 
 // --------
 
@@ -41,7 +42,12 @@ if (config.silent) {
     loglevel = levels[config.loglevel] || levels.info;
 }
 
-config.interactive = loglevel <= levels.conflict;
+// Enable interactive if terminal is TTY,
+// loglevel is equal or lower then conflict and
+// the output is not json
+config.interactive = tty.isatty(1) &&
+                     loglevel <= levels.conflict &&
+                     !config.json;
 
 // Get the command to execute
 // TODO: abbreviations
