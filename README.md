@@ -136,6 +136,9 @@ Configures the manager with `targets` and `installed`:
 - `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
 - `installed`: object of currently installed packages (keys are names and values the package metas)
 
+`targets` and `resolved` decomposed endpoints may contain a dependants key to specify dependants.
+Those will be used when presenting choices to the user on conflicts.
+
 If the Manager is already working, the promise is immediately rejected.
 
 `Manager#resolve()`: Promise
