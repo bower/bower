@@ -128,6 +128,14 @@ If `config` is not passed, the default one will be used.
 
 Enable/disable production (read of devDependencies).
 
+`Manager#getResolutions()`: Object
+
+Get the current resolutions object.
+
+`Manager#setResolutions(resolutions)`: Manager
+
+Set the resolutions to be used on conflicts.
+
 `Manager#configure(targets, resolved, installed)`: Manager
 
 Configures the manager with `targets` and `installed`:
