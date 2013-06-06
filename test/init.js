@@ -145,9 +145,9 @@ describe('init', function () {
             'name': 'package-existing-components',
             'version': '0.0.0',
             'dependencies': {
-              'backbone': '~0.9.10',
-              'jquery': '~1.9.1',
-              'underscore': '~1.4.4'
+              'backbone': '0.9.10',
+              'jquery': '1.9.1',
+              'underscore': '1.4.4'
             },
             'ignore': [
               '**/.*',
