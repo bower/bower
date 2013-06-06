@@ -1,0 +1,8 @@
+{{#yellow}}Please note that,{{/yellow}}
+{{#condense}}
+{{#each picks}}
+    {{#white}}{{dependants}}{{/white}} depend on {{#cyan}}{{endpoint.name}}#{{endpoint.target}}{{/cyan}}{{#if pkgMeta._release}} which resolved to {{#white}}{{pkgMeta._release}}{{/white}}{{/if}}
+{{/each}}
+{{/condense}}
+
+Resort to using {{#cyan}}{{suitable.endpoint.name}}#{{resolution}}{{/cyan}} which resolved to {{#white}}{{suitable.pkgMeta._release}}{{/white}}
