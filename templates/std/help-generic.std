@@ -11,7 +11,7 @@ Options:
 
 {{#condense}}
 {{#each options}}
-    {{#yellow}}{{#rpad length="20"}}{{#if shorthand}}{{shorthand}}, {{/if}}{{flag}}{{/rpad}}{{/yellow}} {{description}}
+    {{#yellow}}{{#rpad length="23"}}{{#if shorthand}}{{shorthand}}, {{/if}}{{flag}}{{/rpad}}{{/yellow}} {{description}}
 {{/each}}
 {{/condense}}
 

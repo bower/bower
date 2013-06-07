@@ -126,15 +126,16 @@ If `config` is not passed, the default one will be used.
 
 `Manager#setProduction(production)`: Manager
 
-Enable/disable production (read of devDependencies).
+Enable/disable `production` (read of devDependencies).
 
 `Manager#getResolutions()`: Object
 
 Get the current resolutions object.
 
-`Manager#setResolutions(resolutions)`: Manager
+`Manager#setResolutions(resolutions, save)`: Manager
 
-Set the resolutions to be used on conflicts.
+Set the `resolutions` to be used on conflicts.
+If `save` is true, the `resolutions` object will be updated.
 
 `Manager#configure(targets, resolved, installed)`: Manager
 
@@ -144,9 +145,7 @@ Configures the manager with `targets` and `installed`:
 - `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
 - `installed`: object of currently installed packages (keys are names and values the package metas)
 
-`targets` and `resolved` decomposed endpoints may contain a dependants key to specify dependants.
-Those will be used when presenting choices to the user on conflicts.
-
+`targets` and `resolved` decomposed endpoints should contain `dependency` and `dependants` keys correctly set.
 If the Manager is already working, the promise is immediately rejected.
 
 `Manager#resolve()`: Promise

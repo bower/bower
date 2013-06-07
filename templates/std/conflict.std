@@ -4,3 +4,6 @@
     {{#magenta}}{{sum @index 1}}){{/magenta}} {{#cyan}}{{endpoint.name}}#{{endpoint.target}}{{/cyan}}{{#if pkgMeta._release}} which resolved to {{#white}}{{pkgMeta._release}}{{/white}}{{/if}}{{#if dependants}} and has {{#white}}{{dependants}}{{/white}} as dependants{{/if}}
 {{/each}}
 {{/condense}}
+{{#unless saveResolutions}}
+Use --save-resolutions to persist your choice to the bower.json
+{{/unless}}
