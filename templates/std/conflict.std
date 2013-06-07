@@ -5,5 +5,5 @@
 {{/each}}
 {{/condense}}
 {{#unless saveResolutions}}
-Use --save-resolutions to persist your choice to the bower.json
+Rerun the command with {{#white}}--save-resolutions{{/white}} to persist your choice to bower.json
 {{/unless}}
