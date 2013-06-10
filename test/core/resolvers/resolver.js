@@ -696,7 +696,7 @@ describe('Resolver', function () {
             .done();
         });
 
-        it.skip('should set the original source in package meta file');
+        it.skip('should set the original source and target in package meta file');
 
         it('should save the package meta to the package meta file (.bower.json)', function (next) {
             var resolver = create('foo');

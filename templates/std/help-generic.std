@@ -15,7 +15,7 @@ Options:
 {{/each}}
 {{/condense}}
 
-    Additionally all global options listed in 'bower -h' are available
+    Additionally all global options listed in 'bower help' are available
 
 Description:
 

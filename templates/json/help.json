@@ -1,10 +1,9 @@
 {
     "usage": [
-        "<command> [<args>] [<options]"
+        "<command> [<args>] [<options>]"
     ],
     "commands": {
-        "cache-clean":     "Clean the Bower cache, or the specified package caches",
-        "completion":      "Tab Completion for Bower",
+        "cache":           "Manage bower cache",
         "help":            "Display help information about Bower",
         "info":            "Version info and description of a particular package",
         "init":            "Interactively create a bower.json file",

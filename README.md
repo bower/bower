@@ -118,9 +118,10 @@ Main resolve coordinator.
 
 ##### Constructor
 
-`Manager(config)`
+`Manager(config, logger)`
 
-If `config` is not passed, the default one will be used.
+The `config` to be used.
+The `logger` to print logs to.
 
 ##### Public methods
 
@@ -176,19 +177,35 @@ Abstraction to the underlying complexity of heterogeneous source types
 
 ##### Constructor
 
-`PackageRepository(config)`
+`PackageRepository(config, logger)`
 
-If `config` is not passed, the default one will be used.
+The `config` to be used.
+The `logger` to print logs to.
 
 ##### Public methods
 
 `PackageRepository#fetch(decEndpoint)`: Promise
 
-Enqueues an decomposed endpoint to be fetched, and returns a promise of a `canonical package`.
+Fetches and endpoint, returning a promise of a `canonical package`.
 
 `PackageRepository#empty(name)`: Promise
 
 Empties any resolved cache for package `name` or all the resolved cache if no `name` is passed.
+
+`PackageRepository#eliminate(source, version)`: Promise
+
+Eliminates entry with given `source` and `version` from the repository.   
+Note that `version` can be empty because some `canonical package`s do not have a version associated.
+In that case, only the unversioned entry will be removed.
+
+`PackageRepository#clean()`: Promise
+
+Cleans the entire repository.
+
+`PackageRepository#list()`: Promise
+
+List the entries of the cache.   
+Return a promise of an array of `package meta`s.
 
 
 #### ResolverFactory
@@ -232,9 +249,14 @@ Eliminates entry with given `source` and `version` from the cache.
 Note that `version` can be empty because some `canonical package`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
-`ResolveCache#empty(source)`: Promise
+`ResolveCache#clean()`: Promise
 
-Eliminates `canonical package`s that match the `source` or everything if `source` is not passed.
+Cleans the entire cache.
+
+`ResolveCache#list()`: Promise
+
+List the entries of the cache.   
+Return a promise of an array of `package meta`s.
 
 
 #### Resolver

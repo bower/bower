@@ -1,0 +1,15 @@
+{
+    "command": "cache clean",
+    "description": "Lists cached packages",
+    "usage": [
+        "cache list",
+        "cache list <name> [<name> ...]"
+    ],
+    "options": [
+        {
+            "shorthand":   "-h",
+            "flag":        "--help",
+            "description": "Show this help message"
+        }
+    ]
+}

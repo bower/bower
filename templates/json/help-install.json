@@ -3,9 +3,14 @@
     "description": "Installs the project dependencies or a specific set of endpoints",
     "usage": [
         "install",
-        "install [<endpoint> [, <endpoint>, ..]]"
+        "install <endpoint> [<endpoint> ..]"
     ],
     "options": [
+        {
+            "shorthand":   "-h",
+            "flag":        "--help",
+            "description": "Show this help message"
+        },
         {
             "shorthand":   "-p",
             "flag":        "--production",

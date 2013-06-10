@@ -14,7 +14,7 @@ var UrlResolver = require('../../lib/core/resolvers/UrlResolver');
 var defaultConfig = require('../../lib/config');
 var Logger = require('../../lib/core/Logger');
 
-describe('callFactory', function () {
+describe('resolveFactory', function () {
     var tempSource;
     var logger = new Logger();
     var registryClient = new RegistryClient(mout.object.fillIn({
