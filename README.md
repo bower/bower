@@ -127,27 +127,24 @@ The `logger` to print logs to.
 
 `Manager#configure(setup)`: Manager
 
-Configures the manager.   
-If the Manager is already working, the promise is immediately rejected.
-
-Setup is an object with:
+Configures the manager. Setup is an object with:
 
 - `targets`: array of decomposed endpoints that will be fetched
 - `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
 - `installed`: object of currently installed packages (keys are names and values the package metas)
 - `incompatibles`: array of decomposed endpoints that are known to be incompatible
 - `resolutions`: object of resolutions to be used on conflicts
-- `production`: boolean indicating if devDependencies should also be fetched when resolving dependencies
-
-
-If the Manager is already working, the promise is immediately rejected.
+- `production`: boolean indicating if dev dependencies should also be fetched when resolving dependencies
 
 By default, `resolved` packages are also interpreted as installed.   
 When a package is resolved, all its associated incompatible packages will also be fetched.   
 
-All decomposed endpoints should might contain a `dependants` key that will to display additional information
-on conflicts. Also, `resolved` endpoints should contain the `package meta` and `canonical package` information set.
-The `resolutions` object will be updated as necessary.   
+All decomposed endpoints might contain a `dependants` key that will be used to display additional information
+on conflicts.    
+The `resolved` endpoints should contain the `package meta` and `canonical package` information set.   
+The `resolutions` object will be updated as necessary.
+
+If the Manager is already working, the promise is immediately rejected.
 
 `Manager#resolve()`: Promise
 
