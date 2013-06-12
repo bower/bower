@@ -14,11 +14,6 @@
             "shorthand":   "-p",
             "flag":        "--production",
             "description": "Do not install project devDependencies"
-        },
-        {
-            "shorthand":   "-r",
-            "flag":        "--save-resolutions",
-            "description": "Save resolutions chosen to resolve conflicts"
         }
     ]
 }

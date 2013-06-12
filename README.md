@@ -120,34 +120,34 @@ Main resolve coordinator.
 
 `Manager(config, logger)`
 
-The `config` to be used.
+The `config` to be used.   
 The `logger` to print logs to.
 
 ##### Public methods
 
-`Manager#setProduction(production)`: Manager
+`Manager#configure(setup)`: Manager
 
-Enable/disable `production` (read of devDependencies).
+Configures the manager.   
+If the Manager is already working, the promise is immediately rejected.
 
-`Manager#getResolutions()`: Object
+Setup is an object with:
 
-Get the current resolutions object.
-
-`Manager#setResolutions(resolutions, save)`: Manager
-
-Set the `resolutions` to be used on conflicts.
-If `save` is true, the `resolutions` object will be updated.
-
-`Manager#configure(targets, resolved, installed)`: Manager
-
-Configures the manager with `targets` and `installed`:
-
-- `targets`: array of decomposed endpoints that need to be installed
+- `targets`: array of decomposed endpoints that will be fetched
 - `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
 - `installed`: object of currently installed packages (keys are names and values the package metas)
+- `incompatibles`: array of decomposed endpoints that are known to be incompatible
+- `resolutions`: object of resolutions to be used on conflicts
+- `production`: boolean indicating if devDependencies should also be fetched when resolving dependencies
 
-`targets` and `resolved` decomposed endpoints should contain `dependency` and `dependants` keys correctly set.
+
 If the Manager is already working, the promise is immediately rejected.
+
+By default, `resolved` packages are also interpreted as installed.   
+When a package is resolved, all its associated incompatible packages will also be fetched.   
+
+All decomposed endpoints should might contain a `dependants` key that will to display additional information
+on conflicts. Also, `resolved` endpoints should contain the `package meta` and `canonical package` information set.
+The `resolutions` object will be updated as necessary.   
 
 `Manager#resolve()`: Promise
 
@@ -159,11 +159,10 @@ If the Manager is already working, the promise is immediately rejected.
 `Manager#install()`: Promise
 
 Installs packages that result from the dissection of the resolve process.
-The promise is resolved with an object where keys are package names and values the package meta's.
+The promise is resolved with an object where keys are package names and values meaningful
+information about the installed package.
 
 If the Manager is already working, the promise is immediately rejected.
-
-TODO
 
 `Manager#areCompatible(source, subject)`: Boolean
 
@@ -179,7 +178,7 @@ Abstraction to the underlying complexity of heterogeneous source types
 
 `PackageRepository(config, logger)`
 
-The `config` to be used.
+The `config` to be used.   
 The `logger` to print logs to.
 
 ##### Public methods

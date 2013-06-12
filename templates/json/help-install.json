@@ -25,11 +25,6 @@
             "shorthand":   "-D",
             "flag":        "--save-dev",
             "description": "Save installed packages into the project's bower.json devDependencies"
-        },
-        {
-            "shorthand":   "-r",
-            "flag":        "--save-resolutions",
-            "description": "Save resolutions chosen to resolve conflicts"
         }
     ]
 }
