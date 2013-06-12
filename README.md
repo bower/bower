@@ -141,7 +141,8 @@ When a package is resolved, all its associated incompatible packages will also b
 
 All decomposed endpoints might contain a `dependants` key that will be used to display additional information
 on conflicts.    
-The `resolved` endpoints should contain the `package meta` and `canonical package` information set.   
+The `resolved` endpoints should contain the `package meta` and `canonical package` information set.
+An additional `unresolvable` key is set to true, will cause a conflict to occur even if a resolution is set.   
 The `resolutions` object will be updated as necessary.
 
 If the Manager is already working, the promise is immediately rejected.
