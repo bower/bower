@@ -2,8 +2,8 @@
     "command": "cache clean",
     "description": "Lists cached packages",
     "usage": [
-        "cache list",
-        "cache list <name> [<name> ...]"
+        "cache list [<options>]",
+        "cache list <name> [<name> ...] [<options>]"
     ],
     "options": [
         {

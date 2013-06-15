@@ -2,7 +2,7 @@
     "command": "uninstall",
     "description": "Uninstalls a browser package locally from your bower_components directory",
     "usage": [
-        "uninstall <name> [<name> ..]"
+        "uninstall <name> [<name> ..] [<options>]"
     ],
     "options": [
         {

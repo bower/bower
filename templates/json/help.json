@@ -9,12 +9,12 @@
         "init":            "Interactively create a bower.json file",
         "install":         "Install a package locally",
         "link":            "Symlink a package folder",
-        "list":            "List all installed packages",
+        "list":            "List local packages",
         "lookup":          "Look up a package URL by name",
         "register":        "Register a package",
         "search":          "Search for a package by name",
-        "uninstall":       "Remove a package",
-        "update":          "Update a package"
+        "uninstall":       "Remove a local package",
+        "update":          "Update a local package"
     },
     "options": [
         {

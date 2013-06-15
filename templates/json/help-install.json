@@ -2,8 +2,8 @@
     "command": "install",
     "description": "Installs the project dependencies or a specific set of endpoints",
     "usage": [
-        "install",
-        "install <endpoint> [<endpoint> ..]"
+        "install [<options>]",
+        "install <endpoint> [<endpoint> ..] [<options>]"
     ],
     "options": [
         {

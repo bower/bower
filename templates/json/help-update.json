@@ -2,7 +2,7 @@
     "command": "update",
     "description": "Updates installed packages to their newest version according to bower.json",
     "usage": [
-        "update <name> [<name> ..]"
+        "update <name> [<name> ..] [<options>]"
     ],
     "options": [
         {

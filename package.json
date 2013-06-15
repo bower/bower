@@ -19,6 +19,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
+    "archy": "0.0.2",
     "bower-json": "~0.0.0",
     "bower-registry-client": "~0.0.0",
     "chmodr": "~0.1.0",
