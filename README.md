@@ -142,7 +142,7 @@ When a package is resolved, all its associated incompatible packages will also b
 All decomposed endpoints might contain a `dependants` key that will be used to display additional information
 on conflicts.    
 The `resolved` endpoints should contain the `package meta` and `canonical package` information set.
-An additional `unresolvable` key is set to true, will cause a conflict to occur even if a resolution is set.   
+An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.   
 The `resolutions` object will be updated as necessary.
 
 If the Manager is already working, the promise is immediately rejected.
@@ -237,7 +237,7 @@ The promise is resolved with both the `canonical package` and `package meta`.
 
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
-Stores `canonicalPackage` into the cache.   
+Stores `canonical package` into the cache.   
 The `pkgMeta` is optional and will be read if not passed.
 
 `ResolveCache#eliminate(source, version)`: Promise
