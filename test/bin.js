@@ -51,7 +51,7 @@ describe('bin', function () {
 
     cp.on('exit', function (status) {
       assert.equal(status, 0);
-      assert(fileExists.sync(testDir + '/components/jquery'));
+      assert(fileExists.sync(testDir + '/bower_components/jquery'));
       done();
     });
   });

@@ -48,7 +48,7 @@ Where `<package>` can be any one of the following:
   public or private. ‡
 * A local Git endpoint, i.e., a folder that's a Git repository. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
-* A URL to a file, including `zip` and `tar.gz` files. It's contents will be
+* A URL to a file, including `zip` and `tar` files. It's contents will be
   extracted.
 
 ‡ These types of `<package>` make Git tags available. You can specify a
@@ -90,18 +90,23 @@ and [RequireJS](http://requirejs.org/) -- that will help you do this.
 
 ### Registering packages
 
-To register a new package, there **must** be a valid manifest JSON in the
-current working directory, your package **must** be available at a Git endpoint
-(e.g., GitHub), and it should use [semver](http://semver.org/) Git tags. Then
-run:
+To register a new package:
+
+* There **must** be a valid manifest JSON in the current working directory.
+* Your package should use [semver](http://semver.org/) Git tags.
+* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
+  to push your Git tags!
+
+Then use the following command:
 
 ```
 bower register <my-package-name> <git-endpoint>
 ```
 
-The Bower registry does not have authentication or user management. It's on a
-first come, first served basis. Think of it like a URL shortener. Now anyone
-can run `bower install <my-package-name>`, and get your library installed.
+The Bower registry does not have authentication or user management at this point
+in time. It's on a first come, first served basis. Think of it like a URL
+shortener. Now anyone can run `bower install <my-package-name>`, and get your
+library installed.
 
 There is no direct way to unregister a package yet. For now, you can [request a
 package be unregistered](https://github.com/bower/bower/issues/120).
@@ -163,8 +168,7 @@ package manifest, the following data can be referenced from within the
 * `package`: `flight`
 
 **N.B.** To run your own Bower Endpoint for custom packages that are behind a
-firewall, you can use a simple implementation of the [Bower
-Server](https://github.com/bower/bower-server).
+firewall, you can use a simple implementation of the [Bower Registry](https://github.com/bower/registry).
 
 
 ## Defining a package
@@ -173,6 +177,8 @@ You must create a JSON file -- `bower.json` by default -- in your project's
 root, and specify all of its dependencies. This is similar to Node's
 `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's
 dependencies.
+
+*NOTE:* In versions of Bower before 0.9.0 the package metadata file was called `component.json` rather than `bower.json`. This has changed to avoid a name clash with another tool. You can still use `component.json` for now but it is deprecated and the automatic fallback is likely to be removed in an upcoming release.
 
 You can interactively create a `bower.json` with the following command:
 
@@ -329,6 +335,7 @@ Thanks for assistance and contributions:
 * [@carsonmcdonald](https://github/@carsonmcdonald)
 * [@chriseppstein](https://github.com/chriseppstein)
 * [@danwrong](https://github.com/danwrong)
+* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
 * [@desandro](https://github.com/desandro)
 * [@hemanth](https://github.com/hemanth)
 * [@isaacs](https://github.com/isaacs)

@@ -16,7 +16,6 @@ describe('package', function () {
   var savedConfigShorthandResolver = config.shorthand_resolver;
 
   function clean(done) {
-    var del = 0;
 
     // Restore possibly dirtied config.json
     config.json = savedConfigJson;
@@ -24,15 +23,11 @@ describe('package', function () {
     // Restore possibly dirtied config.shorthand_resolver
     config.shorthand_resolver = savedConfigShorthandResolver;
 
-    rimraf(config.directory, function (err) {
-      if (err) throw new Error('Unable to remove components directory');
-      if (++del >= 2) done();
-    });
+    rimraf.sync(config.directory);
 
-    rimraf(config.cache, function (err) {
-      if (err) throw new Error('Unable to remove cache directory');
-      if (++del >= 2) done();
-    });
+    rimraf.sync(config.cache);
+
+    done();
   }
 
   beforeEach(clean);
@@ -150,6 +145,20 @@ describe('package', function () {
 
   it('Should error if the HTTP status is not OK', function (next) {
     var pkg = new Package('test', 'http://somedomainthatwillneverexistbower.com/test.js');
+
+    pkg.on('resolve', function () {
+      throw new Error('Should have given an error');
+    });
+
+    pkg.on('error', function () {
+      next();
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should error if no endpoint is given', function (next) {
+    var pkg = new Package('jquery');
 
     pkg.on('resolve', function () {
       throw new Error('Should have given an error');
@@ -519,6 +528,34 @@ describe('package', function () {
     pkg.resolve();
   });
 
+  it('Should emit a warning on .tar.gz files, as it is not able to extract them', function (next) {
+    nock('http://someawesomedomain.com')
+      .get('/package-folder.tar.gz')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip-folder.zip'), {
+        'Content-Disposition': 'attachment; filename=package.tar.gz'
+      });
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package-folder.tar.gz');
+    var warn = [];
+
+    pkg.on('resolve', function () {
+        assert.equal(warn.length, 1);
+        next();
+      });
+
+    pkg.on('error', function (err) {
+        throw err;
+      });
+
+    pkg.on('warn', function (message) {
+        if (/not yet supported/.test(message)) {
+          warn.push(message);
+        }
+      });
+
+    pkg.resolve();
+  });
+
   it('Should extract tar and zip files from normal URL packages', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package.zip')
@@ -543,6 +580,48 @@ describe('package', function () {
         assert(files.indexOf('foo.js') !== -1);
         next();
       });
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should resolve filetype based on header content-disposition from URL packages', function (next) {
+    nock('http://someawesomedomain.com')
+      .get('/package/zipball')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {
+        'Content-Disposition': 'attachment; filename=package.zip'
+      });
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
+
+    pkg.on('resolve', function () {
+      assert.equal(pkg.assetType, '.zip');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should resolve filetype based on header content-type from URL packages', function (next) {
+    nock('http://someawesomedomain.com')
+      .get('/package/zipball')
+      .reply(200, fs.readFileSync(__dirname + '/assets/package-zip.zip'), {
+        'Content-Type': 'application/zip; charset=UTF-8'
+      });
+
+    var pkg = new Package('bootstrap', 'http://someawesomedomain.com/package/zipball');
+
+    pkg.on('resolve', function () {
+      assert.equal(pkg.assetType, '.zip');
+      next();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
     });
 
     pkg.resolve();
@@ -588,7 +667,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    var pkgInstallPath = path.join(__dirname, '/../components/turtles/');
+    var pkgInstallPath = path.join(__dirname, '/../bower_components/turtles/');
     pkg.on('install', function () {
       // these files should have been deleted
       assert(!fs.existsSync(pkgInstallPath + 'don.txt'));
@@ -602,7 +681,7 @@ describe('package', function () {
       assert(fs.existsSync(pkgInstallPath + 'index.js'));
       // all ignore file pattern should be removed
       async.forEach(pkg.json.ignore, function (ignorePattern, asyncNext) {
-        var pattern = path.join(__dirname, '/../components/turtles/' + ignorePattern);
+        var pattern = path.join(__dirname, '/../bower_components/turtles/' + ignorePattern);
         glob(pattern, function (err, globPath) {
           assert(globPath.length === 0);
           asyncNext();
@@ -629,7 +708,7 @@ describe('package', function () {
       throw new Error(err);
     });
 
-    var pkgInstallPath = path.join(__dirname, '/../components/spark-md5/');
+    var pkgInstallPath = path.join(__dirname, '/../bower_components/spark-md5/');
     pkg.on('install', function () {
       fs.renameSync(dir + '/.git', dir + '/git_repo');
       assert(!fs.existsSync(pkgInstallPath + '/.git/'));
@@ -644,7 +723,7 @@ describe('package', function () {
     var warn = [];
 
     pkg.on('resolve', function () {
-      assert.equal(warn.length, 3);
+      assert.equal(warn.length, 2);
       next();
     });
 
@@ -678,6 +757,48 @@ describe('package', function () {
 
     pkg.on('error', function (err) {
       throw err;
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should give a meaningful error if the commit does not exist', function (next) {
+    var commit = '000002a7b4e31cad48886d67446eb31faad92683';
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git#' + commit);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      assert(/not a valid semver range\/version or a valid commit hash/.test(err.message));
+      next();
+    });
+
+    pkg.on('install', function () {
+      assert(false);
+      next();
+    });
+
+    pkg.resolve();
+  });
+
+  it('Should allow you to specify a git commit rather than a tag version', function (next) {
+    var commit = 'd54062a7b4e31cad48886d67446ea31faad92683';
+    var pkg = new Package('jquery', 'git://github.com/maccman/package-jquery.git#' + commit);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.on('install', function () {
+      assert(fs.existsSync(pkg.gitPath));
+      assert.equal(fs.readFileSync(path.join(pkg.gitPath, '.git/HEAD'), 'UTF-8'), commit + '\n');
+      next();
     });
 
     pkg.resolve();

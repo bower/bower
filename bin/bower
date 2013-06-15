@@ -28,9 +28,17 @@ if (reqVer && !semver.satisfies(nodeVer, reqVer)) {
   throw new Error('Required: node ' + reqVer);
 }
 
-shorthand = { 'v': ['--version'] };
-options   = { version: Boolean };
-options   = nopt(options, shorthand, process.argv);
+options = {
+  version: Boolean,
+  quiet: Boolean,
+  silent: Boolean
+};
+shorthand = {
+  'v': ['--version'],
+  'q': ['--quiet'],
+  's': ['--silent']
+};
+options = nopt(options, shorthand, process.argv);
 
 bower.version = pkg.version;
 
@@ -41,6 +49,9 @@ command = bower.abbreviations[command];
 
 if (command) bower.command = command;
 
+if (options.silent) {
+  options.quiet = true;
+}
 
 // Temporarory fix for #22 #320 #187
 var errStatusHandler = function () {
@@ -51,16 +62,20 @@ process.on('exit', errStatusHandler);
 
 bower.commands[bower.command || 'help'].line(input)
   .on('data', function (data) {
-    if (data) process.stdout.write(data);
+    if (data && !options.quiet) process.stdout.write(data);
   })
   .on('end', function (data) {
-    if (data) process.stdout.write(data);
+    if (data && !options.quiet) process.stdout.write(data);
   })
   .on('warn', function (warning)  {
-    process.stderr.write(template('warn', { message: warning }, true));
+    if (!options.silent) {
+      process.stderr.write(template('warn', { message: warning }, true));
+    }
   })
   .on('error', function (err)  {
     if (options.verbose) throw err;
-    process.stdout.write(template('error', { message: err.message }, true));
+    if (!options.silent) {
+      process.stdout.write(template('error', { message: err.message }, true));
+    }
     errors.push(err);
   });

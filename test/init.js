@@ -47,7 +47,7 @@ describe('init', function () {
             name: 'package-new',
             version: '0.0.0',
             main: 'index.js',
-            ignore: ['**/.*', 'node_modules', 'components']
+            ignore: ['**/.*', 'node_modules', 'components', 'bower_components', 'test', 'tests']
           });
           next();
         });
@@ -107,7 +107,10 @@ describe('init', function () {
             'ignore': [
               '**/.*',
               'node_modules',
-              'components'
+              'components',
+              'bower_components',
+              'test',
+              'tests'
             ],
             'custom': 'A custom field'
           });
@@ -149,8 +152,11 @@ describe('init', function () {
             'ignore': [
               '**/.*',
               'node_modules',
-              'components'
-            ]
+              'components',
+              'bower_components',
+              'test',
+              'tests'
+            ],
           });
 
           next();
