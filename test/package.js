@@ -528,6 +528,30 @@ describe('package', function () {
     pkg.resolve();
   });
 
+  it('Should download packages with multiple URL-s', function (next) {
+    var pkg = new Package('backbone', ['https://raw.github.com/documentcloud/backbone/master/backbone.js', 'https://raw.github.com/documentcloud/backbone/master/backbone-min.js']);
+
+    pkg.on('resolve', function () {
+      pkg.install();
+    });
+
+    pkg.on('error', function (err) {
+      throw err;
+    });
+
+    pkg.on('install', function () {
+      fs.readdir(pkg.localPath, function (err, files) {
+        if (err) throw err;
+
+        assert(files.indexOf('backbone.js') !== -1);
+        assert(files.indexOf('backbone-min.js') !== -1);
+        next();
+      });
+    });
+
+    pkg.resolve();
+  });
+
   it('Should emit a warning on .tar.gz files, as it is not able to extract them', function (next) {
     nock('http://someawesomedomain.com')
       .get('/package-folder.tar.gz')
