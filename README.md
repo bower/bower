@@ -74,6 +74,12 @@ bower search [<name>]
 
 Using just `bower search` will list all packages in the registry.
 
+If you know the exact name of your package use the '--exact-match' flag. (this is case insensitive)
+
+```
+bower search [<name>] --exact-match
+```
+
 ### Using packages
 
 The easiest approach is to use Bower statically, just reference the package's
