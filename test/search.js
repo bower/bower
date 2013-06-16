@@ -1,6 +1,7 @@
 var assert = require('assert');
 var search = require('../lib/commands/search');
 var nock   = require('nock');
+var opts   = {};
 
 describe('search', function () {
 
@@ -17,7 +18,7 @@ describe('search', function () {
         .get('/packages/search/asdf')
         .reply(200, {});
 
-    search('asdf')
+    search('asdf',opts)
       .on('end', function () {
         next();
       });
@@ -28,7 +29,7 @@ describe('search', function () {
         .get('/packages/search/asdf')
         .reply(200, {});
 
-    search('asdf').on('packages', function (packages) {
+    search('asdf',opts).on('packages', function (packages) {
       assert.deepEqual([], packages);
       next();
     });
@@ -46,8 +47,27 @@ describe('search', function () {
         .get('/packages/search/fawagahds')
         .reply(200, expected);
 
-    search('fawagahds').on('packages', function (packages) {
+    search('fawagahds',opts).on('packages', function (packages) {
       assert.deepEqual(packages, expected);
+      next();
+    });
+  });
+
+  it('Should only match exact name when exactMatch is on', function (next) {
+    opts['exact-match'] = true;
+    var nockResponse = [
+      { name: 'fawagahds-mobile',
+        url: 'git://github.com/strongbad/fawagahds-mobile.js',
+        endpoint: undefined
+      }
+    ];
+
+    nock('https://bower.herokuapp.com')
+        .get('/packages/search/fawagahds')
+        .reply(200, nockResponse);
+
+    search('fawagahds',opts).on('packages', function (packages) {
+      assert.deepEqual([], packages);
       next();
     });
   });
