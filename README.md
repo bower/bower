@@ -234,6 +234,31 @@ the `list` command to get a simple path-to-name mapping:
 }
 ```
 
+## Getting libraries into your project
+In your project's home directory create a file: `yourFileName.bowerrc` to indicate to Bower where to place the libraries.
+```json
+{
+  "directory": "path/to/where/you/want/the/libraries",
+	"json": "bower.json"
+}
+```
+In the path/to/where/you/want/the/libraries save a json file called `bower.json` with the name and version of the libraries needed.  Below is an example:
+```json
+{
+  "name": "theNameOfYourProject",
+	"version": "0.0.0",
+	"dependencies": {
+		"knockout": "2.2.1",
+		"requirejs": "2.1.6"
+	}
+}
+```
+Open a terminal.  cd to your project's home directory and 
+```
+bower install
+```
+This will place the components folder in the path/to/where/you/want/the/libraries along with the libraries.
+
 
 ## Programmatic API
 
