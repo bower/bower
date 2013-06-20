@@ -235,13 +235,7 @@ the `list` command to get a simple path-to-name mapping:
 ```
 
 ## Getting libraries into your project
-In your project's home directory create a file: `yourFileName.bowerrc` to indicate to Bower where to place the libraries.
-```json
-{
-  "directory": "path/to/where/you/want/the/libraries",
-	"json": "bower.json"
-}
-```
+
 In the path/to/where/you/want/the/libraries save a json file called `bower.json` with the name and version of the libraries needed.  Below is an example:
 ```json
 {
@@ -253,11 +247,16 @@ In the path/to/where/you/want/the/libraries save a json file called `bower.json`
 	}
 }
 ```
-Open a terminal.  cd to your project's home directory and 
+You can get the version number via the terminal.  e.g.
+```
+bower info knockout
+```
+
+To install the libraries open a terminal and then cd to your project's library directory. 
 ```
 bower install
 ```
-This will place the components folder in the path/to/where/you/want/the/libraries along with the libraries.
+This will place the components folder in the path/to/where/you/want/the/libraries along with the libraries requested.
 
 
 ## Programmatic API
