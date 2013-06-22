@@ -159,7 +159,7 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should call _hasNew with the canonical package and the package meta', function (next) {
+        it('should call _hasNew with the canonical dir and the package meta', function (next) {
             var resolver = create('foo');
             var canonical;
             var meta;
@@ -341,7 +341,7 @@ describe('Resolver', function () {
              .done();
         });
 
-        it('should resolve with the canonical package (folder)', function (next) {
+        it('should resolve with the canonical dir (folder)', function (next) {
             var resolver = create('foo');
 
             resolver._resolve = function () {};
@@ -379,7 +379,7 @@ describe('Resolver', function () {
             });
         });
 
-        it('should return the canonical package (folder) if resolve succeeded', function (next) {
+        it('should return the canonical dir (folder) if resolve succeeded', function (next) {
             var resolver = create('foo');
 
             resolver._resolve = function () {};

@@ -104,7 +104,7 @@ describe('FsResolver', function () {
 
     describe('.resolve', function () {
         // Function to assert that the main property of the
-        // package meta of a canonical package is set to the
+        // package meta of a canonical dir is set to the
         // expected value
         function assertMain(dir, singleFile) {
             return Q.nfcall(fs.readFile, path.join(dir, '.bower.json'))

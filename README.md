@@ -41,7 +41,7 @@ Main issues are:
 - **Endpoint:** name=source#target
 - **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
 - **Components folder:** The folder in which components are installed (`bower_components` by default).
-- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is stored in a `.bower.json` file, inside a canonical package.
+- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is stored in a `.bower.json` file, inside a canonical dir.
 
 ### Overall strategy
 
@@ -87,7 +87,7 @@ Here's an overview of the dependency resolve process:
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
     - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
 
-5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical package` that complies to the endpoint target. Some considerations:
+5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical dir` that complies to the endpoint target. Some considerations:
     - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
     - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
 
@@ -102,9 +102,9 @@ Here's an overview of the dependency resolve process:
 
 8. **CACHE RESOLVED PACKAGES** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides. This allows resolvers to store additional details about the fetched package to be used for future *cache hit validations* (e.g. store HTTP expiration headers in the case of the `UrlPackage`).
 
-9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical package to the `Manager`.
+9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical dir to the `Manager`.
 
-10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical packages have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
+10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
 -----
 
@@ -140,7 +140,7 @@ When a package is resolved, all its associated incompatible packages will also b
 
 All decomposed endpoints might contain a `dependants` key that will be used to display additional information
 on conflicts.    
-The `resolved` endpoints should contain the `package meta` and `canonical package` information set.
+The `resolved` endpoints should contain the `package meta` and `canonical dir` information set.
 An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.   
 The `resolutions` object will be updated as necessary.
 
@@ -182,7 +182,7 @@ The `logger` to print logs to.
 
 `PackageRepository#fetch(decEndpoint)`: Promise
 
-Fetches and endpoint, returning a promise of a `canonical package`.
+Fetches and endpoint, returning a promise of a `canonical dir`.
 
 `PackageRepository#empty(name)`: Promise
 
@@ -191,7 +191,7 @@ Empties any resolved cache for package `name` or all the resolved cache if no `n
 `PackageRepository#eliminate(source, version)`: Promise
 
 Eliminates entry with given `source` and `version` from the repository.   
-Note that `version` can be empty because some `canonical package`s do not have a version associated.
+Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
 `PackageRepository#clean()`: Promise
@@ -219,7 +219,7 @@ If `config` is not passed, the default config will be used.
 
 #### ResolveCache
 
-The cache, stored in disk, of resolved packages (canonical packages).
+The cache, stored in disk, of resolved packages (canonical dirs).
 
 ##### Constructor
 
@@ -231,18 +231,18 @@ The cache, stored in disk, of resolved packages (canonical packages).
 
 `ResolveCache#retrieve(source, target)`: Promise
 
-Retrieves `canonical package` for a given `source` and `target` (optional, defaults to `*`).   
-The promise is resolved with both the `canonical package` and `package meta`.
+Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).   
+The promise is resolved with both the `canonical dir` and `package meta`.
 
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
-Stores `canonical package` into the cache.   
+Stores `canonical dir` into the cache.   
 The `pkgMeta` is optional and will be read if not passed.
 
 `ResolveCache#eliminate(source, version)`: Promise
 
 Eliminates entry with given `source` and `version` from the cache.   
-Note that `version` can be empty because some `canonical package`s do not have a version associated.
+Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
 `ResolveCache#clean()`: Promise
@@ -298,16 +298,16 @@ Returns the local temporary folder into which the package is being fetched. The 
 Checks if there is a version more recent than the provided `canonicalDir` (folder) that complies with the resolver target.
 The hasNew process is as follows:
 
-- Reads the `package meta` from the `canonical package` if not supplied
+- Reads the `package meta` from the `canonical dir` if not supplied
 - If there's an error while reading the `package meta`, it resolves to `true` because the package might be broken
-- Otherwise, calls `_hasNew()` with the `canonical package` and `package meta` as arguments
+- Otherwise, calls `_hasNew()` with the `canonical dir` and `package meta` as arguments
 
 If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
 rejected.
 
 `Resolver#resolve()`: Promise
 
-Resolves the resolver, and returns a promise of a canonical package.
+Resolves the resolver, and returns a promise of a canonical dir.
 The resolve process is as follows:
 
 - Calls `_createTempDir()` and waits.
@@ -316,7 +316,7 @@ The resolve process is as follows:
 - When done, calls both functions below, and waits:
     - `_applyPkgMeta(meta)`
     - `_savePkgMeta(meta)`
-- When done, resolves the promise with the *temp dir*, which is now a canonical package.
+- When done, resolves the promise with the *temp dir*, which is now a canonical dir.
 
 If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
 rejected.
