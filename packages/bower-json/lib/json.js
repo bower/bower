@@ -19,7 +19,7 @@ function read(file, callback) {
 }
 
 function parse(json, callback) {
-    // Apply normalisation, defaults, validation here
+    // Apply normalisation and validation here
     // If something is invalid, the error.code should be EINVALID
     callback(null, json);
 }
@@ -35,7 +35,7 @@ function find(folder, callback) {
         fs.exists(file, function (exists) {
             if (exists) return callback(null, file);
 
-            var err = new Error('Neither bower.json nor component.json were found in "' + folder + '"');
+            var err = new Error('Neither bower.json nor component.json were found in ' + folder);
             err.code = 'ENOENT';
             callback(err);
         });

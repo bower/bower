@@ -82,3 +82,8 @@ bowerJson.find('/path/to/folder', function (err, filename) {
     });
 });
 ```
+
+
+## License
+
+Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).
