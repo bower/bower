@@ -15,7 +15,7 @@ function lookup(name, callback) {
     // If no registry entries were passed, simply
     // error with package not found
     if (!total) {
-        return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
+        return callback();
     }
 
     // Lookup package in series in each registry
@@ -25,14 +25,12 @@ function lookup(name, callback) {
         var lookupCache = that._lookupCache[remote.host];
 
         // If force flag is disabled we check the cache
-        // and fallback to a request if the offline flag is disabled
         if (!that._config.force) {
             lookupCache.get(name, function (err, value) {
                 data = value;
 
-                // Don't proceed with making a request if we got
-                // an error, a value from the cache or if the offline flag is
-                // enabled
+                // Don't proceed with making a request if we got an error,
+                // a value from the cache or if the offline flag is enabled
                 if (err || data || that._config.offline) {
                     return next(err);
                 }
@@ -71,11 +69,6 @@ function lookup(name, callback) {
             return callback(err);
         }
 
-        // If at the end we still have no data, create an appropriate error
-        if (!data) {
-            return callback(createError('Package "' + name + '" not found', 'ENOTFOUND'));
-        }
-
         callback(null, data);
     });
 }
@@ -98,7 +91,7 @@ function doRequest(name, index, config, callback) {
     }, function (err, response, body) {
         // If there was an internal error (e.g. timeout)
         if (err) {
-            return callback(createError('Request to "' + requestUrl + '" failed: ' + err.message, err.code));
+            return callback(createError('Request to ' + requestUrl + ' failed: ' + err.message, err.code));
         }
 
         // If not found, try next
@@ -108,13 +101,13 @@ function doRequest(name, index, config, callback) {
 
         // Abort if there was an error (range different than 2xx)
         if (response.statusCode < 200 || response.statusCode > 299) {
-            return callback(createError('Request to "' + requestUrl + '" failed with ' + response.statusCode, 'EINVRES'));
+            return callback(createError('Request to ' + requestUrl + ' failed with ' + response.statusCode, 'EINVRES'));
         }
 
         // Validate response body, since we are expecting a JSON object
         // If the server returns an invalid JSON, it's still a string
         if (typeof body !== 'object') {
-            return callback(createError('Response of request to "' + requestUrl + '" is not a valid json', 'EINVRES'));
+            return callback(createError('Response of request to ' + requestUrl + ' is not a valid json', 'EINVRES'));
         }
 
         callback(null, {
@@ -135,7 +128,7 @@ function getMaxAge(entry) {
 }
 
 function initCache() {
-    this._lookupCache = {};
+    this._lookupCache = this._cache.lookup || {};
 
     // Generate a cache instance for each registry endpoint
     this._config.registry.search.forEach(function (registry) {
@@ -148,15 +141,20 @@ function initCache() {
         }
 
         if (this._config.cache) {
-            cacheDir = path.join(this._config.cache, encodeURIComponent(host));
+            cacheDir = path.join(this._config.cache, encodeURIComponent(host), 'lookup');
         }
 
-        this._lookupCache[host] = new Cache(cacheDir);
+        this._lookupCache[host] = new Cache(cacheDir, {
+            max: 250,
+            // If offline flag is passed, we use stale entries from the cache
+            useStale: this._config.offline
+        });
     }, this);
 }
 
 function clearCache(name, callback) {
-    var key;
+    var lookupCache = this._lookupCache;
+    var remotes = Object.keys(lookupCache);
 
     if (typeof name === 'function') {
         callback = name;
@@ -164,19 +162,26 @@ function clearCache(name, callback) {
     }
 
     if (name) {
-        for (key in this._lookupCache) {
-            this._lookupCache[key].del(name);
-        }
+        async.forEach(remotes, function (remote, next) {
+            lookupCache[remote].del(name, next);
+        }, callback);
     } else {
-        for (key in this._lookupCache) {
-            this._lookupCache[key].clear();
-        }
+        async.forEach(remotes, function (remote, next) {
+            lookupCache[remote].clear(next);
+        }, callback);
     }
 }
 
-// ---------------
+function clearRuntimeCache() {
+    var remote;
+
+    for (remote in this._lookupCache) {
+        this._lookupCache[remote].reset();
+    }
+}
 
 lookup.initCache = initCache;
 lookup.clearCache = clearCache;
+lookup.clearRuntimeCache = clearRuntimeCache;
 
 module.exports = lookup;

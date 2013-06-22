@@ -1,6 +1,6 @@
 module.exports = {
-    info: require('./info'),
     lookup: require('./lookup'),
+    list: require('./list'),
     register: require('./register'),
     search: require('./search')
 };

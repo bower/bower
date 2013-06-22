@@ -5,14 +5,7 @@ var request = require('request');
 var Cache = require('./util/Cache');
 var createError = require('./util/createError');
 
-// TODO:
-// The search cache simply stores a specific search result
-// into a file. This is a very rudimentary algorithm but
-// works to support elementary offline support
-// Once the registry server is rewritten, a better strategy
-// can be implemented (with diffs and local search), similar to npm.
-
-function search(name, callback) {
+function list(callback) {
     var data = [];
     var that = this;
     var registry = this._config.registry.search;
@@ -25,16 +18,16 @@ function search(name, callback) {
         return callback(null, []);
     }
 
-    // Search package in series in each registry,
-    // merging results together
+    // Lookup package in series in each registry
+    // endpoint until we got the data
     async.doUntil(function (next) {
         var remote = url.parse(registry[index]);
-        var searchCache = that._searchCache[remote.host];
+        var listCache = that._listCache[remote.host];
 
         // If offline flag is passed, only query the cache
         if (that._config.offline) {
-            return searchCache.get(name, function (err, results) {
-                if (err || !results || !results.length) {
+            return listCache.get('list', function (err, results) {
+                if (err || !results) {
                     return next(err);
                 }
 
@@ -48,8 +41,8 @@ function search(name, callback) {
         }
 
         // Otherwise make a request to always obtain fresh data
-        doRequest(name, index, that._config, function (err, results) {
-            if (err || !results || !results.length) {
+        doRequest(index, that._config, function (err, results) {
+            if (err || !results) {
                 return next(err);
             }
 
@@ -59,7 +52,7 @@ function search(name, callback) {
             });
 
             // Store in cache for future offline usage
-            searchCache.set(name, results, getMaxAge(), next);
+            listCache.set('list', results, getMaxAge(), next);
         });
     }, function () {
         // Until the data is unknown or there's still registries to test
@@ -88,8 +81,8 @@ function addResult(accumulated, result) {
     }
 }
 
-function doRequest(name, index, config, callback) {
-    var requestUrl = config.registry.search[index] + '/packages/search/' + encodeURIComponent(name);
+function doRequest(index, config, callback) {
+    var requestUrl = config.registry.search[index] + '/packages';
     var remote = url.parse(requestUrl);
     var headers = {};
 
@@ -130,7 +123,7 @@ function getMaxAge() {
 }
 
 function initCache() {
-    this._searchCache = this._cache.search || {};
+    this._listCache = this._cache.list || {};
 
     // Generate a cache instance for each registry endpoint
     this._config.registry.search.forEach(function (registry) {
@@ -138,15 +131,15 @@ function initCache() {
         var host = url.parse(registry).host;
 
         // Skip if there's a cache for the same host
-        if (this._searchCache[host]) {
+        if (this._listCache[host]) {
             return;
         }
 
         if (this._config.cache) {
-            cacheDir = path.join(this._config.cache, encodeURIComponent(host), 'search');
+            cacheDir = path.join(this._config.cache, encodeURIComponent(host), 'list');
         }
 
-        this._searchCache[host] = new Cache(cacheDir, {
+        this._listCache[host] = new Cache(cacheDir, {
             max: 250,
             // If offline flag is passed, we use stale entries from the cache
             useStale: this._config.offline
@@ -154,35 +147,27 @@ function initCache() {
     }, this);
 }
 
-function clearCache(name, callback) {
-    var searchCache = this._searchCache;
-    var remotes = Object.keys(searchCache);
+function clearCache(callback) {
+    var listCache = this._listCache;
+    var remotes = Object.keys(listCache);
 
-    if (typeof name === 'function') {
-        callback = name;
-        name = null;
-    }
-
-    // Simply erase everything since other searches could
-    // contain the "name" package
-    // One possible solution would be to read every entry from the cache and
-    // delete if the package is contained in the search results
-    // But this is too expensive
+    // There's only one key, which is 'list'..
+    // But we clear everything anyway
     async.forEach(remotes, function (remote, next) {
-        searchCache[remote].clear(next);
+        listCache[remote].clear(next);
     }, callback);
 }
 
 function clearRuntimeCache() {
     var remote;
 
-    for (remote in this._searchCache) {
-        this._searchCache[remote].reset();
+    for (remote in this._listCache) {
+        this._listCache[remote].reset();
     }
 }
 
-search.initCache = initCache;
-search.clearCache = clearCache;
-search.clearRuntimeCache = clearRuntimeCache;
+list.initCache = initCache;
+list.clearCache = clearCache;
+list.clearRuntimeCache = clearRuntimeCache;
 
-module.exports = search;
+module.exports = list;

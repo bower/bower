@@ -2,24 +2,19 @@ var fs = require('fs');
 var path = require('path');
 var async = require('async');
 var mkdirp = require('mkdirp');
-
-var hasOwn =  Object.prototype.hasOwnProperty;
+var LRU = require('lru-cache');
 
 function Cache(dir, options) {
     options = options || {};
 
-    // Default max age of 5 days
-    if (typeof options.maxAge !== 'number') {
-        options.maxAge = 5 * 24 * 60 * 60 * 1000;
-    }
-
     this._dir = dir;
     this._options = options;
-    this._cache = {};
+    this._cache = this.constructor._cache.get(this._dir);
 
-    // TODO: Switch to LRU
-    //       Though, we need to get this merged before:
-    //       https://github.com/isaacs/node-lru-cache/pull/11
+    if (!this._cache) {
+        this._cache = new LRU(options);
+        this.constructor._cache.set(this._dir, this._cache);
+    }
 
     if (dir) {
         mkdirp.sync(dir);
@@ -28,13 +23,14 @@ function Cache(dir, options) {
 
 Cache.prototype.get = function (key, callback) {
     var file;
+    var json = this._cache.get(key);
 
     // Check in memory
-    if (hasOwn.call(this._cache, key)) {
-        if (this._hasExpired(this._cache[key])) {
+    if (json) {
+        if (this._hasExpired(json)) {
             this.del(key, callback);
         } else {
-            callback(null, this._cache[key].value);
+            callback(null, json.value);
         }
 
         return;
@@ -49,9 +45,9 @@ Cache.prototype.get = function (key, callback) {
     fs.readFile(file, function (err, contents) {
         var json;
 
-        // If there was an error reading
+        // Check if there was an error reading
         // Note that if the file does not exist then
-        // we don't got its value
+        // we don't have its value
         if (err) {
             return callback(err.code === 'ENOENT' ? null : err);
         }
@@ -69,7 +65,7 @@ Cache.prototype.get = function (key, callback) {
             return this.del(key, callback);
         }
 
-        this._cache[key] = json;
+        this._cache.set(key, json);
         callback(null, json.value);
     }.bind(this));
 };
@@ -79,18 +75,14 @@ Cache.prototype.set = function (key, value, maxAge, callback) {
     var entry;
     var str;
 
-    if (typeof maxAge === 'function') {
-        callback = maxAge;
-        maxAge = this._options.maxAge;
-    }
-
+    maxAge = maxAge != null ? maxAge : this._options.maxAge;
     entry = {
-        expires: Date.now() + maxAge,
+        expires: maxAge ? Date.now() + maxAge : null,
         value: value
     };
 
     // Store in memory
-    this._cache[key] = entry;
+    this._cache.set(key, entry);
 
     // Store in disk
     if (!this._dir) {
@@ -111,7 +103,7 @@ Cache.prototype.set = function (key, value, maxAge, callback) {
 
 Cache.prototype.del = function (key, callback) {
     // Delete from memory
-    delete this._cache[key];
+    this._cache.del(key);
 
     // Delete from disk
     if (!this._dir) {
@@ -125,7 +117,7 @@ Cache.prototype.clear = function (callback) {
     var dir = this._dir;
 
     // Clear in memory cache
-    this._cache = {};
+    this._cache.reset();
 
     // Clear everything from the disk
     if (!dir) {
@@ -144,20 +136,28 @@ Cache.prototype.clear = function (callback) {
     });
 };
 
+Cache.prototype.reset = function () {
+    this._cache.reset();
+};
+
 Cache.prototype._hasExpired = function (json) {
     var expires = json.expires;
 
-    if (!expires) {
+    if (!expires || this._options.useStale) {
         return false;
     }
 
     // Check if the key has expired
-    expires = parseInt(json.expires, 10);
-    return !expires || Date.now() > expires;
+    return Date.now() > expires;
 };
 
 Cache.prototype._getFile = function (key) {
     return path.join(this._dir, encodeURIComponent(key));
 };
+
+Cache._cache = new LRU({
+    max: 5,
+    maxAge: 60 * 30 * 1000  // 30 minutes
+});
 
 module.exports = Cache;

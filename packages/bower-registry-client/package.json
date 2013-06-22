@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
+    "lru-cache": "~2.3.0",
     "request": "~2.21.0",
     "rimraf": "~2.1.4",
     "mkdirp": "~0.3.5"
