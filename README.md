@@ -35,7 +35,7 @@ Main issues are:
 
 ### Term dictionary
 
-- **Canonical package:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
+- **Canonical dir:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
 - **Source:** URL, git endpoint, etc.
 - **Target:** `semver` range, commit hash, branch (indicates a version).
 - **Endpoint:** name=source#target
@@ -134,7 +134,6 @@ Configures the manager. Setup is an object with:
 - `installed`: object of currently installed packages (keys are names and values the package metas)
 - `incompatibles`: array of decomposed endpoints that are known to be incompatible
 - `resolutions`: object of resolutions to be used on conflicts
-- `production`: boolean indicating if dev dependencies should also be fetched when resolving dependencies
 
 By default, `resolved` packages are also interpreted as installed.   
 When a package is resolved, all its associated incompatible packages will also be fetched.   
@@ -294,9 +293,9 @@ Returns the target.
 
 Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
 
-`Resolver#hasNew(canonicalPkg, pkgMeta)`: Promise
+`Resolver#hasNew(canonicalDir, pkgMeta)`: Promise
 
-Checks if there is a version more recent than the provided `canonicalPkg` (folder) that complies with the resolver target.
+Checks if there is a version more recent than the provided `canonicalDir` (folder) that complies with the resolver target.
 The hasNew process is as follows:
 
 - Reads the `package meta` from the `canonical package` if not supplied
@@ -341,7 +340,7 @@ same source.
 
 ##### Protected functions
 
-`Resolver#_hasNew(pkgMeta, canonicalPkg)`: Promise
+`Resolver#_hasNew(pkgMeta, canonicalDir)`: Promise
 
 The process of checking for a newer version. This function should be as fast as possible.  
 Concrete resolvers are encouraged to rewrite this function since the default implementation resolves to `true`.

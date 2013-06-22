@@ -8,11 +8,6 @@
     ],
     "options": [
         {
-            "shorthand":   "-c",
-            "flag":        "--completion",
-            "description": "Clear the completion cache"
-        },
-        {
             "shorthand":   "-h",
             "flag":        "--help",
             "description": "Show this help message"

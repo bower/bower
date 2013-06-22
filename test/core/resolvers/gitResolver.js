@@ -657,6 +657,8 @@ describe('GitResolver', function () {
             var resolver = create('foo');
             var dest = path.join(tempDir, '.git');
 
+            this.timeout(15000);  // Give some time to copy
+
             // Copy .git folder to the tempDir
             copy.copyDir(path.resolve(__dirname, '../../../.git'), dest, {
                 mode: 0777

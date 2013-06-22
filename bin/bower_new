@@ -89,8 +89,12 @@ if (!commandFunc) {
     }
 }
 
+if (command === 'help') {
+    commandFunc = commands.help;
+}
+
 // Get the renderer and configure it with the executed command
-renderer = cli.getRenderer(command, commandFunc && commandFunc.options(), config);
+renderer = cli.getRenderer(command, commandFunc.options(), config);
 
 emitter
 .on('end', function (data) {

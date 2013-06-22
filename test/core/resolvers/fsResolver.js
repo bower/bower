@@ -229,7 +229,9 @@ describe('FsResolver', function () {
             var resolver = create(testPackage);
 
             // Override the _applyPkgMeta function to prevent it from deleting ignored files
-            resolver._applyPkgMeta = function () {};
+            resolver._applyPkgMeta = function () {
+                return Q.resolve();
+            };
 
             resolver.resolve()
             .then(function (dir) {

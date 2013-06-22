@@ -164,8 +164,8 @@ describe('Resolver', function () {
             var canonical;
             var meta;
 
-            resolver._hasNew = function (canonicalPkg, pkgMeta) {
-                canonical = canonicalPkg;
+            resolver._hasNew = function (canonicalDir, pkgMeta) {
+                canonical = canonicalDir;
                 meta = pkgMeta;
                 return Q.resolve(true);
             };
@@ -184,7 +184,7 @@ describe('Resolver', function () {
             var resolver = create('foo');
             var meta;
 
-            resolver._hasNew = function (canonicalPkg, pkgMeta) {
+            resolver._hasNew = function (canonicalDir, pkgMeta) {
                 meta = pkgMeta;
                 return Q.resolve(true);
             };
@@ -332,8 +332,8 @@ describe('Resolver', function () {
                     'after _readJson',
                     // Both below are called in parallel
                     'before _applyPkgMeta',
-                    'before _savePkgMeta',
                     'after _applyPkgMeta',
+                    'before _savePkgMeta',
                     'after _savePkgMeta'
                 ]);
                 next();
