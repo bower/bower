@@ -34,7 +34,7 @@
     "read-package-json": "~0.1.8",
     "request": "~2.11.4",
     "rimraf": "~2.0.3",
-    "semver": "~1.1.0",
+    "semver": "~2.0.7",
     "stable": "~0.1.2",
     "tar": "~0.1.13",
     "tmp": "~0.0.20",
