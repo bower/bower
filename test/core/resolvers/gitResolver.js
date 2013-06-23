@@ -899,7 +899,7 @@ describe('GitResolver', function () {
         });
     });
 
-    describe('#fetchBranches', function () {
+    describe('#branches', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty object if no heads are found', function (next) {
@@ -907,7 +907,7 @@ describe('GitResolver', function () {
                 return Q.resolve([]);
             };
 
-            GitResolver.fetchBranches('foo')
+            GitResolver.branches('foo')
             .then(function (branches) {
                 expect(branches).to.be.an('object');
                 expect(branches).to.eql({});
@@ -929,7 +929,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchBranches('foo')
+            GitResolver.branches('foo')
             .then(function (branches) {
                 expect(branches).to.eql({
                     'master': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -955,14 +955,14 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchBranches('foo')
+            GitResolver.branches('foo')
             .then(function (branches) {
                 expect(branches).to.eql({
                     'master': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                     'some-branch': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 });
 
-                return GitResolver.fetchBranches('bar');
+                return GitResolver.branches('bar');
             })
             .then(function (branches) {
                 expect(branches).to.eql({
@@ -979,14 +979,14 @@ describe('GitResolver', function () {
                 delete GitResolver._branches.foo.master;
                 delete GitResolver._branches.bar.master;
 
-                return GitResolver.fetchBranches('foo');
+                return GitResolver.branches('foo');
             })
             .then(function (branches) {
                 expect(branches).to.eql({
                     'some-branch': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 });
 
-                return GitResolver.fetchBranches('bar');
+                return GitResolver.branches('bar');
             })
             .then(function (branches) {
                 expect(branches).to.eql({
@@ -999,7 +999,7 @@ describe('GitResolver', function () {
         });
     });
 
-    describe('#fetchTags', function () {
+    describe('#tags', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
@@ -1007,10 +1007,10 @@ describe('GitResolver', function () {
                 return Q.resolve([]);
             };
 
-            GitResolver.fetchVersions('foo')
-            .then(function (versions) {
-                expect(versions).to.be.an('array');
-                expect(versions).to.eql([]);
+            GitResolver.tags('foo')
+            .then(function (tags) {
+                expect(tags).to.be.an('array');
+                expect(tags).to.eql([]);
                 next();
             })
             .done();
@@ -1031,7 +1031,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchTags('foo')
+            GitResolver.tags('foo')
             .then(function (tags) {
                 expect(tags).to.eql({
                     '0.2.1': 'cccccccccccccccccccccccccccccccccccccccc',
@@ -1059,14 +1059,14 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchTags('foo')
+            GitResolver.tags('foo')
             .then(function (versions) {
                 expect(versions).to.eql({
                     '0.2.1': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                     'some-tag': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 });
 
-                return GitResolver.fetchTags('bar');
+                return GitResolver.tags('bar');
             })
             .then(function (versions) {
                 expect(versions).to.eql({
@@ -1083,14 +1083,14 @@ describe('GitResolver', function () {
                 delete GitResolver._tags.foo['0.2.1'];
                 delete GitResolver._tags.bar['0.3.1'];
 
-                return GitResolver.fetchTags('foo');
+                return GitResolver.tags('foo');
             })
             .then(function (tags) {
                 expect(tags).to.eql({
                     'some-tag': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 });
 
-                return GitResolver.fetchTags('bar');
+                return GitResolver.tags('bar');
             })
             .then(function (tags) {
                 expect(tags).to.eql({
@@ -1135,7 +1135,7 @@ describe('GitResolver', function () {
         });
     });
 
-    describe('#fetchVersions', function () {
+    describe('#versions', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
@@ -1143,7 +1143,7 @@ describe('GitResolver', function () {
                 return Q.resolve([]);
             };
 
-            GitResolver.fetchVersions('foo')
+            GitResolver.versions('foo')
             .then(function (versions) {
                 expect(versions).to.be.an('array');
                 expect(versions).to.eql([]);
@@ -1161,7 +1161,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchVersions('foo')
+            GitResolver.versions('foo')
             .then(function (versions) {
                 expect(versions).to.be.an('array');
                 expect(versions).to.eql([]);
@@ -1184,13 +1184,19 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchVersions('foo')
+            GitResolver.versions('foo', true)
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: '0.2.1', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
                     { version: '0.1.1', tag: 'v0.1.1', commit: 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' },
                     { version: '0.1.0', tag: '0.1.0', commit: 'dddddddddddddddddddddddddddddddddddddddd' }
                 ]);
+            })
+            .then(function () {
+                return GitResolver.versions('foo');
+            })
+            .then(function (versions) {
+                expect(versions).to.eql(['0.2.1', '0.1.1', '0.1.0']);
                 next();
             })
             .done();
@@ -1211,7 +1217,7 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchVersions('foo')
+            GitResolver.versions('foo', true)
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: 'v0.2.1', commit: 'abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
@@ -1242,20 +1248,14 @@ describe('GitResolver', function () {
                 ]);
             };
 
-            GitResolver.fetchVersions('foo')
+            GitResolver.versions('foo')
             .then(function (versions) {
-                expect(versions).to.eql([
-                    { version: '0.2.1', tag: '0.2.1', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' },
-                    { version: '0.1.0', tag: '0.1.0', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' }
-                ]);
+                expect(versions).to.eql(['0.2.1', '0.1.0']);
 
-                return GitResolver.fetchVersions('bar');
+                return GitResolver.versions('bar');
             })
             .then(function (versions) {
-                expect(versions).to.eql([
-                    { version: '0.3.1', tag: '0.3.1', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
-                    { version: '0.3.0', tag: '0.3.0', commit: 'dddddddddddddddddddddddddddddddddddddddd' }
-                ]);
+                expect(versions).to.eql(['0.3.1', '0.3.0']);
 
                 // Test for the cache
                 expect(GitResolver._versions).to.be.an('object');
@@ -1266,20 +1266,15 @@ describe('GitResolver', function () {
                 GitResolver._versions.foo.splice(1, 1);
                 GitResolver._versions.bar.splice(1, 1);
 
-                return GitResolver.fetchVersions('foo');
+                return GitResolver.versions('foo');
             })
             .then(function (versions) {
-                expect(versions).to.eql([
-                    { version: '0.2.1', tag: '0.2.1', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' }
-                ]);
+                expect(versions).to.eql(['0.2.1']);
 
-                return GitResolver.fetchVersions('bar');
+                return GitResolver.versions('bar');
             })
             .then(function (versions) {
-                expect(versions).to.eql([
-                    { version: '0.3.1', tag: '0.3.1', commit: 'cccccccccccccccccccccccccccccccccccccccc' }
-                ]);
-
+                expect(versions).to.eql(['0.3.1']);
                 next();
             })
             .done();

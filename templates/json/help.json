@@ -5,7 +5,7 @@
     "commands": {
         "cache":           "Manage bower cache",
         "help":            "Display help information about Bower",
-        "info":            "Version info and description of a particular package",
+        "info":            "Info of a particular package",
         "init":            "Interactively create a bower.json file",
         "install":         "Install a package locally",
         "link":            "Symlink a package folder",

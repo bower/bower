@@ -184,9 +184,10 @@ The `logger` to print logs to.
 
 Fetches and endpoint, returning a promise of a `canonical dir`.
 
-`PackageRepository#empty(name)`: Promise
+`PackageRepository#versions(source)`: Promise
 
-Empties any resolved cache for package `name` or all the resolved cache if no `name` is passed.
+Retrieves the semver versions available for a given `source`.   
+Return a promise of an array of semver versions.
 
 `PackageRepository#eliminate(source, version)`: Promise
 
@@ -194,9 +195,9 @@ Eliminates entry with given `source` and `version` from the repository.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
-`PackageRepository#clean()`: Promise
+`PackageRepository#clear()`: Promise
 
-Cleans the entire repository.
+Clears the entire repository.
 
 `PackageRepository#list()`: Promise
 
@@ -234,6 +235,11 @@ The cache, stored in disk, of resolved packages (canonical dirs).
 Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).   
 The promise is resolved with both the `canonical dir` and `package meta`.
 
+`ResolveCache#versions(source)`: Promise
+
+Retrieves the semver versions available for a given `source`.   
+Return a promise of an array of semver versions.
+
 `ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
 
 Stores `canonical dir` into the cache.   
@@ -245,9 +251,9 @@ Eliminates entry with given `source` and `version` from the cache.
 Note that `version` can be empty because some `canonical dir`s do not have a version associated.
 In that case, only the unversioned entry will be removed.
 
-`ResolveCache#clean()`: Promise
+`ResolveCache#clear()`: Promise
 
-Cleans the entire cache.
+Clear the entire cache.
 
 `ResolveCache#list()`: Promise
 
@@ -330,11 +336,18 @@ Throws an error if the resolver is not yet resolved.
 
 ##### Public static functions
 
+`Resolver#versions(source)`: Promise
+
+Retrieves the semver versions available for a given `source`.   
+Return a promise of an array of semver versions.   
+By default this function resolves to an empty array.
+
 `Resolver#clearRuntimeCache()`
 
 Clears the resolver runtime cache, that is, data stored statically.
 Resolvers may cache data based on the sources to speed up calls to `hasNew` and `resolve` for the
 same source.
+By default this function is a no-op.
 
 -----------
 
@@ -374,6 +387,7 @@ Concrete resolvers may override this to add any additional information that migh
 `Resolver#_resolve()`: Promise
 
 The actual process of fetching the package files. This method must he implemented by concrete resolvers. For instance, the `UrlResolver` would download the contents of a URL into the temporary directory in this stage.
+
 
 #### Resolver types
 
