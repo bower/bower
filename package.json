@@ -39,6 +39,7 @@
     "request": "~2.21.0",
     "rimraf": "~2.1.4",
     "semver": "~1.1.4",
+    "stringify-object": "~0.1.4",
     "tar": "~0.1.17",
     "tmp": "~0.0.20",
     "unzip": "~0.1.7",

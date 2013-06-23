@@ -1,0 +1,18 @@
+{
+  "name": "spoon.js-sample-app",
+  "version": "0.0.1",
+  "dependencies": {
+    "spoon.js": "git://github.com/IndigoUnited/spoon.js.git",
+    "requirejs-text": "~2.0.3",
+    "curl-css": "https://raw.github.com/cujojs/curl/master/src/curl/plugin/css.js",
+    "almond": "~0.2.1",
+    "doT": "~0.2.0",
+    "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip",
+    "jquery": "~1.7.2",
+    "jquery-ui": "~1.10.3",
+    "require-css": "git://github.com/guybedford/require-css.git#~0.0.6"
+  },
+  "resolutions": {
+    "jquery": "~1.7.2"
+  }
+}
