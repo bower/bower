@@ -415,7 +415,7 @@ describe('GitResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/branch "master" does not exist/i);
+                expect(err.message).to.match(/branch master does not exist/i);
                 expect(err.details).to.match(/no branches found/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
@@ -514,7 +514,7 @@ describe('GitResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/was able to satisfy "~0.2.0"/i);
+                expect(err.message).to.match(/was able to satisfy ~0.2.0/i);
                 expect(err.details).to.match(/available versions: 0\.1\.1, 0\.1\.0/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
@@ -538,8 +538,8 @@ describe('GitResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/was able to satisfy "~0.2.0"/i);
-                expect(err.details).to.match(/no versions found in "foo"/i);
+                expect(err.message).to.match(/was able to satisfy ~0.2.0/i);
+                expect(err.details).to.match(/no versions found in foo/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
             })
@@ -629,7 +629,7 @@ describe('GitResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/tag\/branch "some-branch" does not exist/i);
+                expect(err.message).to.match(/tag\/branch some-branch does not exist/i);
                 expect(err.details).to.match(/available branches: master/i);
                 expect(err.details).to.match(/available tags: some-tag/i);
                 expect(err.code).to.equal('ENORESTARGET');
