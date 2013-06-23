@@ -6,5 +6,5 @@
     - {{.}}
 {{/versions}}
 {{/condense}}
-{{else}}No versions available.
+{{else}}  No versions available.
 {{/if}}

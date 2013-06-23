@@ -3,7 +3,6 @@ var path = require('path');
 var fs = require('fs');
 var path = require('path');
 var rimraf = require('rimraf');
-var Q = require('q');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var GitFsResolver = require('../../../lib/core/resolvers/GitFsResolver');
@@ -208,11 +207,11 @@ describe('GitFsResolver', function () {
         });
     });
 
-    describe('#fetchRefs', function () {
+    describe('#refs', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to the references of the local repository', function (next) {
-            GitFsResolver.fetchRefs(testPackage)
+            GitFsResolver.refs(testPackage)
             .then(function (refs) {
                 // Remove master and test only for the first 7 refs
                 refs = refs.slice(1, 8);
@@ -232,16 +231,13 @@ describe('GitFsResolver', function () {
         });
 
         it('should cache the results', function (next) {
-            GitFsResolver.fetchRefs(testPackage)
+            GitFsResolver.refs(testPackage)
             .then(function () {
-                expect(GitFsResolver._refs).to.be.an('object');
-                expect(GitFsResolver._refs[testPackage]).to.be.an('array');
-
                 // Manipulate the cache and check if it resolves for the cached ones
-                GitFsResolver._refs[testPackage].splice(0, 1);
+                GitFsResolver._cache.refs.get(testPackage).splice(0, 1);
 
                 // Check if it resolver to the same array
-                return GitFsResolver.fetchRefs(testPackage);
+                return GitFsResolver.refs(testPackage);
             })
             .then(function (refs) {
                 // Test only for the first 6 refs
@@ -256,21 +252,6 @@ describe('GitFsResolver', function () {
                     'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
                     '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1'
                 ]);
-                next();
-            })
-            .done();
-        });
-
-        it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise1;
-            var promise2;
-
-            promise1 = GitFsResolver.fetchRefs(testPackage);
-            promise2 = GitFsResolver.fetchRefs(testPackage);
-
-            Q.all([promise1, promise2])
-            .then(function () {
-                expect(promise1).to.equal(promise2);
                 next();
             })
             .done();

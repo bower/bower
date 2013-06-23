@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
 var fs = require('fs');
-var Q = require('q');
 var GitRemoteResolver = require('../../../lib/core/resolvers/GitRemoteResolver');
 var Logger = require('../../../lib/core/Logger');
 var defaultConfig = require('../../../lib/config');
@@ -120,11 +119,11 @@ describe('GitRemoteResolver', function () {
         });
     });
 
-    describe('#fetchRefs', function () {
+    describe('#refs', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to the references of the remote repository', function (next) {
-            GitRemoteResolver.fetchRefs('file://' + testPackage)
+            GitRemoteResolver.refs('file://' + testPackage)
             .then(function (refs) {
                 // Remove master and test only for the first 13 refs
                 refs = refs.slice(1, 14);
@@ -152,16 +151,13 @@ describe('GitRemoteResolver', function () {
         it('should cache the results', function (next) {
             var source = 'file://' + testPackage;
 
-            GitRemoteResolver.fetchRefs(source)
+            GitRemoteResolver.refs(source)
             .then(function () {
-                expect(GitRemoteResolver._refs).to.be.an('object');
-                expect(GitRemoteResolver._refs[source]).to.be.an('array');
-
                 // Manipulate the cache and check if it resolves for the cached ones
-                GitRemoteResolver._refs[source].splice(0, 1);
+                GitRemoteResolver._cache.refs.get(source).splice(0, 1);
 
                 // Check if it resolver to the same array
-                return GitRemoteResolver.fetchRefs('file://' + testPackage);
+                return GitRemoteResolver.refs('file://' + testPackage);
             })
             .then(function (refs) {
                 // Test only for the first 12 refs
@@ -182,21 +178,6 @@ describe('GitRemoteResolver', function () {
                     '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1',
                     '108b8fd803481afa9d537e5551beb6d5946ee045 refs/tags/0.2.1^{}'
                 ]);
-                next();
-            })
-            .done();
-        });
-
-        it('should reuse promises for the same source, avoiding making duplicate fetchs', function (next) {
-            var promise1;
-            var promise2;
-
-            promise1 = GitRemoteResolver.fetchRefs(testPackage);
-            promise2 = GitRemoteResolver.fetchRefs(testPackage);
-
-            Q.all([promise1, promise2])
-            .then(function () {
-                expect(promise1).to.equal(promise2);
                 next();
             })
             .done();

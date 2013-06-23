@@ -14,7 +14,7 @@ var defaultConfig = require('../../../lib/config');
 
 describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
-    var originalFetchRefs = GitResolver.fetchRefs;
+    var originalrefs = GitResolver.refs;
     var logger = new Logger();
 
     afterEach(function () {
@@ -22,7 +22,7 @@ describe('GitResolver', function () {
     });
 
     function clearResolverRuntimeCache() {
-        GitResolver.fetchRefs = originalFetchRefs;
+        GitResolver.refs = originalrefs;
         GitResolver.clearRuntimeCache();
     }
 
@@ -61,7 +61,7 @@ describe('GitResolver', function () {
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'  // same commit hash on purpose
                 ]);
@@ -88,7 +88,7 @@ describe('GitResolver', function () {
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.0',
@@ -117,7 +117,7 @@ describe('GitResolver', function () {
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.0'
@@ -145,7 +145,7 @@ describe('GitResolver', function () {
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.0',
@@ -174,7 +174,7 @@ describe('GitResolver', function () {
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0.0',
@@ -202,7 +202,7 @@ describe('GitResolver', function () {
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'
                 ]);
@@ -228,7 +228,7 @@ describe('GitResolver', function () {
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -253,7 +253,7 @@ describe('GitResolver', function () {
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
             }));
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'
                 ]);
@@ -287,7 +287,7 @@ describe('GitResolver', function () {
                 return this._stack;
             };
 
-            DummyResolver.fetchRefs = function () {
+            DummyResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -345,7 +345,7 @@ describe('GitResolver', function () {
         it('should reject the promise if _checkout is not implemented', function (next) {
             var resolver = create('foo');
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -362,7 +362,7 @@ describe('GitResolver', function () {
             .done();
         });
 
-        it('should reject the promise if #fetchRefs is not implemented', function (next) {
+        it('should reject the promise if #refs is not implemented', function (next) {
             var resolver = create('foo');
 
             resolver._checkout = function () {
@@ -374,7 +374,7 @@ describe('GitResolver', function () {
                 next(new Error('Should have rejected the promise'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.contain('fetchRefs not implemented');
+                expect(err.message).to.contain('refs not implemented');
                 next();
             })
             .done();
@@ -387,7 +387,7 @@ describe('GitResolver', function () {
         it('should resolve to an object', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -405,7 +405,7 @@ describe('GitResolver', function () {
         it('should fail to resolve * if no tags/heads are found', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
@@ -426,7 +426,7 @@ describe('GitResolver', function () {
         it('should resolve "*" to the latest commit on master if a repository has no valid semver tags', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch',
@@ -450,7 +450,7 @@ describe('GitResolver', function () {
         it('should resolve "*" to the latest version if a repository has valid semver tags', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
@@ -474,7 +474,7 @@ describe('GitResolver', function () {
         it('should resolve to the latest version that matches a range/version', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
@@ -500,7 +500,7 @@ describe('GitResolver', function () {
         it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
@@ -525,7 +525,7 @@ describe('GitResolver', function () {
         it('should fail to resolve if there are no versions to match a range/version', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -549,7 +549,7 @@ describe('GitResolver', function () {
         it('should resolve to the specified commit', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -570,7 +570,7 @@ describe('GitResolver', function () {
         it('should resolve to the specified tag if it exists', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/some-tag'
@@ -593,7 +593,7 @@ describe('GitResolver', function () {
         it('should resolve to the specified branch if it exists', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch'
@@ -616,7 +616,7 @@ describe('GitResolver', function () {
         it('should fail to resolve to the specified tag/branch if it doesn\'t exists', function (next) {
             var resolver;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/some-tag'
@@ -693,7 +693,7 @@ describe('GitResolver', function () {
             var resolver = create('foo');
             var called = false;
 
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
                 ]);
@@ -903,7 +903,7 @@ describe('GitResolver', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty object if no heads are found', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
@@ -917,7 +917,7 @@ describe('GitResolver', function () {
         });
 
         it('should resolve to an object where keys are branches and values their commit hashes', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch',
@@ -941,7 +941,7 @@ describe('GitResolver', function () {
         });
 
         it('should cache the result for each source', function (next) {
-            GitResolver.fetchRefs = function (source) {
+            GitResolver.refs = function (source) {
                 if (source === 'foo') {
                     return Q.resolve([
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
@@ -970,14 +970,9 @@ describe('GitResolver', function () {
                     'other-branch': 'dddddddddddddddddddddddddddddddddddddddd'
                 });
 
-                // Test for the cache
-                expect(GitResolver._branches).to.be.an('object');
-                expect(GitResolver._branches.foo).to.be.an('object');
-                expect(GitResolver._branches.bar).to.be.an('object');
-
                 // Manipulate the cache and check if it resolves for the cached ones
-                delete GitResolver._branches.foo.master;
-                delete GitResolver._branches.bar.master;
+                delete GitResolver._cache.branches.get('foo').master;
+                delete GitResolver._cache.branches.get('bar').master;
 
                 return GitResolver.branches('foo');
             })
@@ -1003,7 +998,7 @@ describe('GitResolver', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
@@ -1017,7 +1012,7 @@ describe('GitResolver', function () {
         });
 
         it('should resolve to an array of tags', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch',
@@ -1045,7 +1040,7 @@ describe('GitResolver', function () {
         });
 
         it('should cache the result for each source', function (next) {
-            GitResolver.fetchRefs = function (source) {
+            GitResolver.refs = function (source) {
                 if (source === 'foo') {
                     return Q.resolve([
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/0.2.1',
@@ -1074,14 +1069,10 @@ describe('GitResolver', function () {
                     'some-tag': 'dddddddddddddddddddddddddddddddddddddddd'
                 });
 
-                // Test for the cache
-                expect(GitResolver._tags).to.be.an('object');
-                expect(GitResolver._tags.foo).to.be.an('object');
-                expect(GitResolver._tags.bar).to.be.an('array');
 
                 // Manipulate the cache and check if it resolves for the cached ones
-                delete GitResolver._tags.foo['0.2.1'];
-                delete GitResolver._tags.bar['0.3.1'];
+                delete GitResolver._cache.tags.get('foo')['0.2.1'];
+                delete GitResolver._cache.tags.get('bar')['0.3.1'];
 
                 return GitResolver.tags('foo');
             })
@@ -1111,27 +1102,27 @@ describe('GitResolver', function () {
         mout.object.mixIn(CustomGitResolver, GitResolver);
 
         it('should clear refs cache', function () {
-            CustomGitResolver._refs = {};
+            CustomGitResolver._cache.refs.set('foo', {});
             CustomGitResolver.clearRuntimeCache();
-            expect(CustomGitResolver._refs == null).to.be(true);
+            expect(CustomGitResolver._cache.refs.has('foo')).to.be(false);
         });
 
         it('should clear branches cache', function () {
-            CustomGitResolver._branches = {};
+            CustomGitResolver._cache.branches.set('foo', {});
             CustomGitResolver.clearRuntimeCache();
-            expect(CustomGitResolver._branches == null).to.be(true);
+            expect(CustomGitResolver._cache.branches.has('foo')).to.be(false);
         });
 
         it('should clear tags cache', function () {
-            CustomGitResolver._tags = {};
+            CustomGitResolver._cache.tags.set('foo', {});
             CustomGitResolver.clearRuntimeCache();
-            expect(CustomGitResolver._tags == null).to.be(true);
+            expect(CustomGitResolver._cache.tags.has('foo')).to.be(false);
         });
 
         it('should clear versions cache', function () {
-            CustomGitResolver._versions = {};
+            CustomGitResolver._cache.versions.set('foo', {});
             CustomGitResolver.clearRuntimeCache();
-            expect(CustomGitResolver._versions == null).to.be(true);
+            expect(CustomGitResolver._cache.versions.has('foo')).to.be(false);
         });
     });
 
@@ -1139,7 +1130,7 @@ describe('GitResolver', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
@@ -1153,7 +1144,7 @@ describe('GitResolver', function () {
         });
 
         it('should resolve to an empty array if no valid semver tags', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch',
@@ -1171,7 +1162,7 @@ describe('GitResolver', function () {
         });
 
         it('should resolve to an array of versions, ignoring invalid semver tags', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch',
@@ -1203,7 +1194,7 @@ describe('GitResolver', function () {
         });
 
         it('should order the versions according to the semver spec', function (next) {
-            GitResolver.fetchRefs = function () {
+            GitResolver.refs = function () {
                 // TODO: Uncomment this out as soon as semver solves the issue with builds
                 //       See: https://github.com/isaacs/node-semver/issues/16
                 return Q.resolve([
@@ -1234,7 +1225,7 @@ describe('GitResolver', function () {
         });
 
         it('should cache the result for each source', function (next) {
-            GitResolver.fetchRefs = function (source) {
+            GitResolver.refs = function (source) {
                 if (source === 'foo') {
                     return Q.resolve([
                         'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/0.2.1',
@@ -1257,14 +1248,10 @@ describe('GitResolver', function () {
             .then(function (versions) {
                 expect(versions).to.eql(['0.3.1', '0.3.0']);
 
-                // Test for the cache
-                expect(GitResolver._versions).to.be.an('object');
-                expect(GitResolver._versions.foo).to.be.an('array');
-                expect(GitResolver._versions.bar).to.be.an('array');
 
                 // Manipulate the cache and check if it resolves for the cached ones
-                GitResolver._versions.foo.splice(1, 1);
-                GitResolver._versions.bar.splice(1, 1);
+                GitResolver._cache.versions.get('foo').splice(1, 1);
+                GitResolver._cache.versions.get('bar').splice(1, 1);
 
                 return GitResolver.versions('foo');
             })
