@@ -1195,14 +1195,12 @@ describe('GitResolver', function () {
 
         it('should order the versions according to the semver spec', function (next) {
             GitResolver.refs = function () {
-                // TODO: Uncomment this out as soon as semver solves the issue with builds
-                //       See: https://github.com/isaacs/node-semver/issues/16
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/0.1.0',
-                    //'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.1+build.11',
-                    //'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.1+build.100',
-                    //'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.1.1-rc.22',
-                    //'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.1.1-rc.200',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.1+build.11',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.1+build.100',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.1.1-rc.22',
+                    'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.1.1-rc.200',
                     'ffffffffffffffffffffffffffffffffffffffff refs/tags/0.1.1',
                     'abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/v0.2.1'
                 ]);
@@ -1212,11 +1210,11 @@ describe('GitResolver', function () {
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: 'v0.2.1', commit: 'abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
-                    //{ version: '0.1.1+build.100', tag: '0.1.1+build.100', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
-                    //{ version: '0.1.1+build.11', tag: '0.1.1+build.11', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
+                    { version: '0.1.1', tag: '0.1.1+build.11', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
+                    { version: '0.1.1', tag: '0.1.1+build.100', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
                     { version: '0.1.1', tag: '0.1.1', commit: 'ffffffffffffffffffffffffffffffffffffffff' },
-                    //{ version: '0.1.1-rc.200', tag: '0.1.1-rc.200', commit: 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' },
-                    //{ version: '0.1.1-rc.22', tag: '0.1.1-rc.22', commit: 'dddddddddddddddddddddddddddddddddddddddd' },
+                    { version: '0.1.1-rc.200', tag: '0.1.1-rc.200', commit: 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' },
+                    { version: '0.1.1-rc.22', tag: '0.1.1-rc.22', commit: 'dddddddddddddddddddddddddddddddddddddddd' },
                     { version: '0.1.0', tag: '0.1.0', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' }
                 ]);
                 next();
