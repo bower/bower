@@ -1,4 +1,4 @@
-{{#cyan}}{{package}}{{/cyan}}
+{{#cyan}}{{name}}{{/cyan}}
 
 {{#if versions}}  Versions:
 {{#condense}}
