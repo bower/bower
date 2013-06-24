@@ -655,12 +655,12 @@ describe('GitResolver', function () {
 
         it('should remove the .git folder from the temp dir', function (next) {
             var resolver = create('foo');
-            var dest = path.join(tempDir, '.git');
+            var dst = path.join(tempDir, '.git');
 
             this.timeout(15000);  // Give some time to copy
 
             // Copy .git folder to the tempDir
-            copy.copyDir(path.resolve(__dirname, '../../../.git'), dest, {
+            copy.copyDir(path.resolve(__dirname, '../../../.git'), dst, {
                 mode: 0777
             })
             .then(function () {
@@ -668,7 +668,7 @@ describe('GitResolver', function () {
 
                 return resolver._cleanup()
                 .then(function () {
-                    expect(fs.existsSync(dest)).to.be(false);
+                    expect(fs.existsSync(dst)).to.be(false);
                     next();
                 });
             })
@@ -677,13 +677,13 @@ describe('GitResolver', function () {
 
         it('should not fail if .git does not exist for some reason', function (next) {
             var resolver = create('foo');
-            var dest = path.join(tempDir, '.git');
+            var dst = path.join(tempDir, '.git');
 
             resolver._tempDir = tempDir;
 
             resolver._cleanup()
             .then(function () {
-                expect(fs.existsSync(dest)).to.be(false);
+                expect(fs.existsSync(dst)).to.be(false);
                 next();
             })
             .done();

@@ -214,8 +214,7 @@ function createResolver(decEndpoint, registryClient, config) -> Promise
 ```
 
 The function is async to allow querying the Bower registry, etc.   
-The `registryClient` is an instance of [`RegistryClient`](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
-If `config` is not passed, the default config will be used.
+The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
 
 
 #### ResolveCache
