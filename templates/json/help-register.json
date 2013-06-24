@@ -2,7 +2,7 @@
     "command": "register",
     "description": "Registers a package.",
     "usage": [
-        "register <name> <url>"
+        "register <name> <url> [<options>]"
     ],
     "options": [
         {

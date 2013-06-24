@@ -2,7 +2,7 @@
     "command": "lookup",
     "description": "Looks up a package URL by name.",
     "usage": [
-        "lookup <name>"
+        "lookup <name> [<options>]"
     ],
     "options": [
         {
