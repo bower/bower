@@ -46,7 +46,7 @@ registry.lookup('jquery', function (err, entry) {
 
     // For now resp.type is always 'alias'
     console.log('type', entry.type);
-    console.log('url: ', entry.url);
+    console.log('url', entry.url);
 });
 ```
 
@@ -71,7 +71,7 @@ registry.register('my-package', 'git://github.com/my-org/my-package.git', functi
 Searches the registry.
 
 ```js
-registry.search('jquery', url, function (err, results) {
+registry.search('jquery', function (err, results) {
     if (err) {
         console.error(err.message);
         return;
@@ -86,7 +86,7 @@ registry.search('jquery', url, function (err, results) {
 
 #### .clearCache(name, callback)
 
-Clear the persistent and runtime cache associated with the `name` package.   
+Clears the persistent and runtime cache associated with the `name` package.   
 If `name` is null, clears the cache for every package.
 
 Note that in most cases, you don't need to clear the cache since it has
@@ -115,9 +115,9 @@ registry.clearCache(function (err) {
 ```
 
 
-#### .clearRuntimeCache(callback)
+#### .clearRuntimeCache()
 
-Clear the in-memory cache used to speed up the module.
+Clears the in-memory cache used to speed up the module.
 
 Note that in most cases, you don't need to clear the runtime cache since it has
 self expiration times.
@@ -125,14 +125,7 @@ Might be useful if you use this module in long-living programs.
 
 ```js
 
-registry.clearRuntimeCache(function (err) {
-    if (err) {
-        console.error(err.message);
-        return;
-    }
-
-    console.log('Done');
-});
+registry.clearRuntimeCache();
 ```
 
 
