@@ -65,7 +65,7 @@ RegistryClient.prototype.clearCache = function (name, callback) {
     this.search.clearCache.call(this, name, callback);
     this.list.clearCache.call(this, callback);
 };
-RegistryClient.prototype.cleanRuntimeCache = function () {
+RegistryClient.prototype.clearRuntimeCache = function () {
     this.lookup.cleanRuntimeCache.call(this);
     this.search.cleanRuntimeCache.call(this);
     this.list.cleanRuntimeCache.call(this);

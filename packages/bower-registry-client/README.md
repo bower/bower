@@ -38,7 +38,7 @@ Different operations may have different cache expiration times.
 Looks the registry for the package `name`,
 
 ```js
-registry.lookup(name, function (err, entry) {
+registry.lookup('jquery', function (err, entry) {
     if (err) {
         console.error(err.message);
         return;
@@ -52,14 +52,45 @@ registry.lookup(name, function (err, entry) {
 
 #### .register(name, url, callback)
 
+Registers a package in the registry.
+
+```js
+registry.register('my-package', 'git://github.com/my-org/my-package.git', function (err, pkg) {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+
+    console.log('name', pkg.name);
+    console.log('url: ', pkg.url);
+});
+```
+
 #### .search(str, callback)
 
-#### .info(name, callback)
+Searches the registry.
+
+```js
+registry.search('jquery', url, function (err, results) {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+
+    results.forEach(function (pkg) {
+        console.log('name', pkg.name);
+        console.log('url', pkg.url);
+    });
+});
+```
 
 #### .clearCache(name, callback)
 
-Clear the cache associated with the `name` package.   
+Clear the persistent and runtime cache associated with the `name` package.   
 If `name` is null, clears the cache for every package.
+
+Note that in most cases, you don't need to clear the cache since it has
+self expiration times.
 
 ```js
 // Clear jquery cache
@@ -74,6 +105,27 @@ registry.clearCache('jquery', function (err) {
 
 // Clear all cache
 registry.clearCache(function (err) {
+    if (err) {
+        console.error(err.message);
+        return;
+    }
+
+    console.log('Done');
+});
+```
+
+
+#### .clearRuntimeCache(callback)
+
+Clear the in-memory cache used to speed up the module.
+
+Note that in most cases, you don't need to clear the runtime cache since it has
+self expiration times.
+Might be useful if you use this module in long-living programs.
+
+```js
+
+registry.clearRuntimeCache(function (err) {
     if (err) {
         console.error(err.message);
         return;
