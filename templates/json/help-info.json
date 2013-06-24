@@ -3,8 +3,7 @@
     "description": "Displays overall information of a package or a particular version.",
     "usage": [
         "info <name>",
-        "info <name>#<version>",
-        "info <name>#<version> <property>"
+        "info <name>#<version> [<property>]"
     ],
     "options": [
         {
