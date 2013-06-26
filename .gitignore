@@ -4,3 +4,5 @@ npm-debug.log
 test/assets/github-test-package
 test/assets/github-test-package-copy
 test/assets/temp
+
+.DS_Store
