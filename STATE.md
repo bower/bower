@@ -56,11 +56,11 @@ Allows to specify the desired log level, including/excluding logging information
 Choices are persisted to the `resolutions` key in your `bower.json`.   
 When a resolution is not longer needed, it will be automatically deleted.
 
-- Installing a specific package always finds the most suitable version, prompting on conflict.
+- Installing a specific package always finds the most suitable version, prompting on conflict
 
 It previously installed the specified version despite other dependencies requiring other versions, leading to a broken project
 
-- Allows named packages when installing.
+- Allows named packages when installing
 
 This allows to map packages to different names. For instance, `bower install backbone=backbone-amd#~1.0.0` will treat `backbone-amd` as `backbone`.
 
@@ -78,7 +78,7 @@ This allows to map packages to different names. For instance, `bower install bac
 
 - Shows a dependency tree, similar to `npm`, for each updated package
 
-- Updating a specific package always finds the most suitable version, prompting on conflict.
+- Updating a specific package always finds the most suitable version, prompting on conflict
 
 It previously installed the specified version despite other dependencies requiring other versions, leading to a broken project
 
