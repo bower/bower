@@ -47,7 +47,9 @@ Allows to specify the desired log level, including/excluding logging information
 
 - You can now target `tags`, `branches` and `commit hashes` when installing `git` endpoints
 
-- Only installs missing packages. Previously installed all the packages everytime
+- Only installs missing packages
+
+Previously installed all the packages, despite already being installed.
 
 - Prompts the user on conflict, with the option to persist choices to `bower.json`
 
