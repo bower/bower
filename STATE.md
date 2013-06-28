@@ -139,7 +139,7 @@ It previously installed the specified version despite other dependencies requiri
 - Add tests for every class except for the resolvers which are already done
 - Add commands tests
 - Add high level tests
-- Added tests for `registry-client` module
+- Add tests for `registry-client` module
 - Add tests for the `bower-json` module
 
 ## Other
