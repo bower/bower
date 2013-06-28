@@ -14,11 +14,7 @@
          - etc
     - bower test
     - bower install & update
-        - Ability to target specific commits and not only versions
-            - But then, how would a version be guessed from it?!
-            - It would be ok project wise, but if used within a reusable package, it must have a version!
         - Option to install deps in a tree structure like npm? see: https://github.com/twitter/bower/issues/157
-        - Print a tree like npm with the deps
         - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
 - Contributing.md
   - Copy from master
@@ -39,7 +35,5 @@
   - ifo so. don't forget to do the same on all bower org modules
 
 Not BC changes:
-- shorthand_resolver -> shorthandResolver
-- shorthand resolver syntax {{{}}} to just {{}}
-- "latest" targets are no longer supported, they might conflict with branches or tags
-- remove json property from the config
+- Shorthand resolver syntax {{{}}} to just {{}}
+- Removed json property from the config
