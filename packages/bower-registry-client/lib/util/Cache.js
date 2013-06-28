@@ -110,7 +110,13 @@ Cache.prototype.del = function (key, callback) {
         return callback(null);
     }
 
-    fs.unlink(this._getFile(key), callback);
+    fs.unlink(this._getFile(key), function (err) {
+        if (!err || err.code !== 'ENOENT') {
+            return callback(err);
+        }
+
+        callback();
+    });
 };
 
 Cache.prototype.clear = function (callback) {
@@ -131,7 +137,13 @@ Cache.prototype.clear = function (callback) {
 
         // Delete every file in parallel
         async.forEach(files, function (file, next) {
-            fs.unlink(path.join(dir, file), next);
+            fs.unlink(path.join(dir, file), function (err) {
+                if (!err || err.code !== 'ENOENT') {
+                    return next(err);
+                }
+
+                next();
+            });
         }, callback);
     });
 };
