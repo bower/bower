@@ -55,12 +55,12 @@ Where `<package>` can be any one of the following:
 [semver](http://semver.org/) tag to fetch a specific release, and lock the
 package to that version.
 
-* Given a Git endpoint, Bower is capable of reading tags within the repository and mapping
-the final install directory accordingly.  This can be very helpful in resolving naming confusing
-which might arise from installing from other resource types.
-
 All package contents are installed in the `components` directory by default.
 You should **never** directly modify the contents of this directory.
+
+Given a Git endpoint, Bower is capable of reading tags within the repository and mapping
+the final install directory accordingly.  This may be  helpful in resolving naming confusion
+which may arise from installing from other resource types.
 
 Using `bower list` will show all the packages that are installed locally.
 
