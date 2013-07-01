@@ -17,6 +17,9 @@
   "engines": {
     "node": ">=0.8.0"
   },
+  "dependencies": {
+    "graceful-fs": "~1.2.2"
+  },
   "devDependencies": {
     "mocha": "~1.8.2",
     "expect.js": "~0.2.0"
