@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
+    "graceful-fs": "~1.2.2",
     "lru-cache": "~2.3.0",
     "request": "~2.21.0",
     "rimraf": "~2.1.4",
