@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('fs');
+var fs = require('graceful-fs');
 var GitRemoteResolver = require('../../../lib/core/resolvers/GitRemoteResolver');
 var Logger = require('../../../lib/core/Logger');
 var defaultConfig = require('../../../lib/config');

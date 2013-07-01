@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "archy": "0.0.2",
+    "abbrev": "~1.0.4",
     "bower-json": "~0.0.0",
     "bower-registry-client": "~0.0.0",
     "chmodr": "~0.1.0",
@@ -27,6 +28,7 @@
     "fstream": "~0.1.22",
     "fstream-ignore": "0.0.6",
     "glob": "~3.2.1",
+    "graceful-fs": "~1.2.2",
     "handlebars": "~1.0.11",
     "junk": "~0.2.0",
     "mkdirp": "~0.3.5",
