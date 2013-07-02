@@ -27,7 +27,11 @@
   },
   "devDependencies": {
     "mocha": "~1.8.2",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.4.4",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-simple-mocha": "~0.4.0"
   },
   "scripts": {
     "test": "mocha -R spec"
