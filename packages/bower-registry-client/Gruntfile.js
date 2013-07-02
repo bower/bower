@@ -31,13 +31,20 @@ module.exports = function (grunt) {
                     reporter: 'dot'
                 },
                 src: ['test/runner.js']
+            },
+            build: {
+                options: {
+                    reporter: 'tap'
+                },
+                src: ['test/runner.js']
             }
+
         },
 
 
         watch: {
-            files: ['<config:jshint.files>'],
-            tasks: 'jshint'
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint', 'simplemocha:short']
         }
 
     });
@@ -45,5 +52,6 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('default', 'jshint');
     grunt.registerTask('test', 'simplemocha:full');
+    grunt.registerTask('build', ['jshint', 'simplemocha:build']);
 
 };
