@@ -4,7 +4,7 @@
 
 - __Allow specific commits to be targeted__ ([#275](https://github.com/bower/bower/issues/275))
 - __Change bower default folder from `components` to `bower_components`__ ([#434](https://github.com/bower/bower/issues/434))
-- __Support semver pre-releases and builds ([#188](https://github.com/bower/bower/issues/188))
+- __Support semver pre-releases and builds__ ([#188](https://github.com/bower/bower/issues/188))
 - Use `Content-Type` and `Content-Disposition` to guess file types, such as zip files ([#454](https://github.com/bower/bower/pull/454))
 - Fix bower failing silently when using an invalid version value in the bower.json file ([#439](https://github.com/bower/bower/issues/439))
 - Fix bower slowness when downloading after redirects ([#437](https://github.com/bower/bower/issues/437))
