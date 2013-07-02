@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.10.0 - 2013-07-02
+
+- __Allow specific commits to be targeted__ ([#275](https://github.com/bower/bower/issues/275))
+- __Change bower default folder from `components` to `bower_components`__ ([#434](https://github.com/bower/bower/issues/434))
+- __Support semver pre-releases and builds ([#188](https://github.com/bower/bower/issues/188))
+- Use `Content-Type` and `Content-Disposition` to guess file types, such as zip files ([#454](https://github.com/bower/bower/pull/454))
+- Fix bower failing silently when using an invalid version value in the bower.json file ([#439](https://github.com/bower/bower/issues/439))
+- Fix bower slowness when downloading after redirects ([#437](https://github.com/bower/bower/issues/437))
+- Detect and error out with a friendly message when `git` is not installed ([#362](https://github.com/bower/bower/issues/362))
+- Add `--quiet` and `--silent` CLI options ([#343](https://github.com/bower/bower/issues/343))
+- Minor programmatic usage improvements
+
+_NOTE_: The `components` folder will still be used if already created, making it easier for users to upgrade.
+
 ## 0.9.2 - 2013-04-28
 - Better fix for [#429](https://github.com/bower/bower/issues/429)
 
