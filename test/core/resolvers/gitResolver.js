@@ -992,6 +992,30 @@ describe('GitResolver', function () {
             })
             .done();
         });
+
+        it('should work if requested in parallel for the same source', function (next) {
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/some-branch'
+                ]);
+            };
+
+            Q.all([
+                GitResolver.branches('foo'),
+                GitResolver.branches('foo')
+            ])
+            .spread(function (branches1, branches2) {
+                expect(branches1).to.eql({
+                    'master': 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                    'some-branch': 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                });
+                expect(branches1).to.eql(branches2);
+
+                next();
+            })
+            .done();
+        });
     });
 
     describe('#tags', function () {
@@ -1087,6 +1111,30 @@ describe('GitResolver', function () {
                 expect(tags).to.eql({
                     'some-tag': 'dddddddddddddddddddddddddddddddddddddddd'
                 });
+
+                next();
+            })
+            .done();
+        });
+
+        it('should work if requested in parallel for the same source', function (next) {
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.3.1',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/some-tag'
+                ]);
+            };
+
+            Q.all([
+                GitResolver.tags('foo'),
+                GitResolver.tags('foo')
+            ])
+            .spread(function (tags1, tags2) {
+                expect(tags1).to.eql({
+                    '0.3.1': 'cccccccccccccccccccccccccccccccccccccccc',
+                    'some-tag': 'dddddddddddddddddddddddddddddddddddddddd'
+                });
+                expect(tags2).to.eql(tags1);
 
                 next();
             })
@@ -1260,6 +1308,27 @@ describe('GitResolver', function () {
             })
             .then(function (versions) {
                 expect(versions).to.eql(['0.3.1']);
+                next();
+            })
+            .done();
+        });
+
+        it('should work if requested in parallel for the same source', function (next) {
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/tags/0.2.1',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0'
+                ]);
+            };
+
+            Q.all([
+                GitResolver.versions('foo'),
+                GitResolver.versions('foo')
+            ])
+            .spread(function (versions1, versions2) {
+                expect(versions1).to.eql(['0.2.1', '0.1.0']);
+                expect(versions2).to.eql(versions1);
+
                 next();
             })
             .done();
