@@ -97,7 +97,7 @@ if (!commandFunc) {
     }
 }
 
-// Get the renderer and bower.configure it with the executed command
+// Get the renderer and configure it with the executed command
 renderer = cli.getRenderer(command, emitter.json, bower.config);
 
 emitter
