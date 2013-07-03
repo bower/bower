@@ -15,9 +15,6 @@
   },
   "main": "lib",
   "homepage": "http://bower.io",
-  "engines": {
-    "node": ">=0.8.0"
-  },
   "dependencies": {
     "archy": "0.0.2",
     "abbrev": "~1.0.4",
