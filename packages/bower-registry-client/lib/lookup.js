@@ -12,8 +12,7 @@ function lookup(name, callback) {
     var total = registry.length;
     var index = 0;
 
-    // If no registry entries were passed, simply
-    // error with package not found
+    // If no registry entries were passed..
     if (!total) {
         return callback();
     }
