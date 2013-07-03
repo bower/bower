@@ -111,7 +111,7 @@ Cache.prototype.del = function (key, callback) {
     }
 
     fs.unlink(this._getFile(key), function (err) {
-        if (!err || err.code !== 'ENOENT') {
+        if (err && err.code !== 'ENOENT') {
             return callback(err);
         }
 
@@ -138,7 +138,7 @@ Cache.prototype.clear = function (callback) {
         // Delete every file in parallel
         async.forEach(files, function (file, next) {
             fs.unlink(path.join(dir, file), function (err) {
-                if (!err || err.code !== 'ENOENT') {
+                if (err && err.code !== 'ENOENT') {
                     return next(err);
                 }
 
