@@ -37,3 +37,4 @@
 Not BC changes:
 - Shorthand resolver syntax {{{}}} to just {{}}
 - Removed json property from the config
+- 'moment': 'git://repo' is no longer supported.. #* must be added to the end
