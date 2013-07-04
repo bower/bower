@@ -6,7 +6,7 @@ describe('RegistryClient', function () {
     beforeEach(function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
-        this.client = new RegistryClient();
+        this.registry = new RegistryClient();
         this.conf = {
             search: [this.uri],
             register: this.uri,
@@ -19,43 +19,43 @@ describe('RegistryClient', function () {
         describe('instantiating a client without custom options', function () {
 
             it('should provide an instance of RegistryClient', function () {
-                expect(this.client instanceof RegistryClient).to.be.ok;
+                expect(this.registry instanceof RegistryClient).to.be.ok;
             });
 
             it('should set properties correctly', function () {
-                expect(this.client).to.have.ownProperty('_config');
-                expect(this.client).to.have.ownProperty('_cache');
-                expect(this.client).to.have.ownProperty('_lookupCache');
-                expect(this.client).to.have.ownProperty('_searchCache');
-                expect(this.client).to.have.ownProperty('_listCache');
+                expect(this.registry).to.have.ownProperty('_config');
+                expect(this.registry).to.have.ownProperty('_cache');
+                expect(this.registry).to.have.ownProperty('_lookupCache');
+                expect(this.registry).to.have.ownProperty('_searchCache');
+                expect(this.registry).to.have.ownProperty('_listCache');
             });
 
             it('should set default registry config', function () {
-                expect(this.client._config.registry).to.deep.equal(this.conf);
+                expect(this.registry._config.registry).to.deep.equal(this.conf);
             });
 
             it('should set default search config', function () {
-                expect(this.client._config.registry.search[0]).to.equal(this.uri);
+                expect(this.registry._config.registry.search[0]).to.equal(this.uri);
             });
 
             it('should set default register config', function () {
-                expect(this.client._config.registry.register).to.equal(this.uri);
+                expect(this.registry._config.registry.register).to.equal(this.uri);
             });
 
             it('should set default publish config', function () {
-                expect(this.client._config.registry.publish).to.equal(this.uri);
+                expect(this.registry._config.registry.publish).to.equal(this.uri);
             });
 
             it('should set default cache path config', function () {
-                expect(typeof this.client._config.cache === 'string').to.be.ok;
+                expect(typeof this.registry._config.cache === 'string').to.be.ok;
             });
 
             it('should set default timeout config', function () {
-                expect(this.client._config.timeout).to.equal(this.timeoutVal);
+                expect(this.registry._config.timeout).to.equal(this.timeoutVal);
             });
 
             it('should set default strictSsl config', function () {
-                expect(this.client._config.strictSsl).to.be.ok;
+                expect(this.registry._config.strictSsl).to.be.ok;
             });
 
         });
