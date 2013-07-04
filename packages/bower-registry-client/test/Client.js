@@ -90,4 +90,40 @@ describe('RegistryClient', function () {
 
     });
 
+    describe('calling the lookup instance method with argument', function () {
+
+        it('should not return an error', function () {
+            this.registry.lookup('jquery', function (err) {
+                expect(err).to.be.null;
+            });
+        });
+
+        it('should provide a result type', function () {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be.null;
+                expect(entry.type).to.equal('alias');
+            });
+        });
+
+        it('should provide a result url ', function () {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be.null;
+                expect(entry.url).to.equal('git://github.com/components/jquery.git');
+            });
+        });
+
+    });
+
+    describe('calling the lookup instance method without argument', function () {
+
+        it('should', function () {
+            this.registry.lookup('', function (err, entry) {
+                expect(err).to.not.be.null;
+                expect(entry).to.be.undefined;
+            });
+        });
+
+    });
+
+
 });
