@@ -120,7 +120,7 @@ describe('RegistryClient', function () {
 
     describe('calling the lookup instance method without argument', function () {
 
-        it('should', function () {
+        it('should return an error and no result', function () {
             this.registry.lookup('', function (err, entry) {
                 expect(err).to.not.be.null;
                 expect(entry).to.be.undefined;
@@ -174,11 +174,23 @@ describe('RegistryClient', function () {
 
     });
 
-    //describe('calling the register instance method without argument', function () {});
+    describe('calling the register instance method without arguments', function () {
+        it('should return an error and no result', function () {
+            this.registry.register('', '', function (err, entry) {
+                expect(err).to.not.be.null;
+                expect(entry).to.be.undefined;
+            });
+        });
+    });
 
     describe('calling the search instance method with argument', function () {
 
         beforeEach(function () {
+
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages/search/jquery')
+              .replyWithFile(200, __dirname + '/fixtures/search.json');
+
             this.pkg = 'jquery';
             this.pkgUrl = 'git://github.com/components/jquery.git';
         });
@@ -219,6 +231,12 @@ describe('RegistryClient', function () {
     });
 
     describe('calling the search instance method without argument', function () {
+        it('should return an error and no results', function () {
+            this.registry.register('', function (err, results) {
+                expect(err).to.not.be.null;
+                expect(results).to.be.undefined;
+            });
+        });
     });
 
 });
