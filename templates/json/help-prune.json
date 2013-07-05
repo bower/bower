@@ -2,7 +2,7 @@
     "command": "prune",
     "description": "Uninstalls extraneous packages",
     "usage": [
-        "uninstall <name> [<name> ..] [<options>]"
+        "prune [<options>]"
     ],
     "options": [
         {
