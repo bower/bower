@@ -4,7 +4,7 @@ var RegistryClient = require('../Client'),
 
 
 replay.mode = 'replay';
-replay.fixtures = __dirname + '/fixtures/replay';
+replay.fixtures = __dirname + '/test/fixtures/replay';
 
 
 describe('RegistryClient', function () {
