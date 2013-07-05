@@ -1,0 +1,13 @@
+POST /packages
+host: bower.herokuapp.com
+content-type: application/x-www-form-urlencoded; charset=utf-8
+accept: application/json
+
+406 HTTP/1.1
+content-type: text/html;charset=utf-8
+server: thin 1.3.1 codename Triple Espresso
+x-frame-options: sameorigin
+x-xss-protection: 1; mode=block
+content-length: 0
+connection: keep-alive
+

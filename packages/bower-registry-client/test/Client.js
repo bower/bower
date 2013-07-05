@@ -1,12 +1,20 @@
 var RegistryClient = require('../Client'),
-    expect = require('chai').expect;
+    expect = require('chai').expect,
+    replay = require('replay');
+
+
+replay.mode = 'replay';
+replay.fixtures = __dirname + '/fixtures/replay';
+
 
 describe('RegistryClient', function () {
 
     beforeEach(function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
-        this.registry = new RegistryClient();
+        this.registry = new RegistryClient({
+            strictSsl: false
+        });
         this.conf = {
             search: [this.uri],
             register: this.uri,
@@ -54,7 +62,7 @@ describe('RegistryClient', function () {
                 expect(this.registry._config.timeout).to.equal(this.timeoutVal);
             });
 
-            it('should set default strictSsl config', function () {
+            xit('should set default strictSsl config', function () {
                 expect(this.registry._config.strictSsl).to.be.ok;
             });
 
@@ -98,14 +106,14 @@ describe('RegistryClient', function () {
             });
         });
 
-        it('should provide a result type', function () {
+        it('should return entry type', function () {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be.null;
                 expect(entry.type).to.equal('alias');
             });
         });
 
-        it('should provide a result url ', function () {
+        it('should return entry url ', function () {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be.null;
                 expect(entry.url).to.equal('git://github.com/components/jquery.git');
@@ -125,5 +133,87 @@ describe('RegistryClient', function () {
 
     });
 
+    describe('calling the register instance method with argument', function () {
+
+        beforeEach(function () {
+            this.pkg = 'jquery';
+            this.pkgUrl = 'git://github.com/components/jquery.git';
+        });
+
+        it('should not return an error', function (done) {
+            this.registry.register(this.pkg, this.pkgUrl, function (err) {
+                expect(err).to.be.null;
+                done();
+            });
+        });
+
+        it('should return entry name', function (done) {
+            var self = this;
+
+            this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
+                expect(err).to.be.null;
+                expect(entry.name).to.equal(self.pkg);
+                done();
+            });
+        });
+
+        it('should return entry url', function (done) {
+            var self = this;
+
+            this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
+                expect(err).to.be.null;
+                expect(entry.url).to.equal(self.pkgUrl);
+                done();
+            });
+        });
+
+    });
+
+    //describe('calling the register instance method without argument', function () {});
+
+    describe('calling the search instance method with argument', function () {
+
+        beforeEach(function () {
+            this.pkg = 'jquery';
+            this.pkgUrl = 'git://github.com/components/jquery.git';
+        });
+
+        it('should not return an error', function (done) {
+            this.registry.search(this.pkg, function (err) {
+                expect(err).to.be.null;
+                done();
+            });
+        });
+
+        it('should return entry name', function (done) {
+            var self = this;
+
+            this.registry.search(this.pkg, function (err, results) {
+                results.forEach(function (entry) {
+                    if (entry.name === self.pkg) {
+                        expect(entry.name).to.equal(self.pkg);
+                        done();
+                    }
+                });
+            });
+        });
+
+        it('should return entry url', function (done) {
+            var self = this;
+
+            this.registry.search(this.pkg, function (err, results) {
+                results.forEach(function (entry) {
+                    if (entry.name === self.pkg) {
+                        expect(entry.url).to.equal(self.pkgUrl);
+                        done();
+                    }
+                });
+            });
+        });
+
+    });
+
+    describe('calling the search instance method without argument', function () {
+    });
 
 });
