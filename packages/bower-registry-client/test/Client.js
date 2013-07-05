@@ -1,10 +1,6 @@
 var RegistryClient = require('../Client'),
     expect = require('chai').expect,
-    replay = require('replay');
-
-
-replay.mode = 'replay';
-replay.fixtures = __dirname + '/test/fixtures/replay';
+    nock = require('nock');
 
 
 describe('RegistryClient', function () {
@@ -136,8 +132,17 @@ describe('RegistryClient', function () {
     describe('calling the register instance method with argument', function () {
 
         beforeEach(function () {
-            this.pkg = 'jquery';
-            this.pkgUrl = 'git://github.com/components/jquery.git';
+            nock('https://bower.herokuapp.com:443')
+              .post('/packages', 'name=test-ba&url=git%3A%2F%2Fgithub.com%2Ftest-ba%2Ftest-ba.git')
+              .reply(201, '', { 'content-type': 'text/html;charset=utf-8',
+              server: 'thin 1.3.1 codename Triple Espresso',
+              'x-frame-options': 'sameorigin',
+              'x-xss-protection': '1; mode=block',
+              'content-length': '0',
+              connection: 'keep-alive' });
+
+            this.pkg = 'test-ba';
+            this.pkgUrl = 'git://github.com/test-ba/test-ba.git';
         });
 
         it('should not return an error', function (done) {
