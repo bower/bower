@@ -186,7 +186,6 @@ describe('RegistryClient', function () {
     describe('calling the search instance method with argument', function () {
 
         beforeEach(function () {
-
             nock('https://bower.herokuapp.com:443')
               .get('/packages/search/jquery')
               .replyWithFile(200, __dirname + '/fixtures/search.json');
@@ -232,7 +231,7 @@ describe('RegistryClient', function () {
 
     describe('calling the search instance method without argument', function () {
         it('should return an error and no results', function () {
-            this.registry.register('', function (err, results) {
+            this.registry.search('', function (err, results) {
                 expect(err).to.not.be.null;
                 expect(results).to.be.undefined;
             });
