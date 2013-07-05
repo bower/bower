@@ -62,8 +62,8 @@ describe('RegistryClient', function () {
                 expect(this.registry._config.timeout).to.equal(this.timeoutVal);
             });
 
-            xit('should set default strictSsl config', function () {
-                expect(this.registry._config.strictSsl).to.be.ok;
+            it('should set default strictSsl config', function () {
+                expect(this.registry._config.strictSsl).to.be.false;
             });
 
         });
