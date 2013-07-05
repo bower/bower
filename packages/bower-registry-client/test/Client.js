@@ -93,6 +93,10 @@ describe('RegistryClient', function () {
 
     });
 
+
+    //
+    // lookup
+    //
     describe('calling the lookup instance method with argument', function () {
 
         it('should not return an error', function () {
@@ -128,6 +132,10 @@ describe('RegistryClient', function () {
 
     });
 
+
+    //
+    // register
+    //
     describe('calling the register instance method with argument', function () {
 
         beforeEach(function () {
@@ -177,6 +185,10 @@ describe('RegistryClient', function () {
         });
     });
 
+
+    //
+    // search
+    //
     describe('calling the search instance method with argument', function () {
 
         beforeEach(function () {
@@ -228,6 +240,32 @@ describe('RegistryClient', function () {
             this.registry.search('', function (err, results) {
                 expect(err).to.not.be.null;
                 expect(results).to.be.undefined;
+            });
+        });
+    });
+
+
+    //
+    // clearCache
+    //
+    describe('called the clearCache instance method with argument', function () {
+
+        beforeEach(function () {
+            this.pkg = 'jquery';
+        });
+
+        it('should not return an error', function () {
+            this.registry.clearCache(this.pkg, function (err) {
+                expect(err).to.be.null;
+            });
+        });
+    });
+
+    describe('called the clearCache instance method without argument', function () {
+
+        it('should not return any errors and remove all cache items', function () {
+            this.registry.clearCache(function (err) {
+                expect(err).to.be.null;
             });
         });
     });
