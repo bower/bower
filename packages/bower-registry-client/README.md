@@ -116,18 +116,32 @@ registry.clearCache(function (err) {
 ```
 
 
-#### .clearRuntimeCache()
+#### .resetCache()
 
-Clears the in-memory cache used to speed up the module.
+Clears the in-memory cache used to speed up the instance.
 
 Note that in most cases, you don't need to clear the runtime cache since it has
 self expiration times.
 Might be useful if you use this module in long-living programs.
 
 ```js
-
-registry.clearRuntimeCache();
+registry.resetCache();
 ```
+
+#### #clearRuntimeCache()
+
+Clears the in-memory cache used to speed up the whole module.
+This clears the static in-memory cache as well as in-memory cache used by instances.
+
+Note that in some situations, the instances in-memory cache might not be cleared so
+you should not rely on it. Instead, you should create new instances after calling this
+method.
+
+```js
+
+RegistryClient.clearRuntimeCache();
+```
+
 
 
 ## License
