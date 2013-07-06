@@ -1,6 +1,6 @@
 {
   "name": "bower-registry-client",
-  "version": "0.0.0-rc8",
+  "version": "0.0.0-rc.8",
   "description": "Provides easy interaction with the Bower registry.",
   "author": "Twitter",
   "licenses": [
@@ -26,7 +26,7 @@
     "mkdirp": "~0.3.5"
   },
   "devDependencies": {
-    "mocha": "~1.8.2",
+    "mocha": "~1.12.0",
     "expect.js": "~0.2.0",
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
