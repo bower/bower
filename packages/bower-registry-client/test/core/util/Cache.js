@@ -15,11 +15,6 @@ describe('Cache', function () {
                 expect(this.cache instanceof Cache).to.be.ok;
             });
 
-            it('should set properties correctly', function () {
-                expect(this.cache).to.have.ownProperty('_cache');
-                expect(this.cache).to.have.ownProperty('_options');
-            });
-
             it('should inherit LRU cache methods', function () {
                 var self = this,
                     lruMethods = [
@@ -54,14 +49,6 @@ describe('Cache', function () {
 
         it('should have a reset prototype method', function () {
             expect(Cache.prototype).to.have.ownProperty('reset');
-        });
-
-        it('should have a reset _hasExpired method', function () {
-            expect(Cache.prototype).to.have.ownProperty('_hasExpired');
-        });
-
-        it('should have a reset _getFile method', function () {
-            expect(Cache.prototype).to.have.ownProperty('_getFile');
         });
 
     });

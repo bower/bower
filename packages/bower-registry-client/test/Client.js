@@ -25,14 +25,6 @@ describe('RegistryClient', function () {
                 expect(this.registry instanceof RegistryClient).to.be.ok;
             });
 
-            it('should set properties correctly', function () {
-                expect(this.registry).to.have.ownProperty('_config');
-                expect(this.registry).to.have.ownProperty('_cache');
-                expect(this.registry).to.have.ownProperty('_lookupCache');
-                expect(this.registry).to.have.ownProperty('_searchCache');
-                expect(this.registry).to.have.ownProperty('_listCache');
-            });
-
             it('should set default registry config', function () {
                 expect(this.registry._config.registry).to.deep.equal(this.conf);
             });
@@ -89,10 +81,6 @@ describe('RegistryClient', function () {
 
         it('should have a clearRuntimeCache static method', function () {
             expect(RegistryClient).to.have.ownProperty('clearRuntimeCache');
-        });
-
-        it('should have a _initCache prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('_initCache');
         });
 
     });
