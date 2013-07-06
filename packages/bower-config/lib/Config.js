@@ -71,7 +71,7 @@ Config.prototype.save = function (where, callback) {
 
 };
 
-Config.prototype.toJson = function () {
+Config.prototype.toObject = function () {
     return mout.lang.deepClone(this._config);
 };
 
@@ -81,7 +81,7 @@ Config.create = function (cwd) {
 
 Config.read = function (cwd) {
     var config = new Config(cwd);
-    return config.load().toJson();
+    return config.load().toObject();
 };
 
 module.exports = Config;
