@@ -133,12 +133,10 @@ registry.resetCache();
 Clears the in-memory cache used to speed up the whole module.
 This clears the static in-memory cache as well as in-memory cache used by instances.
 
-Note that in some situations, the instances in-memory cache might not be cleared so
-you should not rely on it. Instead, you should create new instances after calling this
-method.
+Note that in edge cases, some instance's in-memory cache might not have been cleared.
+If that's a problem, you should create fresh instances instead.
 
 ```js
-
 RegistryClient.clearRuntimeCache();
 ```
 
