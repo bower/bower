@@ -2,7 +2,7 @@ var path = require('path');
 var optimist = require('optimist');
 var osenv = require('osenv');
 var mout = require('mout');
-var cc = require('rc/lib/utils');
+var cc = require('../../node_modules/rc/lib/utils');  // This is ugly!
 
 var win = process.platform === 'win32';
 var home = osenv.home();
