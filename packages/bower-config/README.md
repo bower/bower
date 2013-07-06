@@ -42,7 +42,7 @@ Obtains a instance where `cwd` is the current working directory (defaults to `pr
 ```js
 var config = require('bower-config').create();
 // You can also specify a working directory
-var config2 = require('bower-config').create(./some/path');
+var config2 = require('bower-config').create('./some/path');
 ```
 
 
