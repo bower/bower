@@ -153,6 +153,9 @@ Cache.prototype.reset = function (callback) {
 };
 
 Cache.clearRuntimeCache = function () {
+    // Note that _cache refers to the static _cache variable
+    // that holds other caches per dir!
+    // Do not confuse it with the instance cache
     this._cache.reset();
 };
 
