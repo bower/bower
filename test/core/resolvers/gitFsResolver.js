@@ -166,14 +166,14 @@ describe('GitFsResolver', function () {
             // Check if the original branch is still the master one
             .then(function () {
                 return cmd('git', ['branch', '--color=never'], { cwd: testPackage })
-                .then(function (stdout) {
+                .spread(function (stdout) {
                     expect(stdout).to.contain('* master');
                 });
             })
             // Check if git status is empty
             .then(function () {
                 return cmd('git', ['status', '--porcelain'], { cwd: testPackage })
-                .then(function (stdout) {
+                .spread(function (stdout) {
                     stdout = stdout.trim();
                     expect(stdout).to.equal('');
                     next();
