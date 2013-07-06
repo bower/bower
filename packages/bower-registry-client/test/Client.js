@@ -83,8 +83,12 @@ describe('RegistryClient', function () {
             expect(RegistryClient.prototype).to.have.ownProperty('clearCache');
         });
 
-        it('should have a clearRuntimeCache prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('clearRuntimeCache');
+        it('should have a resetCache prototype method', function () {
+            expect(RegistryClient.prototype).to.have.ownProperty('resetCache');
+        });
+
+        it('should have a clearRuntimeCache static method', function () {
+            expect(RegistryClient).to.have.ownProperty('clearRuntimeCache');
         });
 
         it('should have a _initCache prototype method', function () {

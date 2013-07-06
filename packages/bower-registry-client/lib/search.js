@@ -67,7 +67,7 @@ function search(name, callback) {
     }, function (err) {
         // Clear runtime cache, keeping the persistent data
         // in files for future offline usage
-        clearRuntimeCache();
+        resetCache();
 
         // If some of the registry entries failed, error out
         if (err) {
@@ -173,7 +173,7 @@ function clearCache(name, callback) {
     }, callback);
 }
 
-function clearRuntimeCache() {
+function resetCache() {
     var remote;
 
     for (remote in this._searchCache) {
@@ -183,6 +183,6 @@ function clearRuntimeCache() {
 
 search.initCache = initCache;
 search.clearCache = clearCache;
-search.clearRuntimeCache = clearRuntimeCache;
+search.resetCache = resetCache;
 
 module.exports = search;

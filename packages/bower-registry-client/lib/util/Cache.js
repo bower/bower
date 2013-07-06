@@ -148,9 +148,15 @@ Cache.prototype.clear = function (callback) {
     });
 };
 
-Cache.prototype.reset = function () {
+Cache.prototype.reset = function (callback) {
     this._cache.reset();
 };
+
+Cache.clearRuntimeCache = function () {
+    this._cache.reset();
+};
+
+//-------------------------------
 
 Cache.prototype._hasExpired = function (json) {
     var expires = json.expires;

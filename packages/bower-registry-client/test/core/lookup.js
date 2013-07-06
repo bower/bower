@@ -19,9 +19,9 @@ describe('lookup module', function () {
             expect(typeof lookup.clearCache === 'function').to.be.ok;
         });
 
-        it('should expose a ClearRuntimeCache method', function () {
-            expect(lookup.clearCache).to.be.ok;
-            expect(typeof lookup.clearCache === 'function').to.be.ok;
+        it('should expose a resetCache method', function () {
+            expect(lookup.resetCache).to.be.ok;
+            expect(typeof lookup.resetCache === 'function').to.be.ok;
         });
 
     });

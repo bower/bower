@@ -19,9 +19,9 @@ describe('search module', function () {
             expect(typeof search.clearCache === 'function').to.be.ok;
         });
 
-        it('should expose a clearRuntimeCache method', function () {
-            expect(search.clearRuntimeCache).to.be.ok;
-            expect(typeof search.clearRuntimeCache === 'function').to.be.ok;
+        it('should expose a resetCache method', function () {
+            expect(search.resetCache).to.be.ok;
+            expect(typeof search.resetCache === 'function').to.be.ok;
         });
 
     });

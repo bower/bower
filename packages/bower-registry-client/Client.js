@@ -1,6 +1,7 @@
 var os = require('os');
 var path = require('path');
 var methods = require('./lib');
+var Cache = require('./lib/util/Cache');
 
 function RegistryClient(config) {
     config = config || {};
@@ -65,10 +66,15 @@ RegistryClient.prototype.clearCache = function (name, callback) {
     this.search.clearCache.call(this, name, callback);
     this.list.clearCache.call(this, callback);
 };
-RegistryClient.prototype.clearRuntimeCache = function () {
-    this.lookup.cleanRuntimeCache.call(this);
-    this.search.cleanRuntimeCache.call(this);
-    this.list.cleanRuntimeCache.call(this);
+
+RegistryClient.prototype.resetCache = function (name, callback) {
+    this.lookup.resetCache.call(this, name, callback);
+    this.search.resetCache.call(this, name, callback);
+    this.list.resetCache.call(this, callback);
+};
+
+RegistryClient.clearRuntimeCache = function () {
+    Cache.clearRuntimeCache();
 };
 
 // -----------------------------

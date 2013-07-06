@@ -171,7 +171,7 @@ function clearCache(name, callback) {
     }
 }
 
-function clearRuntimeCache() {
+function resetCache() {
     var remote;
 
     for (remote in this._lookupCache) {
@@ -181,6 +181,6 @@ function clearRuntimeCache() {
 
 lookup.initCache = initCache;
 lookup.clearCache = clearCache;
-lookup.clearRuntimeCache = clearRuntimeCache;
+lookup.resetCache = resetCache;
 
 module.exports = lookup;

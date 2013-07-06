@@ -39,7 +39,6 @@ module.exports = function (grunt) {
                 },
                 src: ['test/runner.js']
             }
-
         },
 
 
@@ -51,8 +50,6 @@ module.exports = function (grunt) {
     });
 
     // Default task.
-    grunt.registerTask('default', 'jshint');
-    grunt.registerTask('test', 'simplemocha:full');
-    grunt.registerTask('build', ['jshint', 'simplemocha:build']);
-
+    grunt.registerTask('test', ['simplemocha:full']);
+    grunt.registerTask('default', ['jshint', 'test']);
 };

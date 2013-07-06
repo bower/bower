@@ -36,6 +36,6 @@
     "nock": "~0.18.2"
   },
   "scripts": {
-    "test": "grunt build --verbose"
+    "test": "grunt test"
   }
 }

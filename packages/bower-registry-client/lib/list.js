@@ -60,7 +60,7 @@ function list(callback) {
     }, function (err) {
         // Clear runtime cache, keeping the persistent data
         // in files for future offline usage
-        clearRuntimeCache();
+        resetCache();
 
         // If some of the registry entries failed, error out
         if (err) {
@@ -158,7 +158,7 @@ function clearCache(callback) {
     }, callback);
 }
 
-function clearRuntimeCache() {
+function resetCache() {
     var remote;
 
     for (remote in this._listCache) {
@@ -168,6 +168,6 @@ function clearRuntimeCache() {
 
 list.initCache = initCache;
 list.clearCache = clearCache;
-list.clearRuntimeCache = clearRuntimeCache;
+list.resetCache = resetCache;
 
 module.exports = list;

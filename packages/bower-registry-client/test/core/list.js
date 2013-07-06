@@ -19,9 +19,9 @@ describe('list module', function () {
             expect(typeof list.clearCache === 'function').to.be.ok;
         });
 
-        it('should expose a ClearRuntimeCache method', function () {
-            expect(list.clearCache).to.be.ok;
-            expect(typeof list.clearCache === 'function').to.be.ok;
+        it('should expose a resetCache method', function () {
+            expect(list.resetCache).to.be.ok;
+            expect(typeof list.resetCache === 'function').to.be.ok;
         });
 
     });
