@@ -45,11 +45,8 @@ if (bower.config.silent) {
 }
 
 // Enable interactive if terminal is TTY,
-// loglevel is equal or lower then conflict and
-// the output is not json
-bower.config.interactive = tty.isatty(1) &&
-                     loglevel <= levels.conflict &&
-                     !bower.config.json;
+// loglevel is equal or lower then conflict
+bower.config.interactive = tty.isatty(1) && loglevel <= levels.conflict;
 
 // Get the command to execute
 while (options.argv.remain.length) {
