@@ -21,8 +21,8 @@
     "graceful-fs": "~1.2.2"
   },
   "devDependencies": {
-    "mocha": "~1.12.0",
-    "expect.js": "~0.2.0"
+    "expect.js": "~0.2.0",
+    "mocha": "~1.12.0"
   },
   "scripts": {
     "test": "mocha -R spec"
