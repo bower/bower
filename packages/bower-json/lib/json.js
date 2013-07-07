@@ -1,5 +1,6 @@
 var fs = require('graceful-fs');
 var path = require('path');
+var createError = require('./util/createError');
 
 function read(file, callback) {
     fs.readFile(file, function (err, contents) {
@@ -21,7 +22,15 @@ function read(file, callback) {
 function parse(json, callback) {
     // Apply normalisation and validation here
     // If something is invalid, the error.code should be EINVALID
-    callback(null, json);
+    process.nextTick(function () {
+        if (!json.name) {
+            return callback(createError('No name property set', 'EINVALID'));
+        }
+
+        // TODO: !!
+
+        return callback(null, json);
+    });
 }
 
 function find(folder, callback) {
