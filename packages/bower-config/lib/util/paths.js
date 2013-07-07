@@ -7,7 +7,7 @@ var osenv = require('osenv');
 var paths = {
     config: process.env.XDG_CONFIG_HOME,
     data: process.env.XDG_DATA_HOME,
-    cache: process.env.XDG_DATA_CACHE
+    cache: process.env.XDG_CACHE_HOME
 };
 
 // Guess some needed properties based on the user OS
