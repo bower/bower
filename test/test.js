@@ -11,4 +11,5 @@ require('./core/resolvers/fsResolver');
 require('./core/resolvers/gitResolver');
 require('./core/resolvers/gitFsResolver');
 require('./core/resolvers/gitRemoteResolver');
+require('./core/resolvers/gitHubResolver');
 require('./core/resolverFactory');

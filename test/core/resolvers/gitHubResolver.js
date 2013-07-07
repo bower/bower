@@ -1,0 +1,3 @@
+describe('GitRemoteResolver', function () {
+    // TODO!
+});

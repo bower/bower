@@ -123,6 +123,8 @@ describe('resolveFactory', function () {
         .done();
     });
 
+    it.skip('should recognize GitHub endpoints correctly');
+
     it('should recognize local fs git endpoints correctly', function (next) {
         var promise = Q.resolve();
         var endpoints;
