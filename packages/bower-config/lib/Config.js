@@ -67,6 +67,11 @@ Config.prototype.set = function (key, value) {
     return this;
 };
 
+Config.prototype.del = function (key, value) {
+
+    return this;
+};
+
 Config.prototype.save = function (where, callback) {
 
 };

@@ -19,7 +19,14 @@ Keys with dots are supported to access deep values.
 #### .set(key, value)
 
 Sets a configuration value for `key`.   
-Keys with dots are supported to access deep values.
+Keys with dots are supported to set deep values.
+
+
+#### .del(key)
+
+Removes configuration named `key`.   
+Keys with dots are supported to delete deep keys.
+
 
 #### .save(where, callback)
 
