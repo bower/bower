@@ -49,14 +49,14 @@
     "which": "~1.0.5"
   },
   "devDependencies": {
-    "mocha": "~1.12.0",
     "expect.js": "~0.2.0",
-    "nock": "~0.17.5",
     "grunt-simple-mocha": "~0.4.0",
     "grunt-contrib-watch": "~0.4.3",
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.5.4",
-    "grunt-execute": "~0.1.4"
+    "grunt-execute": "~0.1.4",
+    "mocha": "~1.12.0",
+    "nock": "~0.17.5"
   },
   "scripts": {
     "test": "grunt test"
