@@ -19,7 +19,7 @@ describe('RegistryClient', function () {
 
     describe('Constructor', function () {
 
-        describe('instantiating a client without custom options', function () {
+        describe('instantiating a client', function () {
 
             it('should provide an instance of RegistryClient', function () {
                 expect(this.registry instanceof RegistryClient).to.be.ok;
@@ -81,6 +81,23 @@ describe('RegistryClient', function () {
 
         it('should have a clearRuntimeCache static method', function () {
             expect(RegistryClient).to.have.ownProperty('clearRuntimeCache');
+        });
+
+    });
+
+    describe('instantiating a client with custom options', function () {
+
+        describe('offline', function () {
+
+            it('should not return search results ', function () {
+                this.registry._config.offline = true;
+
+                this.registry.search('jquery', function (err, results) {
+                    expect(err).to.be.null;
+                    expect(results.length).to.equal(0);
+                });
+            });
+
         });
 
     });
