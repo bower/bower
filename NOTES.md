@@ -16,25 +16,13 @@
     - bower install & update
         - Option to install deps in a tree structure like npm? see: https://github.com/twitter/bower/issues/157
         - Allow overrides of the registry for easier fork integration? this need to be discussed as part of the spec, see: https://github.com/twitter/bower/issues/342
-- Contributing.md
-  - Copy from master
-  - Tell users to learn about promises
-  - Tell users to not forget to call .done() to throw unhandled promise errors in tests
 
-- Add command to clear internal runtime cache (to be used programmatically on long running programs using bower)
-- Use yeomen insight!!
 - Bower could setup a git hook on folders that are github repos to make validation of the json (if it conforms with the spec)
-- In prod dont forget to Q.longStackJumpLimit = 0;
 - Ddd perf tests
   - http://trace.gl
 - Discuss ability to specify folders inside bower_components.. e.g. components/fonts/
 - Discuss namespaces in the registry
-- Cache dir location: https://github.com/bower/bower/issues/448
 - Implement shrinkwrap?
-- Switch everything related with fs. to .graceful-fs??
-  - ifo so. don't forget to do the same on all bower org modules
 
-Not BC changes:
-- Shorthand resolver syntax {{{}}} to just {{}}
+Non BC changes:
 - Removed json property from the config
-- 'moment': 'git://repo' is no longer supported.. #* must be added to the end
