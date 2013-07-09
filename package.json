@@ -62,7 +62,7 @@
     "test": "grunt test"
   },
   "bin": {
-    "bower_new": "bin/bower_new"
+    "bower": "bin/bower"
   },
   "preferGlobal": true,
   "private": true
