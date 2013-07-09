@@ -48,6 +48,11 @@ Config.prototype.load = function () {
         }
     }, this._cwd);
 
+    // Some backwards compatible things..
+    runtimeConfig['shorthand-resolver'] = runtimeConfig['shorthand-resolver']
+    .replace(/\{\{\{/g, '{{')
+    .replace(/\}\}\}/g, '}}');
+
     // Generate config based on the rc, making every key camelCase
     this._config = {};
     mout.object.forOwn(runtimeConfig, function (value, key) {
