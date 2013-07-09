@@ -18,7 +18,7 @@ var base;
 // Fallbacks for windows
 if (process.platform === 'win32') {
     base = path.resolve(process.env.APPDATA || home || temp);
-    base = path.join(base, 'bower_new');
+    base = path.join(base, 'bower');
 
     paths.config = paths.config || path.join(base, 'config');
     paths.data = paths.data || path.join(base, 'data');
@@ -27,9 +27,9 @@ if (process.platform === 'win32') {
 } else {
     base = path.resolve(home || temp);
 
-    paths.config = paths.config || path.join(base, '.config/bower_new');
-    paths.data = paths.data || path.join(base, '.local/share/bower_new');
-    paths.cache = paths.cache || path.join(base, '.cache/bower_new');
+    paths.config = paths.config || path.join(base, '.config/bower');
+    paths.data = paths.data || path.join(base, '.local/share/bower');
+    paths.cache = paths.cache || path.join(base, '.cache/bower');
 }
 
 module.exports = paths;
