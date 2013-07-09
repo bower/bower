@@ -85,11 +85,11 @@ Here's an overview of the dependency resolve process:
 
 4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
     - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
-    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would required HTTP requests.
+    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would require HTTP requests.
 
 5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical dir` that complies to the endpoint target. Some considerations:
     - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
-    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has a entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
+    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
 
 6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
     - This step is ignored in case a flag like `offline` is passed.
@@ -104,7 +104,7 @@ Here's an overview of the dependency resolve process:
 
 9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical dir to the `Manager`.
 
-10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue in point #3. If there are no more unresolved dependencies, finish up the installation procedure.
+10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue at point #3. If there are no more unresolved dependencies, finish up the installation procedure.
 
 -----
 
@@ -182,7 +182,7 @@ The `logger` to print logs to.
 
 `PackageRepository#fetch(decEndpoint)`: Promise
 
-Fetches and endpoint, returning a promise of a `canonical dir`.
+Fetches an endpoint, returning a promise of a `canonical dir`.
 
 `PackageRepository#versions(source)`: Promise
 
@@ -400,4 +400,4 @@ The following resolvers will extend from `Resolver.js` and obey its interface.
 
 The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
 
-This architecture makes it very easy for the community to create others package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
+This architecture makes it very easy for the community to create other package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
