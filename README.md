@@ -1,403 +1,365 @@
-# Bower rewrite [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=rewrite)](http://travis-ci.org/bower/bower)
+# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=rewrite)](http://travis-ci.org/bower/bower)
 
-## Why?
+Bower is a package manager for the web. It offers a generic, unopinionated
+solution to the problem of **front-end package management**, while exposing the
+package dependency model via an API that can be consumed by a more opinionated
+build stack. There are no system wide dependencies, no dependencies are shared
+between different apps, and the dependency tree is flat.
 
-Bower code base is becoming unmanageable, especially at its core.
-Main issues are:
+Bower runs over Git, and is package-agnostic. A packaged component can be made
+up of any type of asset, and use any type of transport (e.g., AMD, CommonJS,
+etc.).
 
-- __No separation of concerns. The overall code base has grown in a patch fashion, which has lead to a bloated and tight coupled solution.__
-- __Monolithic Package.js that handles all package types (both local and remote `Git`, URL, local files, etc).__
-- __Package.js has a big nesting level of callbacks, causing confusion and making the code hard to read.__
-- Some commands, such as install and update, have incorrect behaviour ([#200](https://github.com/bower/bower/issues/200), [#256](https://github.com/bower/bower/issues/256))
-   - This is directly related with the current implementation of bower core: Package.js and Manager.js
-- Programmatic usage needs improvement
-  - Unable to spawn multiple commands in parallel in different folders
-  - Some commands simply do not fire the `end` event
-  - Others fire the `error` event many times
-  - Some commands should fire more meaningful events (e.g.: install should fire each installed package)
+[View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
 
 
-## Main goals
+## Installing Bower
 
-- Ease the process of gathering more contributors.
-- Clear architecture and separation of concerns.
-- Installation/update speed-up.
-- Named endpoints on the CLI install.
-- Offline installation of packages, thanks to the cache.
-- Ability to easily add package types (`SVN`, etc).
-- Support for commit hashes and branches in targets for `Git` endpoints.
-- Improved output after installation/update.
-- Improve tests coverage
-- Integrate with update-notifier and yeomen insight.
+Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
+installed globally using npm:
 
-
-## Implementation details
-
-### Term dictionary
-
-- **Canonical dir:** A folder containing all the files that belong to a package. May include a `bower.json` file inside. (typically what gets installed)
-- **Source:** URL, git endpoint, etc.
-- **Target:** `semver` range, commit hash, branch (indicates a version).
-- **Endpoint:** name=source#target
-- **Decomposed endpoint:** An object containing the `name`, `source` and `target` keys.
-- **Components folder:** The folder in which components are installed (`bower_components` by default).
-- **Package meta:** A data structure similar to the one found in `bower.json`, which might also contain additional information. This is stored in a `.bower.json` file, inside a canonical dir.
-
-### Overall strategy
-
-![Really nicely drawn architecture diagram](http://f.cl.ly/items/01370R0d3u2K3B381E2J/resolve_diagram.jpg "Don't over think it! We already did! :P")
-
-Bower is composed of the following components:
-
-- `CLI`: Command line interface for Bower.
-- `.bowerrc`: Allows for customisations of Bower behaviour at the project/user level.
-- `bower.json`: Main purpose is to declare the component dependencies and other component related information.
-- `Manager`: Main coordinator, responsible for:
-    - Deciding which version of the dependencies should be fetched from the `PackageRepository`, while keeping every dependant compatible (note that the `Manager` is `semver` aware).
-    - Tracking which dependencies have been fetched, which ones failed to fetch, and which ones are being fetched.
-    - Expanding the dependency tree, analysing the dependencies of each fetched package.
-- `PackageRepository`: Abstraction to the underlying complexity of heterogeneous source types. Responsible for:
-  - Collecting concrete `Resolver`s for each endpoint
-  - Querying the `Resolve` cache for already resolved packages of the same target
-  - Decide if the cached package can be used.
-  - Storing new entries in `ResolveCache`.
-- `ResolveCache`: Keeps a cache of previously resolved endpoints. Lookup can be done using an endpoint.
-- `ResolverFactory`: Parses an endpoint and returns a `Resolver` capable of resolving the source type.
-- `Resolver`: Base resolver, which can be extended by concrete resolvers, like `UrlResolver`, `GitRemoteResolver`, etc.
-
-You can find additional details about each of these components below, in [Architecture components details](#architecture-components-details).
-
-
-#### Resolve process
-
-Here's an overview of the dependency resolve process:
-
-1. **INSTALL/UPDATE** - A set of endpoints is requested to be installed/updated, and these are passed to the `Manager`.
-
-2. **ANALIZE COMPONENTS FOLDER** - `Manager` starts by reading the `components folder` and understanding which packages are already installed.
-
-3. **ENQUEUE ENDPOINTS** - For each endpoint that should be fetched, the `Manager` enqueues the `decomposed endpoints` in the `PackageRepository`. Some considerations:
-    - If a package should be fetched or not depends on the following conditions:
-        - What operation is being done (install/update).
-        - If package is already installed.
-        - If `Manager` has already enqueued that endpoint in the current runtime (regardless of the fetch being currently in progress, already complete, or failed).
-        - Additional flags (force, etc).
-
-4. **FABRICATE RESOLVERS** - For each of the endpoints, the `PackageRepository` requests the `ResolverFactory` for suitable resolvers, capable of handling the source type. Some considerations:
-    - This method is asynchronous, in order to allow for I/O operations to happen, without blocking the whole process (e.g., querying registry, etc).
-    - There is a runtime internal cache of sources that have already been analysed, and what type of `Resolver` resulted from that analysis. This speeds up the decision process, particularly for aliases (registered packages), and published packages, which would require HTTP requests.
-
-5. **LOOKUP CACHE** - `PackageRepository` looks up the `ResolveCache` using the endpoint, for a cached `canonical dir` that complies to the endpoint target. Some considerations:
-    - The lookup is performed using an endpoint that is fetched from the `Resolver`. This allows the resolver to guarantee that the endpoint has been normalised (twitter/bootstrap -> git://github.com/twitter/bootstrap.git, etc).
-    - The `ResolveCache` is `semver` aware. What this means, is that if you try to lookup `~1.2.1`, and the cache has entries for versions `1.2.3` and `1.2.4`, it will give a hit with `1.2.4`.
-
-6. **CACHE HIT VALIDATION** - At this stage, and only for the cache hits, the `PackageRepository` will question the `Resolver` if there is any version higher than the one fetched from cache that also complies with the endpoint target. Some considerations:
-    - This step is ignored in case a flag like `offline` is passed.
-    - How the `Resolver` checks this, depends on the `Resolver` type. (e.g. `GitRemoteResolver` would fetch the git refs with `git ls-remote --tags --heads`, and check if there is a higher version that complies with the target).
-    - This check should be as quick as possible. If the process of checking a new version is too slow, it's preferable to just assume there is a new version.
-    - If there is no way to check if there is a higher version, assume that there is.
-    - If the `Resolver` indicates that the cached version is outdated, then it is treated as a cache miss.
-
-7. **RESOLVE CACHE MISSES** - Any cache miss needs to be resolved, so the `PackageRepository` requests each of the remaining resolvers to resolve, and waits.
-
-8. **CACHE RESOLVED PACKAGES** - As the resolvers complete the resolution, the `PackageRepository` stores the canonic packages in the `ResolveCache`, along with the source, version, and any additional information that the `Resolver` provides. This allows resolvers to store additional details about the fetched package to be used for future *cache hit validations* (e.g. store HTTP expiration headers in the case of the `UrlPackage`).
-
-9. **RETURN PACKAGE TO MANAGER** - The `PackageRepository` returns the canonical dir to the `Manager`.
-
-10. **EVALUATE RESOLVED PACKAGE DEPENDENCIES** - The `Manager` checks if the returned canonical dirs have a `bower.json` file describing additional dependencies and, if so, continue at point #3. If there are no more unresolved dependencies, finish up the installation procedure.
-
------
-
-### Architecture components details
-
-
-#### Manager
-
-Main resolve coordinator.
-
-
-##### Constructor
-
-`Manager(config, logger)`
-
-The `config` to be used.   
-The `logger` to print logs to.
-
-##### Public methods
-
-`Manager#configure(setup)`: Manager
-
-Configures the manager. Setup is an object with:
-
-- `targets`: array of decomposed endpoints that will be fetched
-- `resolved`: object of resolved packages (keys are names and values the reconstructed decomposed endpoints)
-- `installed`: object of currently installed packages (keys are names and values the package metas)
-- `incompatibles`: array of decomposed endpoints that are known to be incompatible
-- `resolutions`: object of resolutions to be used on conflicts
-
-By default, `resolved` packages are also interpreted as installed.   
-When a package is resolved, all its associated incompatible packages will also be fetched.   
-
-All decomposed endpoints might contain a `dependants` key that will be used to display additional information
-on conflicts.    
-The `resolved` endpoints should contain the `package meta` and `canonical dir` information set.
-An additional `unresolvable` key with a true value will cause a conflict to occur even if a resolution is set.   
-The `resolutions` object will be updated as necessary.
-
-If the Manager is already working, the promise is immediately rejected.
-
-`Manager#resolve()`: Promise
-
-Starts the resolve process, returning a promise of an object which keys are package names and
-values the associated resolve info (decomposed endpoints plus package meta and other info).
-
-If the Manager is already working, the promise is immediately rejected.
-
-`Manager#install()`: Promise
-
-Installs packages that result from the dissection of the resolve process.
-The promise is resolved with an object where keys are package names and values meaningful
-information about the installed package.
-
-If the Manager is already working, the promise is immediately rejected.
-
-`Manager#areCompatible(source, subject)`: Boolean
-
-TODO
-
-
-#### PackageRepository
-
-Abstraction to the underlying complexity of heterogeneous source types
-
-
-##### Constructor
-
-`PackageRepository(config, logger)`
-
-The `config` to be used.   
-The `logger` to print logs to.
-
-##### Public methods
-
-`PackageRepository#fetch(decEndpoint)`: Promise
-
-Fetches an endpoint, returning a promise of a `canonical dir`.
-
-`PackageRepository#versions(source)`: Promise
-
-Retrieves the semver versions available for a given `source`.   
-Return a promise of an array of semver versions.
-
-`PackageRepository#eliminate(source, version)`: Promise
-
-Eliminates entry with given `source` and `version` from the repository.   
-Note that `version` can be empty because some `canonical dir`s do not have a version associated.
-In that case, only the unversioned entry will be removed.
-
-`PackageRepository#clear()`: Promise
-
-Clears the entire repository.
-
-`PackageRepository#list()`: Promise
-
-List the entries of the cache.   
-Return a promise of an array of `package meta`s.
-
-
-#### ResolverFactory
-
-Simple function that takes a `decomposed endpoint` and creates an instance of a concrete `Resolver` that obeys the base `Resolver` interface.
-
-```js
-function createResolver(decEndpoint, registryClient, config) -> Promise
+```
+npm install -g bower
 ```
 
-The function is async to allow querying the Bower registry, etc.   
-The `registryClient` is an instance of [RegistryClient](https://github.com/bower/registry-client) to be used. If null, the registry won't be queried.   
 
+## Usage
 
-#### ResolveCache
+Much more information is available via `bower help` once it's installed. This
+is just enough to get you started.
 
-The cache, stored in disk, of resolved packages (canonical dirs).
+### Installing packages and dependencies
 
-##### Constructor
+Bower offers several ways to install packages:
 
-`ResolveCache(config)`
+```bash
+# Using the dependencies listed in the current directory's bower.json
+bower install
+# Using a local or remote package
+bower install <package>
+# Using a specific Git-tagged version from a remote package
+bower install <package>#<version>
+```
 
-------------
+Where `<package>` can be any one of the following:
 
-##### Public functions
+* A name that maps to a package registered with Bower, e.g, `jquery`. ‡
+* A remote Git endpoint, e.g., `git://github.com/someone/some-package.git`. Can be
+  public or private. ‡
+* A local Git endpoint, i.e., a folder that's a Git repository. ‡
+* A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
+* A URL to a file, including `zip` and `tar` files. It's contents will be
+  extracted.
 
-`ResolveCache#retrieve(source, target)`: Promise
+‡ These types of `<package>` make Git tags available. You can specify a
+[semver](http://semver.org/) tag to fetch a specific release, and lock the
+package to that version.
 
-Retrieves `canonical dir` for a given `source` and `target` (optional, defaults to `*`).   
-The promise is resolved with both the `canonical dir` and `package meta`.
+All package contents are installed in the `components` directory by default.
+You should **never** directly modify the contents of this directory.
 
-`ResolveCache#versions(source)`: Promise
+Using `bower list` will show all the packages that are installed locally.
 
-Retrieves the semver versions available for a given `source`.   
-Return a promise of an array of semver versions.
+**N.B.** If you aren't authoring a package that is intended to be consumed by
+others (e.g., you're building a web app), you should always check installed
+packages into source control.
 
-`ResolveCache#store(canonicalPackage, pkgMeta)`: Promise
+### Finding packages
 
-Stores `canonical dir` into the cache.   
-The `pkgMeta` is optional and will be read if not passed.
+To search for packages registered with Bower:
 
-`ResolveCache#eliminate(source, version)`: Promise
+```
+bower search [<name>]
+```
 
-Eliminates entry with given `source` and `version` from the cache.   
-Note that `version` can be empty because some `canonical dir`s do not have a version associated.
-In that case, only the unversioned entry will be removed.
+Using just `bower search` will list all packages in the registry.
 
-`ResolveCache#clear()`: Promise
+### Using packages
 
-Clear the entire cache.
+The easiest approach is to use Bower statically, just reference the package's
+installed components manually using a `script` tag:
 
-`ResolveCache#list()`: Promise
+```html
+<script src="/bower_components/jquery/index.js"></script>
+```
 
-List the entries of the cache.   
-Return a promise of an array of `package meta`s.
+For more complex projects, you'll probably want to concatenate your scripts or
+use a module loader. Bower is just a package manager, but there are plenty of
+other tools -- such as [Sprockets](https://github.com/sstephenson/sprockets)
+and [RequireJS](http://requirejs.org/) -- that will help you do this.
 
+### Registering packages
 
-#### Resolver
+To register a new package:
 
-Think of `Resolver` as an abstract class that implements the resolver interface as well as serving as a base for other resolver types.
+* There **must** be a valid manifest JSON in the current working directory.
+* Your package should use [semver](http://semver.org/) Git tags.
+* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
+  to push your Git tags!
 
-Resolvers are responsible for the following:
+Then use the following command:
 
-- Based on an endpoint, fetch the contents of the package into a temporary folder (step is implemented by the `_resolveSelf()` method).
-- After the package is fetched, the `bower.json`/`component.json` (deprecated) file is read, validated and normalised (fill in properties) into a `package meta` object. If the file does not exist, a base one is inferred. Note that this should be done using a node module that is common for both the Bower client and the server.
-- Update any relevant information based on the `package meta` (e.g. this step may emit a `name_change`).
-- Applying the `ignore` constraint based on the `package meta`. Files are effectively removed in this step.
-- Attach any additional meta data to the `package meta`. (e.g. the `UrlResolver` might store some `HTTP` response headers, to aid the `hasNew()` decision later on).
-- Storing the `package meta` into a `.bower.json` hidden file.
+```
+bower register <my-package-name> <git-endpoint>
+```
 
+The Bower registry does not have authentication or user management at this point
+in time. It's on a first come, first served basis. Think of it like a URL
+shortener. Now anyone can run `bower install <my-package-name>`, and get your
+library installed.
 
-##### Constructor
+There is no direct way to unregister a package yet. For now, you can [request a
+package be unregistered](https://github.com/bower/bower/issues/120).
 
-`Resolver(decEndpoint, config)`
+### Uninstalling packages
 
-------------
+To uninstall a locally installed package:
 
-##### Public functions
+```
+bower uninstall <package-name>
+```
 
-`Resolver#getSource()`: String
 
-Returns the source.
+## Configuration
 
-`Resolver#getName()`: String
+Bower can be configured using JSON in a `.bowerrc` file.
+
+Global configuration is handled by creating a `.bowerrc` in your home directory
+(i.e., `~/.bowerrc`).  Local configuration is handled by creating a `.bowerrc`
+in your project's directory, allowing you to version a project-specific Bower
+configuration with the rest of your code base.
+
+Bower will combine the local and global configurations (with local settings
+taking precedence).
+
+The `.bowerrc` defines several options:
+
+* `directory`: Set the default directory to install packaged components into.
+* `endpoint`: Set a custom registry endpoint.
+* `json`: Set the default JSON file for Bower to use when resolving dependencies.
+* `searchpath`: An array of additional URLs pointing to read-only Bower registries.
+* `shorthand_resolver`: Define a custom template for shorthand package names.
+
+```json
+{
+  "directory": "bower_components",
+  "endpoint": "https://bower.mycompany.com",
+  "json": "bower.json",
+  "searchpath": [
+    "https://bower.herokuapp.com"
+  ],
+  "shorthand_resolver": "git://example.com/{{{ organization }}}/{{{ package }}}.git"
+}
+```
+
+The `searchpath` array is useful if your organization wishes to maintain a
+private registry of packages while also taking advantage of public Bower
+registries. If a package is not found at your private endpoint, Bower will
+consult the registries specified in the `searchpath` array.
+
+The `shorthand_resolver` key provides support for defining a custom template
+which Bower uses when constructing a URL for a given shorthand. For example, if
+a shorthand of `twitter/flight` or `twitter/flight#v1.0.0` is specified in the
+package manifest, the following data can be referenced from within the
+`.bowerrc` as part of the `shorthand_resolver` template:
+
+* `endpoint`: `twitter/flight`
+* `organization`: `twitter`
+* `package`: `flight`
+
+**N.B.** To run your own Bower Endpoint for custom packages that are behind a
+firewall, you can use a simple implementation of the [Bower Registry](https://github.com/bower/registry).
+
+
+## Defining a package
+
+You must create a JSON file -- `bower.json` by default -- in your project's
+root, and specify all of its dependencies. This is similar to Node's
+`package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's
+dependencies.
+
+*NOTE:* In versions of Bower before 0.9.0 the package metadata file was called `component.json` rather than `bower.json`. This has changed to avoid a name clash with another tool. You can still use `component.json` for now but it is deprecated and the automatic fallback is likely to be removed in an upcoming release.
+
+You can interactively create a `bower.json` with the following command:
+
+```
+bower init
+```
+
+The `bower.json` defines several options:
+
+* `name` (required): The name of your package.
+* `version`: A semantic version number (see [semver](http://semver.org/)).
+* `main` [string|array]: The primary endpoints of your package.
+* `ignore` [array]: An array of paths not needed in production that you want
+  Bower to ignore when installing your package.
+* `dependencies` [hash]: Packages your package depends upon in production.
+* `devDependencies` [hash]: Development dependencies.
+
+```json
+{
+  "name": "my-project",
+  "version": "1.0.0",
+  "main": "path/to/main.css",
+  "ignore": [
+    ".jshintrc",
+    "**/*.txt"
+  ],
+  "dependencies": {
+    "<name>": "<version>",
+    "<name>": "<folder>",
+    "<name>": "<package>"
+  },
+  "devDependencies": {
+    "<test-framework-name>": "<version>"
+  }
+}
+```
 
-Returns the name.
 
-`Resolver#getTarget()`: String
+## Consuming a package
 
-Returns the target.
+Bower also makes available a source mapping. This can be used by build tools to
+easily consume Bower packages.
 
-`Resolver#getTempDir()`: String
+If you pass the `--map` option to Bower's `list` command, it will generate JSON
+with dependency objects. Alternatively, you can pass the `--paths` option to
+the `list` command to get a simple path-to-name mapping:
 
-Returns the local temporary folder into which the package is being fetched. The files will remain here until the folder is moved when installing.
+```json
+{
+  "backbone": "bower_components/backbone/index.js",
+  "jquery": "bower_components/jquery/index.js",
+  "underscore": "bower_components/underscore/index.js"
+}
+```
 
-`Resolver#hasNew(canonicalDir, pkgMeta)`: Promise
 
-Checks if there is a version more recent than the provided `canonicalDir` (folder) that complies with the resolver target.
-The hasNew process is as follows:
+## Programmatic API
 
-- Reads the `package meta` from the `canonical dir` if not supplied
-- If there's an error while reading the `package meta`, it resolves to `true` because the package might be broken
-- Otherwise, calls `_hasNew()` with the `canonical dir` and `package meta` as arguments
+Bower provides a powerful, programmatic API. All commands can be accessed
+through the `bower.commands` object.
 
-If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
-rejected.
+```js
+var bower = require('bower');
 
-`Resolver#resolve()`: Promise
+bower.commands
+  .install(paths, options)
+  .on('end', function (data) {
+    if (data) {
+      console.log(data);
+    }
+  });
 
-Resolves the resolver, and returns a promise of a canonical dir.
-The resolve process is as follows:
+bower.commands
+  .search('jquery', {})
+  .on('packages', function (packages) {
+    // `packages` is a list of packages returned by searching for 'jquery'
+  });
+```
+
+Commands emit four types of events: `data`, `end`, `result`, and `error`.
+
+`error` will only be emitted if something goes wrong. Not all commands emit all
+events; for a detailed look, check out the code in `lib/commands`.
 
-- Calls `_createTempDir()` and waits.
-- When done, calls `_resolve()` and waits.
-- When done, calls `_readJson()` and waits (validation and normalisation also happens here).
-- When done, calls both functions below, and waits:
-    - `_applyPkgMeta(meta)`
-    - `_savePkgMeta(meta)`
-- When done, resolves the promise with the *temp dir*, which is now a canonical dir.
+`data` is typically a colorized string, ready to show to an end user. `search`
+and `lookup` emit `packages` and `package`, respectively. Those events contain
+a JSON representation of the result of the command.
 
-If the resolver is already working, either resolving or checking for a newer version, the promise is immediately
-rejected.
+For a better of idea how this works, you may want to check out [our bin
+file](https://github.com/bower/bower/blob/master/bin/bower).
 
-`Resolver#getPkgMeta()`: Object
+For the install command, there is an additional `package` event that is emitted
+for each installed/uninstalled package.
 
-Get the `package meta`. Essentially, it's what you'll find in `.bower.json`.
-Throws an error if the resolver is not yet resolved.
 
------------
+## Completion (experimental)
 
-##### Public static functions
+Bower now has an experimental `completion` command that is based on, and works
+similarly to the [npm completion](https://npmjs.org/doc/completion.html). It is
+not available for Windows users.
 
-`Resolver#versions(source)`: Promise
+This command will output a Bash / ZSH script to put into your `~/.bashrc`,
+`~/.bash_profile`, or `~/.zshrc` file.
 
-Retrieves the semver versions available for a given `source`.   
-Return a promise of an array of semver versions.   
-By default this function resolves to an empty array.
+```
+bower completion >> ~/.bash_profile
+```
 
-`Resolver#clearRuntimeCache()`
 
-Clears the resolver runtime cache, that is, data stored statically.
-Resolvers may cache data based on the sources to speed up calls to `hasNew` and `resolve` for the
-same source.
-By default this function is a no-op.
+## A note for Windows users
 
------------
+To use Bower on Windows, you must install
+[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
+option shown below:
 
-##### Protected functions
+![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
 
-`Resolver#_hasNew(pkgMeta, canonicalDir)`: Promise
+Note that if you use TortoiseGit and if Bower keeps asking for your SSH
+password, you should add the following environment variable: `GIT_SSH -
+C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
+path if needed.
 
-The process of checking for a newer version. This function should be as fast as possible.  
-Concrete resolvers are encouraged to rewrite this function since the default implementation resolves to `true`.
 
-`Resolver#_createTempDir()`: Promise
+## Contact
 
-Creates a temporary dir.
+Have a question?
 
-`Resolver#_readJson()`: Promise
+* [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
+* [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
+* [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
 
-Reads `bower.json`/`component.json`, possibly by using a dedicated `read-json` node module that will be available in the Bower organisation.
 
-This method also generates the `package meta` based on the `json`, filling in any missing information, inferring when possible.
+## Contributing to this project
 
-`Resolver#_applyPkgMeta(meta)`: Promise
+Anyone and everyone is welcome to contribute. Please take a moment to
+review the [guidelines for contributing](CONTRIBUTING.md).
 
-Since the `package meta` might contain some information that has implications to the *canonical* state of the package, this is where these rules are enforced.
+* [Bug reports](CONTRIBUTING.md#bugs)
+* [Feature requests](CONTRIBUTING.md#features)
+* [Pull requests](CONTRIBUTING.md#pull-requests)
 
-- Checks if the resolver name is different from the json one. If so and if the name was "guessed", the name of the package will be updated and a `name_change` event will be emitted.
-- Deletes files that are specified in the `ignore` property of the json from the temporary directory.
 
-`Resolver#_savePkgMeta(meta)`: Promise
+## Authors
 
-Stores the `package meta` into a `.bower.json` file inside the root of the package.
-Concrete resolvers may override this to add any additional information that might be relevant to be stored. A `UrlResolver` could, for example, store some `HTTP` headers, that would be useful when comparing versions, in the `hasNew()` method.
+* [@fat](https://github.com/fat)
+* [@maccman](https://github.com/maccman)
+* [@satazor](https://github.com/satazor)
 
---------
+Thanks for assistance and contributions:
 
-##### Abstract functions that must be implemented by concrete resolvers.
+* [@addyosmani](https://github.com/addyosmani)
+* [@angus-c](https://github.com/angus-c)
+* [@borismus](https://github.com/borismus)
+* [@carsonmcdonald](https://github/@carsonmcdonald)
+* [@chriseppstein](https://github.com/chriseppstein)
+* [@danwrong](https://github.com/danwrong)
+* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
+* [@desandro](https://github.com/desandro)
+* [@hemanth](https://github.com/hemanth)
+* [@isaacs](https://github.com/isaacs)
+* [@josh](https://github.com/josh)
+* [@jrburke](https://github.com/jrburke)
+* [@marcelombc](https://github.com/marcelombc)
+* [@marcoliveira](https://github.com/marcoliveira)
+* [@mklabs](https://github.com/mklabs)
+* [@paulirish](https://github.com/paulirish)
+* [@richo](https://github.com/richo)
+* [@rvagg](https://github.com/rvagg)
+* [@sindresorhus](https://github.com/sindresorhus)
+* [@SlexAxton](https://github.com/SlexAxton)
+* [@sstephenson](https://github.com/sstephenson)
+* [@tomdale](https://github.com/tomdale)
+* [@uzquiano](https://github.com/uzquiano)
+* [@visionmedia](https://github.com/visionmedia)
+* [@wagenet](https://github.com/wagenet)
+* [@wibblymat](https://github.com/wibblymat)
+* [@wycats](https://github.com/wycats)
 
-`Resolver#_resolve()`: Promise
 
-The actual process of fetching the package files. This method must he implemented by concrete resolvers. For instance, the `UrlResolver` would download the contents of a URL into the temporary directory in this stage.
+## License
 
+Copyright 2012 Twitter, Inc.
 
-#### Resolver types
-
-The following resolvers will extend from `Resolver.js` and obey its interface.
-
-- `LocalResolver`     extends `Resolver` (dependencies pointing to files of folders in the own system)
-- `UrlResolver`       extends `Resolver` (dependencies pointing to downloadable resources)
-- `GitFsResolver`     extends `Resolver` (git dependencies available in the local file system)
-- `GitRemoteResolver` extends `Resolver` or `GitFsResolver` (remote git dependencies)
-- `PublishedResolver` extends `Resolver` (? makes sense if bower supports a publish model, just like `npm`).
-
-The `ResolverFactory` knows these types, and is able to fabricate suitable resolvers based on the source type.
-
-This architecture makes it very easy for the community to create other package types, for instance, a `MercurialFsResolver`, `MercurialResolver`, `SvnResolver`, etc.
+Licensed under the MIT License
