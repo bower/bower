@@ -1,6 +1,6 @@
 {
-  "name": "bower_new",
-  "version": "1.0.0-rc.1",
+  "name": "bower-canary",
+  "version": "1.0.0-alpha.1",
   "description": "The browser package manager.",
   "author": "Twitter",
   "licenses": [
@@ -21,9 +21,9 @@
   "dependencies": {
     "archy": "0.0.2",
     "abbrev": "~1.0.4",
-    "bower-config": "~0.0.0",
-    "bower-json": "~0.0.0",
-    "bower-registry-client": "~0.0.0",
+    "bower-config": "~0.1.0",
+    "bower-json": "~0.1.0",
+    "bower-registry-client": "~0.1.0",
     "chmodr": "~0.1.0",
     "colors": "~0.6.0-1",
     "fstream": "~0.1.22",
