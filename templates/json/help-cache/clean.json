@@ -1,6 +1,6 @@
 {
     "command": "cache list",
-    "description": "Cleans cached packages",
+    "description": "Cleans cached packages.",
     "usage": [
         "cache clean [<options>]",
         "cache clean <name> [<name> ...] [<options>]",
