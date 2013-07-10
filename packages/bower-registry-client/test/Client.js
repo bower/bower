@@ -1,4 +1,5 @@
 var RegistryClient = require('../Client'),
+    fs = require('fs'),
     expect = require('expect.js'),
     nock = require('nock');
 
@@ -100,6 +101,44 @@ describe('RegistryClient', function () {
 
         });
 
+        describe('cache', function () {
+
+            beforeEach(function () {
+                nock('https://bower.herokuapp.com:443')
+                  .get('/packages/search/jquery')
+                  .replyWithFile(200, __dirname + '/fixtures/search.json');
+
+                this.client = new RegistryClient({
+                    cache: __dirname + '/cache',
+                    strictSsl: false
+                });
+
+            });
+
+            it('should fill cache', function (done) {
+
+                var cacheDir = this.client._config.cache;
+                var host = 'bower.herokuapp.com';
+                var method = 'search';
+                var pkg = 'jquery';
+                var self = this;
+
+                var path = cacheDir + '/' + host + '/' + method + '/' + pkg;
+
+                self.client.search(pkg, function (err, results) {
+                    expect(err).to.be.null;
+                    expect(results.length).to.eql(334);
+
+                    fs.exists(path, function (exists) {
+                        expect(exists).to.be.true;
+                        done();
+                    });
+                });
+
+            });
+
+            it.skip('should read results from cache', function () { });
+        });
     });
 
 
