@@ -30,7 +30,7 @@ Available constructor options:
 
 
 Note that `force` and `offline` are mutually exclusive.
-The cache will speedup operations such as `lookup` and `info`.
+The cache will speedup operations such as `list`, `lookup` and `search`.
 Different operations may have different cache expiration times.
 
 
