@@ -3,7 +3,6 @@ var fs = require('graceful-fs');
 var optimist = require('optimist');
 var osenv = require('osenv');
 var mout = require('mout');
-var rimraf = require('rimraf');
 var paths = require('./paths');
 
 var win = process.platform === 'win32';
@@ -26,15 +25,20 @@ function rc(name, defaults, cwd, argv) {
 }
 
 function parse(content, file) {
+    var error;
+
     try {
         return JSON.parse(content);
     } catch (e) {
-        // If we got an error, remove the file
         if (file) {
-            try {
-                rimraf.sync(file);
-            } catch (e) {}
+            error = new Error('Unable to parse ' + file + ': ' + e.message);
+        } else {
+            error = new Error('Unable to parse rc config: ' + e.message);
         }
+
+        error.details = content;
+        error.code = 'EMALFORMED';
+        throw error;
     }
 
     return null;
