@@ -55,7 +55,7 @@ Where `<package>` can be any one of the following:
 [semver](http://semver.org/) tag to fetch a specific release, and lock the
 package to that version.
 
-All package contents are installed in the `components` directory by default.
+All package contents are installed in the `bower_components` directory by default.
 You should **never** directly modify the contents of this directory.
 
 Using `bower list` will show all the packages that are installed locally.
