@@ -8,6 +8,8 @@ var _       = require('lodash');
 var rimraf  = require('rimraf');
 var glob    = require('glob');
 var async   = require('async');
+var tmp     = require('tmp');
+var fstream = require('fstream');
 var config  = require('../lib/core/config');
 var Package = require('../lib/core/package');
 
@@ -802,5 +804,39 @@ describe('package', function () {
     });
 
     pkg.resolve();
+  });
+
+  it('Should work correctly with local git repos', function (next) {
+    tmp.dir(function (error, tmpDir) {
+      if (error) {
+        throw error;
+      }
+
+      var reader = fstream.Reader({ path: __dirname + '/assets/local-repo.git', type: 'Directory' }),
+          writer = fstream.Writer({ path: path.join(tmpDir, '.git'), type: 'Directory' });
+
+      reader.on('end', function () {
+        var pkg = new Package('local', tmpDir);
+
+        pkg.on('resolve', function () {
+          pkg.install();
+        });
+
+        pkg.on('error', function (err) {
+          throw err;
+        });
+
+        pkg.on('install', function () {
+          assert(fs.existsSync(pkg.gitPath));
+          assert(fs.existsSync(path.join(pkg.gitPath, 'foo')));
+          assert.equal(fs.readFileSync(path.join(pkg.gitPath, 'foo'), 'UTF-8'), '42\n');
+          next();
+        });
+
+        pkg.resolve();
+      });
+
+      reader.pipe(writer);
+    });
   });
 });
