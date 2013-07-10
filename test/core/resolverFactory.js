@@ -11,7 +11,7 @@ var resolvers = require('../../lib/core/resolvers');
 var defaultConfig = require('../../lib/config');
 var Logger = require('../../lib/core/Logger');
 
-describe('resolveFactory', function () {
+describe('resolverFactory', function () {
     var tempSource;
     var logger = new Logger();
     var registryClient = new RegistryClient(mout.object.fillIn({

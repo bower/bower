@@ -346,6 +346,7 @@ Thanks for assistance and contributions:
 * [@sindresorhus](https://github.com/sindresorhus)
 * [@SlexAxton](https://github.com/SlexAxton)
 * [@sstephenson](https://github.com/sstephenson)
+* [@svnlto](https://github.com/svnlto)
 * [@tomdale](https://github.com/tomdale)
 * [@uzquiano](https://github.com/uzquiano)
 * [@visionmedia](https://github.com/visionmedia)
