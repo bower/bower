@@ -48,7 +48,7 @@
             "description": "Do not output anything, besides errors"
         },
         {
-            "shorthand":   "-v",
+            "shorthand":   "-V",
             "flag":        "--verbose",
             "description": "Makes output more verbose"
         }
