@@ -136,6 +136,46 @@ describe('resolveFactory', function () {
             'git://github.com/user/project.git': 'git://github.com/user/project.git',
             'git://github.com/user/project.git/': 'git://github.com/user/project.git',
 
+            // git@:
+            'git@github.com:user/project.git': null,
+            'git@github.com:user/project.git/': null,
+
+            // git+ssh:
+            'git+ssh://user@github.com:project': null,
+            'git+ssh://user@github.com:project/': null,
+            'git+ssh://user@github.com:project.git': null,
+            'git+ssh://user@github.com:project.git/': null,
+            'git+ssh://user@github.com/project': null,
+            'git+ssh://user@github.com/project/': null,
+            'git+ssh://user@github.com/project.git': null,
+            'git+ssh://user@github.com/project.git/': null,
+
+            // git+http
+            'git+http://user@github.com/project/blah': null,
+            'git+http://user@github.com/project/blah/': null,
+            'git+http://user@github.com/project/blah.git': null,
+            'git+http://user@github.com/project/blah.git/': null,
+
+            // git+https
+            'git+https://user@github.com/project/blah': null,
+            'git+https://user@github.com/project/blah/': null,
+            'git+https://user@github.com/project/blah.git': null,
+            'git+https://user@github.com/project/blah.git/': null,
+
+            // ssh .git$
+            'ssh://user@github.com:project.git': null,
+            'ssh://user@github.com:project.git/': null,
+            'ssh://user@github.com/project.git': null,
+            'ssh://user@github.com/project.git/': null,
+
+            // http .git&
+            'http://user@github.com/project.git': null,
+            'http://user@github.com/project.git/': null,
+
+            // https
+            'https://user@github.com/project.git': null,
+            'https://user@github.com/project.git/': null,
+
             // shorthand
             'bower/bower': 'git://github.com/bower/bower.git'
         };
@@ -146,9 +186,13 @@ describe('resolveFactory', function () {
                 return callFactory({ source: key });
             })
             .then(function (resolver) {
-                expect(resolver).to.be.a(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
-                expect(resolver.getTarget()).to.equal('*');
+                if (value) {
+                    expect(resolver).to.be.a(resolvers.GitHub);
+                    expect(resolver.getSource()).to.equal(value);
+                    expect(resolver.getTarget()).to.equal('*');
+                } else {
+                    expect(resolver).to.not.be.a(resolvers.GitHub);
+                }
             });
 
             // Test with target
@@ -156,9 +200,13 @@ describe('resolveFactory', function () {
                 return callFactory({ source: key, target: 'commit-ish' });
             })
             .then(function (resolver) {
-                expect(resolver).to.be.a(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
-                expect(resolver.getTarget()).to.equal('commit-ish');
+                if (value) {
+                    expect(resolver).to.be.a(resolvers.GitHub);
+                    expect(resolver.getSource()).to.equal(value);
+                    expect(resolver.getTarget()).to.equal('commit-ish');
+                } else {
+                    expect(resolver).to.not.be.a(resolvers.GitHub);
+                }
             });
 
             // Test with name
@@ -166,10 +214,14 @@ describe('resolveFactory', function () {
                 return callFactory({ name: 'foo', source: key });
             })
             .then(function (resolver) {
-                expect(resolver).to.be.a(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
-                expect(resolver.getName()).to.equal('foo');
-                expect(resolver.getTarget()).to.equal('*');
+                if (value) {
+                    expect(resolver).to.be.a(resolvers.GitHub);
+                    expect(resolver.getSource()).to.equal(value);
+                    expect(resolver.getName()).to.equal('foo');
+                    expect(resolver.getTarget()).to.equal('*');
+                } else {
+                    expect(resolver).to.not.be.a(resolvers.GitHub);
+                }
             });
         });
 
