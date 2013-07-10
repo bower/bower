@@ -1,6 +1,6 @@
 {
   "name": "bower-config",
-  "version": "0.1.0-rc.2",
+  "version": "0.1.0-rc.3",
   "description": "The Bower config reader and writer.",
   "author": "Twitter",
   "licenses": [
@@ -22,8 +22,7 @@
     "graceful-fs": "~1.2.2",
     "mout": "~0.6.0",
     "optimist": "~0.6.0",
-    "osenv": "0.0.3",
-    "rimraf": "~2.2.0"
+    "osenv": "0.0.3"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
