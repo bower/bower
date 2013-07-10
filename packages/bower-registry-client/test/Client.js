@@ -1,5 +1,5 @@
 var RegistryClient = require('../Client'),
-    expect = require('chai').expect,
+    expect = require('expect.js'),
     nock = require('nock');
 
 describe('RegistryClient', function () {
@@ -26,19 +26,19 @@ describe('RegistryClient', function () {
             });
 
             it('should set default registry config', function () {
-                expect(this.registry._config.registry).to.deep.equal(this.conf);
+                expect(this.registry._config.registry).to.eql(this.conf);
             });
 
             it('should set default search config', function () {
-                expect(this.registry._config.registry.search[0]).to.equal(this.uri);
+                expect(this.registry._config.registry.search[0]).to.eql(this.uri);
             });
 
             it('should set default register config', function () {
-                expect(this.registry._config.registry.register).to.equal(this.uri);
+                expect(this.registry._config.registry.register).to.eql(this.uri);
             });
 
             it('should set default publish config', function () {
-                expect(this.registry._config.registry.publish).to.equal(this.uri);
+                expect(this.registry._config.registry.publish).to.eql(this.uri);
             });
 
             it('should set default cache path config', function () {
@@ -46,7 +46,7 @@ describe('RegistryClient', function () {
             });
 
             it('should set default timeout config', function () {
-                expect(this.registry._config.timeout).to.equal(this.timeoutVal);
+                expect(this.registry._config.timeout).to.eql(this.timeoutVal);
             });
 
             it('should set default strictSsl config', function () {
@@ -56,31 +56,31 @@ describe('RegistryClient', function () {
         });
 
         it('should have a lookup prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('lookup');
+            expect(RegistryClient.prototype).to.have.property('lookup');
         });
 
         it('should have a search prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('search');
+            expect(RegistryClient.prototype).to.have.property('search');
         });
 
         it('should have a list prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('list');
+            expect(RegistryClient.prototype).to.have.property('list');
         });
 
         it('should have a register prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('register');
+            expect(RegistryClient.prototype).to.have.property('register');
         });
 
         it('should have a clearCache prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('clearCache');
+            expect(RegistryClient.prototype).to.have.property('clearCache');
         });
 
         it('should have a resetCache prototype method', function () {
-            expect(RegistryClient.prototype).to.have.ownProperty('resetCache');
+            expect(RegistryClient.prototype).to.have.property('resetCache');
         });
 
         it('should have a clearRuntimeCache static method', function () {
-            expect(RegistryClient).to.have.ownProperty('clearRuntimeCache');
+            expect(RegistryClient).to.have.property('clearRuntimeCache');
         });
 
     });
@@ -94,7 +94,7 @@ describe('RegistryClient', function () {
 
                 this.registry.search('jquery', function (err, results) {
                     expect(err).to.be.null;
-                    expect(results.length).to.equal(0);
+                    expect(results.length).to.eql(0);
                 });
             });
 
@@ -117,14 +117,14 @@ describe('RegistryClient', function () {
         it('should return entry type', function () {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be.null;
-                expect(entry.type).to.equal('alias');
+                expect(entry.type).to.eql('alias');
             });
         });
 
         it('should return entry url ', function () {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be.null;
-                expect(entry.url).to.equal('git://github.com/components/jquery.git');
+                expect(entry.url).to.eql('git://github.com/components/jquery.git');
             });
         });
 
@@ -168,7 +168,7 @@ describe('RegistryClient', function () {
 
             this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
                 expect(err).to.be.null;
-                expect(entry.name).to.equal(self.pkg);
+                expect(entry.name).to.eql(self.pkg);
                 done();
             });
         });
@@ -178,7 +178,7 @@ describe('RegistryClient', function () {
 
             this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
                 expect(err).to.be.null;
-                expect(entry.url).to.equal(self.pkgUrl);
+                expect(entry.url).to.eql(self.pkgUrl);
                 done();
             });
         });
@@ -222,7 +222,7 @@ describe('RegistryClient', function () {
             this.registry.search(this.pkg, function (err, results) {
                 results.forEach(function (entry) {
                     if (entry.name === self.pkg) {
-                        expect(entry.name).to.equal(self.pkg);
+                        expect(entry.name).to.eql(self.pkg);
                         done();
                     }
                 });
@@ -235,7 +235,7 @@ describe('RegistryClient', function () {
             this.registry.search(this.pkg, function (err, results) {
                 results.forEach(function (entry) {
                     if (entry.name === self.pkg) {
-                        expect(entry.url).to.equal(self.pkgUrl);
+                        expect(entry.url).to.eql(self.pkgUrl);
                         done();
                     }
                 });

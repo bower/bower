@@ -22,11 +22,11 @@ describe('createError', function () {
         });
 
         it('should return an Error with message', function () {
-            expect(this.err.message).to.equal('message');
+            expect(this.err.message).to.eql('message');
         });
 
         it('should return an Error with code', function () {
-            expect(this.err.code).to.equal(500);
+            expect(this.err.code).to.eql(500);
         });
 
     });

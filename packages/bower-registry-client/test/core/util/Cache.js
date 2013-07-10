@@ -24,7 +24,7 @@ describe('Cache', function () {
                 ];
 
                 lruMethods.forEach(function (method) {
-                    expect(self.cache._cache).to.have.ownProperty(method);
+                    expect(self.cache._cache).to.have.property(method);
                 });
 
             });
@@ -32,23 +32,23 @@ describe('Cache', function () {
         });
 
         it('should have a get prototype method', function () {
-            expect(Cache.prototype).to.have.ownProperty('get');
+            expect(Cache.prototype).to.have.property('get');
         });
 
         it('should have a set prototype method', function () {
-            expect(Cache.prototype).to.have.ownProperty('set');
+            expect(Cache.prototype).to.have.property('set');
         });
 
         it('should have a del prototype method', function () {
-            expect(Cache.prototype).to.have.ownProperty('del');
+            expect(Cache.prototype).to.have.property('del');
         });
 
         it('should have a clear prototype method', function () {
-            expect(Cache.prototype).to.have.ownProperty('clear');
+            expect(Cache.prototype).to.have.property('clear');
         });
 
         it('should have a reset prototype method', function () {
-            expect(Cache.prototype).to.have.ownProperty('reset');
+            expect(Cache.prototype).to.have.property('reset');
         });
 
     });
