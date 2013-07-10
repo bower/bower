@@ -1,5 +1,5 @@
 var list = require('../../lib/list'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('list module', function () {
 

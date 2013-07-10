@@ -1,5 +1,5 @@
 var search = require('../../lib/search'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('search module', function () {
 

@@ -1,5 +1,5 @@
 var register = require('../../lib/register'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('register module', function () {
 

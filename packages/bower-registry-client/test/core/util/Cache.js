@@ -1,5 +1,5 @@
 var Cache = require('../../../lib/util/Cache'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('Cache', function () {
 

@@ -1,5 +1,5 @@
 var index = require('../../lib/index'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('index module', function () {
 

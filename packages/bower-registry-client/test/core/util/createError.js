@@ -1,5 +1,5 @@
 var createError = require('../../../lib/util/createError'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('createError', function () {
 
