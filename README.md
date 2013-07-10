@@ -258,20 +258,16 @@ bower.commands
   });
 ```
 
-Commands emit four types of events: `data`, `end`, `result`, and `error`.
+Commands emit three types of events: `log`, `end`, and `error`.
 
-`error` will only be emitted if something goes wrong. Not all commands emit all
-events; for a detailed look, check out the code in `lib/commands`.
+`log` is a emitted to report the progress of the command.
 
-`data` is typically a colorized string, ready to show to an end user. `search`
-and `lookup` emit `packages` and `package`, respectively. Those events contain
-a JSON representation of the result of the command.
+`error` will only be emitted if something goes wrong.
+
+` end` is emitted when the command successfully ends.
 
 For a better of idea how this works, you may want to check out [our bin
-file](https://github.com/bower/bower/blob/master/bin/bower).
-
-For the install command, there is an additional `package` event that is emitted
-for each installed/uninstalled package.
+file](https://github.com/bower/bower/blob/rewrite/bin/bower).
 
 
 ## Completion (experimental)
