@@ -29,7 +29,7 @@ module.exports = function (grunt) {
         },
         shell: {
             cover: {
-                command: 'node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R dot',
+                command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot',
                 options: {
                     stdout: true,
                     stderr: true

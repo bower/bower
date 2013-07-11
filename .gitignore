@@ -8,4 +8,4 @@
 /bower.json
 /bower_components
 
-/coverage
+/test/reports/
