@@ -191,7 +191,7 @@ If you pass the `--paths` option to Bower's `list` command, you will get a simpl
 ```
 
 Alternatively, every command supports the `--json` option that makes bower output JSON.   
-Command result is outputted to `stdout` and errors/logs to `stderr`.
+Command result is outputted to `stdout` and error/logs to `stderr`.
 
 
 ## Programmatic API
