@@ -113,23 +113,28 @@ describe('RegistryClient', function () {
                     strictSsl: false
                 });
 
+                this.cacheDir = this.client._config.cache;
+                this.host = 'bower.herokuapp.com';
+                this.method = 'search';
+                this.pkg = 'jquery';
+
+                this.path = this.cacheDir + '/' + this.host + '/' + this.method + '/' + this.pkg;
+            });
+
+            afterEach(function () {
+                //this.client.clearCache();
             });
 
             it('should fill cache', function (done) {
-
-                var cacheDir = this.client._config.cache;
-                var host = 'bower.herokuapp.com';
-                var method = 'search';
-                var pkg = 'jquery';
                 var self = this;
 
-                var path = cacheDir + '/' + host + '/' + method + '/' + pkg;
-
-                self.client.search(pkg, function (err, results) {
+                // fill cache
+                self.client.search(self.pkg, function (err, results) {
                     expect(err).to.be.null;
                     expect(results.length).to.eql(334);
 
-                    fs.exists(path, function (exists) {
+                    // check for cache existance
+                    fs.exists(self.path, function (exists) {
                         expect(exists).to.be.true;
                         done();
                     });
@@ -137,7 +142,20 @@ describe('RegistryClient', function () {
 
             });
 
-            it.skip('should read results from cache', function () { });
+            it('should read results from cache', function (done) {
+                var self = this;
+
+                self.client.search(self.pkg, function (err, results) {
+                    expect(err).to.be.null;
+                    expect(results.length).to.eql(334);
+
+                    fs.exists(self.path, function (exists) {
+                        expect(exists).to.be.true;
+                        done();
+                    });
+                });
+            });
+
         });
     });
 
