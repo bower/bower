@@ -46,5 +46,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-execute');
 
     grunt.registerTask('test', ['execute:assets', 'simplemocha:full']);
+    grunt.registerTask('cover', 'shell:cover');
     grunt.registerTask('default', ['jshint', 'test']);
 };
