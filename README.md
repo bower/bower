@@ -180,9 +180,7 @@ The `bower.json` defines several options:
 Bower also makes available a source mapping. This can be used by build tools to
 easily consume Bower packages.
 
-If you pass the `--map` option to Bower's `list` command, it will generate JSON
-with dependency objects. Alternatively, you can pass the `--paths` option to
-the `list` command to get a simple path-to-name mapping:
+If you pass the `--paths` option to Bower's `list` command, you will get a simple path-to-name mapping:
 
 ```json
 {
@@ -191,6 +189,9 @@ the `list` command to get a simple path-to-name mapping:
   "underscore": "bower_components/underscore/index.js"
 }
 ```
+
+Alternatively, every command supports the `--json` option that makes bower output JSON.   
+Command result is outputted to `stdout` and errors/logs to `stderr`.
 
 
 ## Programmatic API
