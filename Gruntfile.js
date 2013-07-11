@@ -26,9 +26,20 @@ module.exports = function (grunt) {
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'simplemocha:short']
+        },
+        shell: {
+            cover: {
+                command: 'node node_modules/istanbul/lib/cli.js cover node_modules/mocha/bin/_mocha -- -R dot',
+                options: {
+                    stdout: true,
+                    stderr: true
+                }
+            }
         }
+
     });
 
+    grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-simple-mocha');
