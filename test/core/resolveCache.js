@@ -4,6 +4,7 @@ var rimraf = require('rimraf');
 var fs = require('graceful-fs');
 var Q = require('q');
 var expect = require('expect.js');
+var mkdirp = require('mkdirp');
 var ResolveCache = require('../../lib/core/ResolveCache');
 var defaultConfig = require('../../lib/config');
 var cmd = require('../../lib/util/cmd');
@@ -101,6 +102,30 @@ describe('ResolveCache', function () {
             .done();
         });
 
+        it('should overwrite if the exact same package source/version exists', function (next) {
+            var cachePkgDir = path.join(cacheDir, md5('foo'), '1.0.0-rc.blehhh');
+
+            mkdirp.sync(cachePkgDir);
+            fs.writeFile(path.join(cachePkgDir, '_bleh'), 'w00t');
+
+            resolveCache.store(tempPackage, {
+                name: 'foo',
+                version: '1.0.0-rc.blehhh',
+                _source: 'foo',
+                _target: '*'
+            })
+            .then(function (dir) {
+                expect(dir).to.equal(cachePkgDir);
+                expect(fs.existsSync(dir)).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(fs.existsSync(tempPackage)).to.be(false);
+                expect(fs.existsSync(path.join(cachePkgDir, '_bleh'))).to.be(false);
+
+                next();
+            })
+            .done();
+        });
+
         it('should read the package meta if not present', function (next) {
             var pkgMeta = path.join(tempPackage, '.bower.json');
 
@@ -192,6 +217,80 @@ describe('ResolveCache', function () {
                 expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
                 expect(fs.existsSync(tempPackage)).to.be(false);
 
+                next();
+            })
+            .done();
+        });
+    });
+
+    describe('.versions', function () {
+        it('should resolve to an array', function (next) {
+            resolveCache.versions(String(Math.random()))
+            .then(function (versions) {
+                expect(versions).to.be.an('array');
+                next();
+            })
+            .done();
+        });
+
+        it('should ignore non-semver folders of the source', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.mkdirSync(path.join(sourceDir, 'foo'));
+
+            resolveCache.versions(source)
+            .then(function (versions) {
+                expect(versions).to.not.contain('foo');
+                expect(versions).to.contain('0.0.1');
+                expect(versions).to.contain('0.1.0');
+                next();
+            })
+            .done();
+        });
+
+        it('should order the versions', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0-rc.1'));
+
+            resolveCache.versions(source)
+            .then(function (versions) {
+                expect(versions).to.eql(['0.1.0', '0.1.0-rc.1', '0.0.1']);
+                next();
+            })
+            .done();
+        });
+
+        it('should cache versions to speed-up subsequent calls', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            resolveCache.versions(source)
+            .then(function () {
+                // Remove folder
+                rimraf.sync(sourceDir);
+
+                return resolveCache.versions(source);
+            })
+            .then(function (versions) {
+                expect(versions).to.eql(['0.0.1']);
                 next();
             })
             .done();
