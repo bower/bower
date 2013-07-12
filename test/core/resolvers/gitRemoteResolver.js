@@ -140,8 +140,8 @@ describe('GitRemoteResolver', function () {
                     'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}',
                     'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
                     '65dc372d73c76ed4904ee209ed77c09d44f4dc53 refs/tags/0.2.0^{}',
-                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1',
-                    '108b8fd803481afa9d537e5551beb6d5946ee045 refs/tags/0.2.1^{}'
+                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1',
+                    'c2cc010b8ee65737c55d63e4c67cba8fb9a00d7f refs/tags/0.2.1^{}'
                 ]);
                 next();
             })
@@ -175,8 +175,8 @@ describe('GitRemoteResolver', function () {
                     'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}',
                     'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
                     '65dc372d73c76ed4904ee209ed77c09d44f4dc53 refs/tags/0.2.0^{}',
-                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1',
-                    '108b8fd803481afa9d537e5551beb6d5946ee045 refs/tags/0.2.1^{}'
+                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1',
+                    'c2cc010b8ee65737c55d63e4c67cba8fb9a00d7f refs/tags/0.2.1^{}'
                 ]);
                 next();
             })

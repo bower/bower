@@ -223,7 +223,7 @@ describe('GitFsResolver', function () {
                     '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
                     '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
                     'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
-                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1'
+                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1'
                 ]);
                 next();
             })
@@ -250,7 +250,7 @@ describe('GitFsResolver', function () {
                     '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
                     '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
                     'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
-                    '388de53beca50cfc1927535622727090cb0f04f8 refs/tags/0.2.1'
+                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1'
                 ]);
                 next();
             })
