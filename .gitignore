@@ -4,6 +4,7 @@
 /test/assets/github-test-package
 /test/assets/github-test-package-copy
 /test/assets/temp
+/test/assets/resolve-cache
 
 /bower.json
 /bower_components

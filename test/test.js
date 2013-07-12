@@ -13,4 +13,5 @@ require('./core/resolvers/gitFsResolver');
 require('./core/resolvers/gitRemoteResolver');
 require('./core/resolvers/gitHubResolver');
 require('./core/resolverFactory');
-require('./core/Logger');
+require('./core/logger');
+require('./core/resolveCache');
