@@ -296,4 +296,135 @@ describe('ResolveCache', function () {
             .done();
         });
     });
+
+    describe('.retrieve', function () {
+        it('should resolve to empty if there are no packages for the requested source', function (next) {
+            resolveCache.retrieve(String(Math.random()))
+            .spread(function () {
+                expect(arguments.length).to.equal(0);
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to empty if there are no suitable packages for the requested target', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.9'));
+            fs.mkdirSync(path.join(sourceDir, '0.2.0'));
+
+            resolveCache.retrieve(source, '~0.3.0')
+            .spread(function () {
+                expect(arguments.length).to.equal(0);
+
+                return resolveCache.retrieve(source, 'some-branch');
+            })
+            .spread(function () {
+                expect(arguments.length).to.equal(0);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should remove invalid packages from the cache if their package meta is missing or invalid', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.9'));
+            fs.mkdirSync(path.join(sourceDir, '0.2.0'));
+
+            // Create an invalid package meta
+            fs.writeFile(path.join(sourceDir, '0.2.0', '.bower.json'), 'w00t');
+
+            resolveCache.retrieve(source, '~0.1.0')
+            .spread(function () {
+                var dirs = fs.readdirSync(sourceDir);
+
+                expect(arguments.length).to.equal(0);
+                expect(dirs).to.eql(['0.0.1', '0.2.0']);
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to the highest package that matches a range target', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            json.version = '0.0.1';
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.writeFile(path.join(sourceDir, '0.0.1', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.writeFile(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.9';
+            fs.mkdirSync(path.join(sourceDir, '0.1.9'));
+            fs.writeFile(path.join(sourceDir, '0.1.9', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.2.0';
+            fs.mkdirSync(path.join(sourceDir, '0.2.0'));
+            fs.writeFile(path.join(sourceDir, '0.2.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, '~0.1.0')
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta.version).to.equal('0.1.9');
+                expect(canonicalDir).to.equal(path.join(sourceDir, '0.1.9'));
+
+                return resolveCache.retrieve(source, '*');
+            })
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta.version).to.equal('0.2.0');
+                expect(canonicalDir).to.equal(path.join(sourceDir, '0.2.0'));
+
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to the exact target it\'s not a semver range', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            fs.mkdirSync(path.join(sourceDir, 'some-branch'));
+            fs.writeFile(path.join(sourceDir, 'some-branch', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            fs.mkdirSync(path.join(sourceDir, 'other-branch'));
+            fs.writeFile(path.join(sourceDir, 'other-branch', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, 'some-branch')
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta).to.not.have.property('version');
+
+                next();
+            })
+            .done();
+        });
+    });
 });
