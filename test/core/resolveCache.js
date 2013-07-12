@@ -37,7 +37,12 @@ describe('ResolveCache', function () {
     });
 
     describe('.store', function () {
+        var oldFsRename = fs.rename;
+
         beforeEach(function (next) {
+            // Restore oldFsRename
+            fs.rename = oldFsRename;
+
             // Create a fresh copy of the test package into temp
             rimraf.sync(tempPackage);
             copy.copyDir(testPackage, tempPackage)
@@ -160,6 +165,36 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it.skip('should move the canonical dir, even if it is in a different drive');
+        it('should move the canonical dir, even if it is in a different drive', function (next) {
+            var hittedMock = false;
+
+            fs.rename = function (src, dest, cb) {
+                hittedMock = true;
+
+                setTimeout(function () {
+                    var err = new Error();
+                    err.code = 'EXDEV';
+                    cb(err);
+                }, 10);
+            };
+
+            resolveCache.store(tempPackage, {
+                name: 'foo',
+                _source: 'foo',
+                _target: 'some-branch'
+            })
+            .then(function (dir) {
+                // Ensure mock was called
+                expect(hittedMock).to.be(true);
+
+                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'some-branch'));
+                expect(fs.existsSync(dir)).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(fs.existsSync(tempPackage)).to.be(false);
+
+                next();
+            })
+            .done();
+        });
     });
 });
