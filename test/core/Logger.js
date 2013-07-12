@@ -3,133 +3,121 @@ var EventEmitter = require('events').EventEmitter;
 var Logger = require('../../lib/core/Logger');
 
 describe('Logger', function () {
+    var logger;
 
     beforeEach(function () {
-        this.logger = new Logger();
+        logger = new Logger();
     });
 
     describe('.constructor', function () {
-
         it('should provide an instance of Logger', function () {
-            expect(this.logger instanceof Logger).to.be(true);
+            expect(logger instanceof Logger).to.be(true);
         });
 
         it('should provide an instance of EventEmitter', function () {
-            expect(this.logger instanceof EventEmitter).to.be(true);
+            expect(logger instanceof EventEmitter).to.be(true);
         });
 
         it('should have prototype methods', function () {
-            var self = this,
-                methods = [
+            var methods = [
                     'intercept', 'pipe', 'geminate', 'log'
                 ];
 
             methods.forEach(function (method) {
-                expect(self.logger).to.have.property(method);
+                expect(logger).to.have.property(method);
             });
 
         });
-
     });
 
     describe('Instance', function () {
-
         describe('Events', function () {
-
-            beforeEach(function () {
-                this.logData = {
-                    foo: 'bar',
-                    baz: 'string'
-                };
-            });
+            var logData = {
+                foo: 'bar',
+                baz: 'string'
+            };
 
             it('should pass through {}', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.info();
+                logger.info();
             });
 
             it('should pass through logData', function (done) {
-                var self = this;
-
-                this.logger.on('log', function (log) {
-                    expect(log.data).to.eql(self.logData);
+                logger.on('log', function (log) {
+                    expect(log.data).to.eql(logData);
                     done();
                 });
-                this.logger.info('info', 'message', this.logData);
+                logger.info('foo', 'message', logData);
             });
 
             it('should emit error event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('error');
-                    expect(log.id).to.eql('error');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('error message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.error('error', 'error message');
+                logger.error('foo', 'error message');
             });
 
             it('should emit conflict event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('conflict');
-                    expect(log.id).to.eql('conflict');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('conflict message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.conflict('conflict', 'conflict message');
+                logger.conflict('foo', 'conflict message');
             });
 
             it('should emit warn event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('warn');
-                    expect(log.id).to.eql('warn');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('warn message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.warn('warn', 'warn message');
+                logger.warn('foo', 'warn message');
             });
 
             it('should emit action event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('action');
-                    expect(log.id).to.eql('action');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('action message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.action('action', 'action message');
+                logger.action('foo', 'action message');
             });
 
             it('should emit info event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('info');
-                    expect(log.id).to.eql('info');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('info message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.info('info', 'info message');
+                logger.info('foo', 'info message');
             });
 
             it('should emit debug event', function (done) {
-                this.logger.on('log', function (log) {
+                logger.on('log', function (log) {
                     expect(log.level).to.eql('debug');
-                    expect(log.id).to.eql('debug');
+                    expect(log.id).to.eql('foo');
                     expect(log.message).to.eql('debug message');
                     expect(log.data).to.eql({});
                     done();
                 });
-                this.logger.debug('debug', 'debug message');
+                logger.debug('foo', 'debug message');
             });
-
         });
-
     });
-
 });
-
