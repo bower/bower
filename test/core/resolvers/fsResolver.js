@@ -13,10 +13,11 @@ var defaultConfig = require('../../../lib/config');
 
 describe('FsResolver', function () {
     var tempSource;
+    var logger;
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
-    var logger = new Logger();
 
     before(function (next) {
+        logger = new Logger();
         // Checkout test package version 0.2.1 which has a bower.json
         // with ignores
         cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })

@@ -15,7 +15,11 @@ var defaultConfig = require('../../../lib/config');
 describe('Resolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
-    var logger = new Logger();
+    var logger;
+
+    before(function () {
+        logger = new Logger();
+    });
 
     afterEach(function () {
         logger.removeAllListeners();

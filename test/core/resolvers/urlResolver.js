@@ -14,9 +14,11 @@ var defaultConfig = require('../../../lib/config');
 describe('UrlResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
-    var logger = new Logger();
+    var logger;
 
     before(function (next) {
+        logger = new Logger();
+
         // Checkout test package version 0.2.1
         cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })
         .then(next.bind(next, null), next);

@@ -15,7 +15,11 @@ var defaultConfig = require('../../../lib/config');
 describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var originalrefs = GitResolver.refs;
-    var logger = new Logger();
+    var logger;
+
+    before(function () {
+        logger = new Logger();
+    });
 
     afterEach(function () {
         logger.removeAllListeners();
