@@ -19,6 +19,7 @@ describe('PackageRepository', function () {
     var tempPackage = path.resolve(__dirname, '../assets/temp');
     var packagesCacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
     var registryCacheDir = path.join(__dirname, '../assets/temp-registry-cache');
+    var mockSource = 'file://' + testPackage;
 
     beforeEach(function (next) {
         var PackageRepository;
@@ -39,7 +40,7 @@ describe('PackageRepository', function () {
             expect(_registryClient).to.be.an(RegistryClient);
 
             decEndpoint = mout.object.deepMixIn({}, decEndpoint);
-            decEndpoint.source = 'file://' + testPackage;
+            decEndpoint.source = mockSource;
 
             resolver = new resolvers.GitRemote(decEndpoint, _config, _logger);
             resolverFactoryHook(resolver);
@@ -127,12 +128,13 @@ describe('PackageRepository', function () {
             var called;
             var originalRetrieve = packageRepository._resolveCache.retrieve;
 
-            packageRepository._resolveCache.retrieve = function () {
+            packageRepository._resolveCache.retrieve = function (source) {
                 called = true;
+                expect(source).to.be(mockSource);
                 return originalRetrieve.apply(this, arguments);
             };
 
-            packageRepository.fetch({ name: '', source: 'foo', target: '~0.2.1' })
+            packageRepository.fetch()
             .spread(function (canonicalDir, pkgMeta) {
                 expect(called).to.be(true);
                 expect(fs.existsSync(canonicalDir)).to.be(true);
@@ -177,7 +179,7 @@ describe('PackageRepository', function () {
         });
 
         it('should call the resolver hasNew method if an appropriate package was found in the resolve cache', function (next) {
-            var pkgMeta = {
+            var json = {
                 name: 'test-package',
                 version: '0.2.1'
             };
@@ -186,19 +188,21 @@ describe('PackageRepository', function () {
             resolverFactoryHook = function (resolver) {
                 var originalHasNew = resolver.hasNew;
 
-                resolver.hasNew = function () {
+                resolver.hasNew = function (canonicalDir, pkgMeta) {
+                    expect(canonicalDir).to.equal(tempPackage);
+                    expect(pkgMeta).to.eql(json);
                     called = true;
                     return originalHasNew.apply(this, arguments);
                 };
             };
 
             packageRepository._resolveCache.retrieve = function () {
-                return Q.resolve([tempPackage, pkgMeta]);
+                return Q.resolve([tempPackage, json]);
             };
 
             copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
             .then(function () {
-                fs.writeFileSync(path.join(tempPackage, '.bower.json'), JSON.stringify(pkgMeta));
+                fs.writeFileSync(path.join(tempPackage, '.bower.json'), JSON.stringify(json));
 
                 return packageRepository.fetch({ name: '', source: 'foo', target: '~0.1.0' })
                 .spread(function (canonicalDir, pkgMeta) {
@@ -228,7 +232,9 @@ describe('PackageRepository', function () {
                     return originalResolve.apply(this, arguments);
                 };
 
-                resolver.hasNew = function () {
+                resolver.hasNew = function (canonicalDir, pkgMeta) {
+                    expect(canonicalDir).to.equal(tempPackage);
+                    expect(pkgMeta).to.eql(json);
                     called.push('hasNew');
                     return Q.resolve(true);
                 };
@@ -270,7 +276,9 @@ describe('PackageRepository', function () {
                     return originalResolve.apply(this, arguments);
                 };
 
-                resolver.hasNew = function () {
+                resolver.hasNew = function (canonicalDir, pkgMeta) {
+                    expect(canonicalDir).to.equal(tempPackage);
+                    expect(pkgMeta).to.eql(json);
                     called.push('hasNew');
                     return Q.resolve(false);
                 };
@@ -305,7 +313,9 @@ describe('PackageRepository', function () {
             resolverFactoryHook = function (resolver) {
                 var originalResolve = resolver.resolve;
 
-                resolver.resolve = function () {
+                resolver.hasNew = function (canonicalDir, pkgMeta) {
+                    expect(canonicalDir).to.equal(tempPackage);
+                    expect(pkgMeta).to.eql(json);
                     called.push('resolve');
                     return originalResolve.apply(this, arguments);
                 };
@@ -356,7 +366,8 @@ describe('PackageRepository', function () {
             var called = [];
             var originalVersions = resolvers.GitRemote.versions;
 
-            resolvers.GitRemote.versions = function () {
+            resolvers.GitRemote.versions = function (source) {
+                expect(source).to.equal(mockSource);
                 called.push('resolver');
                 return Q.resolve([]);
             };
@@ -389,7 +400,8 @@ describe('PackageRepository', function () {
                 return Q.resolve([]);
             };
 
-            packageRepository._resolveCache.versions = function () {
+            packageRepository._resolveCache.versions = function (source) {
+                expect(source).to.equal(mockSource);
                 called.push('resolve-cache');
                 return Q.resolve([]);
             };
@@ -411,12 +423,69 @@ describe('PackageRepository', function () {
     });
 
     describe('.eliminate', function () {
-        it('should call the eliminate method from the resolve cache');
-        it('should call the clearCache method with the name from the registry client');
+        it('should call the eliminate method from the resolve cache', function (next) {
+            var called;
+            var json = {
+                name: 'test-package',
+                version: '0.2.0',
+                _source: 'foo'
+            };
+
+            packageRepository._resolveCache.eliminate = function (pkgMeta) {
+                expect(pkgMeta).to.eql(json);
+                called = true;
+                return Q.resolve();
+            };
+
+            packageRepository.eliminate(json)
+            .then(function () {
+                expect(called).to.be(true);
+                next();
+            })
+            .done();
+        });
+
+        it('should call the clearCache method with the name from the registry client', function (next) {
+            var called;
+            var json = {
+                name: 'test-package',
+                version: '0.2.0',
+                _source: 'foo'
+            };
+
+            packageRepository._registryClient.clearCache = function (name, callback) {
+                expect(name).to.eql(json.name);
+                called = true;
+                callback();
+            };
+
+            packageRepository.eliminate(json)
+            .then(function () {
+                expect(called).to.be(true);
+                next();
+            })
+            .done();
+        });
     });
 
     describe('.list', function () {
-        it('should proxy to the resolve cache list method');
+        it('should proxy to the resolve cache list method', function (next) {
+            var called;
+            var originalList = packageRepository._resolveCache.list;
+
+            packageRepository._resolveCache.list = function () {
+                called = true;
+                return originalList.apply(this, arguments);
+            };
+
+            packageRepository.list()
+            .then(function (entries) {
+                expect(called).to.be(true);
+                expect(entries).to.be.an('array');
+                next();
+            })
+            .done();
+        });
     });
 
     describe('.clear', function () {
