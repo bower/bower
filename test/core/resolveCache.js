@@ -221,6 +221,8 @@ describe('ResolveCache', function () {
             })
             .done();
         });
+
+        it('should update the in-memory cache');
     });
 
     describe('.versions', function () {
@@ -402,6 +404,28 @@ describe('ResolveCache', function () {
             .done();
         });
 
+        it('should resolve to the _wildcard package if target is * and there are not semver versions', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            fs.mkdirSync(path.join(sourceDir, '_wildcard'));
+            fs.writeFile(path.join(sourceDir, '_wildcard', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, '*')
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(canonicalDir).to.equal(path.join(sourceDir, '_wildcard'));
+
+                next();
+            })
+            .done();
+        });
+
         it('should resolve to the exact target it\'s not a semver range', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);
@@ -423,6 +447,136 @@ describe('ResolveCache', function () {
                 expect(pkgMeta).to.not.have.property('version');
 
                 next();
+            })
+            .done();
+        });
+    });
+
+    describe('.eliminate', function () {
+        it('should delete the source-md5/version folder', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+
+            resolveCache.eliminate({
+                name: 'foo',
+                version: '0.0.1',
+                _source: source,
+                _target: '*'
+            })
+            .then(function () {
+                expect(fs.existsSync(path.join(sourceDir, '0.0.1'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, '0.1.0'))).to.be(true);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should delete the source-md5/target folder', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, 'some-branch'));
+
+            resolveCache.eliminate({
+                name: 'foo',
+                _source: source,
+                _target: 'some-branch'
+            })
+            .then(function () {
+                expect(fs.existsSync(path.join(sourceDir, 'some-branch'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, '0.0.1'))).to.be(true);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should delete the source-md5/_wildcard folder', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(path.join(sourceDir, '_wildcard'));
+
+            resolveCache.eliminate({
+                name: 'foo',
+                _source: source,
+                _target: '*'
+            })
+            .then(function () {
+                expect(fs.existsSync(path.join(sourceDir, '_wildcard'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, '0.0.1'))).to.be(true);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should delete the source-md5 folder if empty', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            resolveCache.eliminate({
+                name: 'foo',
+                version: '0.0.1',
+                _source: source,
+                _target: '*'
+            })
+            .then(function () {
+                expect(fs.existsSync(path.join(sourceDir, '0.0.1'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir))).to.be(false);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should remove entry from in memory cache if the source-md5 folder was deleted', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            resolveCache.eliminate({
+                name: 'foo',
+                version: '0.0.1',
+                _source: source,
+                _target: '*'
+            })
+            .then(function () {
+                // At this point the parent folder should be deleted
+                // To test against the in-memory cache, we create a folder
+                // manually and request the versions
+                mkdirp.sync(path.join(sourceDir, '0.0.1'));
+
+                resolveCache.versions(source)
+                .then(function (versions) {
+                    expect(versions).to.eql(['0.0.1']);
+
+                    next();
+                });
             })
             .done();
         });
