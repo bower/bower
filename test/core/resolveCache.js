@@ -762,7 +762,7 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should resolve to an ordered array of entries (name ASC, versions ASC)', function (next) {
+        it('should resolve to an ordered array of entries (name ASC, release ASC)', function (next) {
             var source = 'list-package-1';
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
