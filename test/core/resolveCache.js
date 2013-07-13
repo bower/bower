@@ -355,7 +355,8 @@ describe('ResolveCache', function () {
                 var dirs = fs.readdirSync(sourceDir);
 
                 expect(arguments.length).to.equal(0);
-                expect(dirs).to.eql(['0.0.1', '0.2.0']);
+                expect(dirs).to.contain('0.0.1');
+                expect(dirs).to.contain('0.2.0');
                 next();
             })
             .done();
