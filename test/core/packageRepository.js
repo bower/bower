@@ -8,6 +8,7 @@ var RegistryClient = require('bower-registry-client');
 var proxyquire = require('proxyquire');
 var defaultConfig = require('../../lib/config');
 var Logger = require('../../lib/core/Logger');
+var ResolveCache = require('../../lib/core/ResolveCache');
 var resolvers = require('../../lib/core/resolvers');
 var copy = require('../../lib/util/copy');
 
@@ -15,6 +16,7 @@ describe('PackageRepository', function () {
     var packageRepository;
     var resolver;
     var resolverFactoryHook;
+    var resolverFactoryClearHook;
     var testPackage = path.resolve(__dirname, '../assets/github-test-package');
     var tempPackage = path.resolve(__dirname, '../assets/temp');
     var packagesCacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
@@ -50,6 +52,9 @@ describe('PackageRepository', function () {
         resolverFactory.getConstructor = function () {
             return Q.resolve([resolvers.GitRemote, 'file://' + testPackage, false]);
         };
+        resolverFactory.clearRuntimeCache = function () {
+            resolverFactoryClearHook();
+        };
 
         // Mock the resolver factory to always return a resolver for the test package
         PackageRepository = proxyquire('../../lib/core/PackageRepository', {
@@ -58,7 +63,7 @@ describe('PackageRepository', function () {
         packageRepository = new PackageRepository(config, logger);
 
         // Reset hooks
-        resolverFactoryHook = function () {};
+        resolverFactoryHook = resolverFactoryClearHook = function () {};
 
         // Remove temp package
         rimraf.sync(tempPackage);
@@ -489,18 +494,105 @@ describe('PackageRepository', function () {
     });
 
     describe('.clear', function () {
-        it('should call the clear method from the resolve cache');
-        it('should call the clearCache method without name from the registry client');
+        it('should call the clear method from the resolve cache', function (next) {
+            var called;
+
+            packageRepository._resolveCache.clear = function () {
+                called = true;
+                return Q.resolve();
+            };
+
+            packageRepository.clear()
+            .then(function () {
+                expect(called).to.be(true);
+                next();
+            })
+            .done();
+        });
+
+        it('should call the clearCache method without name from the registry client', function (next) {
+            var called;
+
+            packageRepository._registryClient.clearCache = function (callback) {
+                called = true;
+                callback();
+            };
+
+            packageRepository.clear()
+            .then(function () {
+                expect(called).to.be(true);
+                next();
+            })
+            .done();
+        });
     });
 
     describe('.reset', function () {
-        it('should call the reset method from the resolve cache');
-        it('should call the resetCache method without name from the registry client');
+        it('should call the reset method from the resolve cache', function () {
+            var called;
+
+            packageRepository._resolveCache.reset = function () {
+                called = true;
+                return packageRepository._resolveCache;
+            };
+
+            packageRepository.reset();
+            expect(called).to.be(true);
+        });
+
+        it('should call the resetCache method without name from the registry client', function () {
+            var called;
+
+            packageRepository._registryClient.resetCache = function () {
+                called = true;
+                return packageRepository._registryClient;
+            };
+
+            packageRepository.reset();
+            expect(called).to.be(true);
+        });
     });
 
     describe('#clearRuntimeCache', function () {
-        it('should clear the resolve runtime cache');
-        it('should clear the resolver factory runtime cache');
-        it('should clear the registry runtime cache');
+        it('should clear the resolve cache runtime cache', function () {
+            var called;
+            var originalClearRuntimeCache = ResolveCache.clearRuntimeCache;
+
+            // No need to restore the original method since the constructor
+            // gets re-assigned every time in beforeEach
+            ResolveCache.clearRuntimeCache = function () {
+                called = true;
+                return originalClearRuntimeCache.apply(ResolveCache, arguments);
+            };
+
+            packageRepository.constructor.clearRuntimeCache();
+            expect(called).to.be(true);
+        });
+
+        it('should clear the resolver factory runtime cache', function () {
+            var called;
+
+            resolverFactoryClearHook = function () {
+                called = true;
+            };
+
+            packageRepository.constructor.clearRuntimeCache();
+            expect(called).to.be(true);
+        });
+
+        it('should clear the registry runtime cache', function () {
+            var called;
+            var originalClearRuntimeCache = RegistryClient.clearRuntimeCache;
+
+            // No need to restore the original method since the constructor
+            // gets re-assigned every time in beforeEach
+            RegistryClient.clearRuntimeCache = function () {
+                called = true;
+                return originalClearRuntimeCache.apply(RegistryClient, arguments);
+            };
+
+            packageRepository.constructor.clearRuntimeCache();
+            expect(called).to.be(true);
+        });
     });
 });
