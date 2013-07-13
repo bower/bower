@@ -392,7 +392,7 @@ describe('resolverFactory', function () {
     it('should set registry to true on the decomposed endpoint if fetched from the registry', function (next) {
         var decEndpoint = { source: 'dejavu' };
 
-        callFactory({ source: 'dejavu' })
+        callFactory(decEndpoint)
         .then(function () {
             expect(decEndpoint.registry).to.be(true);
             next();
@@ -418,6 +418,8 @@ describe('resolverFactory', function () {
         })
         .done();
     });
+
+    it.skip('should error out if there\'s no suitable resolver for a given source');
 
     it.skip('should use config.cwd when resolving relative paths');
 
@@ -449,5 +451,9 @@ describe('resolverFactory', function () {
         promise
         .then(next.bind(next, null))
         .done();
+    });
+
+    describe('.clearRuntimeCache', function () {
+        it.skip('should call every resolver static method that clears the runtime cache');
     });
 });
