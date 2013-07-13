@@ -1,5 +1,6 @@
 var os = require('os');
 var path = require('path');
+var async = require('async');
 var methods = require('./lib');
 var Cache = require('./lib/util/Cache');
 
@@ -62,15 +63,19 @@ RegistryClient.prototype.list = methods.list;
 RegistryClient.prototype.register = methods.register;
 
 RegistryClient.prototype.clearCache = function (name, callback) {
-    this.lookup.clearCache.call(this, name, callback);
-    this.search.clearCache.call(this, name, callback);
-    this.list.clearCache.call(this, callback);
+    async.parallel([
+        this.lookup.clearCache.bind(this, name),
+        this.search.clearCache.bind(this, name),
+        this.list.clearCache.bind(this)
+    ], callback);
 };
 
-RegistryClient.prototype.resetCache = function (name, callback) {
-    this.lookup.resetCache.call(this, name, callback);
-    this.search.resetCache.call(this, name, callback);
-    this.list.resetCache.call(this, callback);
+RegistryClient.prototype.resetCache = function (name) {
+    this.lookup.resetCache.call(this, name);
+    this.search.resetCache.call(this, name);
+    this.list.resetCache.call(this);
+
+    return this;
 };
 
 RegistryClient.clearRuntimeCache = function () {
