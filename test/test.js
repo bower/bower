@@ -15,3 +15,4 @@ require('./core/resolvers/gitHubResolver');
 require('./core/resolverFactory');
 require('./core/logger');
 require('./core/resolveCache');
+require('./core/packageRepository');
