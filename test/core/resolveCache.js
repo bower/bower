@@ -453,6 +453,10 @@ describe('ResolveCache', function () {
     });
 
     describe('.eliminate', function () {
+        beforeEach(function () {
+            mkdirp.sync(cacheDir);
+        });
+
         it('should delete the source-md5/version folder', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);
@@ -559,21 +563,74 @@ describe('ResolveCache', function () {
             fs.mkdirSync(sourceDir);
             fs.mkdirSync(path.join(sourceDir, '0.0.1'));
 
-            resolveCache.eliminate({
-                name: 'foo',
-                version: '0.0.1',
-                _source: source,
-                _target: '*'
+            // Feed up the cache
+            resolveCache.versions(source)
+            // Eliminate
+            .then(function () {
+                return resolveCache.eliminate({
+                    name: 'foo',
+                    version: '0.0.1',
+                    _source: source,
+                    _target: '*'
+                });
             })
             .then(function () {
                 // At this point the parent folder should be deleted
                 // To test against the in-memory cache, we create a folder
                 // manually and request the versions
-                mkdirp.sync(path.join(sourceDir, '0.0.1'));
+                mkdirp.sync(path.join(sourceDir, '0.0.2'));
 
                 resolveCache.versions(source)
                 .then(function (versions) {
-                    expect(versions).to.eql(['0.0.1']);
+                    expect(versions).to.eql(['0.0.2']);
+
+                    next();
+                });
+            })
+            .done();
+        });
+    });
+
+    describe('.clear', function () {
+        beforeEach(function () {
+            mkdirp.sync(cacheDir);
+        });
+
+        it('should delete the whole cache folder', function (next) {
+            resolveCache.clear()
+            .then(function () {
+                expect(fs.existsSync(cacheDir)).to.be(false);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should erase the in-memory cache', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            // Feed the in-memory cache
+            resolveCache.versions(source)
+            // Clear
+            .then(function () {
+                return resolveCache.clear();
+            })
+            .then(function () {
+                expect(fs.existsSync(cacheDir)).to.be(false);
+
+                // To test against the in-memory cache, we create a folder
+                // manually and request the versions
+                mkdirp.sync(path.join(sourceDir, '0.0.2'));
+
+                resolveCache.versions(source)
+                .then(function (versions) {
+                    expect(versions).to.eql(['0.0.2']);
 
                     next();
                 });
