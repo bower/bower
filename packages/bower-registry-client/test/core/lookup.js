@@ -1,5 +1,5 @@
 var lookup = require('../../lib/lookup'),
-    expect = require('chai').expect;
+    expect = require('expect.js');
 
 describe('lookup module', function () {
 

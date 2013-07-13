@@ -26,7 +26,6 @@
     "mkdirp": "~0.3.5"
   },
   "devDependencies": {
-    "chai": "~1.7.2",
     "expect.js": "~0.2.0",
     "grunt": "~0.4.1",
     "grunt-contrib-watch": "~0.4.4",
