@@ -419,7 +419,18 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it.skip('should error out if there\'s no suitable resolver for a given source');
+    it('should error out if there\'s no suitable resolver for a given source', function (next) {
+        resolverFactory({ source: 'some-package-that-will-never-exist' }, defaultConfig, logger)
+        .then(function () {
+            throw new Error('Should have failed');
+        }, function (err) {
+            expect(err).to.be.an(Error);
+            expect(err.code).to.be('ENORESOLVER');
+            expect(err.message).to.contain('appropriate resolver');
+            next();
+        })
+        .done();
+    });
 
     it.skip('should use config.cwd when resolving relative paths');
 

@@ -458,7 +458,28 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it.skip('should save the release if there\'s a E-Tag');
+        it('should save the release if there\'s a E-Tag', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/foo.js')
+            .reply(200, 'foo contents', {
+                'ETag': '686897696a7c876b7e',
+                'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
+            });
+
+            resolver = create('http://bower.io/foo.js');
+
+            resolver.resolve()
+            .then(function (dir) {
+                assertMain(dir, 'index.js')
+                .then(function (pkgMeta) {
+                    expect(pkgMeta._release).to.equal('e-tag:686897696a');
+                    next();
+                });
+            })
+            .done();
+        });
 
         it('should save cache headers', function (next) {
             var resolver;

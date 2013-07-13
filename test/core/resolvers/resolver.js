@@ -700,7 +700,20 @@ describe('Resolver', function () {
             .done();
         });
 
-        it.skip('should set the original source and target in package meta file');
+        it('should set the original source and target in package meta file', function (next) {
+            var resolver = create({ source: 'bar', target: '~2.0.0' });
+            var meta = { name: 'foo' };
+
+            resolver._tempDir = tempDir;
+
+            resolver._savePkgMeta(meta)
+            .then(function (retMeta) {
+                expect(retMeta._source).to.equal('bar');
+                expect(retMeta._target).to.equal('~2.0.0');
+                next();
+            })
+            .done();
+        });
 
         it('should save the package meta to the package meta file (.bower.json)', function (next) {
             var resolver = create('foo');
