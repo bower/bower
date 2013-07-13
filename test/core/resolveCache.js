@@ -15,6 +15,7 @@ describe('ResolveCache', function () {
     var resolveCache;
     var testPackage = path.resolve(__dirname, '../assets/github-test-package');
     var tempPackage = path.resolve(__dirname, '../assets/temp');
+    var tempPackage2 = path.resolve(__dirname, '../assets/temp2');
     var cacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
 
     before(function (next) {
@@ -44,7 +45,32 @@ describe('ResolveCache', function () {
     });
 
     describe('.constructor', function () {
+        beforeEach(function () {
+            // Delete temp folder
+            rimraf.sync(tempPackage);
+        });
+        after(function () {
+            // Delete temp folder
+            rimraf.sync(tempPackage);
+        });
 
+        function initialize(cacheDir) {
+            return new ResolveCache(mout.object.deepMixIn(defaultConfig, {
+                storage: {
+                    packages: cacheDir
+                }
+            }));
+        }
+
+        it('should create the cache folder if it doesn\'t exists', function () {
+            initialize(tempPackage);
+            expect(fs.existsSync(tempPackage)).to.be(true);
+        });
+
+        it('should not error out if the cache folder already exists', function () {
+            mkdirp.sync(tempPackage);
+            initialize(tempPackage);
+        });
     });
 
     describe('.store', function () {
@@ -56,7 +82,7 @@ describe('ResolveCache', function () {
 
             // Create a fresh copy of the test package into temp
             rimraf.sync(tempPackage);
-            copy.copyDir(testPackage, tempPackage)
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
             .then(next.bind(next, null), next);
         });
 
@@ -232,7 +258,41 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should update the in-memory cache');
+        it('should update the in-memory cache', function (next) {
+            // Feed the cache
+            resolveCache.versions('test-in-memory')
+            // Copy temp package to temp package  2
+            .then(function () {
+                return copy.copyDir(tempPackage, tempPackage2, { ignore: ['.git'] });
+            })
+            // Store the two packages
+            .then(function () {
+                return resolveCache.store(tempPackage, {
+                    name: 'foo',
+                    version: '1.0.0',
+                    _source: 'test-in-memory',
+                    _target: '*'
+                });
+            })
+            .then(function () {
+                return resolveCache.store(tempPackage2, {
+                    name: 'foo',
+                    version: '1.0.1',
+                    _source: 'test-in-memory',
+                    _target: '*'
+                });
+            })
+            // Cache should have been updated
+            .then(function () {
+                return resolveCache.versions('test-in-memory')
+                .then(function (versions) {
+                    expect(versions).to.eql(['1.0.1', '1.0.0']);
+
+                    next();
+                });
+            })
+            .done();
+        });
     });
 
     describe('.versions', function () {
@@ -702,7 +762,7 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should resolve to an ordered array of entries', function (next) {
+        it('should resolve to an ordered array of entries (name ASC, versions ASC)', function (next) {
             var source = 'list-package-1';
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
@@ -735,11 +795,20 @@ describe('ResolveCache', function () {
             json._target = 'bar';
             fs.writeFileSync(path.join(sourceDir, 'bar', '.bower.json'), JSON.stringify(json, null, '  '));
 
+            fs.mkdirSync(path.join(sourceDir, 'aa'));
+            json._target = 'aa';
+            fs.writeFileSync(path.join(sourceDir, 'aa', '.bower.json'), JSON.stringify(json, null, '  '));
+
             delete json._target;
 
             fs.mkdirSync(sourceDir2);
+            fs.mkdirSync(path.join(sourceDir2, '0.2.1'));
+            json.version = '0.2.1';
+            fs.writeFileSync(path.join(sourceDir2, '0.2.1', '.bower.json'), JSON.stringify(json, null, '  '));
+
             fs.mkdirSync(path.join(sourceDir2, '0.2.0'));
-            json.version = '0.0.1';
+            json.name = 'abc';
+            json.version = '0.2.0';
             fs.writeFileSync(path.join(sourceDir2, '0.2.0', '.bower.json'), JSON.stringify(json, null, '  '));
 
             resolveCache.list()
@@ -842,6 +911,48 @@ describe('ResolveCache', function () {
     });
 
     describe('#clearRuntimeCache', function () {
+        it('should clear the in-memory cache for all sources', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
 
+            var source2 = String(Math.random());
+            var sourceId2 = md5(source2);
+            var sourceDir2 = path.join(cacheDir, sourceId2);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            fs.mkdirSync(sourceDir2);
+            fs.mkdirSync(path.join(sourceDir2, '0.0.2'));
+
+            // Feed the cache
+            resolveCache.versions(source)
+            .then(function () {
+                return resolveCache.versions(source2);
+            })
+            .then(function () {
+                // Create some more
+                fs.mkdirSync(path.join(sourceDir, '0.0.3'));
+                fs.mkdirSync(path.join(sourceDir2, '0.0.4'));
+
+                // Reset cache
+                ResolveCache.clearRuntimeCache();
+            })
+            .then(function () {
+                return resolveCache.versions(source)
+                .then(function (versions) {
+                    expect(versions).to.eql(['0.0.3', '0.0.1']);
+
+                    return resolveCache.versions(source2);
+                })
+                .then(function (versions) {
+                    expect(versions).to.eql(['0.0.4', '0.0.2']);
+
+                    next();
+                });
+            })
+            .done();
+        });
     });
 });

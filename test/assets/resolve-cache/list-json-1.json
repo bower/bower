@@ -2,8 +2,8 @@
   {
     "canonicalDir": "/test/assets/temp-resolve-cache/3668e6529b32a6d3e8931a68474e909d/0.2.0",
     "pkgMeta": {
-      "name": "foo",
-      "version": "0.0.1"
+      "name": "abc",
+      "version": "0.2.0"
     }
   },
   {
@@ -18,6 +18,20 @@
     "pkgMeta": {
       "name": "foo",
       "version": "0.1.0"
+    }
+  },
+  {
+    "canonicalDir": "/test/assets/temp-resolve-cache/3668e6529b32a6d3e8931a68474e909d/0.2.1",
+    "pkgMeta": {
+      "name": "foo",
+      "version": "0.2.1"
+    }
+  },
+  {
+    "canonicalDir": "/test/assets/temp-resolve-cache/77008abea14f06f199c2f481362b48d9/aa",
+    "pkgMeta": {
+      "name": "foo",
+      "_target": "aa"
     }
   },
   {
