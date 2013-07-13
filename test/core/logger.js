@@ -26,7 +26,6 @@ describe('Logger', function () {
             methods.forEach(function (method) {
                 expect(logger).to.have.property(method);
             });
-
         });
     });
 

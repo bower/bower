@@ -36,6 +36,7 @@ describe('PackageRepository', function () {
             }
         });
 
+        // Mock the resolver factory to always return a resolver for the test package
         function resolverFactory(decEndpoint, _config, _logger, _registryClient) {
             expect(_config).to.eql(config);
             expect(_logger).to.be.an(Logger);
@@ -56,7 +57,6 @@ describe('PackageRepository', function () {
             resolverFactoryClearHook();
         };
 
-        // Mock the resolver factory to always return a resolver for the test package
         PackageRepository = proxyquire('../../lib/core/PackageRepository', {
             './resolverFactory': resolverFactory
         });
@@ -71,6 +71,12 @@ describe('PackageRepository', function () {
         // Clear the repository
         packageRepository.clear()
         .then(next.bind(next, null), next);
+    });
+
+    describe('.constructor', function () {
+        it('should pass the config correctly to the registry client, including its cache folder', function () {
+            expect(packageRepository._registryClient._config.cache).to.equal(registryCacheDir);
+        });
     });
 
     describe('.fetch', function () {
