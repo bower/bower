@@ -639,4 +639,36 @@ describe('ResolveCache', function () {
             .done();
         });
     });
+
+    describe('.reset', function () {
+        it('should clear the in-memory cache', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            // Feed the in-memory cache
+            resolveCache.versions(source)
+            .then(function () {
+                // Delete 0.0.1 and create 0.0.2
+                fs.rmdirSync(path.join(sourceDir, '0.0.1'));
+                fs.mkdirSync(path.join(sourceDir, '0.0.2'));
+
+                // Reset cache
+                resolveCache.reset();
+
+                // Get versions
+                return resolveCache.versions(source);
+            })
+            .then(function (versions) {
+                expect(versions).to.eql(['0.0.2']);
+
+                next();
+            })
+            .done();
+        });
+    });
 });
