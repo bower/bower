@@ -15,9 +15,13 @@ describe('ResolveCache', function () {
     var resolveCache;
     var testPackage = path.resolve(__dirname, '../assets/github-test-package');
     var tempPackage = path.resolve(__dirname, '../assets/temp');
-    var cacheDir = path.join(__dirname, '../assets/resolve-cache');
+    var cacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
 
     before(function (next) {
+        // Delete cache folder
+        rimraf.sync(cacheDir);
+
+        // Instantiate resolver cache
         resolveCache = new ResolveCache(mout.object.deepMixIn(defaultConfig, {
             storage: {
                 packages: cacheDir
@@ -29,7 +33,13 @@ describe('ResolveCache', function () {
         .then(next.bind(next, null), next);
     });
 
+    beforeEach(function () {
+        // Reset in memory cache for each test
+        resolveCache.reset();
+    });
+
     after(function () {
+        // Remove cache folder afterwards
         rimraf.sync(cacheDir);
     });
 
@@ -106,7 +116,7 @@ describe('ResolveCache', function () {
             var cachePkgDir = path.join(cacheDir, md5('foo'), '1.0.0-rc.blehhh');
 
             mkdirp.sync(cachePkgDir);
-            fs.writeFile(path.join(cachePkgDir, '_bleh'), 'w00t');
+            fs.writeFileSync(path.join(cachePkgDir, '_bleh'), 'w00t');
 
             resolveCache.store(tempPackage, {
                 name: 'foo',
@@ -348,7 +358,7 @@ describe('ResolveCache', function () {
             fs.mkdirSync(path.join(sourceDir, '0.2.0'));
 
             // Create an invalid package meta
-            fs.writeFile(path.join(sourceDir, '0.2.0', '.bower.json'), 'w00t');
+            fs.writeFileSync(path.join(sourceDir, '0.2.0', '.bower.json'), 'w00t');
 
             resolveCache.retrieve(source, '~0.1.0')
             .spread(function () {
@@ -373,19 +383,19 @@ describe('ResolveCache', function () {
 
             json.version = '0.0.1';
             fs.mkdirSync(path.join(sourceDir, '0.0.1'));
-            fs.writeFile(path.join(sourceDir, '0.0.1', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, '0.0.1', '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.0';
             fs.mkdirSync(path.join(sourceDir, '0.1.0'));
-            fs.writeFile(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.9';
             fs.mkdirSync(path.join(sourceDir, '0.1.9'));
-            fs.writeFile(path.join(sourceDir, '0.1.9', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, '0.1.9', '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.2.0';
             fs.mkdirSync(path.join(sourceDir, '0.2.0'));
-            fs.writeFile(path.join(sourceDir, '0.2.0', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, '0.2.0', '.bower.json'), JSON.stringify(json, null, '  '));
 
             resolveCache.retrieve(source, '~0.1.0')
             .spread(function (canonicalDir, pkgMeta) {
@@ -415,7 +425,7 @@ describe('ResolveCache', function () {
             fs.mkdirSync(sourceDir);
 
             fs.mkdirSync(path.join(sourceDir, '_wildcard'));
-            fs.writeFile(path.join(sourceDir, '_wildcard', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, '_wildcard', '.bower.json'), JSON.stringify(json, null, '  '));
 
             resolveCache.retrieve(source, '*')
             .spread(function (canonicalDir, pkgMeta) {
@@ -437,10 +447,10 @@ describe('ResolveCache', function () {
             fs.mkdirSync(sourceDir);
 
             fs.mkdirSync(path.join(sourceDir, 'some-branch'));
-            fs.writeFile(path.join(sourceDir, 'some-branch', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, 'some-branch', '.bower.json'), JSON.stringify(json, null, '  '));
 
             fs.mkdirSync(path.join(sourceDir, 'other-branch'));
-            fs.writeFile(path.join(sourceDir, 'other-branch', '.bower.json'), JSON.stringify(json, null, '  '));
+            fs.writeFileSync(path.join(sourceDir, 'other-branch', '.bower.json'), JSON.stringify(json, null, '  '));
 
             resolveCache.retrieve(source, 'some-branch')
             .spread(function (canonicalDir, pkgMeta) {
@@ -597,10 +607,15 @@ describe('ResolveCache', function () {
             mkdirp.sync(cacheDir);
         });
 
-        it('should delete the whole cache folder', function (next) {
+        it('should empty the whole cache folder', function (next) {
             resolveCache.clear()
             .then(function () {
-                expect(fs.existsSync(cacheDir)).to.be(false);
+                var files;
+
+                expect(fs.existsSync(cacheDir)).to.be(true);
+
+                files = fs.readdirSync(cacheDir);
+                expect(files.length).to.be(0);
 
                 next();
             })
@@ -623,8 +638,6 @@ describe('ResolveCache', function () {
                 return resolveCache.clear();
             })
             .then(function () {
-                expect(fs.existsSync(cacheDir)).to.be(false);
-
                 // To test against the in-memory cache, we create a folder
                 // manually and request the versions
                 mkdirp.sync(path.join(sourceDir, '0.0.2'));
@@ -641,7 +654,7 @@ describe('ResolveCache', function () {
     });
 
     describe('.reset', function () {
-        it('should clear the in-memory cache', function (next) {
+        it('should erase the in-memory cache', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
@@ -670,5 +683,165 @@ describe('ResolveCache', function () {
             })
             .done();
         });
+    });
+
+    describe('.list', function () {
+        beforeEach(function () {
+            rimraf.sync(cacheDir);
+            mkdirp.sync(cacheDir);
+        });
+
+        it('should resolve to an empty array if the cache is empty', function (next) {
+            resolveCache.list()
+            .then(function (entries) {
+                expect(entries).to.be.an('array');
+                expect(entries.length).to.be(0);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to an ordered array of entries', function (next) {
+            var source = 'list-package-1';
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+
+            var source2 = 'list-package-2';
+            var sourceId2 = md5(source2);
+            var sourceDir2 = path.join(cacheDir, sourceId2);
+
+            var json = {
+                name: 'foo'
+            };
+
+            // Create some versions for different sources
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            json.version = '0.0.1';
+            fs.writeFileSync(path.join(sourceDir, '0.0.1', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            json.version = '0.1.0';
+            fs.writeFileSync(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            delete json.version;
+
+            fs.mkdirSync(path.join(sourceDir, 'foo'));
+            json._target = 'foo';
+            fs.writeFileSync(path.join(sourceDir, 'foo', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            fs.mkdirSync(path.join(sourceDir, 'bar'));
+            json._target = 'bar';
+            fs.writeFileSync(path.join(sourceDir, 'bar', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            delete json._target;
+
+            fs.mkdirSync(sourceDir2);
+            fs.mkdirSync(path.join(sourceDir2, '0.2.0'));
+            json.version = '0.0.1';
+            fs.writeFileSync(path.join(sourceDir2, '0.2.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.list()
+            .then(function (entries) {
+                var expectedJson;
+                var bowerDir = path.join(__dirname, '../..');
+
+                expect(entries).to.be.an('array');
+
+                expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
+                expectedJson = expectedJson.toString();
+
+                // Trim absolute bower path from json
+                mout.object.forOwn(entries, function (entry) {
+                    entry.canonicalDir = entry.canonicalDir.substr(bowerDir.length);
+                });
+
+                json = JSON.stringify(entries, null, '  ');
+                expect(json).to.equal(expectedJson);
+
+                next();
+            })
+            .done();
+        });
+
+        it('should ignore lurking files where dirs are expected', function (next) {
+            var source = 'list-package-1';
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = {
+                name: 'foo'
+            };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+            json.version = '0.0.1';
+            fs.writeFileSync(path.join(sourceDir, '0.0.1', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            // Create lurking files
+            fs.writeFileSync(path.join(cacheDir, 'foo'), 'w00t');
+            fs.writeFileSync(path.join(cacheDir, '.DS_Store'), '');
+            fs.writeFileSync(path.join(sourceDir, 'foo'), 'w00t');
+            fs.writeFileSync(path.join(sourceDir, '.DS_Store'), '');
+
+            // It should not error out
+            resolveCache.list()
+            .then(function (entries) {
+                expect(entries).to.be.an('array');
+                expect(entries.length).to.be(1);
+                expect(entries[0].pkgMeta).to.eql(json);
+
+                // Lurking file should have been removed
+                expect(fs.existsSync(path.join(cacheDir, 'foo'))).to.be(false);
+                expect(fs.existsSync(path.join(cacheDir, '.DS_Store'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, 'foo'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, '.DS_Store'))).to.be(false);
+
+                next();
+            })
+            .done();
+
+        });
+
+        it('should delete entries if failed to read package meta', function (next) {
+            var source = 'list-package-1';
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = {
+                name: 'foo'
+            };
+
+            // Create invalid versions
+            fs.mkdirSync(sourceDir);
+            fs.mkdirSync(path.join(sourceDir, '0.0.1'));
+
+            fs.mkdirSync(path.join(sourceDir, '0.0.2'));
+            fs.writeFileSync(path.join(sourceDir, '0.0.2', '.bower.json'), 'w00t');
+
+            // Create valid version
+            fs.mkdirSync(path.join(sourceDir, '0.0.3'));
+            json.version = '0.0.3';
+            fs.writeFileSync(path.join(sourceDir, '0.0.3', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            // It should not error out
+            resolveCache.list()
+            .then(function (entries) {
+                expect(entries).to.be.an('array');
+                expect(entries.length).to.be(1);
+                expect(entries[0].pkgMeta).to.eql(json);
+
+                // Packages with invalid metas should have been removed
+                expect(fs.existsSync(path.join(sourceDir, '0.0.1'))).to.be(false);
+                expect(fs.existsSync(path.join(sourceDir, '0.0.2'))).to.be(false);
+
+                next();
+            })
+            .done();
+        });
+    });
+
+    describe('#clearRuntimeCache', function () {
+
     });
 });
