@@ -55,10 +55,11 @@
     "grunt": "~0.4.1",
     "grunt-contrib-jshint": "~0.5.4",
     "grunt-execute": "~0.1.4",
+    "grunt-shell": "~0.3.0",
     "mocha": "~1.12.0",
     "nock": "~0.17.5",
-    "grunt-shell": "~0.3.0",
-    "istanbul": "~0.1.42"
+    "istanbul": "~0.1.42",
+    "proxyquire": "~0.4.1"
   },
   "scripts": {
     "test": "grunt test"
