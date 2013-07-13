@@ -389,6 +389,17 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should set registry to true on the decomposed endpoint if fetched from the registry', function (next) {
+        var decEndpoint = { source: 'dejavu' };
+
+        callFactory({ source: 'dejavu' })
+        .then(function () {
+            expect(decEndpoint.registry).to.be(true);
+            next();
+        })
+        .done();
+    });
+
     it('should use the configured shorthand resolver', function (next) {
         callFactory({ source: 'bower/bower' })
         .then(function (resolver) {
