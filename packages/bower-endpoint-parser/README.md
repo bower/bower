@@ -34,7 +34,7 @@ Takes a decomposed endpoint and composes it back into a string.
 var endpointParser = require('bower-endpoint-parser');
 
 endpointParser.compose({ name: '', source: 'jquery', target: '~2.0.0' });
-// jquery=~2.0.0
+// jquery#~2.0.0
 
 endpointParser.compose({ name: 'backbone', source: 'backbone-amd', target: '~1.0.0' });
 // backbone=backbone-amd#~1.0.0
