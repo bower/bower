@@ -121,6 +121,8 @@ describe('GitRemoteResolver', function () {
             })
             .done();
         });
+
+        it.skip('should report progress when it takes too long to clone');
     });
 
     describe('#refs', function () {
