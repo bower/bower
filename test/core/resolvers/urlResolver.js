@@ -540,7 +540,7 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it.skip('should report progress when it takes too long to clone');
+        it.skip('should report progress when it takes too long to download');
 
         describe('content-disposition validation', function () {
             function performTest(header, extraction) {
