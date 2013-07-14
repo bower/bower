@@ -18,7 +18,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "graceful-fs": "~1.2.2"
+    "graceful-fs": "~2.0.0"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
