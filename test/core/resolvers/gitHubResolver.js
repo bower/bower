@@ -3,17 +3,22 @@ var nock = require('nock');
 var fs = require('graceful-fs');
 var expect = require('expect.js');
 var Logger = require('../../../lib/core/Logger');
+var GitRemoteResolver  = require('../../../lib/core/resolvers/GitRemoteResolver');
 var GitHubResolver = require('../../../lib/core/resolvers/GitHubResolver');
 var defaultConfig = require('../../../lib/config');
 
 describe('GitHub', function () {
     var logger;
+    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
 
     before(function () {
         logger = new Logger();
     });
 
     afterEach(function () {
+        // Clean nocks
+        nock.cleanAll();
+
         logger.removeAllListeners();
     });
 
@@ -33,7 +38,7 @@ describe('GitHub', function () {
             .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'));
 
-            resolver = create('git://github.com/IndigoUnited/events-emitter.git');
+            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -43,6 +48,30 @@ describe('GitHub', function () {
                 expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-tar.tar'))).to.be(false);
                 next();
+            })
+            .done();
+        });
+
+        it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function (next) {
+            var resolver = create({ source: 'file://' + testPackage, target: 'b273e321ebc69381be2780668a22e28bec9e2b07' });
+            var originalCheckout = GitRemoteResolver.prototype._checkout;
+            var called;
+
+            GitRemoteResolver.prototype._checkout = function () {
+                called = true;
+                return originalCheckout.apply(this, arguments);
+            };
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(called).to.be(true);
+                next();
+            })
+            .fin(function () {
+                GitRemoteResolver.prototype._checkout = originalCheckout;
             })
             .done();
         });
