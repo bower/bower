@@ -389,6 +389,20 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should error out if the package was not found in the registry', function (next) {
+        callFactory({ source: 'some-package-that-will-never-exist' })
+        .then(function () {
+            throw new Error('Should have failed');
+        }, function (err) {
+            expect(err).to.be.an(Error);
+            expect(err.code).to.equal('ENOTFOUND');
+            expect(err.message).to.contain('some-package-that-will-never-exist');
+
+            next();
+        })
+        .done();
+    });
+
     it('should set registry to true on the decomposed endpoint if fetched from the registry', function (next) {
         var decEndpoint = { source: 'dejavu' };
 
