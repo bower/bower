@@ -27,7 +27,7 @@ endpointParser.decompose('bootstrap=http://twitter.github.io/bootstrap/assets/bo
 
 ### .compose(decEndpoint)
 
-Inverse of `compose()`.   
+Inverse of `decompose()`.   
 Takes a decomposed endpoint and composes it back into a string.
 
 ```js
@@ -65,7 +65,7 @@ For instance, in a `bower.json` like this:
 
 You would call `json2decomposed` like so:
 
-```
+```js
 endpointParser.json2decomposed('jquery', '~1.9.1');
 // { name: 'jquery', source: 'jquery', target: '~1.9.1' }
 
@@ -79,20 +79,22 @@ endpointParser.json2decomposed('bootstrap', 'http://twitter.github.io/bootstrap/
 ### .decomposed2json(decEndpoint)
 
 Inverse of `json2decomposed()`.   
-Takes a decomposed endpoint and composes it to an object.
+Takes a decomposed endpoint and composes it to be saved to `bower.json`.
 
 ```js
 var endpointParser = require('bower-endpoint-parser');
 
-endpointParser.decomposed2json({ name: '', source: 'jquery', target: '~2.0.0' });
+endpointParser.decomposed2json({ name: 'jquery', source: 'jquery', target: '~2.0.0' });
 // { jquery: '~2.0.0' }
 
 endpointParser.decomposed2json({ name: 'backbone', source: 'backbone-amd', target: '~1.0.0' });
 // { backbone: 'backbone-amd#~2.0.0' }
 
 endpointParser.decomposed2json({ name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' });
-// { backbone: 'http://twitter.github.io/bootstrap/assets/bootstrap' }
+// { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' }
 ```
+
+This function throws an exception if the `name` from the decomposed endpoint is empty.
 
 
 ## License
