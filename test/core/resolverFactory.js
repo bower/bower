@@ -434,8 +434,6 @@ describe('resolverFactory', function () {
 
     it.skip('should use config.cwd when resolving relative paths');
 
-    it.skip('should pass offline and force options to the registry lookup');
-
     it('should not swallow constructor errors when instantiating resolvers', function (next) {
         var promise = Q.resolve();
         var endpoints;
@@ -465,6 +463,34 @@ describe('resolverFactory', function () {
     });
 
     describe('.clearRuntimeCache', function () {
-        it.skip('should call every resolver static method that clears the runtime cache');
+        it('should call every resolver static method that clears the runtime cache', function () {
+            var originalMethods = {};
+            var called = [];
+            var error;
+
+            mout.object.forOwn(resolvers, function (ConcreteResolver, key) {
+                originalMethods[key] = ConcreteResolver.clearRuntimeCache;
+                ConcreteResolver.clearRuntimeCache = function () {
+                    called.push(key);
+                    return originalMethods[key].apply(this, arguments);
+                };
+            });
+
+            try {
+                resolverFactory.clearRuntimeCache();
+            } catch (e) {
+                error = e;
+            } finally {
+                mout.object.forOwn(resolvers, function (ConcreteResolver, key) {
+                    ConcreteResolver.clearRuntimeCache = originalMethods[key];
+                });
+            }
+
+            if (error) {
+                throw error;
+            }
+
+            expect(called.sort()).to.eql(Object.keys(resolvers).sort());
+        });
     });
 });
