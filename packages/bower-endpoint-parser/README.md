@@ -1,4 +1,4 @@
-# bower-endpoint-parser [![Build Status](https://secure.travis-ci.org/bower/endpoint-parser.png?branch=master)](http://travis-ci.org/bower/endpoint-parser)
+# endpoint-parser [![Build Status](https://secure.travis-ci.org/bower/endpoint-parser.png?branch=master)](http://travis-ci.org/bower/endpoint-parser)
 
 Little module that helps with endpoints parsing.
 
