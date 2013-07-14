@@ -39,7 +39,7 @@
     "promptly": "~0.2.0",
     "q": "~0.9.2",
     "request": "~2.21.0",
-    "request-progress": "~0.1.0",
+    "request-progress": "~0.2.0",
     "rimraf": "~2.1.4",
     "semver": "~2.0.8",
     "stringify-object": "~0.1.4",
