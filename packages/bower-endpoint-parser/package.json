@@ -22,6 +22,6 @@
     "mocha": "~1.12.0"
   },
   "scripts": {
-    "test": "npm test"
+    "test": "mocha -R spec"
   }
 }
