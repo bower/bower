@@ -19,7 +19,7 @@ Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
 
 ```
-npm install -g bower
+npm install -g -f bower-canary
 ```
 
 
