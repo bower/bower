@@ -41,7 +41,7 @@ function json2decomposed(key, value) {
 
     // If # was found, the source was specified
     if (split.length > 1) {
-        endpoint += split[0] + '#' + split[1];
+        endpoint += (split[0] || key) + '#' + split[1];
     // If value has a /, it's probably a source
     } else if (value.indexOf('/') !== -1) {
         endpoint += value + '#*';
@@ -65,12 +65,17 @@ function decomposed2json(decEndpoint) {
         throw error;
     }
 
+    // Add source only if different than the name
     if  (decEndpoint.source !== decEndpoint.name) {
-        value += decEndpoint.source + '#';
+        value += decEndpoint.source;
     }
 
-    if (!isWildcard(decEndpoint.target)) {
-        value += decEndpoint.target;
+    // If value is empty, we append the target always
+    if (!value) {
+        value += isWildcard(decEndpoint.target) ? '*' : decEndpoint.target;
+    // Otherwise append only if not a wildcard
+    } else if (!isWildcard(decEndpoint.target)) {
+        value += '#' + decEndpoint.target;
     }
 
     ret[key] = value;
