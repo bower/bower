@@ -1,0 +1,13 @@
+/node_modules
+/npm-debug.log
+
+/test/assets/github-test-package
+/test/assets/github-test-package-copy
+/test/assets/temp
+/test/assets/temp2
+/test/assets/temp-resolve-cache
+
+/bower.json
+/bower_components
+
+/test/reports/
