@@ -57,8 +57,9 @@ describe('endpoint-parser', function () {
                 backbone: 'backbone-amd#~1.0.0',
                 backbone2: 'backbone=backbone-amd#~1.0.0',
                 bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap',
-                bootstrap2: 'http://twitter.github.io/bootstrap/assets/bootstrap#*'
-
+                bootstrap2: 'http://twitter.github.io/bootstrap/assets/bootstrap#*',
+                ssh: 'git@example.com',
+                git: 'git://example.com'
             };
             var expected = [
                 { name: 'jquery', source: 'jquery', target: '~1.9.1' },
@@ -68,7 +69,9 @@ describe('endpoint-parser', function () {
                 { name: 'backbone', source: 'backbone-amd', target: '~1.0.0' },
                 { name: 'backbone2', source: 'backbone=backbone-amd', target: '~1.0.0' },
                 { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
-                { name: 'bootstrap2', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' }
+                { name: 'bootstrap2', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
+                { name: 'ssh', source: 'git@example.com', target: '*' },
+                { name: 'git', source: 'git://example.com', target: '*' }
             ];
             var x = 0;
 
@@ -90,7 +93,9 @@ describe('endpoint-parser', function () {
                 { name: 'backbone', source: 'backbone-amd', target: '~1.0.0' },
                 { name: 'backbone', source: 'backbone=backbone-amd', target: '~1.0.0' },
                 { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '' },
-                { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' }
+                { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
+                { name: 'ssh', source: 'git@example.com', target: '*' },
+                { name: 'git', source: 'git://example.com', target: '*' }
             ];
             var expected = [
                 { jquery: '~1.9.1' },
@@ -101,7 +106,9 @@ describe('endpoint-parser', function () {
                 { backbone: 'backbone-amd#~1.0.0' },
                 { backbone : 'backbone=backbone-amd#~1.0.0' },
                 { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
-                { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' }
+                { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
+                { ssh: 'git@example.com' },
+                { git: 'git://example.com' }
             ];
             var x = 0;
 

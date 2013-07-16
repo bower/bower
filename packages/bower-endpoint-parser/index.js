@@ -42,8 +42,8 @@ function json2decomposed(key, value) {
     // If # was found, the source was specified
     if (split.length > 1) {
         endpoint += (split[0] || key) + '#' + split[1];
-    // If value has a /, it's probably a source
-    } else if (value.indexOf('/') !== -1) {
+    // Check if value looks like a source
+    } else if (isSource(value)) {
         endpoint += value + '#*';
     // Otherwise use the key as the source
     } else {
@@ -85,6 +85,10 @@ function decomposed2json(decEndpoint) {
 
 function isWildcard(target) {
     return !target || target === '*' || target === 'latest';
+}
+
+function isSource(value) {
+    return value.indexOf('/') !== -1 || value.indexOf('@') !== -1;
 }
 
 module.exports.decompose = decompose;
