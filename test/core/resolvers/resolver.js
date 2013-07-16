@@ -736,7 +736,7 @@ describe('Resolver', function () {
 
     describe('#isTargetable', function () {
         it('should return true by default', function () {
-            expect(Resolver.isTargetable).to.be(true);
+            expect(Resolver.isTargetable()).to.be(true);
         });
     });
 

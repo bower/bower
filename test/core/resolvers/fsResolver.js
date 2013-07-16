@@ -307,7 +307,7 @@ describe('FsResolver', function () {
 
     describe('#isTargetable', function () {
         it('should return false', function () {
-            expect(FsResolver.isTargetable).to.be(false);
+            expect(FsResolver.isTargetable()).to.be(false);
         });
     });
 });
