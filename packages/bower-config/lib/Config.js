@@ -5,6 +5,7 @@ var rc = require('./util/rc');
 var paths = require('./util/paths');
 
 // Guess proxy defined in the env
+/*jshint camelcase: false*/
 var proxy = process.env.HTTP_PROXY
     || process.env.http_proxy
     || null;
@@ -14,6 +15,7 @@ var httpsProxy = process.env.HTTPS_PROXY
     || process.env.HTTP_PROXY
     || process.env.http_proxy
     || null;
+/*jshint camelcase: true*/
 
 //-------------
 
@@ -33,6 +35,7 @@ Config.prototype.load = function () {
         'tmp': os.tmpdir ? os.tmpdir() : os.tmpDir(),
         'proxy': proxy,
         'https-proxy': httpsProxy,
+        'timeout': 60000,
         'ca': null,
         'strict-ssl': true,
         'user-agent': 'node/' + process.version + ' ' + process.platform + ' ' + process.arch,
@@ -64,21 +67,21 @@ Config.prototype.load = function () {
 };
 
 Config.prototype.get = function (key) {
-
+    // TODO
 };
 
 Config.prototype.set = function (key, value) {
-
+    // TODO
     return this;
 };
 
 Config.prototype.del = function (key, value) {
-
+    // TODO
     return this;
 };
 
 Config.prototype.save = function (where, callback) {
-
+    // TODO
 };
 
 Config.prototype.toObject = function () {
