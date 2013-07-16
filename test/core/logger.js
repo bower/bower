@@ -139,10 +139,8 @@ describe('Logger', function () {
 
             logger.log('warn', 'foo', 'bar', data);
 
-            setTimeout(function () {
-                expect(called).to.be(true);
-                next();
-            }, 20);
+            expect(called).to.be(true);
+            next();
         });
 
         it('should call the interceptors by order before emitting the event', function (next) {
@@ -157,10 +155,8 @@ describe('Logger', function () {
 
             logger.log('warn', 'foo', 'bar');
 
-            setTimeout(function () {
-                expect(called).to.eql([1, 2]);
-                next();
-            }, 20);
+            expect(called).to.eql([1, 2]);
+            next();
         });
 
         it('should call the interceptors along the chain', function (next) {
@@ -175,7 +171,7 @@ describe('Logger', function () {
             });
 
             childLogger.on('log', function () {
-                called.push(3);
+                called.push(2);
             });
             logger.on('log', function () {
                 called.push(4);
@@ -183,10 +179,8 @@ describe('Logger', function () {
 
             childLogger.log('warn', 'foo', 'bar');
 
-            setTimeout(function () {
-                expect(called).to.eql([1, 2, 3, 4]);
-                next();
-            }, 20);
+            expect(called).to.eql([1, 2, 3, 4]);
+            next();
         });
     });
 
@@ -217,10 +211,8 @@ describe('Logger', function () {
 
             logger.log('warn', 'foo', 'bar', data);
 
-            setTimeout(function () {
-                expect(piped).to.be(true);
-                next();
-            }, 20);
+            expect(piped).to.be(true);
+            next();
         });
     });
 
@@ -263,10 +255,8 @@ describe('Logger', function () {
             });
 
             childLogger.log('warn', 'foo', 'bar', data);
-            setTimeout(function () {
-                expect(piped).to.eql([1, 2]);
-                next();
-            }, 20);
+            expect(piped).to.eql([1, 2]);
+            next();
         });
     });
 });
