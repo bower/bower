@@ -125,7 +125,7 @@ describe('RegistryClient', function () {
                 //this.client.clearCache();
             });
 
-            it('should fill cache', function (done) {
+            it('should fill cache', function (next) {
                 var self = this;
 
                 // fill cache
@@ -136,13 +136,13 @@ describe('RegistryClient', function () {
                     // check for cache existance
                     fs.exists(self.path, function (exists) {
                         expect(exists).to.be.true;
-                        done();
+                        next();
                     });
                 });
 
             });
 
-            it('should read results from cache', function (done) {
+            it('should read results from cache', function (next) {
                 var self = this;
 
                 self.client.search(self.pkg, function (err, results) {
@@ -151,7 +151,7 @@ describe('RegistryClient', function () {
 
                     fs.exists(self.path, function (exists) {
                         expect(exists).to.be.true;
-                        done();
+                        next();
                     });
                 });
             });
@@ -213,30 +213,30 @@ describe('RegistryClient', function () {
             this.pkgUrl = 'git://github.com/test-ba/test-ba.git';
         });
 
-        it('should not return an error', function (done) {
+        it('should not return an error', function (next) {
             this.registry.register(this.pkg, this.pkgUrl, function (err) {
                 expect(err).to.be.null;
-                done();
+                next();
             });
         });
 
-        it('should return entry name', function (done) {
+        it('should return entry name', function (next) {
             var self = this;
 
             this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
                 expect(err).to.be.null;
                 expect(entry.name).to.eql(self.pkg);
-                done();
+                next();
             });
         });
 
-        it('should return entry url', function (done) {
+        it('should return entry url', function (next) {
             var self = this;
 
             this.registry.register(this.pkg, this.pkgUrl, function (err, entry) {
                 expect(err).to.be.null;
                 expect(entry.url).to.eql(self.pkgUrl);
-                done();
+                next();
             });
         });
 
@@ -266,34 +266,34 @@ describe('RegistryClient', function () {
             this.pkgUrl = 'git://github.com/components/jquery.git';
         });
 
-        it('should not return an error', function (done) {
+        it('should not return an error', function (next) {
             this.registry.search(this.pkg, function (err) {
                 expect(err).to.be.null;
-                done();
+                next();
             });
         });
 
-        it('should return entry name', function (done) {
+        it('should return entry name', function (next) {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
                 results.forEach(function (entry) {
                     if (entry.name === self.pkg) {
                         expect(entry.name).to.eql(self.pkg);
-                        done();
+                        next();
                     }
                 });
             });
         });
 
-        it('should return entry url', function (done) {
+        it('should return entry url', function (next) {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
                 results.forEach(function (entry) {
                     if (entry.name === self.pkg) {
                         expect(entry.url).to.eql(self.pkgUrl);
-                        done();
+                        next();
                     }
                 });
             });
