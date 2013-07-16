@@ -167,7 +167,7 @@ describe('Logger', function () {
                 called.push(1);
             });
             logger.intercept(function () {
-                called.push(2);
+                called.push(3);
             });
 
             childLogger.on('log', function () {
