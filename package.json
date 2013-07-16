@@ -22,6 +22,7 @@
     "archy": "0.0.2",
     "abbrev": "~1.0.4",
     "bower-config": "~0.1.0",
+    "bower-endpoint-parser": "~0.1.0",
     "bower-json": "~0.1.0",
     "bower-registry-client": "~0.1.0",
     "chmodr": "~0.1.0",
