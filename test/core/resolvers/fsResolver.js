@@ -304,4 +304,10 @@ describe('FsResolver', function () {
             .done();
         });
     });
+
+    describe('#isTargetable', function () {
+        it('should return false', function () {
+            expect(FsResolver.isTargetable).to.be(false);
+        });
+    });
 });

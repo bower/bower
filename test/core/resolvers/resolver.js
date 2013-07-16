@@ -733,4 +733,23 @@ describe('Resolver', function () {
             .done();
         });
     });
+
+    describe('#isTargetable', function () {
+        it('should return true by default', function () {
+            expect(Resolver.isTargetable).to.be(true);
+        });
+    });
+
+    describe('#versions', function () {
+        it('should resolve to an array by default', function (next) {
+            Resolver.versions()
+            .then(function (versions) {
+                expect(versions).to.be.an('array');
+                expect(versions.length).to.be(0);
+
+                next();
+            })
+            .done();
+        });
+    });
 });

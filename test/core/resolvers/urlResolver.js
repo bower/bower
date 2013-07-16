@@ -648,4 +648,10 @@ describe('UrlResolver', function () {
             });
         });
     });
+
+    describe('#isTargetable', function () {
+        it('should return false', function () {
+            expect(UrlResolver.isTargetable).to.be(false);
+        });
+    });
 });
