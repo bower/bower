@@ -1,4 +1,4 @@
-# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
+# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=rewrite)](http://travis-ci.org/bower/bower)
 
 Bower is a package manager for the web. It offers a generic, unopinionated
 solution to the problem of **front-end package management**, while exposing the
@@ -19,7 +19,7 @@ Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
 
 ```
-npm install -g bower
+npm install -g -f bower-canary
 ```
 
 
@@ -37,8 +37,10 @@ Bower offers several ways to install packages:
 bower install
 # Using a local or remote package
 bower install <package>
-# Using a specific Git-tagged version from a remote package
+# Using a specific version of a package
 bower install <package>#<version>
+# Using a different name and a specific version of a package
+bower install <name>=<package>#<version>
 ```
 
 Where `<package>` can be any one of the following:
@@ -46,18 +48,17 @@ Where `<package>` can be any one of the following:
 * A name that maps to a package registered with Bower, e.g, `jquery`. ‡
 * A remote Git endpoint, e.g., `git://github.com/someone/some-package.git`. Can be
   public or private. ‡
-* A local Git endpoint, i.e., a folder that's a Git repository. ‡
+* A local endpoint, i.e., a folder that's a Git repository. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. It's contents will be
   extracted.
 
-‡ These types of `<package>` make Git tags available. You can specify a
-[semver](http://semver.org/) tag to fetch a specific release, and lock the
-package to that version.
+‡ These types of `<package>` might have versions available. You can specify a
+[semver](http://semver.org/) compatible version to fetch a specific release, and lock the
+package to that version. You can also use ranges to specify a range of versions.
 
 All package contents are installed in the `bower_components` directory by default.
-You should **never** directly modify the contents of this directory as any changes
-can and probably will get removed.
+You should **never** directly modify the contents of this directory.
 
 Using `bower list` will show all the packages that are installed locally.
 
@@ -125,56 +126,12 @@ bower uninstall <package-name>
 
 Bower can be configured using JSON in a `.bowerrc` file.
 
-Global configuration is handled by creating a `.bowerrc` in your home directory
-(i.e., `~/.bowerrc`).  Local configuration is handled by creating a `.bowerrc`
-in your project's directory, allowing you to version a project-specific Bower
-configuration with the rest of your code base.
-
-Bower will combine the local and global configurations (with local settings
-taking precedence).
-
-The `.bowerrc` defines several options:
-
-* `directory`: Set the default directory to install packaged components into.
-* `endpoint`: Set a custom registry endpoint.
-* `json`: Set the default JSON file for Bower to use when resolving dependencies.
-* `searchpath`: An array of additional URLs pointing to read-only Bower registries.
-* `shorthand_resolver`: Define a custom template for shorthand package names.
-
-```json
-{
-  "directory": "bower_components",
-  "endpoint": "https://bower.mycompany.com",
-  "json": "bower.json",
-  "searchpath": [
-    "https://bower.herokuapp.com"
-  ],
-  "shorthand_resolver": "git://example.com/{{{ organization }}}/{{{ package }}}.git"
-}
-```
-
-The `searchpath` array is useful if your organization wishes to maintain a
-private registry of packages while also taking advantage of public Bower
-registries. If a package is not found at your private endpoint, Bower will
-consult the registries specified in the `searchpath` array.
-
-The `shorthand_resolver` key provides support for defining a custom template
-which Bower uses when constructing a URL for a given shorthand. For example, if
-a shorthand of `twitter/flight` or `twitter/flight#v1.0.0` is specified in the
-package manifest, the following data can be referenced from within the
-`.bowerrc` as part of the `shorthand_resolver` template:
-
-* `endpoint`: `twitter/flight`
-* `organization`: `twitter`
-* `package`: `flight`
-
-**N.B.** To run your own Bower Endpoint for custom packages that are behind a
-firewall, you can use a simple implementation of the [Bower Registry](https://github.com/bower/registry).
+The current spec can be read [here](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/edit#heading=h.4pzytc1f9j8k) in the `Configuration` section.
 
 
 ## Defining a package
 
-You must create a JSON file -- `bower.json` by default -- in your project's
+You must create a `bower.json` in your project's
 root, and specify all of its dependencies. This is similar to Node's
 `package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's
 dependencies.
@@ -223,9 +180,7 @@ The `bower.json` defines several options:
 Bower also makes available a source mapping. This can be used by build tools to
 easily consume Bower packages.
 
-If you pass the `--map` option to Bower's `list` command, it will generate JSON
-with dependency objects. Alternatively, you can pass the `--paths` option to
-the `list` command to get a simple path-to-name mapping:
+If you pass the `--paths` option to Bower's `list` command, you will get a simple path-to-name mapping:
 
 ```json
 {
@@ -234,6 +189,9 @@ the `list` command to get a simple path-to-name mapping:
   "underscore": "bower_components/underscore/index.js"
 }
 ```
+
+Alternatively, every command supports the `--json` option that makes bower output JSON.   
+Command result is outputted to `stdout` and error/logs to `stderr`.
 
 
 ## Programmatic API
@@ -259,20 +217,16 @@ bower.commands
   });
 ```
 
-Commands emit four types of events: `data`, `end`, `result`, and `error`.
+Commands emit three types of events: `log`, `end`, and `error`.
 
-`error` will only be emitted if something goes wrong. Not all commands emit all
-events; for a detailed look, check out the code in `lib/commands`.
+`log` is a emitted to report the progress of the command.
 
-`data` is typically a colorized string, ready to show to an end user. `search`
-and `lookup` emit `packages` and `package`, respectively. Those events contain
-a JSON representation of the result of the command.
+`error` will only be emitted if something goes wrong.
+
+` end` is emitted when the command successfully ends.
 
 For a better of idea how this works, you may want to check out [our bin
-file](https://github.com/bower/bower/blob/master/bin/bower).
-
-For the install command, there is an additional `package` event that is emitted
-for each installed/uninstalled package.
+file](https://github.com/bower/bower/blob/rewrite/bin/bower).
 
 
 ## Completion (experimental)
@@ -343,6 +297,7 @@ Thanks for assistance and contributions:
 * [@josh](https://github.com/josh)
 * [@jrburke](https://github.com/jrburke)
 * [@marcelombc](https://github.com/marcelombc)
+* [@marcooliveira](https://github.com/marcooliveira)
 * [@mklabs](https://github.com/mklabs)
 * [@paulirish](https://github.com/paulirish)
 * [@richo](https://github.com/richo)
@@ -350,6 +305,7 @@ Thanks for assistance and contributions:
 * [@sindresorhus](https://github.com/sindresorhus)
 * [@SlexAxton](https://github.com/SlexAxton)
 * [@sstephenson](https://github.com/sstephenson)
+* [@svnlto](https://github.com/svnlto)
 * [@tomdale](https://github.com/tomdale)
 * [@uzquiano](https://github.com/uzquiano)
 * [@visionmedia](https://github.com/visionmedia)

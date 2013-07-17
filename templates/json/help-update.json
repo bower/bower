@@ -1,0 +1,19 @@
+{
+    "command": "update",
+    "description": "Updates installed packages to their newest version according to bower.json.",
+    "usage": [
+        "update <name> [<name> ..] [<options>]"
+    ],
+    "options": [
+        {
+            "shorthand":   "-h",
+            "flag":        "--help",
+            "description": "Show this help message"
+        },
+        {
+            "shorthand":   "-p",
+            "flag":        "--production",
+            "description": "Do not install project devDependencies"
+        }
+    ]
+}

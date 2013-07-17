@@ -9,7 +9,7 @@
         "beforeEach"
     ],
 
-    "indent": 2,
+    "indent": 4,
     "node": true,
     "devel": true,
 
@@ -23,16 +23,17 @@
     "noarg": true,
     "noempty": false,
     "nonew": true,
-    "plusplus": true,
+    "plusplus": false,
     "regexp": false,
     "undef": true,
     "unused": true,
     "quotmark": "single",
     "strict": false,
     "trailing": true,
+    "camelcase": true,
 
     "asi": false,
-    "boss": false,
+    "boss": true,
     "debug": false,
     "eqnull": true,
     "es5": false,
@@ -57,6 +58,5 @@
     "validthis": false,
 
     "nomen": false,
-    "onevar": false,
     "white": true
 }
