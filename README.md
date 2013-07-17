@@ -19,7 +19,7 @@ Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
 
 ```
-npm install -g -f bower-canary
+npm install -g bower
 ```
 
 
@@ -126,17 +126,22 @@ bower uninstall <package-name>
 
 Bower can be configured using JSON in a `.bowerrc` file.
 
-The current spec can be read [here](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/edit#heading=h.4pzytc1f9j8k) in the `Configuration` section.
+The current spec can be read
+[here](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/edit#heading=h.4pzytc1f9j8k)
+in the `Configuration` section.
 
 
 ## Defining a package
 
-You must create a `bower.json` in your project's
-root, and specify all of its dependencies. This is similar to Node's
-`package.json`, or Ruby's `Gemfile`, and is useful for locking down a project's
-dependencies.
+You must create a `bower.json` in your project's root, and specify all of its
+dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`,
+and is useful for locking down a project's dependencies.
 
-*NOTE:* In versions of Bower before 0.9.0 the package metadata file was called `component.json` rather than `bower.json`. This has changed to avoid a name clash with another tool. You can still use `component.json` for now but it is deprecated and the automatic fallback is likely to be removed in an upcoming release.
+*NOTE:* In versions of Bower before 0.9.0 the package metadata file was called
+`component.json` rather than `bower.json`. This has changed to avoid a name
+clash with another tool. You can still use `component.json` for now but it is
+deprecated and the automatic fallback is likely to be removed in an upcoming
+release.
 
 You can interactively create a `bower.json` with the following command:
 
@@ -180,7 +185,8 @@ The `bower.json` defines several options:
 Bower also makes available a source mapping. This can be used by build tools to
 easily consume Bower packages.
 
-If you pass the `--paths` option to Bower's `list` command, you will get a simple path-to-name mapping:
+If you pass the `--paths` option to Bower's `list` command, you will get a
+simple path-to-name mapping:
 
 ```json
 {
@@ -190,8 +196,9 @@ If you pass the `--paths` option to Bower's `list` command, you will get a simpl
 }
 ```
 
-Alternatively, every command supports the `--json` option that makes bower output JSON.   
-Command result is outputted to `stdout` and error/logs to `stderr`.
+Alternatively, every command supports the `--json` option that makes bower
+output JSON. Command result is outputted to `stdout` and error/logs to
+`stderr`.
 
 
 ## Programmatic API
@@ -219,11 +226,9 @@ bower.commands
 
 Commands emit three types of events: `log`, `end`, and `error`.
 
-`log` is a emitted to report the progress of the command.
-
-`error` will only be emitted if something goes wrong.
-
-` end` is emitted when the command successfully ends.
+* `log` is a emitted to report the progress of the command.
+* `error` will only be emitted if something goes wrong.
+* `end` is emitted when the command successfully ends.
 
 For a better of idea how this works, you may want to check out [our bin
 file](https://github.com/bower/bower/blob/rewrite/bin/bower).
@@ -284,34 +289,35 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 
 Thanks for assistance and contributions:
 
-* [@addyosmani](https://github.com/addyosmani)
-* [@angus-c](https://github.com/angus-c)
-* [@borismus](https://github.com/borismus)
-* [@carsonmcdonald](https://github/@carsonmcdonald)
-* [@chriseppstein](https://github.com/chriseppstein)
-* [@danwrong](https://github.com/danwrong)
-* [@davidmaxwaterman](https://github.com/davidmaxwaterman)
-* [@desandro](https://github.com/desandro)
-* [@hemanth](https://github.com/hemanth)
-* [@isaacs](https://github.com/isaacs)
-* [@josh](https://github.com/josh)
-* [@jrburke](https://github.com/jrburke)
-* [@marcelombc](https://github.com/marcelombc)
-* [@marcooliveira](https://github.com/marcooliveira)
-* [@mklabs](https://github.com/mklabs)
-* [@paulirish](https://github.com/paulirish)
-* [@richo](https://github.com/richo)
-* [@rvagg](https://github.com/rvagg)
-* [@sindresorhus](https://github.com/sindresorhus)
-* [@SlexAxton](https://github.com/SlexAxton)
-* [@sstephenson](https://github.com/sstephenson)
-* [@svnlto](https://github.com/svnlto)
-* [@tomdale](https://github.com/tomdale)
-* [@uzquiano](https://github.com/uzquiano)
-* [@visionmedia](https://github.com/visionmedia)
-* [@wagenet](https://github.com/wagenet)
-* [@wibblymat](https://github.com/wibblymat)
-* [@wycats](https://github.com/wycats)
+[@addyosmani](https://github.com/addyosmani),
+[@angus-c](https://github.com/angus-c),
+[@borismus](https://github.com/borismus),
+[@carsonmcdonald](https://github/@carsonmcdonald),
+[@chriseppstein](https://github.com/chriseppstein),
+[@danwrong](https://github.com/danwrong),
+[@davidmaxwaterman](https://github.com/davidmaxwaterman),
+[@desandro](https://github.com/desandro),
+[@hemanth](https://github.com/hemanth),
+[@isaacs](https://github.com/isaacs),
+[@josh](https://github.com/josh),
+[@jrburke](https://github.com/jrburke),
+[@marcelombc](https://github.com/marcelombc),
+[@marcooliveira](https://github.com/marcooliveira),
+[@mklabs](https://github.com/mklabs),
+[@necolas](https://github.com/necolas),
+[@paulirish](https://github.com/paulirish),
+[@richo](https://github.com/richo),
+[@rvagg](https://github.com/rvagg),
+[@sindresorhus](https://github.com/sindresorhus),
+[@SlexAxton](https://github.com/SlexAxton),
+[@sstephenson](https://github.com/sstephenson),
+[@svnlto](https://github.com/svnlto),
+[@tomdale](https://github.com/tomdale),
+[@uzquiano](https://github.com/uzquiano),
+[@visionmedia](https://github.com/visionmedia),
+[@wagenet](https://github.com/wagenet),
+[@wibblymat](https://github.com/wibblymat),
+[@wycats](https://github.com/wycats)
 
 
 ## License
