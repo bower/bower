@@ -302,6 +302,9 @@ describe('resolverFactory', function () {
         // priority against shorthands
         endpoints['test/assets'] = path.resolve(process.cwd() + '/test/assets');
 
+        // Test files with multiple dots (PR #474)
+        endpoints['test/assets'] = path.resolve(process.cwd() + '/test/assets/file.with.multiple.dots');
+
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
             promise = promise.then(function () {
