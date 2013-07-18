@@ -53,7 +53,7 @@ For instance, in a `bower.json` like this:
 
 ```js
 {
-    name: "foo",
+    "name": "foo",
     "version": "0.1.0",
     "dependencies": {
         "jquery": "~1.9.1",
