@@ -278,6 +278,7 @@ describe('resolverFactory', function () {
         tempSource = path.resolve(__dirname, '../assets/tmp');
         mkdirp.sync(tempSource);
         fs.writeFileSync(path.join(tempSource, '.git'), 'foo');
+        fs.writeFileSync(path.join(tempSource, 'file.with.multiple.dots'), 'foo');
 
         endpoints = {};
 
@@ -300,10 +301,11 @@ describe('resolverFactory', function () {
 
         // Relative with just one slash, to test fs resolution
         // priority against shorthands
-        endpoints['test/assets'] = path.resolve(process.cwd() + '/test/assets');
+        endpoints['test/assets'] = path.join(__dirname, '../assets');
 
         // Test files with multiple dots (PR #474)
-        endpoints['test/assets'] = path.resolve(process.cwd() + '/test/assets/file.with.multiple.dots');
+        temp = path.join(tempSource, 'file.with.multiple.dots');
+        endpoints[temp] = temp;
 
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
@@ -311,6 +313,7 @@ describe('resolverFactory', function () {
                 return callFactory({ source: key });
             })
             .then(function (resolver) {
+                expect(resolver.getSource()).to.equal(value);
                 expect(resolver).to.be.a(resolvers.Fs);
                 expect(resolver.getTarget()).to.equal('*');
             });
@@ -323,6 +326,7 @@ describe('resolverFactory', function () {
                 expect(resolver).to.be.a(resolvers.Fs);
                 expect(resolver.getName()).to.equal('foo');
                 expect(resolver.getTarget()).to.equal('*');
+                expect(resolver.getSource()).to.equal(value);
             });
         });
 
@@ -348,6 +352,7 @@ describe('resolverFactory', function () {
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Url);
+                expect(resolver.getSource()).to.equal(source);
             });
 
             // Test with name
@@ -356,6 +361,8 @@ describe('resolverFactory', function () {
             })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Url);
+                expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getSource()).to.equal(source);
             });
         });
 
@@ -372,6 +379,7 @@ describe('resolverFactory', function () {
             expect(resolver.getTarget()).to.equal('*');
         })
         .then(function () {
+            // Test with name
             return callFactory({ source: 'dejavu', name: 'foo' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.GitRemote);
@@ -381,6 +389,7 @@ describe('resolverFactory', function () {
             });
         })
         .then(function () {
+            // Test with target
             return callFactory({ source: 'dejavu', target: '~2.0.0' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.GitRemote);
