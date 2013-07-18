@@ -1,6 +1,6 @@
 {
   "name": "bower-canary",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-rc.1",
   "description": "The browser package manager.",
   "author": "Twitter",
   "licenses": [
