@@ -60,6 +60,10 @@ package to that version. You can also use ranges to specify a range of versions.
 All package contents are installed in the `bower_components` directory by default.
 You should **never** directly modify the contents of this directory.
 
+Given a Git endpoint, Bower is capable of reading tags within the repository and mapping
+the final install directory accordingly.  This may be  helpful in resolving naming confusion
+which may arise from installing from other resource types.
+
 Using `bower list` will show all the packages that are installed locally.
 
 **N.B.** If you aren't authoring a package that is intended to be consumed by
