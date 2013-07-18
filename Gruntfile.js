@@ -8,7 +8,8 @@ module.exports = function (grunt) {
         },
         simplemocha: {
             options: {
-                reporter: 'spec'
+                reporter: 'spec',
+                timeout: '5000'
             },
             full: { src: ['test/test.js'] },
             short: {
