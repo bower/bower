@@ -39,7 +39,6 @@ Config.prototype.load = function () {
         'ca': null,
         'strict-ssl': true,
         'user-agent': 'node/' + process.version + ' ' + process.platform + ' ' + process.arch,
-        'git': 'git',
         'color': true,
         'interactive': false,
         'storage': {
