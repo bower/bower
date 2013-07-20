@@ -15,27 +15,27 @@ Alias to `.log('error', id. message, data);
 Alias to `.log('conflict', id. message, data);
 
 
-#### .warn(id, message, data)
+### .warn(id, message, data)
 
 Alias to `.log('warn', id. message, data);
 
 
-#### .action(id, message, data)
+### .action(id, message, data)
 
 Alias to `.log('action', id. message, data);
 
 
-#### .info(id, message, data)
+### .info(id, message, data)
 
 Alias to `.log('info', id. message, data);
 
 
-#### .debug(id, message, data)
+### .debug(id, message, data)
 
 Alias to `.log('debug', id. message, data);
 
 
-#### .log(level, id, message, data)
+### .log(level, id, message, data)
 
 Emits a `log` event, with an object like so:
 
@@ -51,21 +51,28 @@ logger.log('warn', 'foo', 'bar', { dog: 'loves cat' })
 }
 ```
 
-#### .pipe(logger)
+
+### .pipe(logger)
 
 Pipes all logger events to another logger.   
 Basically all events emitted with `.emit()` will get piped.
 
 
-#### .geminate()
+### .geminate()
 
 Creates a new logger that pipes events to the parent logger.   
 Alias for `(new Logger()).pipe(logger)`.
 
 
-#### .intercept(fn)
+### .intercept(fn)
 
 Intercepts `log` events, calling `fn` before listeners of the instance.
+
+
+### #LEVELS
+
+A static property that contains an object where keys are the recognized log levels and values their importance.   
+The higher the importance, the more important the level is.
 
 
 ## License
