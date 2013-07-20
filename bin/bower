@@ -4,10 +4,10 @@ var path = require('path');
 var tty = require('tty');
 var mout = require('mout');
 var updateNotifier = require('update-notifier');
+var Logger = require('bower-logger');
 var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
-var Logger = require('../lib/core/Logger');
 
 // --------
 
