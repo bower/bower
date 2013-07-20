@@ -19,8 +19,7 @@ function list(callback) {
         return callback(null, []);
     }
 
-    // Lookup package in series in each registry
-    // endpoint until we got the data
+    // List packages in series in each registry
     async.doUntil(function (next) {
         var remote = url.parse(registry[index]);
         var listCache = that._listCache[remote.host];
@@ -34,7 +33,7 @@ function list(callback) {
 
                 // Add each result
                 results.forEach(function (result) {
-                    addResult(data, result);
+                    addResult.call(that, data, result);
                 });
 
                 next();
@@ -42,7 +41,7 @@ function list(callback) {
         }
 
         // Otherwise make a request to always obtain fresh data
-        doRequest(index, that._config, function (err, results) {
+        doRequest.call(that, index, function (err, results) {
             if (err || !results) {
                 return next(err);
             }
@@ -56,7 +55,7 @@ function list(callback) {
             listCache.set('list', results, getMaxAge(), next);
         });
     }, function () {
-        // Until the data is unknown or there's still registries to test
+        // Until there's still registries to test
         return index++ < total;
     }, function (err) {
         // Clear runtime cache, keeping the persistent data
@@ -82,20 +81,22 @@ function addResult(accumulated, result) {
     }
 }
 
-function doRequest(index, config, callback) {
-    var requestUrl = config.registry.search[index] + '/packages';
+function doRequest(index, callback) {
+    var requestUrl = this._config.registry.search[index] + '/packages';
     var remote = url.parse(requestUrl);
     var headers = {};
+    var that = this;
+    var req;
 
-    if (config.userAgent) {
-        headers['User-Agent'] = config.userAgent;
+    if (this._config.userAgent) {
+        headers['User-Agent'] = this._config.userAgent;
     }
 
-    replay(request.get(requestUrl, {
-        proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
-        ca: config.ca.search[index],
-        strictSSL: config.strictSsl,
-        timeout: config.timeout,
+    req = replay(request.get(requestUrl, {
+        proxy: remote.protocol === 'https:' ? this._config.httpsProxy : this._config.proxy,
+        ca: this._config.ca.search[index],
+        strictSSL: this._config.strictSsl,
+        timeout: this._config.timeout,
         json: true
     }, function (err, response, body) {
         // If there was an internal error (e.g. timeout)
@@ -116,6 +117,12 @@ function doRequest(index, config, callback) {
 
         callback(null, body);
     }));
+
+    if (this._logger) {
+        req.on('replay', function (nr, error) {
+            that._logger.debug('retry', 'Retrying request to ' + this._source + ' because it failed with ' + error.code);
+        });
+    }
 }
 
 function getMaxAge() {

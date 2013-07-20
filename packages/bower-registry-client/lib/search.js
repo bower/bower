@@ -41,7 +41,7 @@ function search(name, callback) {
 
                 // Add each result
                 results.forEach(function (result) {
-                    addResult(data, result);
+                    addResult.call(that, data, result);
                 });
 
                 next();
@@ -49,14 +49,14 @@ function search(name, callback) {
         }
 
         // Otherwise make a request to always obtain fresh data
-        doRequest(name, index, that._config, function (err, results) {
+        doRequest.call(that, name, index, function (err, results) {
             if (err || !results || !results.length) {
                 return next(err);
             }
 
             // Add each result
             results.forEach(function (result) {
-                addResult(data, result);
+                addResult.call(that, data, result);
             });
 
             // Store in cache for future offline usage
@@ -89,20 +89,22 @@ function addResult(accumulated, result) {
     }
 }
 
-function doRequest(name, index, config, callback) {
-    var requestUrl = config.registry.search[index] + '/packages/search/' + encodeURIComponent(name);
+function doRequest(name, index, callback) {
+    var requestUrl = this._config.registry.search[index] + '/packages/search/' + encodeURIComponent(name);
     var remote = url.parse(requestUrl);
     var headers = {};
+    var that = this;
+    var req;
 
-    if (config.userAgent) {
-        headers['User-Agent'] = config.userAgent;
+    if (this._config.userAgent) {
+        headers['User-Agent'] = this._config.userAgent;
     }
 
-    replay(request.get(requestUrl, {
-        proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
-        ca: config.ca.search[index],
-        strictSSL: config.strictSsl,
-        timeout: config.timeout,
+    req = replay(request.get(requestUrl, {
+        proxy: remote.protocol === 'https:' ? this._config.httpsProxy : this._config.proxy,
+        ca: this._config.ca.search[index],
+        strictSSL: this._config.strictSsl,
+        timeout: this._config.timeout,
         json: true
     }, function (err, response, body) {
         // If there was an internal error (e.g. timeout)
@@ -123,6 +125,12 @@ function doRequest(name, index, config, callback) {
 
         callback(null, body);
     }));
+
+    if (this._logger) {
+        req.on('replay', function (nr, error) {
+            that._logger.debug('retry', 'Retrying request to ' + this._source + ' because it failed with ' + error.code);
+        });
+    }
 }
 
 function getMaxAge() {

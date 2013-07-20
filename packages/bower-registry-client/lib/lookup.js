@@ -35,7 +35,7 @@ function lookup(name, callback) {
                     return next(err);
                 }
 
-                doRequest(name, index, that._config, function (err, entry) {
+                doRequest.call(that, name, index, function (err, entry) {
                     if (err || !entry) {
                         return next(err);
                     }
@@ -49,7 +49,7 @@ function lookup(name, callback) {
         // Otherwise, we totally bypass the cache and
         // make only the request
         } else {
-            doRequest(name, index, that._config, function (err, entry) {
+            doRequest.call(that, name, index, function (err, entry) {
                 if (err || !entry) {
                     return next(err);
                 }
@@ -73,20 +73,22 @@ function lookup(name, callback) {
     });
 }
 
-function doRequest(name, index, config, callback) {
-    var requestUrl = config.registry.search[index] + '/packages/' + encodeURIComponent(name);
+function doRequest(name, index, callback) {
+    var requestUrl = this._config.registry.search[index] + '/packages/' + encodeURIComponent(name);
     var remote = url.parse(requestUrl);
     var headers = {};
+    var req;
+    var that = this;
 
-    if (config.userAgent) {
-        headers['User-Agent'] = config.userAgent;
+    if (this._config.userAgent) {
+        headers['User-Agent'] = this._config.userAgent;
     }
 
-    replay(request.get(requestUrl, {
-        proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
-        ca: config.ca.search[index],
-        strictSSL: config.strictSsl,
-        timeout: config.timeout,
+    req = replay(request.get(requestUrl, {
+        proxy: remote.protocol === 'https:' ? this._config.httpsProxy : this._config.proxy,
+        ca: this._config.ca.search[index],
+        strictSSL: this._config.strictSsl,
+        timeout: this._config.timeout,
         json: true
     }, function (err, response, body) {
         // If there was an internal error (e.g. timeout)
@@ -115,6 +117,12 @@ function doRequest(name, index, config, callback) {
             url: body.url
         });
     }));
+
+    if (this._logger) {
+        req.on('replay', function (nr, error) {
+            that._logger.debug('retry', 'Retrying request to ' + this._source + ' because it failed with ' + error.code);
+        });
+    }
 }
 
 function getMaxAge(entry) {

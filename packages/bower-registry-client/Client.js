@@ -4,9 +4,10 @@ var async = require('async');
 var methods = require('./lib');
 var Cache = require('./lib/util/Cache');
 
-function RegistryClient(config) {
+function RegistryClient(config, logger) {
     config = config || {};
     this._config = config;
+    this._logger = logger;
 
     // Parse config
     // Registry

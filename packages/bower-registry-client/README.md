@@ -8,9 +8,10 @@ This module allows you to easily interact with the Bower server API.
 ```js
 
 var RegistryClient = require('bower-registry-client');
-var registry = new RegistryClient(options);
+var registry = new RegistryClient(options, logger);
 ```
 
+The `logger` is optional and is expected to be an instance of the bower [logger](https://github.com/bower/logger).   
 Available constructor options:
 
 - `cache`: the cache folder to use for some operations; using null will disable  persistent cache (defaults to OS temp folder)
