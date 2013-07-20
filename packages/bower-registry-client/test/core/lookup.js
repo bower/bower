@@ -2,9 +2,7 @@ var lookup = require('../../lib/lookup'),
     expect = require('expect.js');
 
 describe('lookup module', function () {
-
     describe('requiring the lookup module', function () {
-
         it('should expose a lookup method', function () {
             expect(typeof lookup === 'function').to.be.ok;
         });
@@ -23,7 +21,5 @@ describe('lookup module', function () {
             expect(lookup.resetCache).to.be.ok;
             expect(typeof lookup.resetCache === 'function').to.be.ok;
         });
-
     });
-
 });

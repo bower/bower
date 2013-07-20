@@ -2,15 +2,12 @@ var Cache = require('../../../lib/util/Cache'),
     expect = require('expect.js');
 
 describe('Cache', function () {
-
     beforeEach(function () {
         this.cache = new Cache();
     });
 
     describe('Constructor', function () {
-
         describe('instantiating cache', function () {
-
             it('should provide an instance of RegistryClient', function () {
                 expect(this.cache instanceof Cache).to.be.ok;
             });
@@ -26,9 +23,7 @@ describe('Cache', function () {
                 lruMethods.forEach(function (method) {
                     expect(self.cache._cache).to.have.property(method);
                 });
-
             });
-
         });
 
         it('should have a get prototype method', function () {
@@ -50,7 +45,5 @@ describe('Cache', function () {
         it('should have a reset prototype method', function () {
             expect(Cache.prototype).to.have.property('reset');
         });
-
     });
-
 });

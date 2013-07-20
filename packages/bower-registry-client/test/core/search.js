@@ -2,9 +2,7 @@ var search = require('../../lib/search'),
     expect = require('expect.js');
 
 describe('search module', function () {
-
     describe('requiring the search module', function () {
-
         it('should expose a search method', function () {
             expect(typeof search === 'function').to.be.ok;
         });
@@ -23,7 +21,5 @@ describe('search module', function () {
             expect(search.resetCache).to.be.ok;
             expect(typeof search.resetCache === 'function').to.be.ok;
         });
-
     });
-
 });

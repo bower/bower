@@ -2,9 +2,7 @@ var list = require('../../lib/list'),
     expect = require('expect.js');
 
 describe('list module', function () {
-
     describe('requiring the list module', function () {
-
         it('should expose a list method', function () {
             expect(typeof list === 'function').to.be.ok;
         });
@@ -23,7 +21,5 @@ describe('list module', function () {
             expect(list.resetCache).to.be.ok;
             expect(typeof list.resetCache === 'function').to.be.ok;
         });
-
     });
-
 });
