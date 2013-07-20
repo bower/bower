@@ -7,9 +7,9 @@ var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var Q = require('q');
 var mout = require('mout');
+var Logger = require('bower-logger');
 var copy = require('../../../lib/util/copy');
 var GitResolver = require('../../../lib/core/resolvers/GitResolver');
-var Logger = require('../../../lib/core/Logger');
 var defaultConfig = require('../../../lib/config');
 
 describe('GitResolver', function () {

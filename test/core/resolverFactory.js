@@ -6,10 +6,10 @@ var mout = require('mout');
 var Q = require('q');
 var rimraf = require('rimraf');
 var RegistryClient = require('bower-registry-client');
+var Logger = require('bower-logger');
 var resolverFactory = require('../../lib/core/resolverFactory');
 var resolvers = require('../../lib/core/resolvers');
 var defaultConfig = require('../../lib/config');
-var Logger = require('../../lib/core/Logger');
 
 describe('resolverFactory', function () {
     var tempSource;

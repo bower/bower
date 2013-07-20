@@ -6,10 +6,10 @@ var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var tmp = require('tmp');
 var Q = require('q');
+var Logger = require('bower-logger');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
 var Resolver = require('../../../lib/core/resolvers/Resolver');
-var Logger = require('../../../lib/core/Logger');
 var defaultConfig = require('../../../lib/config');
 
 describe('Resolver', function () {
