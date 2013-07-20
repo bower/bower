@@ -22,6 +22,7 @@
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.22.0",
+    "request-replay": "~0.1.0",
     "rimraf": "~2.2.0",
     "mkdirp": "~0.3.5"
   },

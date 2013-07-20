@@ -1,5 +1,6 @@
 var parseUrl = require('url').parse;
 var request = require('request');
+var replay = require('request-replay');
 var createError = require('./util/createError');
 
 function register(name, url, callback) {
@@ -12,7 +13,7 @@ function register(name, url, callback) {
         headers['User-Agent'] = config.userAgent;
     }
 
-    request.post({
+    replay(request.post({
         url: requestUrl,
         proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
         ca: config.ca.register,
@@ -48,7 +49,7 @@ function register(name, url, callback) {
             name: name,
             url: url
         });
-    });
+    }));
 }
 
 module.exports = register;

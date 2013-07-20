@@ -2,6 +2,7 @@ var path = require('path');
 var url = require('url');
 var async = require('async');
 var request = require('request');
+var replay = require('request-replay');
 var createError = require('./util/createError');
 var Cache = require('./util/Cache');
 
@@ -81,7 +82,7 @@ function doRequest(name, index, config, callback) {
         headers['User-Agent'] = config.userAgent;
     }
 
-    request.get(requestUrl, {
+    replay(request.get(requestUrl, {
         proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
         ca: config.ca.search[index],
         strictSSL: config.strictSsl,
@@ -113,7 +114,7 @@ function doRequest(name, index, config, callback) {
             type: 'alias',
             url: body.url
         });
-    });
+    }));
 }
 
 function getMaxAge(entry) {
