@@ -295,7 +295,7 @@ Thanks for assistance and contributions:
 [@addyosmani](https://github.com/addyosmani),
 [@angus-c](https://github.com/angus-c),
 [@borismus](https://github.com/borismus),
-[@carsonmcdonald](https://github/@carsonmcdonald),
+[@carsonmcdonald](https://github.com/carsonmcdonald),
 [@chriseppstein](https://github.com/chriseppstein),
 [@danwrong](https://github.com/danwrong),
 [@davidmaxwaterman](https://github.com/davidmaxwaterman),
