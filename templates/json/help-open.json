@@ -1,0 +1,14 @@
+{
+    "command": "open",
+    "description": "Lookups a package and opens its URL into your favorite browser.",
+    "usage": [
+        "open <name> [<options>]"
+    ],
+    "options": [
+        {
+            "shorthand":   "-h",
+            "flag":        "--help",
+            "description": "Show this help message"
+        }
+    ]
+}
