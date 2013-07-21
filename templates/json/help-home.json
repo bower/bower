@@ -3,7 +3,7 @@
     "description": "Opens a package homepage into your favorite browser.",
     "usage": [
         "home <package> [<options>]",
-        "home <package>#<version> [<property>] [<options>]"
+        "home <package>#<version> [<options>]"
     ],
     "options": [
         {
