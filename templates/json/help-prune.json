@@ -1,6 +1,6 @@
 {
     "command": "prune",
-    "description": "Uninstalls extraneous packages.",
+    "description": "Uninstalls local extraneous packages.",
     "usage": [
         "prune [<options>]"
     ],
