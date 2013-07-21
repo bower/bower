@@ -229,7 +229,7 @@ bower.commands
 
 Commands emit three types of events: `log`, `end`, and `error`.
 
-* `log` is a emitted to report the progress of the command.
+* `log` is emitted to report the state/progress of the command.
 * `error` will only be emitted if something goes wrong.
 * `end` is emitted when the command successfully ends.
 
