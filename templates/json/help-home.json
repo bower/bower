@@ -1,8 +1,8 @@
 {
-    "command": "open",
-    "description": "Lookups a package and opens its URL into your favorite browser.",
+    "command": "home",
+    "description": "Lookups a package and opens its homepage into your favorite browser.",
     "usage": [
-        "open <name> [<options>]"
+        "home <name> [<options>]"
     ],
     "options": [
         {
