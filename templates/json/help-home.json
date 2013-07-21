@@ -2,7 +2,8 @@
     "command": "home",
     "description": "Opens a package homepage into your favorite browser.",
     "usage": [
-        "home <name> [<options>]"
+        "home <package> [<options>]",
+        "home <package>#<version> [<property>] [<options>]"
     ],
     "options": [
         {

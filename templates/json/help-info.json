@@ -2,8 +2,8 @@
     "command": "info",
     "description": "Displays overall information of a package or a particular version.",
     "usage": [
-        "info <name> [<options>]",
-        "info <name>#<version> [<property>] [<options>]"
+        "info <package> [<options>]",
+        "info <package>#<version> [<property>] [<options>]"
     ],
     "options": [
         {
