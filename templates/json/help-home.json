@@ -1,6 +1,6 @@
 {
     "command": "home",
-    "description": "Lookups a package and opens its homepage into your favorite browser.",
+    "description": "Opens a package homepage into your favorite browser.",
     "usage": [
         "home <name> [<options>]"
     ],
