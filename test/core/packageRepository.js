@@ -601,4 +601,16 @@ describe('PackageRepository', function () {
             expect(called).to.be(true);
         });
     });
+
+    describe('.getRegistryClient', function () {
+        it('should return the underlying registry client', function () {
+            expect(packageRepository.getRegistryClient()).to.be.an(RegistryClient);
+        });
+    });
+
+    describe('.getResolveCache', function () {
+        it('should return the underlying resolve cache', function () {
+            expect(packageRepository.getResolveCache()).to.be.an(ResolveCache);
+        });
+    });
 });
