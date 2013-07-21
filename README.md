@@ -22,7 +22,7 @@ installed globally using npm:
 npm install -g bower
 ```
 
-Also make sure that [git](http://git-scm.com/) is also installed as some bower
+Also make sure that [git](http://git-scm.com/) is installed as some bower
 packages require it to be fetched and installed.
 
 
@@ -229,7 +229,7 @@ bower.commands
 
 Commands emit three types of events: `log`, `end`, and `error`.
 
-* `log` is a emitted to report the progress of the command.
+* `log` is emitted to report the state/progress of the command.
 * `error` will only be emitted if something goes wrong.
 * `end` is emitted when the command successfully ends.
 
