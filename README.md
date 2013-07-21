@@ -22,7 +22,7 @@ installed globally using npm:
 npm install -g bower
 ```
 
-Also make sure that [git](http://git-scm.com/) is also installed as some bower
+Also make sure that [git](http://git-scm.com/) is installed as some bower
 packages require it to be fetched and installed.
 
 
