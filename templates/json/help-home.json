@@ -1,7 +1,8 @@
 {
     "command": "home",
-    "description": "Opens a package homepage into your favorite browser.",
+    "description": "Opens a package homepage into your favorite browser.\n\nIf no <package> is passed, opens the homepage of the local package.",
     "usage": [
+        "home",
         "home <package> [<options>]",
         "home <package>#<version> [<options>]"
     ],
