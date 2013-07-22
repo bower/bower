@@ -30,6 +30,10 @@ describe('GitHub', function () {
         return new GitHubResolver(decEndpoint, config || defaultConfig, logger);
     }
 
+    describe('.constructor', function () {
+        it.skip('should throw an error on invalid GitHub URLs');
+    });
+
     describe('.resolve', function () {
         it('should download and extract the .tar.gz archive from GitHub.com', function (next) {
             var resolver;
@@ -79,5 +83,9 @@ describe('GitHub', function () {
         it.skip('it should error out if the status code is not within 200-299');
 
         it.skip('should report progress if it takes too long to download');
+    });
+
+    describe('._savePkgMeta', function () {
+        it.skip('should guess the homepage if not already set');
     });
 });

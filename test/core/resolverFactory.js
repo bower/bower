@@ -74,7 +74,7 @@ describe('resolverFactory', function () {
             'ssh://user@hostname.com/project.git': 'ssh://user@hostname.com/project.git',
             'ssh://user@hostname.com/project.git/': 'ssh://user@hostname.com/project.git',
 
-            // http .git&
+            // http .git$
             'http://user@hostname.com/project.git': 'http://user@hostname.com/project.git',
             'http://user@hostname.com/project.git/': 'http://user@hostname.com/project.git',
 
@@ -133,48 +133,48 @@ describe('resolverFactory', function () {
 
         endpoints = {
             // git:
-            'git://github.com/user/project.git': 'git://github.com/user/project.git',
-            'git://github.com/user/project.git/': 'git://github.com/user/project.git',
+            'git://github.com/user/project/blah.git': 'git://github.com/user/project/blah.git',
+            'git://github.com/user/project/blah.git/': 'git://github.com/user/project/blah.git',
 
             // git@:
-            'git@github.com:user/project.git': null,
-            'git@github.com:user/project.git/': null,
+            'git@github.com:user/project/blah.git': 'git@github.com:user/project/blah.git',
+            'git@github.com:user/project/blah.git/': 'git@github.com:user/project/blah.git',
 
             // git+ssh:
-            'git+ssh://user@github.com:project': null,
-            'git+ssh://user@github.com:project/': null,
-            'git+ssh://user@github.com:project.git': null,
-            'git+ssh://user@github.com:project.git/': null,
-            'git+ssh://user@github.com/project': null,
-            'git+ssh://user@github.com/project/': null,
-            'git+ssh://user@github.com/project.git': null,
-            'git+ssh://user@github.com/project.git/': null,
+            'git+ssh://user@github.com:project/blah': 'ssh://user@github.com:project/blah.git',
+            'git+ssh://user@github.com:project/blah/': 'ssh://user@github.com:project/blah.git',
+            'git+ssh://user@github.com:project/blah.git': 'ssh://user@github.com:project/blah.git',
+            'git+ssh://user@github.com:project/blah.git/': 'ssh://user@github.com:project/blah.git',
+            'git+ssh://user@github.com/project/blah': 'ssh://user@github.com/project/blah.git',
+            'git+ssh://user@github.com/project/blah/': 'ssh://user@github.com/project/blah.git',
+            'git+ssh://user@github.com/project/blah.git': 'ssh://user@github.com/project/blah.git',
+            'git+ssh://user@github.com/project/blah.git/': 'ssh://user@github.com/project/blah.git',
 
             // git+http
-            'git+http://user@github.com/project/blah': null,
-            'git+http://user@github.com/project/blah/': null,
-            'git+http://user@github.com/project/blah.git': null,
-            'git+http://user@github.com/project/blah.git/': null,
+            'git+http://user@github.com/project/blah': 'http://user@github.com/project/blah.git',
+            'git+http://user@github.com/project/blah/': 'http://user@github.com/project/blah.git',
+            'git+http://user@github.com/project/blah.git': 'http://user@github.com/project/blah.git',
+            'git+http://user@github.com/project/blah.git/': 'http://user@github.com/project/blah.git',
 
             // git+https
-            'git+https://user@github.com/project/blah': null,
-            'git+https://user@github.com/project/blah/': null,
-            'git+https://user@github.com/project/blah.git': null,
-            'git+https://user@github.com/project/blah.git/': null,
+            'git+https://user@github.com/project/blah': 'https://user@github.com/project/blah.git',
+            'git+https://user@github.com/project/blah/': 'https://user@github.com/project/blah.git',
+            'git+https://user@github.com/project/blah.git': 'https://user@github.com/project/blah.git',
+            'git+https://user@github.com/project/blah.git/': 'https://user@github.com/project/blah.git',
 
             // ssh .git$
-            'ssh://user@github.com:project.git': null,
-            'ssh://user@github.com:project.git/': null,
-            'ssh://user@github.com/project.git': null,
-            'ssh://user@github.com/project.git/': null,
+            'ssh://user@github.com:project/blah.git': 'ssh://user@github.com:project/blah.git',
+            'ssh://user@github.com:project/blah.git/': 'ssh://user@github.com:project/blah.git',
+            'ssh://user@github.com/project/blah.git': 'ssh://user@github.com/project/blah.git',
+            'ssh://user@github.com/project/blah.git/': 'ssh://user@github.com/project/blah.git',
 
-            // http .git&
-            'http://user@github.com/project.git': null,
-            'http://user@github.com/project.git/': null,
+            // http .git$
+            'http://user@github.com/project/blah.git': 'http://user@github.com/project/blah.git',
+            'http://user@github.com/project/blah.git/': 'http://user@github.com/project/blah.git',
 
             // https
-            'https://user@github.com/project.git': null,
-            'https://user@github.com/project.git/': null,
+            'https://user@github.com/project/blah.git': 'https://user@github.com/project/blah.git',
+            'https://user@github.com/project/blah.git/': 'https://user@github.com/project/blah.git',
 
             // shorthand
             'bower/bower': 'git://github.com/bower/bower.git'
