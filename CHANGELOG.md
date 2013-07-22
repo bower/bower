@@ -5,18 +5,18 @@
 Total rewrite of bower.
 The list bellow highlights the most important stuff:
 
-- __Clear architecture and separation of concerns__
-- __Much much faster__
-- __`--json` output for all commands__
-- __`--offline` usage for all commands, except `register`__
-- __Proper `install` and `update` commands, similar to `npm` in behaviour__
-- __Named endpoints when installing, e.g. `bower install backbone-amd=backbone#~1.0.0`__
-- __New interactive conflict resolution strategy__
-- __Prevent human errors when using `register`__
-- __New `home` command, similar to `npm`__
-- __New `cache list` command__
-- __New `prune` command__
-- __Many many bug general bug fixes__
+- Clear architecture and separation of concerns
+- Much much faster
+- `--json` output for all commands
+- `--offline` usage for all commands, except `register`
+- Proper `install` and `update` commands, similar to `npm` in behaviour
+- Named endpoints when installing, e.g. `bower install backbone-amd=backbone#~1.0.0`
+- New interactive conflict resolution strategy
+- Prevent human errors when using `register`
+- New `home` command, similar to `npm`
+- New `cache list` command
+- New `prune` command
+- Many many general bug fixes
 
 Non-backwards compatible changes:
 
