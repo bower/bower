@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.0.0 - 2013-07-23
+
+Total rewrite of bower.
+The list bellow highlights the most important stuff:
+
+- __Clear architecture and separation of concerns__
+- __Much much faster__
+- __`--json` output for all commands__
+- __`--offline` usage for all commands, except `register`__
+- __Proper `install` and `update` commands, similar to `npm` in behaviour__
+- __Named endpoints when installing, e.g. `bower install backbone-amd=backbone#~1.0.0`__
+- __New interactive conflict resolution strategy__
+- __Prevent human errors when using `register`__
+- __New `home` command, similar to `npm`__
+- __New `cache list` command__
+- __New `prune` command__
+- __Many many bug general bug fixes__
+
+Non-backwards compatible changes:
+- `json` from .bowerrc is no longer used
+- Programmatic usage changed, specially the commands interface
+
+
+For a complete list of changes that this rewrite and release brings please read: https://github.com/bower/bower/wiki/Rewrite-state
+
+
 ## 0.10.0 - 2013-07-02
 
 - __Allow specific commits to be targeted__ ([#275](https://github.com/bower/bower/issues/275))
