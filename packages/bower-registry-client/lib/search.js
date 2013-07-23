@@ -64,7 +64,7 @@ function search(name, callback) {
         });
     }, function () {
         // Until the data is unknown or there's still registries to test
-        return index++ < total;
+        return ++index === total;
     }, function (err) {
         // Clear runtime cache, keeping the persistent data
         // in files for future offline usage
