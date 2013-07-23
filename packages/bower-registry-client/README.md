@@ -25,7 +25,7 @@ Available constructor options:
 - `httpsProxy`: the proxy to use for https requests (defaults to null)
 - `strictSsl`: whether or not to do SSL key validation when making requests via https (defaults to true).
 - `userAgent`: the user agent to use for the requests (defaults to null)
-- `timeout`: the timeout for the requests to finish (defaults to 5000)
+- `timeout`: the timeout for the requests to finish (defaults to 60000)
 - `force`: If set to true, cache will be bypassed and remotes will always be hit (defaults to false).
 - `offline`: If set to true, only the cache will be used (defaults to false).
 

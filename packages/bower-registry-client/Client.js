@@ -62,7 +62,7 @@ function RegistryClient(config, logger) {
 
     // Timeout
     if (typeof config.timeout !== 'number') {
-        config.timeout = 5000;
+        config.timeout = 60000;
     }
 
     // Strict ssl
