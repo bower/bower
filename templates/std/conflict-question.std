@@ -1,1 +1,1 @@
-{{#yellow}}Unable to find a suitable version for {{name}}, please choose one{{/yellow}}
+{{#yellow}}Unable to find a suitable version for {{/yellow}}{{#cyan}}{{name}}{{/cyan}}{{#yellow}}, please choose one{{/yellow}}
