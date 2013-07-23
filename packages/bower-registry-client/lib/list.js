@@ -56,7 +56,7 @@ function list(callback) {
         });
     }, function () {
         // Until there's still registries to test
-        return index++ < total;
+        return ++index === total;
     }, function (err) {
         // Clear runtime cache, keeping the persistent data
         // in files for future offline usage
