@@ -1,25 +1,36 @@
 var os = require('os');
 var path = require('path');
 var async = require('async');
+var deepExtend = require('deep-extend');
 var methods = require('./lib');
 var Cache = require('./lib/util/Cache');
 
 function RegistryClient(config, logger) {
+    var bowerRegistry = 'https://bower.herokuapp.com';
+
     config = config || {};
     this._config = config;
     this._logger = logger;
 
     // Parse config
     // Registry
-    config.registry = config.registry || 'https://bower.herokuapp.com';
+    config.registry = config.registry || bowerRegistry;
     if (typeof config.registry === 'string') {
         config.registry = {
             search: [config.registry],
             register: config.registry,
             publish: config.registry
         };
-    } else if (!Array.isArray(config.registry.search)) {
-        config.registry.search = [config.registry.search];
+    } else {
+        config.registry = deepExtend({
+            search: bowerRegistry,
+            register: bowerRegistry,
+            publish: bowerRegistry
+        }, config.registry);
+
+        if (!Array.isArray(config.registry.search)) {
+            config.registry.search = [config.registry.search];
+        }
     }
 
     // Ensure that every registry endpoint does not end with /
@@ -30,14 +41,18 @@ function RegistryClient(config, logger) {
     config.registry.publish = config.registry.publish.replace(/\/+$/, '');
 
     // CA
-    if (!config.ca || typeof config.ca === 'string') {
+    if (typeof config.ca === 'string') {
         config.ca = {
             search: [config.ca],
             register: config.ca,
             publish: config.ca
         };
-    } else if (!Array.isArray(config.ca.search)) {
-        config.ca.search = [config.ca.search];
+    } else {
+        config.ca = config.ca || {};
+
+        if (config.ca.search && !Array.isArray(config.ca.search)) {
+            config.ca.search = [config.ca.search];
+        }
     }
 
     // Cache
@@ -64,6 +79,11 @@ RegistryClient.prototype.list = methods.list;
 RegistryClient.prototype.register = methods.register;
 
 RegistryClient.prototype.clearCache = function (name, callback) {
+    if (typeof name === 'function') {
+        callback = name;
+        name = null;
+    }
+
     async.parallel([
         this.lookup.clearCache.bind(this, name),
         this.search.clearCache.bind(this, name),
