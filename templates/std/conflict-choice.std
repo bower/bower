@@ -1,0 +1,1 @@
+{{#cyan}}{{endpoint.name}}#{{endpoint.target}}{{/cyan}}{{#if pkgMeta._release}} which resolved to {{#cyan}}{{pkgMeta._release}}{{/cyan}}{{/if}}{{#if dependants}} and has {{#magenta}}{{#each dependants}}{{endpoint.name}}{{#if pkgMeta._release}}#{{pkgMeta._release}}{{/if}}{{/each}}{{/magenta}} as dependants{{/if}}

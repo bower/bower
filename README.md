@@ -304,6 +304,7 @@ Thanks for assistance and contributions:
 [@danwrong](https://github.com/danwrong),
 [@davidmaxwaterman](https://github.com/davidmaxwaterman),
 [@desandro](https://github.com/desandro),
+[@dylang](https://github.com/dylang),
 [@hemanth](https://github.com/hemanth),
 [@isaacs](https://github.com/isaacs),
 [@josh](https://github.com/josh),
