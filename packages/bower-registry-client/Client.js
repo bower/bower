@@ -48,9 +48,11 @@ function RegistryClient(config, logger) {
             publish: config.ca
         };
     } else {
-        config.ca = config.ca || {};
+        config.ca = deepExtend({
+            search: []
+        }, config.ca);
 
-        if (config.ca.search && !Array.isArray(config.ca.search)) {
+        if (!Array.isArray(config.ca.search)) {
             config.ca.search = [config.ca.search];
         }
     }
