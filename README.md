@@ -213,18 +213,16 @@ through the `bower.commands` object.
 var bower = require('bower');
 
 bower.commands
-  .install(paths, options)
-  .on('end', function (data) {
-    if (data) {
-      console.log(data);
-    }
-  });
+.install(paths, options)
+.on('end', function (installed) {
+    console.log(installed);
+});
 
 bower.commands
-  .search('jquery', {})
-  .on('packages', function (packages) {
-    // `packages` is a list of packages returned by searching for 'jquery'
-  });
+.search('jquery', {})
+.on('end', function (results) {
+    console.log(results);
+});
 ```
 
 Commands emit three types of events: `log`, `end`, and `error`.
@@ -238,6 +236,8 @@ file](https://github.com/bower/bower/blob/rewrite/bin/bower).
 
 
 ## Completion (experimental)
+
+_NOTE_: Completion is still not implemented for the 1.0.0 release
 
 Bower now has an experimental `completion` command that is based on, and works
 similarly to the [npm completion](https://npmjs.org/doc/completion.html). It is
