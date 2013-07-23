@@ -3,7 +3,9 @@
 ## 1.0.0 - 2013-07-23
 
 Total rewrite of bower.
-The list bellow highlights the most important stuff:
+The list bellow highlights the most important stuff.   
+For a complete list of changes that this rewrite and release brings please read: https://github.com/bower/bower/wiki/Rewrite-state
+
 
 - Clear architecture and separation of concerns
 - Much much faster
@@ -26,8 +28,6 @@ Non-backwards compatible changes:
 Users upgrading from `bower-canary` should do a `bower cache clean`.   
 Users upgrading from `bower@~0.x.x` should remove the `~/.bower` folder manually since it's no longer used.
 On Windows the folder is located in `AppData/bower`.
-
-For a complete list of changes that this rewrite and release brings please read: https://github.com/bower/bower/wiki/Rewrite-state
 
 
 ## 0.10.0 - 2013-07-02
