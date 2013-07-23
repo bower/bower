@@ -25,8 +25,8 @@ Non-backwards compatible changes:
 - `json` from .bowerrc is no longer used
 - Programmatic usage changed, specially the commands interface
 
-Users upgrading from `bower-canary` should do a `bower cache clean`.   
-Users upgrading from `bower@~0.x.x` should remove the `~/.bower` folder manually since it's no longer used.
+Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.   
+Additionally you may remove the `~/.bower` folder manually since it's no longer used.
 On Windows the folder is located in `AppData/bower`.
 
 
