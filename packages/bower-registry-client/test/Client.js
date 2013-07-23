@@ -283,6 +283,64 @@ describe('RegistryClient', function () {
         });
     });
 
+    describe('calling the seratch instance method with two registries', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages/search/jquery')
+              .reply(200, [
+                {
+                    name: 'jquery',
+                    url: 'git://github.com/components/jquery.git'
+                }
+            ]);
+
+            nock('http://custom-registry.com')
+              .get('/packages/search/jquery')
+              .reply(200, []);
+
+            this.pkg = 'jquery';
+            this.pkgUrl = 'git://github.com/components/jquery.git';
+            this.registry._config.registry.search = [
+                'https://bower.herokuapp.com',
+                'http://custom-registry.com'
+            ];
+        });
+
+        afterEach(function () {
+            this.registry._config.registry.search = ['https://bower.herokuapp.com'];
+        });
+
+        it('should return entry name', function (next) {
+            var self = this;
+
+            this.registry.search(this.pkg, function (err, results) {
+                if (! results.length) return next(false);
+
+                results.forEach(function (entry) {
+                    if (entry.name === self.pkg) {
+                        expect(entry.name).to.eql(self.pkg);
+                        next();
+                    }
+                });
+            });
+        });
+
+        it('should return entry url', function (next) {
+            var self = this;
+
+            this.registry.search(this.pkg, function (err, results) {
+                if (! results.length) return next(false);
+
+                results.forEach(function (entry) {
+                    if (entry.name === self.pkg) {
+                        expect(entry.url).to.eql(self.pkgUrl);
+                        next();
+                    }
+                });
+            });
+        });
+    });
+
     describe('calling the search instance method without argument', function () {
         it('should return an error and no results', function () {
             this.registry.search('', function (err, results) {
