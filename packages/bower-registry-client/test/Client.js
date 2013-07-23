@@ -8,7 +8,8 @@ describe('RegistryClient', function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
         this.registry = new RegistryClient({
-            strictSsl: false
+            strictSsl: false,
+            timeout: this.timeoutVal
         });
         this.conf = {
             search: [this.uri],
@@ -83,12 +84,13 @@ describe('RegistryClient', function () {
 
     describe('instantiating a client with custom options', function () {
         describe('offline', function () {
-            it('should not return search results ', function () {
+            it('should not return search results ', function (next) {
                 this.registry._config.offline = true;
 
                 this.registry.search('jquery', function (err, results) {
                     expect(err).to.be(null);
                     expect(results.length).to.eql(0);
+                    next();
                 });
             });
         });
@@ -112,8 +114,8 @@ describe('RegistryClient', function () {
                 this.path = this.cacheDir + '/' + this.host + '/' + this.method + '/' + this.pkg;
             });
 
-            afterEach(function () {
-                this.client.clearCache();
+            afterEach(function (next) {
+                this.client.clearCache(next);
             });
 
             it('should fill cache', function (next) {
@@ -154,36 +156,117 @@ describe('RegistryClient', function () {
     // lookup
     //
     describe('calling the lookup instance method with argument', function () {
-        it('should not return an error', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages/jquery')
+              .reply(200, {
+                name: 'jquery',
+                url: 'git://github.com/components/jquery.git'
+            });
+
+            this.registry._config.force = true;
+        });
+
+        it('should not return an error', function (next) {
             this.registry.lookup('jquery', function (err) {
                 expect(err).to.be(null);
+                next();
             });
         });
 
-        it('should return entry type', function () {
+        it('should return entry type', function (next) {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be(null);
                 expect(entry.type).to.eql('alias');
+                next();
             });
         });
 
-        it('should return entry url ', function () {
+        it('should return entry url ', function (next) {
             this.registry.lookup('jquery', function (err, entry) {
                 expect(err).to.be(null);
                 expect(entry.url).to.eql('git://github.com/components/jquery.git');
+            });
+            next();
+        });
+    });
+
+    describe('calling the lookup instance method with three registries', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages/jquery')
+              .reply(404);
+
+            nock('http://custom-registry.com')
+              .get('/packages/jquery')
+              .reply(200, {
+                name: 'jquery',
+                url: 'git://github.com/foo/bar'
+            });
+
+            nock('http://custom-registry2.com')
+              .get('/packages/jquery')
+              .reply(200, {
+                name: 'jquery',
+                url: 'git://github.com/foo/baz'
+            });
+
+            this.registry = new RegistryClient({
+                strictSsl: false,
+                force: true,
+                registry: {
+                    search: [
+                        'https://bower.herokuapp.com',
+                        'http://custom-registry.com',
+                        'http://custom-registry2.com'
+                    ]
+                }
+            });
+        });
+
+        it('should return entry type', function (next) {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry).to.be.an('object');
+                expect(entry.type).to.eql('alias');
+                next();
+            });
+        });
+
+        it('should return entry url ', function (next) {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry).to.be.an('object');
+                expect(entry.url).to.eql('git://github.com/foo/bar');
+                next();
+            });
+        });
+
+        it('should respect order', function (next) {
+            this.registry._config.registry.search = [
+                'https://bower.herokuapp.com',
+                'http://custom-registry2.com',
+                'http://custom-registry.com'
+            ];
+
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry).to.be.an('object');
+                expect(entry.url).to.eql('git://github.com/foo/baz');
+                next();
             });
         });
     });
 
     describe('calling the lookup instance method without argument', function () {
-        it('should return an error and no result', function () {
+        it('should return an error and no result', function (next) {
             this.registry.lookup('', function (err, entry) {
-                expect(err).to.not.be(null);
+                expect(err).to.be.an(Error);
                 expect(entry).to.be(undefined);
+                next();
             });
         });
     });
-
 
     //
     // register
@@ -227,10 +310,17 @@ describe('RegistryClient', function () {
     });
 
     describe('calling the register instance method without arguments', function () {
-        it('should return an error and no result', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .post('/packages', 'name=&url=')
+              .reply(400);
+        });
+
+        it('should return an error and no result', function (next) {
             this.registry.register('', '', function (err, entry) {
-                expect(err).to.not.be(null);
+                expect(err).to.be.an(Error);
                 expect(entry).to.be(undefined);
+                next();
             });
         });
     });
@@ -247,6 +337,8 @@ describe('RegistryClient', function () {
 
             this.pkg = 'jquery';
             this.pkgUrl = 'git://github.com/components/jquery.git';
+
+            this.registry._config.force = true;
         });
 
         it('should not return an error', function (next) {
@@ -260,12 +352,12 @@ describe('RegistryClient', function () {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
-                results.forEach(function (entry) {
-                    if (entry.name === self.pkg) {
-                        expect(entry.name).to.eql(self.pkg);
-                        next();
-                    }
+                var found = results.some(function (entry) {
+                    return entry.name === self.pkg;
                 });
+
+                expect(found).to.be(true);
+                next();
             });
         });
 
@@ -273,55 +365,56 @@ describe('RegistryClient', function () {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
-                results.forEach(function (entry) {
-                    if (entry.name === self.pkg) {
-                        expect(entry.url).to.eql(self.pkgUrl);
-                        next();
-                    }
+                var found = results.some(function (entry) {
+                    return entry.url === self.pkgUrl;
                 });
+
+                expect(found).to.be(true);
+                next();
             });
         });
     });
 
-    describe('calling the seratch instance method with two registries', function () {
+    describe('calling the search instance method with two registries', function () {
         beforeEach(function () {
             nock('https://bower.herokuapp.com:443')
+              .get('/packages/search/jquery')
+              .reply(200, []);
+
+            nock('http://custom-registry.com')
               .get('/packages/search/jquery')
               .reply(200, [
                 {
                     name: 'jquery',
-                    url: 'git://github.com/components/jquery.git'
+                    url: 'git://github.com/bar/foo.git'
                 }
             ]);
 
-            nock('http://custom-registry.com')
-              .get('/packages/search/jquery')
-              .reply(200, []);
-
             this.pkg = 'jquery';
-            this.pkgUrl = 'git://github.com/components/jquery.git';
-            this.registry._config.registry.search = [
-                'https://bower.herokuapp.com',
-                'http://custom-registry.com'
-            ];
-        });
+            this.pkgUrl = 'git://github.com/bar/foo.git';
 
-        afterEach(function () {
-            this.registry._config.registry.search = ['https://bower.herokuapp.com'];
+            this.registry = new RegistryClient({
+                strictSsl: false,
+                force: true,
+                registry: {
+                    search: [
+                        'https://bower.herokuapp.com',
+                        'http://custom-registry.com'
+                    ]
+                }
+            });
         });
 
         it('should return entry name', function (next) {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
-                if (! results.length) return next(false);
-
-                results.forEach(function (entry) {
-                    if (entry.name === self.pkg) {
-                        expect(entry.name).to.eql(self.pkg);
-                        next();
-                    }
+                var found = results.some(function (entry) {
+                    return entry.name === self.pkg;
                 });
+
+                expect(found).to.be(true);
+                next();
             });
         });
 
@@ -329,23 +422,32 @@ describe('RegistryClient', function () {
             var self = this;
 
             this.registry.search(this.pkg, function (err, results) {
-                if (! results.length) return next(false);
+                if (! results.length) {
+                    return next(new Error('Result expected'));
+                }
 
-                results.forEach(function (entry) {
-                    if (entry.name === self.pkg) {
-                        expect(entry.url).to.eql(self.pkgUrl);
-                        next();
-                    }
+                var found = results.some(function (entry) {
+                    return entry.url === self.pkgUrl;
                 });
+
+                expect(found).to.be(true);
+                next();
             });
         });
     });
 
     describe('calling the search instance method without argument', function () {
-        it('should return an error and no results', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages/search/')
+              .reply(404);
+        });
+
+        it('should return an error and no results', function (next) {
             this.registry.search('', function (err, results) {
-                expect(err).to.not.be(null);
+                expect(err).to.be.an(Error);
                 expect(results).to.be(undefined);
+                next();
             });
         });
     });
@@ -359,17 +461,19 @@ describe('RegistryClient', function () {
             this.pkg = 'jquery';
         });
 
-        it('should not return an error', function () {
+        it('should not return an error', function (next) {
             this.registry.clearCache(this.pkg, function (err) {
                 expect(err).to.be(null);
+                next();
             });
         });
     });
 
     describe('called the clearCache instance method without argument', function () {
-        it('should not return any errors and remove all cache items', function () {
+        it('should not return any errors and remove all cache items', function (next) {
             this.registry.clearCache(function (err) {
                 expect(err).to.be(null);
+                next();
             });
         });
     });

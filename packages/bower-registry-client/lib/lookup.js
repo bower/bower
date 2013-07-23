@@ -62,7 +62,7 @@ function lookup(name, callback) {
         }
     }, function () {
         // Until the data is unknown or there's still registries to test
-        return !!data || index++ < total;
+        return !!data || ++index === total;
     }, function (err) {
         // If some of the registry entries failed, error out
         if (err) {
