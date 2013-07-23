@@ -88,7 +88,7 @@ function isWildcard(target) {
 }
 
 function isSource(value) {
-    return value.indexOf('/') !== -1 || value.indexOf('@') !== -1;
+    return value.indexOf('/') !== -1 || value.indexOf('\\') !== -1 || value.indexOf('@') !== -1;
 }
 
 module.exports.decompose = decompose;
