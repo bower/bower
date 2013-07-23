@@ -59,7 +59,9 @@ describe('endpoint-parser', function () {
                 bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap',
                 bootstrap2: 'http://twitter.github.io/bootstrap/assets/bootstrap#*',
                 ssh: 'git@example.com',
-                git: 'git://example.com'
+                git: 'git://example.com',
+                path: '/foo',
+                winpath: 'c:\\foo'
             };
             var expected = [
                 { name: 'jquery', source: 'jquery', target: '~1.9.1' },
@@ -71,7 +73,9 @@ describe('endpoint-parser', function () {
                 { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
                 { name: 'bootstrap2', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
                 { name: 'ssh', source: 'git@example.com', target: '*' },
-                { name: 'git', source: 'git://example.com', target: '*' }
+                { name: 'git', source: 'git://example.com', target: '*' },
+                { name: 'path', source: '/foo', target: '*' },
+                { name: 'winpath', source: 'c:\\foo', target: '*' }
             ];
             var x = 0;
 
