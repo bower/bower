@@ -31,6 +31,10 @@ packages require it to be fetched and installed.
 Much more information is available via `bower help` once it's installed. This
 is just enough to get you started.
 
+#### Warning
+
+On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
+
 ### Installing packages and dependencies
 
 Bower offers several ways to install packages:
