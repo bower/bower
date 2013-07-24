@@ -400,6 +400,21 @@ describe('UrlResolver', function () {
             .get('/package-zip3')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
                 'Content-Type': ' application/zip ; charset=UTF-8'
+            })
+
+            .get('/package-tar')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'), {
+                'Content-Type': ' application/x-tgz ; charset=UTF-8'
+            })
+
+            .get('/package-tar.tar.gz')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'), {
+                'Content-Type': ' application/x-tgz ; charset=UTF-8'
+            })
+
+            .get('/package-tar2.tar.gz')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'), {
+                'Content-Type': ' application/octet-stream ; charset=UTF-8'
             });
 
             resolver = create('http://bower.io/package-zip');
@@ -430,6 +445,36 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip3.zip'))).to.be(false);
+
+                resolver = create('http://bower.io/package-tar');
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-tar'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
+
+                resolver = create('http://bower.io/package-tar.tar.gz');
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-tar'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
+
+                resolver = create('http://bower.io/package-tar2.tar.gz');
+
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package-tar'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
 
                 next();
             })
