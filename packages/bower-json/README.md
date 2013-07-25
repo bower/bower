@@ -39,7 +39,7 @@ If the `json` does not comply with the `bower.json` spec, an error is thrown wit
 
 The `options` arguments is optional and can be omitted. Available options:
 
-- validate: Apply validation defaults to `true`
+- validate: Apply validation, defaults to `true`
 - normalize: Apply normalisation, defaults to `false`
 - clone: clone, use and return the passed in `json` object instead of using it directly, defaults to `false`
 
@@ -54,7 +54,7 @@ var json = {
 
 try {
     bowerJson.parse(json);
-} catch (e) {
+} catch (err) {
     console.error('There was an error parsing the object');
     console.error(err.message);
 }
@@ -77,7 +77,7 @@ var json = {
 
 try {
     bowerJson.validate(json);
-} catch (e) {
+} catch (err) {
     console.error('There was an error validating the object');
     console.error(err.message);
 }
