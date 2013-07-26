@@ -4,6 +4,7 @@ var RegistryClient = require('../Client'),
     nock = require('nock');
 
 describe('RegistryClient', function () {
+
     beforeEach(function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
@@ -19,6 +20,7 @@ describe('RegistryClient', function () {
     });
 
     describe('Constructor', function () {
+
         describe('instantiating a client', function () {
             it('should provide an instance of RegistryClient', function () {
                 expect(this.registry instanceof RegistryClient).to.be.ok;
@@ -83,10 +85,11 @@ describe('RegistryClient', function () {
     });
 
     describe('instantiating a client with custom options', function () {
+
         describe('offline', function () {
+
             it('should not return search results ', function (next) {
                 this.registry._config.offline = true;
-
                 this.registry.search('jquery', function (err, results) {
                     expect(err).to.be(null);
                     expect(results.length).to.eql(0);
@@ -452,6 +455,109 @@ describe('RegistryClient', function () {
         });
     });
 
+    //
+    // list
+    //
+    describe('calling the list instance method', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages')
+              .reply(200, [], {});
+
+            this.registry._config.force = true;
+        });
+
+        it('should not return an error', function (next) {
+            this.registry.list(function (err) {
+                expect(err).to.be(null);
+                next();
+            });
+        });
+
+        it('should return results array', function (next) {
+            var self = this;
+
+            this.registry.list(function (err, results) {
+                expect(results).to.be.an('array');
+                next();
+            });
+        });
+
+    });
+
+    describe('calling the list instance method with two registries', function () {
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages')
+              .reply(200, []);
+
+            nock('http://custom-registry.com')
+              .get('/packages')
+              .reply(200, [
+                {
+                    name: 'jquery',
+                    url: 'git://github.com/bar/foo.git'
+                }
+            ]);
+
+            this.registry = new RegistryClient({
+                strictSsl: false,
+                force: true,
+                registry: {
+                    search: [
+                        'https://bower.herokuapp.com',
+                        'http://custom-registry.com'
+                    ]
+                }
+            });
+        });
+
+        it('should return entry name', function (next) {
+            var self = this;
+
+            this.registry.list(function (err, results) {
+                var found = results.some(function (entry) {
+                    return entry.name === self.pkg;
+                });
+
+                expect(found).to.be(true);
+                next();
+            });
+        });
+
+        it('should return entry url', function (next) {
+            var self = this;
+
+            this.registry.list(function (err, results) {
+                if (! results.length) {
+                    return next(new Error('Result expected'));
+                }
+
+                var found = results.some(function (entry) {
+                    return entry.url === self.pkgUrl;
+                });
+
+                expect(found).to.be(true);
+                next();
+            });
+        });
+    });
+
+    describe('calling the list instance method', function () {
+
+        beforeEach(function () {
+            nock('https://bower.herokuapp.com:443')
+              .get('/packages')
+              .reply(200, [], {});
+        });
+
+        it('should return an error and no results', function (next) {
+            this.registry.list(function (err) {
+                expect(err).to.be(null);
+                next();
+            });
+        });
+    });
 
     //
     // clearCache
