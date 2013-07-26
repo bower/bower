@@ -23,6 +23,7 @@ For a complete list of changes that this rewrite and release brings please read:
 Non-backwards compatible changes:
 
 - `json` from .bowerrc is no longer used
+- `--map` and `--sources` from the list command were removed, use `--json` instead
 - Programmatic usage changed, specially the commands interface
 
 Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.   
