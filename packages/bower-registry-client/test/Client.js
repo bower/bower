@@ -4,7 +4,6 @@ var RegistryClient = require('../Client'),
     nock = require('nock');
 
 describe('RegistryClient', function () {
-
     beforeEach(function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
@@ -20,7 +19,6 @@ describe('RegistryClient', function () {
     });
 
     describe('Constructor', function () {
-
         describe('instantiating a client', function () {
             it('should provide an instance of RegistryClient', function () {
                 expect(this.registry instanceof RegistryClient).to.be.ok;
@@ -85,9 +83,7 @@ describe('RegistryClient', function () {
     });
 
     describe('instantiating a client with custom options', function () {
-
         describe('offline', function () {
-
             it('should not return search results ', function (next) {
                 this.registry._config.offline = true;
                 this.registry.search('jquery', function (err, results) {
@@ -475,8 +471,6 @@ describe('RegistryClient', function () {
         });
 
         it('should return results array', function (next) {
-            var self = this;
-
             this.registry.list(function (err, results) {
                 expect(results).to.be.an('array');
                 next();
