@@ -29,6 +29,10 @@ describe('resolverFactory', function () {
         }
     });
 
+    after(function (next) {
+        rimraf('dejavu', next);
+    });
+
     function callFactory(decEndpoint, config) {
         return resolverFactory(decEndpoint, config || defaultConfig, logger, registryClient);
     }
@@ -290,18 +294,24 @@ describe('resolverFactory', function () {
         // Absolute path to folder
         temp = path.resolve(__dirname, '../assets/test-temp-dir');
         endpoints[temp] = temp;
-        // Relative path to folder
+        // Absolute + relative path to folder
         endpoints[__dirname + '/../assets/test-temp-dir'] = temp;
 
         // Absolute path to file
         temp = path.resolve(__dirname, '../assets/package-zip.zip');
         endpoints[temp] = temp;
-        // Relative path to file
+        // Absolute + relative path to file
         endpoints[__dirname + '/../assets/package-zip.zip'] = temp;
+
+        // Relative ../
+        endpoints['../'] = path.normalize(__dirname + '/../../..');
+
+        // Relative ./
+        endpoints['./test/assets'] = path.join(__dirname, '../assets');
 
         // Relative with just one slash, to test fs resolution
         // priority against shorthands
-        endpoints['test/assets'] = path.join(__dirname, '../assets');
+        endpoints['./test'] = path.join(__dirname, '..');
 
         // Test files with multiple dots (PR #474)
         temp = path.join(tempSource, 'file.with.multiple.dots');
@@ -372,6 +382,9 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize registry endpoints correctly', function (next) {
+        // Create a 'dejavu' file at the root to prevent regressions of #666
+        fs.writeFileSync('dejavu', 'foo');
+
         callFactory({ source: 'dejavu' })
         .then(function (resolver) {
             expect(resolver).to.be.a(resolvers.GitRemote);
