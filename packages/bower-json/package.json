@@ -18,6 +18,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
+    "deep-extend": "~0.2.5",
     "graceful-fs": "~2.0.0"
   },
   "devDependencies": {

@@ -1,36 +1,101 @@
 var fs = require('graceful-fs');
 var path = require('path');
+var deepExtend = require('deep-extend');
 var createError = require('./util/createError');
 
-function read(file, callback) {
-    fs.readFile(file, function (err, contents) {
-        if (err) return callback(err);
+function read(file, options, callback) {
+    if (typeof options === 'function') {
+        callback = options;
+        options = {};
+    }
 
-        var json;
-
-        try {
-            json = JSON.parse(contents.toString());
-        } catch (err) {
-            err.code = 'EMALFORMED';
+    // Check if file is a directory
+    fs.stat(file, function (err, stat) {
+        if (err) {
             return callback(err);
         }
 
-        parse(json, callback);
+        // It's a directory, so we find the json inside it
+        if (stat.isDirectory()) {
+            return find(file, function (err, file) {
+                if (err) {
+                    return callback(err);
+                }
+
+                read(file, options, callback);
+            });
+        }
+
+        // Otherwise read it
+        fs.readFile(file, function (err, contents) {
+            var json;
+
+            if (err) {
+                return callback(err);
+            }
+
+            try {
+                json = JSON.parse(contents.toString());
+            } catch (err) {
+                err.code = 'EMALFORMED';
+                return callback(err);
+            }
+
+            // Parse it
+            try {
+                json = parse(json, options);
+            } catch (err) {
+                return callback(err);
+            }
+
+            callback(null, json, file);
+        });
     });
 }
 
-function parse(json, callback) {
-    // Apply normalisation and validation here
-    // If something is invalid, the error.code should be EINVALID
-    process.nextTick(function () {
-        if (!json.name) {
-            return callback(createError('No name property set', 'EINVALID'));
-        }
+function parse(json, options) {
+    options = deepExtend({
+        normalize: false,
+        validate: true,
+        clone: false
+    }, options || {});
 
-        // TODO: !!
+    // Clone
+    if (options.clone) {
+        json = deepExtend({}, json);
+    }
 
-        return callback(null, json);
-    });
+    // Validate
+    if (options.validate) {
+        validate(json);
+    }
+
+    // Normalize
+    if (options.normalize) {
+        normalize(json);
+    }
+
+    return json;
+}
+
+function validate(json) {
+    if (!json.name) {
+        throw createError('No name property set', 'EINVALID');
+    }
+
+    // TODO
+
+    return json;
+}
+
+function normalize(json) {
+    if (typeof json.main === 'string') {
+        json.main = json.main.split(',');
+    }
+
+    // TODO
+
+    return json;
 }
 
 function find(folder, callback) {
@@ -54,4 +119,6 @@ function find(folder, callback) {
 module.exports = read;
 module.exports.read = read;
 module.exports.parse = parse;
+module.exports.validate = validate;
+module.exports.normalize = normalize;
 module.exports.find = find;
