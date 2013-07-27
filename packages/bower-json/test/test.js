@@ -48,6 +48,7 @@ describe('.read', function () {
         bowerJson.read(__dirname + '/pkg-bower-json-malformed/bower.json', function (err) {
             expect(err).to.be.an(Error);
             expect(err.code).to.equal('EMALFORMED');
+            expect(err.file).to.equal(path.resolve(__dirname + '/pkg-bower-json-malformed/bower.json'));
             done();
         });
     });
@@ -96,6 +97,7 @@ describe('.read', function () {
         bowerJson.read(__dirname + '/pkg-bower-json-invalid/bower.json', function (err) {
             expect(err).to.be.an(Error);
             expect(err.message).to.contain('name');
+            expect(err.file).to.equal(path.resolve(__dirname + '/pkg-bower-json-invalid/bower.json'));
 
             bowerJson.read(__dirname + '/pkg-bower-json-invalid/bower.json', { validate: false }, function (err) {
                 done(err);

@@ -37,6 +37,7 @@ function read(file, options, callback) {
             try {
                 json = JSON.parse(contents.toString());
             } catch (err) {
+                err.file = path.resolve(file);
                 err.code = 'EMALFORMED';
                 return callback(err);
             }
@@ -45,6 +46,7 @@ function read(file, options, callback) {
             try {
                 json = parse(json, options);
             } catch (err) {
+                err.file = path.resolve(file);
                 return callback(err);
             }
 
@@ -99,15 +101,19 @@ function normalize(json) {
 }
 
 function find(folder, callback) {
-    var file = path.resolve(path.join(folder, 'bower.json'));
+    var file = path.join(folder, 'bower.json');
 
     fs.exists(file, function (exists) {
-        if (exists) return callback(null, file);
+        if (exists) {
+            return callback(null, file);
+        }
 
         file = path.resolve(path.join(folder, 'component.json'));
 
         fs.exists(file, function (exists) {
-            if (exists) return callback(null, file);
+            if (exists) {
+                return callback(null, file);
+            }
 
             var err = new Error('Neither bower.json nor component.json were found in ' + folder);
             err.code = 'ENOENT';
