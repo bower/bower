@@ -1,4 +1,5 @@
 function decompose(endpoint) {
+    // Note that we allow spaces in targets and sources but they are trimmed
     var regExp = /^(?:([\w\-]|(?:[\w\.\-]+[\w\-])?)=)?([^\|#]+)(?:#(.*))?$/;
     var matches = endpoint.match(regExp);
     var target;
@@ -14,8 +15,8 @@ function decompose(endpoint) {
 
     return {
         name: matches[1] || '',
-        source: matches[2],
-        target: !target || target === 'latest' ? '*' : target
+        source: (matches[2]).trim(),
+        target: !target || target === 'latest' ? '*' : target.trim()
     };
 }
 
@@ -23,31 +24,31 @@ function compose(decEndpoint) {
     var composed = '';
 
     if (decEndpoint.name) {
-        composed += decEndpoint.name + '=';
+        composed += decEndpoint.name.trim() + '=';
     }
 
-    composed += decEndpoint.source;
+    composed += decEndpoint.source.trim();
 
     if (!isWildcard(decEndpoint.target)) {
-        composed += '#' + decEndpoint.target;
+        composed += '#' + decEndpoint.target.trim();
     }
 
     return composed;
 }
 
 function json2decomposed(key, value) {
-    var endpoint = key + '=';
+    var endpoint = key.trim() + '=';
     var split = value.split('#');
 
     // If # was found, the source was specified
     if (split.length > 1) {
-        endpoint += (split[0] || key) + '#' + split[1];
+        endpoint += (split[0] || key).trim() + '#' + split[1].trim();
     // Check if value looks like a source
     } else if (isSource(value)) {
-        endpoint += value + '#*';
+        endpoint += value.trim() + '#*';
     // Otherwise use the key as the source
     } else {
-        endpoint += key + '#' + split[0];
+        endpoint += key.trim() + '#' + split[0].trim();
     }
 
     return decompose(endpoint);
@@ -55,36 +56,44 @@ function json2decomposed(key, value) {
 
 function decomposed2json(decEndpoint) {
     var error;
-    var key = decEndpoint.name;
+    var name = decEndpoint.name.trim();
+    var source = decEndpoint.source.trim();
+    var target = decEndpoint.target.trim();
     var value = '';
     var ret = {};
 
-    if (!key) {
+    if (!name) {
         error = new Error('Decomposed endpoint must have a name');
         error.code = 'EINVEND';
         throw error;
     }
 
     // Add source only if different than the name
-    if  (decEndpoint.source !== decEndpoint.name) {
-        value += decEndpoint.source;
+    if  (source !== name) {
+        value += source;
     }
 
     // If value is empty, we append the target always
     if (!value) {
-        value += isWildcard(decEndpoint.target) ? '*' : decEndpoint.target;
+        value += isWildcard(target) ? '*' : target;
     // Otherwise append only if not a wildcard
-    } else if (!isWildcard(decEndpoint.target)) {
-        value += '#' + decEndpoint.target;
+    } else if (!isWildcard(target)) {
+        value += '#' + target;
     }
 
-    ret[key] = value;
+    ret[name] = value;
 
     return ret;
 }
 
 function isWildcard(target) {
-    return !target || target === '*' || target === 'latest';
+    if (!target) {
+        return true;
+    }
+
+    target = target.trim();
+
+    return target === '*' || target === 'latest';
 }
 
 function isSource(value) {
