@@ -40,7 +40,9 @@ The `where` argument can be a path to a configuration file or:
 
 #### .toObject()
 
-Returns a deep copy of the underlying configuration object.
+Returns a deep copy of the underlying configuration object.   
+The returned configuration is normalised.   
+The object keys will be camelCase.
 
 
 #### #create(cwd)
@@ -61,6 +63,12 @@ Alias for:
 ```js
 var configObject = (new Config(cwd)).load().toJson();
 ```
+
+
+#### #normalise(config)
+
+Returns a new normalised config object based on `config`.   
+Object keys will be converted to camelCase.
 
 
 ## License
