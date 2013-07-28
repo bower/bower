@@ -11,44 +11,60 @@ function decompose(endpoint) {
         throw error;
     }
 
-    target = matches[3];
+    target = trim(matches[3]);
 
     return {
-        name: matches[1] || '',
-        source: (matches[2]).trim(),
-        target: !target || target === 'latest' ? '*' : target.trim()
+        name: trim(matches[1]),
+        source: trim(matches[2]),
+        target: isWildcard(target) ? '*' : target
     };
 }
 
 function compose(decEndpoint) {
+    var name = trim(decEndpoint.name);
+    var source = trim(decEndpoint.source);
+    var target = trim(decEndpoint.target);
     var composed = '';
 
-    if (decEndpoint.name) {
-        composed += decEndpoint.name.trim() + '=';
+    if (name) {
+        composed += name + '=';
     }
 
-    composed += decEndpoint.source.trim();
+    composed += source;
 
-    if (!isWildcard(decEndpoint.target)) {
-        composed += '#' + decEndpoint.target.trim();
+    if (!isWildcard(target)) {
+        composed += '#' + target;
     }
 
     return composed;
 }
 
 function json2decomposed(key, value) {
-    var endpoint = key.trim() + '=';
-    var split = value.split('#');
+    var endpoint;
+    var split;
+    var error;
+
+    key = trim(key);
+    value = trim(value);
+
+    if (!key) {
+        error = new Error('The key must be specified');
+        error.code = 'EINVEND';
+        throw error;
+    }
+
+    endpoint = key + '=';
+    split = value.split('#').map(trim);
 
     // If # was found, the source was specified
     if (split.length > 1) {
-        endpoint += (split[0] || key).trim() + '#' + split[1].trim();
+        endpoint += (split[0] || key) + '#' + split[1];
     // Check if value looks like a source
     } else if (isSource(value)) {
-        endpoint += value.trim() + '#*';
+        endpoint += value + '#*';
     // Otherwise use the key as the source
     } else {
-        endpoint += key.trim() + '#' + split[0].trim();
+        endpoint += key + '#' + split[0];
     }
 
     return decompose(endpoint);
@@ -56,9 +72,9 @@ function json2decomposed(key, value) {
 
 function decomposed2json(decEndpoint) {
     var error;
-    var name = decEndpoint.name.trim();
-    var source = decEndpoint.source.trim();
-    var target = decEndpoint.target.trim();
+    var name = trim(decEndpoint.name);
+    var source = trim(decEndpoint.source);
+    var target = trim(decEndpoint.target);
     var value = '';
     var ret = {};
 
@@ -86,14 +102,12 @@ function decomposed2json(decEndpoint) {
     return ret;
 }
 
+function trim(str) {
+    return str ? str.trim() : '';
+}
+
 function isWildcard(target) {
-    if (!target) {
-        return true;
-    }
-
-    target = target.trim();
-
-    return target === '*' || target === 'latest';
+    return !target || target === '*' || target === 'latest';
 }
 
 function isSource(value) {

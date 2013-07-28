@@ -28,6 +28,14 @@ describe('endpoint-parser', function () {
             var decEndpoint = endpointParser.decompose('foo= source # ~1.0.2 ');
             expect(decEndpoint.source).to.equal('source');
             expect(decEndpoint.target).to.equal('~1.0.2');
+
+            decEndpoint = endpointParser.decompose('foo= source # latest');
+            expect(decEndpoint.source).to.equal('source');
+            expect(decEndpoint.target).to.equal('*');
+
+            decEndpoint = endpointParser.decompose('foo= source # *');
+            expect(decEndpoint.source).to.equal('source');
+            expect(decEndpoint.target).to.equal('*');
         });
     });
 
@@ -76,6 +84,12 @@ describe('endpoint-parser', function () {
                 source: ' foo ',
                 target: ' * '
             })).to.equal('foo=foo');
+
+            expect(endpointParser.compose({
+                name: ' ',
+                source: ' foo ',
+                target: ''
+            })).to.equal('foo');
         });
     });
 
@@ -139,6 +153,24 @@ describe('endpoint-parser', function () {
                 expect(endpointParser.json2decomposed(key, value)).to.eql(expected[x]);
                 x += 1;
             });
+        });
+
+        it('should error out if key is not specified', function () {
+            try {
+                endpointParser.json2decomposed(null);
+                throw new Error('Should have failed');
+            } catch (e) {
+                expect(e.code).to.equal('EINVEND');
+                expect(e.message).to.contain('key must be specified');
+            }
+
+            try {
+                endpointParser.json2decomposed('');
+                throw new Error('Should have failed');
+            } catch (e) {
+                expect(e.code).to.equal('EINVEND');
+                expect(e.message).to.contain('key must be specified');
+            }
         });
     });
 
