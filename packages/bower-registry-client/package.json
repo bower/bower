@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "deep-extend": "~0.2.5",
+    "bower-config": "~0.2.0-rc.1",
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.22.0",

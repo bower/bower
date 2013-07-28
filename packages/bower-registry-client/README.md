@@ -14,7 +14,7 @@ var registry = new RegistryClient(options, logger);
 The `logger` is optional and is expected to be an instance of the bower [logger](https://github.com/bower/logger).   
 Available constructor options:
 
-- `cache`: the cache folder to use for some operations; using null will disable  persistent cache (defaults to OS temp folder)
+- `cache`: the cache folder to use for some operations; using null will disable persistent cache (defaults to bower registry cache folder)
 - `registry.search`: an array of registry search endpoints (defaults to the Bower server)
 - `registry.register`: the endpoint to use when registering packages (defaults to the Bower server)
 - `registry.publish`: the endpoint to use when publishing packages (defaults to the Bower server)
