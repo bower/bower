@@ -23,17 +23,20 @@ var levels = Logger.LEVELS;
 
 process.title = 'bower';
 
-// Handle print of version
 options = cli.readOptions({
     version: { type: Boolean, shorthand: 'v' },
     help: { type: Boolean, shorthand: 'h' },
     'allow-root': { type: Boolean }
 });
 
+// Handle print of version
 if (options.version) {
     process.stdout.write(pkg.version + '\n');
     process.exit();
 }
+
+// Root check
+rootCheck(options, bower.config);
 
 // Set loglevel
 if (bower.config.silent) {
@@ -69,8 +72,6 @@ while (options.argv.remain.length) {
 
     options.argv.remain.pop();
 }
-
-rootCheck(options, command, bower.config);
 
 // Execute the command
 commandFunc = command && mout.object.get(bower.commands, command);

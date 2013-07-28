@@ -48,12 +48,12 @@
     "rimraf": "~2.2.0",
     "semver": "~2.0.8",
     "stringify-object": "~0.1.4",
+    "sudo-block": "~0.2.0",
     "tar": "~0.1.17",
     "tmp": "~0.0.20",
     "unzip": "~0.1.7",
     "update-notifier": "~0.1.3",
-    "which": "~1.0.5",
-    "sudo-block": "~0.2.0"
+    "which": "~1.0.5"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
