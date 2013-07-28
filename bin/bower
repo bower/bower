@@ -8,6 +8,7 @@ var Logger = require('bower-logger');
 var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
+var rootCheck = require('../lib/util/rootCheck');
 
 // --------
 
@@ -25,7 +26,8 @@ process.title = 'bower';
 // Handle print of version
 options = cli.readOptions({
     version: { type: Boolean, shorthand: 'v' },
-    help: { type: Boolean, shorthand: 'h' }
+    help: { type: Boolean, shorthand: 'h' },
+    'allow-root': { type: Boolean }
 });
 
 if (options.version) {
@@ -67,6 +69,8 @@ while (options.argv.remain.length) {
 
     options.argv.remain.pop();
 }
+
+rootCheck(options, command, bower.config);
 
 // Execute the command
 commandFunc = command && mout.object.get(bower.commands, command);
