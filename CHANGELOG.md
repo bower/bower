@@ -2,14 +2,15 @@
 
 ## 1.0.1
 
+- Fix local fs endpoints on Windows ([#2@endpoint-parser](https://github.com/bower/endpoint-parser/pull/2))
 - Fix `bower register` going ahead even if the answer was `no` ([#644](https://github.com/bower/bower/issues/644))
 - File extensions now have more priority than mime types when deciding if extraction is necessary ([#657](https://github.com/bower/bower/pull/657))
 - Fix `Bower` not working when calling `.bat`/`.cmd` commands on Windows; it affected people using `Git portable` ([#626](https://github.com/bower/bower/issues/626))
 - Fix `bower list --paths` not resolving all files to absolute paths when the `main` property contained multiple files ([660](https://github.com/bower/bower/issues/660))
 - Ignore symlinks when copying/extracting since they are not portable, specially accross different hard-drives ([#665](https://github.com/bower/bower/issues/665))
 - Local file/dir endpoints are now exclusively referenced by an absolute path or relative path starting with `.` ([#666](https://github.com/bower/bower/issues/666))
-- Linked packages `json` are now parsed, making `bower list` list also linked packages dependencies ([#659](https://github.com/bower/bower/issues/659))
-- Bower fails to run with sudo unless `--allow-root` is passed ([#498](https://github.com/bower/bower/issues/498))
+- Linked packages `json` are now parsed, making `bower list` account linked packages dependencies ([#659](https://github.com/bower/bower/issues/659))
+- Bower now fails to run with sudo unless `--allow-root` is passed ([#498](https://github.com/bower/bower/issues/498))
 - Add additional system information such as node version, bower version, OS version when an error occurs ([#670](https://github.com/bower/bower/issues/670))
 
 
