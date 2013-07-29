@@ -355,8 +355,36 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip-single-file.zip'))).to.be(false);
+
                 return assertMain(dir, 'index.js')
                 .then(next.bind(next, null));
+            })
+            .done();
+        });
+
+        it('should extract if source is an archive and not rename to index if inside it\'s just a just bower.json/component.json file in it', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/package-zip-single-bower-json.zip')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-single-bower-json.zip'))
+            .get('/package-zip-single-component-json.zip')
+            .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip-single-component-json.zip'));
+
+            resolver = create('http://bower.io/package-zip-single-bower-json.zip');
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'bower.json'))).to.be(true);
+
+                resolver = create('http://bower.io/package-zip-single-component-json.zip');
+            })
+            .then(function () {
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'component.json'))).to.be(true);
+                next();
             })
             .done();
         });
