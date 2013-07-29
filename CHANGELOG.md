@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.2 - 2013-07-30
+
+- Fix severe bug that caused conflict packages to not show up originated from a wrong merge
+
 ## 1.0.1 - 2013-07-29
 
 - Fix `bower register` going ahead even if the answer was `no` ([#644](https://github.com/bower/bower/issues/644))
