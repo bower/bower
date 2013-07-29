@@ -1,4 +1,5 @@
 function decompose(endpoint) {
+    // Note that we allow spaces in targets and sources but they are trimmed
     var regExp = /^(?:([\w\-]|(?:[\w\.\-]+[\w\-])?)=)?([^\|#]+)(?:#(.*))?$/;
     var matches = endpoint.match(regExp);
     var target;
@@ -10,34 +11,50 @@ function decompose(endpoint) {
         throw error;
     }
 
-    target = matches[3];
+    target = trim(matches[3]);
 
     return {
-        name: matches[1] || '',
-        source: matches[2],
-        target: !target || target === 'latest' ? '*' : target
+        name: trim(matches[1]),
+        source: trim(matches[2]),
+        target: isWildcard(target) ? '*' : target
     };
 }
 
 function compose(decEndpoint) {
+    var name = trim(decEndpoint.name);
+    var source = trim(decEndpoint.source);
+    var target = trim(decEndpoint.target);
     var composed = '';
 
-    if (decEndpoint.name) {
-        composed += decEndpoint.name + '=';
+    if (name) {
+        composed += name + '=';
     }
 
-    composed += decEndpoint.source;
+    composed += source;
 
-    if (!isWildcard(decEndpoint.target)) {
-        composed += '#' + decEndpoint.target;
+    if (!isWildcard(target)) {
+        composed += '#' + target;
     }
 
     return composed;
 }
 
 function json2decomposed(key, value) {
-    var endpoint = key + '=';
-    var split = value.split('#');
+    var endpoint;
+    var split;
+    var error;
+
+    key = trim(key);
+    value = trim(value);
+
+    if (!key) {
+        error = new Error('The key must be specified');
+        error.code = 'EINVEND';
+        throw error;
+    }
+
+    endpoint = key + '=';
+    split = value.split('#').map(trim);
 
     // If # was found, the source was specified
     if (split.length > 1) {
@@ -55,32 +72,38 @@ function json2decomposed(key, value) {
 
 function decomposed2json(decEndpoint) {
     var error;
-    var key = decEndpoint.name;
+    var name = trim(decEndpoint.name);
+    var source = trim(decEndpoint.source);
+    var target = trim(decEndpoint.target);
     var value = '';
     var ret = {};
 
-    if (!key) {
+    if (!name) {
         error = new Error('Decomposed endpoint must have a name');
         error.code = 'EINVEND';
         throw error;
     }
 
     // Add source only if different than the name
-    if  (decEndpoint.source !== decEndpoint.name) {
-        value += decEndpoint.source;
+    if  (source !== name) {
+        value += source;
     }
 
     // If value is empty, we append the target always
     if (!value) {
-        value += isWildcard(decEndpoint.target) ? '*' : decEndpoint.target;
+        value += isWildcard(target) ? '*' : target;
     // Otherwise append only if not a wildcard
-    } else if (!isWildcard(decEndpoint.target)) {
-        value += '#' + decEndpoint.target;
+    } else if (!isWildcard(target)) {
+        value += '#' + target;
     }
 
-    ret[key] = value;
+    ret[name] = value;
 
     return ret;
+}
+
+function trim(str) {
+    return str ? str.trim() : '';
 }
 
 function isWildcard(target) {

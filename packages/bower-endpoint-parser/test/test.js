@@ -23,6 +23,20 @@ describe('endpoint-parser', function () {
                 expect(endpointParser.decompose(endpoint)).to.eql(decEndpoint);
             });
         });
+
+        it('should trim sources and targets', function () {
+            var decEndpoint = endpointParser.decompose('foo= source # ~1.0.2 ');
+            expect(decEndpoint.source).to.equal('source');
+            expect(decEndpoint.target).to.equal('~1.0.2');
+
+            decEndpoint = endpointParser.decompose('foo= source # latest');
+            expect(decEndpoint.source).to.equal('source');
+            expect(decEndpoint.target).to.equal('*');
+
+            decEndpoint = endpointParser.decompose('foo= source # *');
+            expect(decEndpoint.source).to.equal('source');
+            expect(decEndpoint.target).to.equal('*');
+        });
     });
 
     describe('.compose', function () {
@@ -45,9 +59,56 @@ describe('endpoint-parser', function () {
                 });
             });
         });
+
+        it('should trim values', function () {
+            expect(endpointParser.compose({
+                name: ' foo ',
+                source: ' bar ',
+                target: ' ~1.0.2 '
+            })).to.equal('foo=bar#~1.0.2');
+
+            expect(endpointParser.compose({
+                name: ' foo ',
+                source: ' foo ',
+                target: ' ~1.0.2 '
+            })).to.equal('foo=foo#~1.0.2');
+
+            expect(endpointParser.compose({
+                name: ' foo ',
+                source: ' foo ',
+                target: ' * '
+            })).to.equal('foo=foo');
+
+            expect(endpointParser.compose({
+                name: ' foo ',
+                source: ' foo ',
+                target: ' * '
+            })).to.equal('foo=foo');
+
+            expect(endpointParser.compose({
+                name: ' ',
+                source: ' foo ',
+                target: ''
+            })).to.equal('foo');
+        });
     });
 
     describe('.json2decomposed', function () {
+        var expected = [
+            { name: 'jquery', source: 'jquery', target: '~1.9.1' },
+            { name: 'foo', source: 'foo', target: '*' },
+            { name: 'bar', source: 'bar', target: '*' },
+            { name: 'baz', source: 'baz', target: '~0.2.0' },
+            { name: 'backbone', source: 'backbone-amd', target: '~1.0.0' },
+            { name: 'backbone2', source: 'backbone=backbone-amd', target: '~1.0.0' },
+            { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
+            { name: 'bootstrap2', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
+            { name: 'ssh', source: 'git@example.com', target: '*' },
+            { name: 'git', source: 'git://example.com', target: '*' },
+            { name: 'path', source: '/foo', target: '*' },
+            { name: 'winpath', source: 'c:\\foo', target: '*' }
+        ];
+
         it('should decompose json endpoints correctly', function () {
             var dependencies = {
                 jquery: '~1.9.1',
@@ -63,20 +124,6 @@ describe('endpoint-parser', function () {
                 path: '/foo',
                 winpath: 'c:\\foo'
             };
-            var expected = [
-                { name: 'jquery', source: 'jquery', target: '~1.9.1' },
-                { name: 'foo', source: 'foo', target: '*' },
-                { name: 'bar', source: 'bar', target: '*' },
-                { name: 'baz', source: 'baz', target: '~0.2.0' },
-                { name: 'backbone', source: 'backbone-amd', target: '~1.0.0' },
-                { name: 'backbone2', source: 'backbone=backbone-amd', target: '~1.0.0' },
-                { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
-                { name: 'bootstrap2', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
-                { name: 'ssh', source: 'git@example.com', target: '*' },
-                { name: 'git', source: 'git://example.com', target: '*' },
-                { name: 'path', source: '/foo', target: '*' },
-                { name: 'winpath', source: 'c:\\foo', target: '*' }
-            ];
             var x = 0;
 
             mout.object.forOwn(dependencies, function (value, key) {
@@ -84,9 +131,64 @@ describe('endpoint-parser', function () {
                 x += 1;
             });
         });
+
+        it('should trim values', function () {
+            var dependencies = {
+                ' jquery ': ' ~1.9.1 ',
+                ' foo ': ' latest ',
+                ' bar ': ' * ',
+                ' baz ': '# ~0.2.0 ',
+                ' backbone ': ' backbone-amd#~1.0.0 ',
+                ' backbone2 ': ' backbone=backbone-amd # ~1.0.0 ',
+                ' bootstrap ': ' http://twitter.github.io/bootstrap/assets/bootstrap',
+                ' bootstrap2 ': ' http://twitter.github.io/bootstrap/assets/bootstrap # *',
+                ' ssh ': ' git@example.com ',
+                ' git ': ' git://example.com ',
+                ' path ': ' /foo ',
+                ' winpath ': ' c:\\foo '
+            };
+            var x = 0;
+
+            mout.object.forOwn(dependencies, function (value, key) {
+                expect(endpointParser.json2decomposed(key, value)).to.eql(expected[x]);
+                x += 1;
+            });
+        });
+
+        it('should error out if key is not specified', function () {
+            try {
+                endpointParser.json2decomposed(null);
+                throw new Error('Should have failed');
+            } catch (e) {
+                expect(e.code).to.equal('EINVEND');
+                expect(e.message).to.contain('key must be specified');
+            }
+
+            try {
+                endpointParser.json2decomposed('');
+                throw new Error('Should have failed');
+            } catch (e) {
+                expect(e.code).to.equal('EINVEND');
+                expect(e.message).to.contain('key must be specified');
+            }
+        });
     });
 
     describe('.decomposed2json', function () {
+        var expected = [
+            { jquery: '~1.9.1' },
+            { foo: '*' },
+            { bar: '*' },
+            { baz: '*' },
+            { jqueryx: 'jquery#~1.9.1' },
+            { backbone: 'backbone-amd#~1.0.0' },
+            { backbone : 'backbone=backbone-amd#~1.0.0' },
+            { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
+            { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
+            { ssh: 'git@example.com' },
+            { git: 'git://example.com' }
+        ];
+
         it('should compose endpoints to json correctly', function () {
             var decEndpoints = [
                 { name: 'jquery', source: 'jquery', target: '~1.9.1' },
@@ -101,18 +203,27 @@ describe('endpoint-parser', function () {
                 { name: 'ssh', source: 'git@example.com', target: '*' },
                 { name: 'git', source: 'git://example.com', target: '*' }
             ];
-            var expected = [
-                { jquery: '~1.9.1' },
-                { foo: '*' },
-                { bar: '*' },
-                { baz: '*' },
-                { jqueryx: 'jquery#~1.9.1' },
-                { backbone: 'backbone-amd#~1.0.0' },
-                { backbone : 'backbone=backbone-amd#~1.0.0' },
-                { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
-                { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
-                { ssh: 'git@example.com' },
-                { git: 'git://example.com' }
+            var x = 0;
+
+            decEndpoints.forEach(function (decEndpoint) {
+                expect(endpointParser.decomposed2json(decEndpoint)).to.eql(expected[x]);
+                x += 1;
+            });
+        });
+
+        it('should trim values', function () {
+            var decEndpoints = [
+                { name: ' jquery ', source: ' jquery ', target: ' ~1.9.1 ' },
+                { name: 'foo', source: ' foo', target: ' latest ' },
+                { name: 'bar', source: 'bar ', target: ' * ' },
+                { name: 'baz ', source: 'baz', target: ' ' },
+                { name: ' jqueryx ', source: ' jquery ', target: ' ~1.9.1 ' },
+                { name: ' backbone ', source: ' backbone-amd ', target: ' ~1.0.0 ' },
+                { name: ' backbone ', source: ' backbone=backbone-amd ', target: ' ~1.0.0 ' },
+                { name: ' bootstrap ', source: ' http://twitter.github.io/bootstrap/assets/bootstrap ', target: ' ' },
+                { name: ' bootstrap ', source: ' http://twitter.github.io/bootstrap/assets/bootstrap ', target: ' * ' },
+                { name: ' ssh ', source: ' git@example.com ', target: ' * ' },
+                { name: ' git ', source: ' git://example.com ', target: ' * ' }
             ];
             var x = 0;
 
@@ -125,13 +236,19 @@ describe('endpoint-parser', function () {
         it('should throw an error if name is empty', function () {
             try {
                 endpointParser.decomposed2json({ name: '', source: 'jquery', target: '*' });
+                throw new Error('Should have failed');
             } catch (e) {
                 expect(e.code).to.equal('EINVEND');
                 expect(e.message).to.contain('must have a name');
-                return;
             }
 
-            throw new Error('Should have failed');
+            try {
+                endpointParser.decomposed2json({ name: ' ', source: 'jquery', target: '*' });
+                throw new Error('Should have failed');
+            } catch (e) {
+                expect(e.code).to.equal('EINVEND');
+                expect(e.message).to.contain('must have a name');
+            }
         });
     });
 });
