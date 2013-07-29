@@ -8,6 +8,7 @@ var Logger = require('bower-logger');
 var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
+var rootCheck = require('../lib/util/rootCheck');
 
 // --------
 
@@ -22,16 +23,20 @@ var levels = Logger.LEVELS;
 
 process.title = 'bower';
 
-// Handle print of version
 options = cli.readOptions({
     version: { type: Boolean, shorthand: 'v' },
-    help: { type: Boolean, shorthand: 'h' }
+    help: { type: Boolean, shorthand: 'h' },
+    'allow-root': { type: Boolean }
 });
 
+// Handle print of version
 if (options.version) {
     process.stdout.write(pkg.version + '\n');
     process.exit();
 }
+
+// Root check
+rootCheck(options, bower.config);
 
 // Set loglevel
 if (bower.config.silent) {

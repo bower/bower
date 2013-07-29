@@ -53,6 +53,10 @@
             "shorthand":   "-V",
             "flag":        "--verbose",
             "description": "Makes output more verbose"
+        },
+        {
+            "flag":        "--allow-root",
+            "description": "Allows running commands as root"
         }
     ]
 }
