@@ -248,6 +248,8 @@ describe('resolverFactory', function () {
         // Relative path
         endpoints[__dirname + '/../assets/github-test-package'] = temp;
 
+        // TODO: test with backslashes on windows and ~/ on unix
+
         mout.object.forOwn(endpoints, function (value, key) {
             // Test without name
             promise = promise.then(function () {
