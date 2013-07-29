@@ -2,7 +2,7 @@
 
 ## 1.0.2 - 2013-07-30
 
-- Fix severe bug that caused conflict packages to not show up originated from a wrong merge
+- Fix severe bug originated from a wrong merge that caused conflict messages to not show up correctly
 
 ## 1.0.1 - 2013-07-29
 
