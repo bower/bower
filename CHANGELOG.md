@@ -22,7 +22,7 @@ For a complete list of changes that this rewrite and release brings please read:
 
 Non-backwards compatible changes:
 
-- `json` from .bowerrc is no longer used
+- The value of the `json` property from .bowerrc is no longer used
 - `--map` and `--sources` from the list command were removed, use `--json` instead
 - Programmatic usage changed, specially the commands interface
 
