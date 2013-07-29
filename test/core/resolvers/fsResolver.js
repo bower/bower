@@ -178,6 +178,35 @@ describe('FsResolver', function () {
             .done();
         });
 
+        it('should not rename to index if source is a folder with just bower.json/component.json file in it', function (next) {
+            var resolver;
+
+            tempSource = path.resolve(__dirname, '../../assets/tmp');
+
+            mkdirp.sync(tempSource);
+            resolver = create(tempSource);
+
+            copy.copyFile(path.join(testPackage, 'bower.json'), path.join(tempSource, 'bower.json'))
+            .then(resolver.resolve.bind(resolver))
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'bower.json'))).to.be(true);
+
+                rimraf.sync(tempSource);
+                mkdirp.sync(tempSource);
+
+                resolver = create(tempSource);
+            })
+            .then(copy.copyFile.bind(copy, path.join(testPackage, 'bower.json'), path.join(tempSource, 'component.json')))
+            .then(function () {
+                return resolver.resolve();
+            })
+            .then(function (dir) {
+                expect(fs.existsSync(path.join(dir, 'component.json'))).to.be(true);
+                next();
+            })
+            .done();
+        });
+
         it('should copy the source directory permissions', function (next) {
             var mode0777;
             var resolver;
