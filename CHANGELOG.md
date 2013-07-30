@@ -1,8 +1,15 @@
 # Changelog
 
+## 1.0.3 - 2013-07-30
+
+- Fix some changes not being saved to bower.json ([#685](https://github.com/bower/bower/issues/685))
+- Fix `bower info <package> <property>` not showing information related to property of the latest version of that package ([#684](https://github.com/bower/bower/issues/684))
+
+
 ## 1.0.2 - 2013-07-30
 
 - Fix severe bug originated from a wrong merge that caused conflict messages to not show up correctly
+
 
 ## 1.0.1 - 2013-07-29
 
