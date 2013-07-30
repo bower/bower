@@ -8,6 +8,7 @@
 /test/assets/temp-resolve-cache
 
 /bower.json
+/component.json
 /bower_components
 
 /test/reports/
