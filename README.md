@@ -170,6 +170,8 @@ The `bower.json` defines several options:
   Bower to ignore when installing your package.
 * `dependencies` [hash]: Packages your package depends upon in production.
 * `devDependencies` [hash]: Development dependencies.
+* `private` [boolean]: Set to true if you want to keep the package private and 
+  do not want to register the package in future.
 
 ```json
 {
