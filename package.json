@@ -26,6 +26,7 @@
     "bower-json": "~0.2.0",
     "bower-logger": "~0.1.0",
     "bower-registry-client": "~0.1.1",
+    "cardinal": "~0.4.0",
     "chmodr": "~0.1.0",
     "colors": "~0.6.0-1",
     "fstream": "~0.1.22",
@@ -53,8 +54,7 @@
     "tmp": "~0.0.20",
     "unzip": "~0.1.7",
     "update-notifier": "~0.1.3",
-    "which": "~1.0.5",
-    "cardinal": "~0.3.2"
+    "which": "~1.0.5"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
