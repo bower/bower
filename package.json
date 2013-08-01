@@ -26,6 +26,7 @@
     "bower-json": "~0.2.0",
     "bower-logger": "~0.1.0",
     "bower-registry-client": "~0.1.1",
+    "cardinal": "~0.4.0",
     "chmodr": "~0.1.0",
     "colors": "~0.6.0-1",
     "fstream": "~0.1.22",
