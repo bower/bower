@@ -19,8 +19,9 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "archy": "0.0.2",
     "abbrev": "~1.0.4",
+    "ansicolors": "~0.2.1",
+    "archy": "0.0.2",
     "bower-config": "~0.2.0",
     "bower-endpoint-parser": "~0.2.0",
     "bower-json": "~0.2.0",
