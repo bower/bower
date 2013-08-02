@@ -6,11 +6,11 @@
 - __Attempting to register a package that declares `"private": true` in `bower.json` will result in an error ([#162](https://github.com/bower/bower/issues/162))__
 - __Fix retry strategy on download error that was causing some strange I/O errors__ ([#699](https://github.com/bower/bower/issues/699) and [#704](https://github.com/bower/bower/issues/704))
 - __`bower prune` now clears pruned packages dependencies if they are also extraneous__ ([#708](https://github.com/bower/bower/issues/708))
-- __`bower uninstall` now uninstalls removed packages dependencies if they are not shared ([#609](https://github.com/bower/bower/issues/609))__
-- Fix `bower cache clean` not working correctly when a package#non-semver is specified
+- __`bower uninstall` now uninstalls uninstalled packages dependencies if they are not shared ([#609](https://github.com/bower/bower/issues/609))__
+- Fix `bower cache clean` not working correctly when `package#non-semver` is specified
 - Implement no operation `completion` command to prevent weird output when hitting tab ([#691](https://github.com/bower/bower/issues/691))
 - Fix `bower info --help` ([#703](https://github.com/bower/bower/issues/703))
-- Colorize output of `bower info` ([#571](https://github.com/bower/bower/issues/571))
+- Add colorized output for `bower info <package>` ([#571](https://github.com/bower/bower/issues/571))
 - Added `bower ls` as an alias to `bower list`
 - Fix regression: do not create a json file when saving to it is required, warn instead
 - Ignore linked packages in when reading dependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
