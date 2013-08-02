@@ -14,6 +14,7 @@ function rc(name, defaults, cwd, argv) {
     argv = argv || optimist.argv;
 
     return mout.object.deepMixIn.apply(null, [
+        {},
         defaults,
         { cwd: cwd },
         win ? {} : json(path.join('/etc', name + 'rc')),
