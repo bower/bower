@@ -23,7 +23,7 @@ var defaults = {
     'tmp': os.tmpdir ? os.tmpdir() : os.tmpDir(),
     'proxy': proxy,
     'https-proxy': httpsProxy,
-    'timeout': 60000,
+    'timeout': 30000,
     'ca': { search: [] },
     'strict-ssl': true,
     'user-agent': 'node/' + process.version + ' ' + process.platform + ' ' + process.arch,
