@@ -29,7 +29,7 @@ function expand(config) {
             publish: config.registry
         };
     } else if (config.registry) {
-        if (!Array.isArray(config.registry.search)) {
+        if (config.registry.search && !Array.isArray(config.registry.search)) {
             config.registry.search = [config.registry.search];
         }
     }
@@ -42,7 +42,7 @@ function expand(config) {
             publish: config.ca
         };
     } else if (config.ca) {
-        if (!Array.isArray(config.ca.search)) {
+        if (config.ca.search && !Array.isArray(config.ca.search)) {
             config.ca.search = [config.ca.search];
         }
     }
