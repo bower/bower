@@ -13,7 +13,7 @@
 - Add colorized output for `bower info <package>` ([#571](https://github.com/bower/bower/issues/571))
 - Added `bower ls` as an alias to `bower list`
 - Fix regression: do not create a json file when saving is required, warn instead
-- Ignore linked packages in when reading dependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
+- Ignore linked packages when reading dependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
 - `bower list` is now able to (partially) reconstruct the dependency tree, even for dependencies not declared in `bower.json` ([#622](https://github.com/bower/bower/issues/622))
 
 
