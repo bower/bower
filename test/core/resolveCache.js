@@ -13,7 +13,7 @@ var md5 = require('../../lib/util/md5');
 
 describe('ResolveCache', function () {
     var resolveCache;
-    var testPackage = path.resolve(__dirname, '../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../assets/package-a');
     var tempPackage = path.resolve(__dirname, '../assets/temp');
     var tempPackage2 = path.resolve(__dirname, '../assets/temp2');
     var cacheDir = path.join(__dirname, '../assets/temp-resolve-cache');

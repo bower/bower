@@ -9,7 +9,7 @@ var defaultConfig = require('../../../lib/config');
 
 describe('GitHub', function () {
     var logger;
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../../assets/package-a');
 
     before(function () {
         logger = new Logger();
@@ -57,7 +57,7 @@ describe('GitHub', function () {
         });
 
         it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: 'b273e321ebc69381be2780668a22e28bec9e2b07' });
+            var resolver = create({ source: 'file://' + testPackage, target: 'def32c2d04ff2b0f42a0c4df3018de743b637806' });
             var originalCheckout = GitRemoteResolver.prototype._checkout;
             var called;
 

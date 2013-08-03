@@ -14,7 +14,7 @@ var defaultConfig = require('../../../lib/config');
 describe('FsResolver', function () {
     var tempSource;
     var logger;
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../../assets/package-a');
 
     before(function (next) {
         logger = new Logger();
@@ -47,7 +47,7 @@ describe('FsResolver', function () {
         it('should guess the name from the path', function () {
             var resolver = create(testPackage);
 
-            expect(resolver.getName()).to.equal('github-test-package');
+            expect(resolver.getName()).to.equal('package-a');
         });
 
         it('should make paths absolute and normalized', function () {
@@ -211,7 +211,7 @@ describe('FsResolver', function () {
             var mode0777;
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/github-test-package-copy');
+            tempSource = path.resolve(__dirname, '../../assets/package-a-copy');
             resolver = create(tempSource);
 
             copy.copyDir(testPackage, tempSource)

@@ -6,7 +6,7 @@ var GitRemoteResolver = require('../../../lib/core/resolvers/GitRemoteResolver')
 var defaultConfig = require('../../../lib/config');
 
 describe('GitRemoteResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../../assets/package-a');
     var logger;
 
     before(function () {
@@ -34,7 +34,7 @@ describe('GitRemoteResolver', function () {
             var resolver;
 
             resolver = create('file://' + testPackage);
-            expect(resolver.getName()).to.equal('github-test-package');
+            expect(resolver.getName()).to.equal('package-a');
 
             resolver = create('git://github.com/twitter/bower.git');
             expect(resolver.getName()).to.equal('bower');
@@ -105,7 +105,7 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should checkout correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: '7339c38f5874129504b83650fbb2d850394573e9' });
+            var resolver = create({ source: 'file://' + testPackage, target: 'd76bab9456cc3deac73bc4f227ae7ad00bff7d72' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -116,7 +116,7 @@ describe('GitRemoteResolver', function () {
                 expect(files).to.not.contain('foo');
                 expect(files).to.not.contain('bar');
                 expect(files).to.not.contain('baz');
-                expect(files).to.contain('README.md');
+                expect(files).to.contain('.master');
                 next();
             })
             .done();
@@ -131,23 +131,17 @@ describe('GitRemoteResolver', function () {
         it('should resolve to the references of the remote repository', function (next) {
             GitRemoteResolver.refs('file://' + testPackage)
             .then(function (refs) {
-                // Remove master and test only for the first 13 refs
-                refs = refs.slice(1, 14);
+                // Remove master and test only for the first 7 refs
+                refs = refs.slice(1, 8);
 
                 expect(refs).to.eql([
-                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
-                    '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
-                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476 refs/tags/0.0.1^{}',
-                    '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
-                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00 refs/tags/0.0.2^{}',
-                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07 refs/tags/0.1.0^{}',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}',
-                    'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
-                    '65dc372d73c76ed4904ee209ed77c09d44f4dc53 refs/tags/0.2.0^{}',
-                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1',
-                    'c2cc010b8ee65737c55d63e4c67cba8fb9a00d7f refs/tags/0.2.1^{}'
+                    'db2829610b1e31386d711b5be5fda8e3f750a59a refs/heads/some-branch',
+                    '3be150401b59377511630a5d4e4da3b3c8c494d3 refs/tags/0.0.1',
+                    '5edabebb4e066a89cdae3ec113f23e248bce4244 refs/tags/0.0.2',
+                    'def32c2d04ff2b0f42a0c4df3018de743b637806 refs/tags/0.1.0',
+                    '3c81d66fd6684b7fb26f42a94714605ea5ef915c refs/tags/0.1.1',
+                    '2f29c23ddc716b6f38260d98c9b75c32c9c51800 refs/tags/0.2.0',
+                    '420d368a2d85b5a1b6f1ce74f2ca26827fdc3e32 refs/tags/0.2.1'
                 ]);
                 next();
             })
@@ -166,23 +160,17 @@ describe('GitRemoteResolver', function () {
                 return GitRemoteResolver.refs('file://' + testPackage);
             })
             .then(function (refs) {
-                // Test only for the first 12 refs
-                refs = refs.slice(0, 13);
+                // Test only for the first 7 refs
+                refs = refs.slice(0, 7);
 
                 expect(refs).to.eql([
-                    '8b03dbbe20e0bc4f1fae2811ea0063121eb1b155 refs/heads/some-branch',
-                    '122ac45fd22671a23cf77055a32d06d5a7baedd0 refs/tags/0.0.1',
-                    '19b3a35cc7fded9a8a60d5b8fc0d18eb4940c476 refs/tags/0.0.1^{}',
-                    '34dd75a11e686be862844996392e96e9457c7467 refs/tags/0.0.2',
-                    'ddc6ea571c49c1ab8bb213fda18efdfe2bc8dd00 refs/tags/0.0.2^{}',
-                    '92327598500f115d09ab14f16cde23718fc87658 refs/tags/0.1.0',
-                    'b273e321ebc69381be2780668a22e28bec9e2b07 refs/tags/0.1.0^{}',
-                    '192bc846a342eb8ae62bb1a54d1394959e6fcd92 refs/tags/0.1.1',
-                    'f99467d1069892ea639b6a3d2afdbff6ac62f44e refs/tags/0.1.1^{}',
-                    'a920e518bc9eda908018ea299cad48d358a111ce refs/tags/0.2.0',
-                    '65dc372d73c76ed4904ee209ed77c09d44f4dc53 refs/tags/0.2.0^{}',
-                    '2fe77b16a065ca5b8f0076a9984ae629e5472d7c refs/tags/0.2.1',
-                    'c2cc010b8ee65737c55d63e4c67cba8fb9a00d7f refs/tags/0.2.1^{}'
+                    'db2829610b1e31386d711b5be5fda8e3f750a59a refs/heads/some-branch',
+                    '3be150401b59377511630a5d4e4da3b3c8c494d3 refs/tags/0.0.1',
+                    '5edabebb4e066a89cdae3ec113f23e248bce4244 refs/tags/0.0.2',
+                    'def32c2d04ff2b0f42a0c4df3018de743b637806 refs/tags/0.1.0',
+                    '3c81d66fd6684b7fb26f42a94714605ea5ef915c refs/tags/0.1.1',
+                    '2f29c23ddc716b6f38260d98c9b75c32c9c51800 refs/tags/0.2.0',
+                    '420d368a2d85b5a1b6f1ce74f2ca26827fdc3e32 refs/tags/0.2.1'
                 ]);
                 next();
             })
