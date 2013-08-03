@@ -1,6 +1,6 @@
 {
   "name": "bower-registry-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Provides easy interaction with the Bower registry.",
   "author": "Twitter",
   "licenses": [
@@ -23,7 +23,7 @@
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.25.0",
-    "request-replay": "~0.1.0",
+    "request-replay": "~0.2.0",
     "rimraf": "~2.2.0",
     "mkdirp": "~0.3.5"
   },
