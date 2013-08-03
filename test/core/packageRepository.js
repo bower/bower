@@ -23,6 +23,11 @@ describe('PackageRepository', function () {
     var registryCacheDir = path.join(__dirname, '../assets/temp-registry-cache');
     var mockSource = 'file://' + testPackage;
 
+    after(function () {
+        rimraf.sync(registryCacheDir);
+        rimraf.sync(packagesCacheDir);
+    });
+
     beforeEach(function (next) {
         var PackageRepository;
         var config;
