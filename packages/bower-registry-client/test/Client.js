@@ -84,13 +84,16 @@ describe('RegistryClient', function () {
 
     describe('instantiating a client with custom options', function () {
         describe('offline', function () {
-            it('should not return search results ', function (next) {
-                this.registry._config.offline = true;
-                this.registry.search('jquery', function (err, results) {
-                    expect(err).to.be(null);
-                    expect(results.length).to.eql(0);
-                    next();
-                });
+            it('should not return search results if cache is empty', function (next) {
+                // TODO: this test should be made individually for search, list and lookup
+                this.registry.clearCache(function () {
+                    this.registry._config.offline = true;
+                    this.registry.search('jquery', function (err, results) {
+                        expect(err).to.be(null);
+                        expect(results.length).to.eql(0);
+                        next();
+                    });
+                }.bind(this));
             });
         });
 
