@@ -74,10 +74,11 @@ function lookup(name, callback) {
 }
 
 function doRequest(name, index, callback) {
+    var req;
+    var msg;
     var requestUrl = this._config.registry.search[index] + '/packages/' + encodeURIComponent(name);
     var remote = url.parse(requestUrl);
     var headers = {};
-    var req;
     var that = this;
 
     if (this._config.userAgent) {
@@ -119,8 +120,10 @@ function doRequest(name, index, callback) {
     }));
 
     if (this._logger) {
-        req.on('replay', function (nr, error) {
-            that._logger.debug('retry', 'Retrying request to ' + this._source + ' because it failed with ' + error.code);
+        req.on('replay', function (replay) {
+            msg = 'Request to ' + requestUrl + ' failed with ' + replay.error.code + ', ';
+            msg += 'retrying in ' + (replay.delay / 1000).toFixed(1) + 's';
+            that._logger.warn('retry', msg);
         });
     }
 }
