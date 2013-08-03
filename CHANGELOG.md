@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0
+## 1.1.0 - 2013-08-03
 
 - __Fix `--save` and `--save-dev` not working correctly for the uninstall command in some situations__
 - __Attempting to register a package that declares `"private": true` in `bower.json` will result in an error ([#162](https://github.com/bower/bower/issues/162))__
