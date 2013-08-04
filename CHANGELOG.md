@@ -11,7 +11,7 @@
 - Fix `bower cache clean` not working correctly when `package#non-semver` is specified
 - Implement no operation `completion` command to prevent weird output when hitting tab ([#691](https://github.com/bower/bower/issues/691))
 - Fix `bower info --help` ([#703](https://github.com/bower/bower/issues/703))
-- Add colorized output for `bower info <package>` ([#571](https://github.com/bower/bower/issues/571))
+- Add colorized output for `bower info <package>#<version>` ([#571](https://github.com/bower/bower/issues/571))
 - Added `bower ls` as an alias to `bower list`
 - Fix regression: do not create a json file when saving is required, warn instead
 - Ignore linked packages when reading dependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
