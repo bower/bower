@@ -243,7 +243,7 @@ Commands emit three types of events: `log`, `end`, and `error`.
 * `end` is emitted when the command successfully ends.
 
 For a better of idea how this works, you may want to check out [our bin
-file](https://github.com/bower/bower/blob/rewrite/bin/bower).
+file](https://github.com/bower/bower/blob/master/bin/bower).
 
 
 ## Completion (experimental)
