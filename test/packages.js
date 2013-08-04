@@ -190,8 +190,7 @@ mout.object.forOwn(packages, function (pkg, name) {
     promises.push(promise);
 });
 
-promises
-.allSettled(function (results) {
+Q.allSettled(promises, function (results) {
     results.forEach(function (result) {
         if (result.state !== 'fulfilled') {
             process.exit(1);
