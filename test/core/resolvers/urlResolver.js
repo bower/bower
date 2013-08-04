@@ -12,7 +12,7 @@ var UrlResolver = require('../../../lib/core/resolvers/UrlResolver');
 var defaultConfig = require('../../../lib/config');
 
 describe('UrlResolver', function () {
-    var testPackage = path.resolve(__dirname, '../../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../../assets/package-a');
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var logger;
 

@@ -242,11 +242,11 @@ describe('resolverFactory', function () {
         endpoints = {};
 
         // Absolute path
-        temp = path.resolve(__dirname, '../assets/github-test-package');
+        temp = path.resolve(__dirname, '../assets/package-a');
         endpoints[temp] = temp;
 
         // Relative path
-        endpoints[__dirname + '/../assets/github-test-package'] = temp;
+        endpoints[__dirname + '/../assets/package-a'] = temp;
 
         // TODO: test with backslashes on windows and ~/ on unix
 
