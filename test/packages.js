@@ -18,9 +18,11 @@ var options = nopt({
 
 var env = {
     'GIT_AUTHOR_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
-    'GIT_AUTHOR_NAME': 'André Cruz <amdfcruz@gmail.com>',
+    'GIT_AUTHOR_NAME': 'André Cruz',
+    'GIT_AUTHOR_EMAIL': 'amdfcruz@gmail.com',
     'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
-    'GIT_COMMITTER_NAME': 'André Cruz <amdfcruz@gmail.com>'
+    'GIT_COMMITTER_NAME': 'André Cruz',
+    'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com'
 };
 
 function ensurePackage(dir) {

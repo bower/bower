@@ -105,7 +105,7 @@ describe('GitRemoteResolver', function () {
         });
 
         it('should checkout correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: 'd76bab9456cc3deac73bc4f227ae7ad00bff7d72' });
+            var resolver = create({ source: 'file://' + testPackage, target: 'bdf51ece75e20cf404e49286727b7e92d33e9ad0' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -135,13 +135,13 @@ describe('GitRemoteResolver', function () {
                 refs = refs.slice(1, 8);
 
                 expect(refs).to.eql([
-                    'db2829610b1e31386d711b5be5fda8e3f750a59a refs/heads/some-branch',
-                    '3be150401b59377511630a5d4e4da3b3c8c494d3 refs/tags/0.0.1',
-                    '5edabebb4e066a89cdae3ec113f23e248bce4244 refs/tags/0.0.2',
-                    'def32c2d04ff2b0f42a0c4df3018de743b637806 refs/tags/0.1.0',
-                    '3c81d66fd6684b7fb26f42a94714605ea5ef915c refs/tags/0.1.1',
-                    '2f29c23ddc716b6f38260d98c9b75c32c9c51800 refs/tags/0.2.0',
-                    '420d368a2d85b5a1b6f1ce74f2ca26827fdc3e32 refs/tags/0.2.1'
+                    'e4655d250f2a3f64ef2d712f25dafa60652bb93e refs/heads/some-branch',
+                    '0a7daf646d4fd743b6ef701d63bdbe20eee422de refs/tags/0.0.1',
+                    '0791865e6f4b88f69fc35167a09a6f0626627765 refs/tags/0.0.2',
+                    '2af02ac6ddeaac1c2f4bead8d6287ce54269c039 refs/tags/0.1.0',
+                    '6ab264f1ba5bafa80fb0198183493e4d5b20804a refs/tags/0.1.1',
+                    'c91ed7facbb695510e3e1ab86bac8b5ac159f4f3 refs/tags/0.2.0',
+                    '8556e55c65722a351ca5fdce4f1ebe83ec3f2365 refs/tags/0.2.1'
                 ]);
                 next();
             })
@@ -164,13 +164,13 @@ describe('GitRemoteResolver', function () {
                 refs = refs.slice(0, 7);
 
                 expect(refs).to.eql([
-                    'db2829610b1e31386d711b5be5fda8e3f750a59a refs/heads/some-branch',
-                    '3be150401b59377511630a5d4e4da3b3c8c494d3 refs/tags/0.0.1',
-                    '5edabebb4e066a89cdae3ec113f23e248bce4244 refs/tags/0.0.2',
-                    'def32c2d04ff2b0f42a0c4df3018de743b637806 refs/tags/0.1.0',
-                    '3c81d66fd6684b7fb26f42a94714605ea5ef915c refs/tags/0.1.1',
-                    '2f29c23ddc716b6f38260d98c9b75c32c9c51800 refs/tags/0.2.0',
-                    '420d368a2d85b5a1b6f1ce74f2ca26827fdc3e32 refs/tags/0.2.1'
+                    'e4655d250f2a3f64ef2d712f25dafa60652bb93e refs/heads/some-branch',
+                    '0a7daf646d4fd743b6ef701d63bdbe20eee422de refs/tags/0.0.1',
+                    '0791865e6f4b88f69fc35167a09a6f0626627765 refs/tags/0.0.2',
+                    '2af02ac6ddeaac1c2f4bead8d6287ce54269c039 refs/tags/0.1.0',
+                    '6ab264f1ba5bafa80fb0198183493e4d5b20804a refs/tags/0.1.1',
+                    'c91ed7facbb695510e3e1ab86bac8b5ac159f4f3 refs/tags/0.2.0',
+                    '8556e55c65722a351ca5fdce4f1ebe83ec3f2365 refs/tags/0.2.1'
                 ]);
                 next();
             })

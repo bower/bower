@@ -57,7 +57,7 @@ describe('GitHub', function () {
         });
 
         it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: 'def32c2d04ff2b0f42a0c4df3018de743b637806' });
+            var resolver = create({ source: 'file://' + testPackage, target: '2af02ac6ddeaac1c2f4bead8d6287ce54269c039' });
             var originalCheckout = GitRemoteResolver.prototype._checkout;
             var called;
 
