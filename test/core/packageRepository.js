@@ -17,7 +17,7 @@ describe('PackageRepository', function () {
     var resolver;
     var resolverFactoryHook;
     var resolverFactoryClearHook;
-    var testPackage = path.resolve(__dirname, '../assets/github-test-package');
+    var testPackage = path.resolve(__dirname, '../assets/package-a');
     var tempPackage = path.resolve(__dirname, '../assets/temp');
     var packagesCacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
     var registryCacheDir = path.join(__dirname, '../assets/temp-registry-cache');
@@ -86,19 +86,18 @@ describe('PackageRepository', function () {
 
     describe('.fetch', function () {
         it('should call the resolver factory to get the appropriate resolver', function (next) {
-            var decEndpoint = { name: '', source: 'foo', target: '~0.1.0' };
             var called;
 
             resolverFactoryHook = function () {
                 called = true;
             };
 
-            packageRepository.fetch(decEndpoint)
+            packageRepository.fetch({ name: '', source: 'foo', target: '~0.1.0' })
             .spread(function (canonicalDir, pkgMeta) {
                 expect(called).to.be(true);
                 expect(fs.existsSync(canonicalDir)).to.be(true);
                 expect(pkgMeta).to.be.an('object');
-                expect(pkgMeta.name).to.be('github-test-package');
+                expect(pkgMeta.name).to.be('package-a');
                 expect(pkgMeta.version).to.be('0.1.1');
                 next();
             })
@@ -133,7 +132,7 @@ describe('PackageRepository', function () {
                 expect(called).to.eql(['resolve']);
                 expect(fs.existsSync(canonicalDir)).to.be(true);
                 expect(pkgMeta).to.be.an('object');
-                expect(pkgMeta.name).to.be('github-test-package');
+                expect(pkgMeta.name).to.be('package-a');
                 expect(pkgMeta.version).to.be('0.1.1');
                 next();
             })
@@ -150,13 +149,13 @@ describe('PackageRepository', function () {
                 return originalRetrieve.apply(this, arguments);
             };
 
-            packageRepository.fetch()
+            packageRepository.fetch({ name: '', source: 'foo', target: '~0.1.0' })
             .spread(function (canonicalDir, pkgMeta) {
                 expect(called).to.be(true);
                 expect(fs.existsSync(canonicalDir)).to.be(true);
                 expect(pkgMeta).to.be.an('object');
-                expect(pkgMeta.name).to.be('test-package');
-                expect(pkgMeta.version).to.be('0.2.1');
+                expect(pkgMeta.name).to.be('package-a');
+                expect(pkgMeta.version).to.be('0.1.1');
                 next();
             })
             .done();
@@ -187,7 +186,7 @@ describe('PackageRepository', function () {
                 expect(called).to.eql(['resolve']);
                 expect(fs.existsSync(canonicalDir)).to.be(true);
                 expect(pkgMeta).to.be.an('object');
-                expect(pkgMeta.name).to.be('github-test-package');
+                expect(pkgMeta.name).to.be('package-a');
                 expect(pkgMeta.version).to.be('0.1.1');
                 next();
             })
@@ -196,7 +195,7 @@ describe('PackageRepository', function () {
 
         it('should call the resolver hasNew method if an appropriate package was found in the resolve cache', function (next) {
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.1'
             };
             var called;
@@ -225,7 +224,7 @@ describe('PackageRepository', function () {
                     expect(called).to.be(true);
                     expect(fs.existsSync(canonicalDir)).to.be(true);
                     expect(pkgMeta).to.be.an('object');
-                    expect(pkgMeta.name).to.be('github-test-package');
+                    expect(pkgMeta.name).to.be('package-a');
                     expect(pkgMeta.version).to.be('0.1.1');
                     next();
                 });
@@ -235,7 +234,7 @@ describe('PackageRepository', function () {
 
         it('should call the resolver resolve method if hasNew resolved to true', function (next) {
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.0'
             };
             var called = [];
@@ -269,7 +268,7 @@ describe('PackageRepository', function () {
                     expect(called).to.eql(['hasNew', 'resolve']);
                     expect(fs.existsSync(canonicalDir)).to.be(true);
                     expect(pkgMeta).to.be.an('object');
-                    expect(pkgMeta.name).to.be('test-package');
+                    expect(pkgMeta.name).to.be('a');
                     expect(pkgMeta.version).to.be('0.2.1');
                     next();
                 });
@@ -279,7 +278,7 @@ describe('PackageRepository', function () {
 
         it('should resolve to the cached package if hasNew resolve to false', function (next) {
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.0'
             };
             var called = [];
@@ -321,7 +320,7 @@ describe('PackageRepository', function () {
 
         it('should just use the cached package if offline was specified', function (next) {
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.0'
             };
             var called = [];
@@ -442,7 +441,7 @@ describe('PackageRepository', function () {
         it('should call the eliminate method from the resolve cache', function (next) {
             var called;
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.0',
                 _source: 'foo'
             };
@@ -464,7 +463,7 @@ describe('PackageRepository', function () {
         it('should call the clearCache method with the name from the registry client', function (next) {
             var called;
             var json = {
-                name: 'test-package',
+                name: 'a',
                 version: '0.2.0',
                 _source: 'foo'
             };

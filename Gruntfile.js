@@ -19,34 +19,30 @@ module.exports = function (grunt) {
                 src: ['test/test.js']
             }
         },
-        execute: {
+        exec: {
             assets: {
-                src: ['test/assets/downloader.js']
+                command: 'node test/packages.js'
+            },
+            'assets-force': {
+                command: 'node test/packages.js --force'
+            },
+            cover: {
+                command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot test/test.js'
             }
         },
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'simplemocha:short']
-        },
-        shell: {
-            cover: {
-                command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot',
-                options: {
-                    stdout: true,
-                    stderr: true
-                }
-            }
         }
-
     });
 
-    grunt.loadNpmTasks('grunt-shell');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-execute');
+    grunt.loadNpmTasks('grunt-exec');
 
-    grunt.registerTask('test', ['execute:assets', 'simplemocha:full']);
-    grunt.registerTask('cover', 'shell:cover');
+    grunt.registerTask('assets', ['exec:assets-force']);
+    grunt.registerTask('test', ['exec:assets', 'simplemocha:full']);
+    grunt.registerTask('cover', 'exec:cover');
     grunt.registerTask('default', ['jshint', 'test']);
 };
