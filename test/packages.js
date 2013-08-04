@@ -141,15 +141,12 @@ function createRelease(dir, release, files) {
             return;
         }
 
-
         return cmd('git', ['tag', '-f', release], { cwd: dir })
         // Delete branch (not necessary anymore)
         .then(cmd.bind(null, 'git', ['checkout', 'master', '-f'], { cwd: dir }))
         .then(cmd.bind(null, 'git', ['branch', '-D', branch], { cwd: dir }));
     });
 }
-
-// TODO: support -f that clears all packages
 
 var promises = [];
 
