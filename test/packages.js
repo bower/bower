@@ -152,7 +152,7 @@ function createRelease(dir, release, files) {
 
 var promises = [];
 
-// Process packages json
+// Process packages.json
 mout.object.forOwn(packages, function (pkg, name) {
     var promise;
     var dir = path.join(__dirname, 'assets', name);
