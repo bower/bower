@@ -3,6 +3,8 @@ var path = require('path');
 var deepExtend = require('deep-extend');
 var createError = require('./util/createError');
 
+var possibleJsons = ['bower.json', 'component.json', '.bower.json'];
+
 function read(file, options, callback) {
     if (typeof options === 'function') {
         callback = options;
@@ -101,25 +103,27 @@ function normalize(json) {
 }
 
 function find(folder, callback) {
-    var file = path.join(folder, 'bower.json');
 
-    fs.exists(file, function (exists) {
-        if (exists) {
-            return callback(null, file);
+    function findRec(fileNames) {
+        var err;
+        var fileName;
+
+        if (!fileNames.length) {
+            err = createError('bower-json: None of "' + possibleJsons.join('", "') + '" were found in ' + folder, 'ENOENT');
+            return callback(err);
         }
 
-        file = path.resolve(path.join(folder, 'component.json'));
-
-        fs.exists(file, function (exists) {
+        fileName = path.resolve(path.join(folder, fileNames[0]));
+        fs.exists(fileName, function(exists) {
             if (exists) {
-                return callback(null, file);
+                return callback(null, fileName);
             }
 
-            var err = new Error('Neither bower.json nor component.json were found in ' + folder);
-            err.code = 'ENOENT';
-            callback(err);
+            findRec(fileNames.slice(1));
         });
-    });
+    }
+
+    findRec(possibleJsons);
 }
 
 module.exports = read;
