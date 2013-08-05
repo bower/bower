@@ -103,27 +103,26 @@ function normalize(json) {
 }
 
 function find(folder, callback) {
+    findRec(folder, possibleJsons, callback);
+}
 
-    function findRec(fileNames) {
-        var err;
-        var fileName;
+function findRec(folder, files, callback) {
+    var err;
+    var file;
 
-        if (!fileNames.length) {
-            err = createError('bower-json: None of "' + possibleJsons.join('", "') + '" were found in ' + folder, 'ENOENT');
-            return callback(err);
-        }
-
-        fileName = path.resolve(path.join(folder, fileNames[0]));
-        fs.exists(fileName, function(exists) {
-            if (exists) {
-                return callback(null, fileName);
-            }
-
-            findRec(fileNames.slice(1));
-        });
+    if (!files.length) {
+        err = createError('None of ' + possibleJsons.join(', ') + ' were found in ' + folder, 'ENOENT');
+        return callback(err);
     }
 
-    findRec(possibleJsons);
+    file = path.resolve(path.join(folder, files[0]));
+    fs.exists(file, function (exists) {
+        if (exists) {
+            return callback(null, file);
+        }
+
+        findRec(folder, files.slice(1), callback);
+    });
 }
 
 module.exports = read;

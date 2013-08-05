@@ -25,8 +25,8 @@ describe('.find', function () {
         });
     });
 
-    it('should fallback to the .bower.json file', function(done) {
-        bowerJson.find(__dirname + '/pkg-dot-bower-json', function(err, file) {
+    it('should fallback to the .bower.json file', function (done) {
+        bowerJson.find(__dirname + '/pkg-dot-bower-json', function (err, file) {
             if (err) {
                 return done(err);
             }
@@ -34,13 +34,13 @@ describe('.find', function () {
             expect(file).to.equal(path.resolve(__dirname + '/pkg-dot-bower-json/.bower.json'));
             done();
         });
-    })
+    });
 
-    it('should error if no component.json / bower.json is found', function (done) {
+    it('should error if no component.json / bower.json / .bower.json is found', function (done) {
         bowerJson.find(__dirname, function (err) {
             expect(err).to.be.an(Error);
             expect(err.code).to.equal('ENOENT');
-            expect(err.message).to.equal('bower-json: None of "bower.json", "component.json", ".bower.json" were found in ' + __dirname);
+            expect(err.message).to.equal('None of bower.json, component.json, .bower.json were found in ' + __dirname);
             done();
         });
     });
