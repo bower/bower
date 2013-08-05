@@ -4,7 +4,7 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            files: ['Gruntfile.js', 'bin/*', 'lib/**/*.js', 'test/**/*.js', '!test/assets/**/*']
+            files: ['Gruntfile.js', 'bin/*', 'lib/**/*.js', 'test/**/*.js', '!test/assets/**/*', '!test/reports/**/*']
         },
         simplemocha: {
             options: {
@@ -42,7 +42,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('assets', ['exec:assets-force']);
-    grunt.registerTask('test', ['exec:assets', 'simplemocha:full']);
+    grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
-    grunt.registerTask('default', ['jshint', 'test']);
+    grunt.registerTask('default', 'test');
 };
