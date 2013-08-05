@@ -25,6 +25,9 @@ var env = {
     'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com'
 };
 
+// Preserve the original environment
+mout.object.mixIn(env, process.env);
+
 function ensurePackage(dir) {
     var promise;
 
