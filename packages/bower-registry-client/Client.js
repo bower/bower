@@ -9,7 +9,7 @@ function RegistryClient(config, logger) {
 
     // Cache defaults to storage registry
     if (!Object.prototype.hasOwnProperty.call(this._config, 'cache')) {
-        this._config.cache = this._config.storage.registry;
+        this._config.cache = this._config.storage ? this._config.storage.registry : null;
     }
 
     // Init the cache
