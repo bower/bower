@@ -103,7 +103,7 @@ json.main // ['foo.js', 'bar.js']
 #### .find(folder, callback)
 
 Finds the `json` filename inside a folder.   
-Checks if a `bower.json` exists, falling back to the deprecated `component.json`.   
+Checks if a `bower.json` exists, falling back to `component.json` (deprecated) and `.bower.json`.   
 If no file was found, the callback is called with a `error.code` of `ENOENT`.
 
 ```js
