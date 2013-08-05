@@ -11,7 +11,7 @@ var paths = {
 };
 
 // Guess some needed properties based on the user OS
-var user = (osenv.user() || 'unkown').replace(/\\/g, '-');
+var user = (osenv.user() || 'unknown').replace(/\\/g, '-');
 var temp = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), user);
 var home = osenv.home();
 var base;
