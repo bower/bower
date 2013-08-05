@@ -18,7 +18,7 @@
         {
             "shorthand":   "-r",
             "flag":        "--relative",
-            "description": "Make paths relative to the directory config property which default to bower_components"
+            "description": "Make paths relative to the directory config property, which defaults to bower_components"
         }
     ]
 }
