@@ -10,9 +10,8 @@ var proxy = process.env.HTTP_PROXY
 
 var httpsProxy = process.env.HTTPS_PROXY
     || process.env.https_proxy
-    || process.env.HTTP_PROXY
-    || process.env.http_proxy
-    || null;
+    || proxy;
+
 /*jshint camelcase: true*/
 
 var defaults = {
