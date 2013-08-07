@@ -61,12 +61,20 @@ describe('resolverFactory', function () {
             'git+ssh://user@hostname.com/project.git/': 'ssh://user@hostname.com/project.git',
 
             // git+http
+            'git+http://hostname.com/project/blah': 'http://hostname.com/project/blah.git',
+            'git+http://hostname.com/project/blah/': 'http://hostname.com/project/blah.git',
+            'git+http://hostname.com/project/blah.git': 'http://hostname.com/project/blah.git',
+            'git+http://hostname.com/project/blah.git/': 'http://hostname.com/project/blah.git',
             'git+http://user@hostname.com/project/blah': 'http://user@hostname.com/project/blah.git',
             'git+http://user@hostname.com/project/blah/': 'http://user@hostname.com/project/blah.git',
             'git+http://user@hostname.com/project/blah.git': 'http://user@hostname.com/project/blah.git',
             'git+http://user@hostname.com/project/blah.git/': 'http://user@hostname.com/project/blah.git',
 
             // git+https
+            'git+https://hostname.com/project/blah': 'https://hostname.com/project/blah.git',
+            'git+https://hostname.com/project/blah/': 'https://hostname.com/project/blah.git',
+            'git+https://hostname.com/project/blah.git': 'https://hostname.com/project/blah.git',
+            'git+https://hostname.com/project/blah.git/': 'https://hostname.com/project/blah.git',
             'git+https://user@hostname.com/project/blah': 'https://user@hostname.com/project/blah.git',
             'git+https://user@hostname.com/project/blah/': 'https://user@hostname.com/project/blah.git',
             'git+https://user@hostname.com/project/blah.git': 'https://user@hostname.com/project/blah.git',
@@ -79,10 +87,14 @@ describe('resolverFactory', function () {
             'ssh://user@hostname.com/project.git/': 'ssh://user@hostname.com/project.git',
 
             // http .git$
+            'http://hostname.com/project.git': 'http://hostname.com/project.git',
+            'http://hostname.com/project.git/': 'http://hostname.com/project.git',
             'http://user@hostname.com/project.git': 'http://user@hostname.com/project.git',
             'http://user@hostname.com/project.git/': 'http://user@hostname.com/project.git',
 
             // https
+            'https://hostname.com/project.git': 'https://hostname.com/project.git',
+            'https://hostname.com/project.git/': 'https://hostname.com/project.git',
             'https://user@hostname.com/project.git': 'https://user@hostname.com/project.git',
             'https://user@hostname.com/project.git/': 'https://user@hostname.com/project.git',
 
@@ -131,11 +143,12 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it('should recognize public GitHub endpoints correctly (git://)', function (next) {
+    it('should recognize GitHub endpoints correctly', function (next) {
         var promise = Q.resolve();
-        var endpoints;
+        var gitHub;
+        var nonGitHub;
 
-        endpoints = {
+        gitHub = {
             // git:
             'git://github.com/user/project/blah.git': 'git://github.com/user/project/blah.git',
             'git://github.com/user/project/blah.git/': 'git://github.com/user/project/blah.git',
@@ -145,38 +158,50 @@ describe('resolverFactory', function () {
             'git@github.com:user/project/blah.git/': 'git@github.com:user/project/blah.git',
 
             // git+ssh:
-            'git+ssh://user@github.com:project/blah': 'ssh://user@github.com:project/blah.git',
-            'git+ssh://user@github.com:project/blah/': 'ssh://user@github.com:project/blah.git',
-            'git+ssh://user@github.com:project/blah.git': 'ssh://user@github.com:project/blah.git',
-            'git+ssh://user@github.com:project/blah.git/': 'ssh://user@github.com:project/blah.git',
-            'git+ssh://user@github.com/project/blah': 'ssh://user@github.com/project/blah.git',
-            'git+ssh://user@github.com/project/blah/': 'ssh://user@github.com/project/blah.git',
-            'git+ssh://user@github.com/project/blah.git': 'ssh://user@github.com/project/blah.git',
-            'git+ssh://user@github.com/project/blah.git/': 'ssh://user@github.com/project/blah.git',
+            'git+ssh://git@github.com:project/blah': 'ssh://git@github.com:project/blah.git',
+            'git+ssh://git@github.com:project/blah/': 'ssh://git@github.com:project/blah.git',
+            'git+ssh://git@github.com:project/blah.git': 'ssh://git@github.com:project/blah.git',
+            'git+ssh://git@github.com:project/blah.git/': 'ssh://git@github.com:project/blah.git',
+            'git+ssh://git@github.com/project/blah': 'ssh://git@github.com/project/blah.git',
+            'git+ssh://git@github.com/project/blah/': 'ssh://git@github.com/project/blah.git',
+            'git+ssh://git@github.com/project/blah.git': 'ssh://git@github.com/project/blah.git',
+            'git+ssh://git@github.com/project/blah.git/': 'ssh://git@github.com/project/blah.git',
 
             // git+http
+            'git+http://github.com/project/blah': 'http://github.com/project/blah.git',
+            'git+http://github.com/project/blah/': 'http://github.com/project/blah.git',
+            'git+http://github.com/project/blah.git': 'http://github.com/project/blah.git',
+            'git+http://github.com/project/blah.git/': 'http://github.com/project/blah.git',
             'git+http://user@github.com/project/blah': 'http://user@github.com/project/blah.git',
             'git+http://user@github.com/project/blah/': 'http://user@github.com/project/blah.git',
             'git+http://user@github.com/project/blah.git': 'http://user@github.com/project/blah.git',
             'git+http://user@github.com/project/blah.git/': 'http://user@github.com/project/blah.git',
 
             // git+https
+            'git+https://github.com/project/blah': 'https://github.com/project/blah.git',
+            'git+https://github.com/project/blah/': 'https://github.com/project/blah.git',
+            'git+https://github.com/project/blah.git': 'https://github.com/project/blah.git',
+            'git+https://github.com/project/blah.git/': 'https://github.com/project/blah.git',
             'git+https://user@github.com/project/blah': 'https://user@github.com/project/blah.git',
             'git+https://user@github.com/project/blah/': 'https://user@github.com/project/blah.git',
             'git+https://user@github.com/project/blah.git': 'https://user@github.com/project/blah.git',
             'git+https://user@github.com/project/blah.git/': 'https://user@github.com/project/blah.git',
 
             // ssh .git$
-            'ssh://user@github.com:project/blah.git': 'ssh://user@github.com:project/blah.git',
-            'ssh://user@github.com:project/blah.git/': 'ssh://user@github.com:project/blah.git',
-            'ssh://user@github.com/project/blah.git': 'ssh://user@github.com/project/blah.git',
-            'ssh://user@github.com/project/blah.git/': 'ssh://user@github.com/project/blah.git',
+            'ssh://git@github.com:project/blah.git': 'ssh://git@github.com:project/blah.git',
+            'ssh://git@github.com:project/blah.git/': 'ssh://git@github.com:project/blah.git',
+            'ssh://git@github.com/project/blah.git': 'ssh://git@github.com/project/blah.git',
+            'ssh://git@github.com/project/blah.git/': 'ssh://git@github.com/project/blah.git',
 
             // http .git$
+            'http://github.com/project/blah.git': 'http://github.com/project/blah.git',
+            'http://github.com/project/blah.git/': 'http://github.com/project/blah.git',
             'http://user@github.com/project/blah.git': 'http://user@github.com/project/blah.git',
             'http://user@github.com/project/blah.git/': 'http://user@github.com/project/blah.git',
 
             // https
+            'https://github.com/project/blah.git': 'https://github.com/project/blah.git',
+            'https://github.com/project/blah.git/': 'https://github.com/project/blah.git',
             'https://user@github.com/project/blah.git': 'https://user@github.com/project/blah.git',
             'https://user@github.com/project/blah.git/': 'https://user@github.com/project/blah.git',
 
@@ -184,19 +209,32 @@ describe('resolverFactory', function () {
             'bower/bower': 'git://github.com/bower/bower.git'
         };
 
-        mout.object.forOwn(endpoints, function (value, key) {
+        nonGitHub = [
+            'git://xxxxgithub.com/user/project/blah.git',
+            'git@xxxxgithub.com:user:project/blah.git',
+            'git@xxxxgithub.com:user/project/blah.git',
+            'git+ssh://git@xxxxgithub.com:project/blah',
+            'git+ssh://git@xxxxgithub.com/project/blah',
+            'git+http://user@xxxxgithub.com/project/blah',
+            'git+https://user@xxxxgithub.com/project/blah',
+            'ssh://git@xxxxgithub.com:project:blah.git',
+            'ssh://git@xxxxgithub.com:project/blah.git',
+            'http://xxxxgithub.com/project/blah.git',
+            'https://xxxxgithub.com/project/blah.git',
+            'http://user@xxxxgithub.com/project/blah.git',
+            'https://user@xxxxgithub.com/project/blah.git'
+        ];
+
+        // Test GitHub ones
+        mout.object.forOwn(gitHub, function (value, key) {
             // Test without name and target
             promise = promise.then(function () {
                 return callFactory({ source: key });
             })
             .then(function (resolver) {
-                if (value) {
-                    expect(resolver).to.be.a(resolvers.GitHub);
-                    expect(resolver.getSource()).to.equal(value);
-                    expect(resolver.getTarget()).to.equal('*');
-                } else {
-                    expect(resolver).to.not.be.a(resolvers.GitHub);
-                }
+                expect(resolver).to.be.a(resolvers.GitHub);
+                expect(resolver.getSource()).to.equal(value);
+                expect(resolver.getTarget()).to.equal('*');
             });
 
             // Test with target
@@ -226,6 +264,17 @@ describe('resolverFactory', function () {
                 } else {
                     expect(resolver).to.not.be.a(resolvers.GitHub);
                 }
+            });
+        });
+
+        // Test similar to GitHub but not real GitHub
+        nonGitHub.forEach(function (value) {
+            promise = promise.then(function () {
+                return callFactory({ source: value });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.not.be.a(resolvers.GitHub);
+                expect(resolver).to.be.a(resolvers.GitRemote);
             });
         });
 

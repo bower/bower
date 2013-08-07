@@ -13,6 +13,9 @@ describe('GitHub', function () {
 
     before(function () {
         logger = new Logger();
+
+        // Turn off strict ssl because it gives problems with nock
+        defaultConfig.strictSsl = false;
     });
 
     afterEach(function () {
@@ -20,6 +23,9 @@ describe('GitHub', function () {
         nock.cleanAll();
 
         logger.removeAllListeners();
+
+        // Enable strict ssl back again
+        defaultConfig.strictSsl = true;
     });
 
     function create(decEndpoint, config) {
@@ -38,7 +44,7 @@ describe('GitHub', function () {
         it('should download and extract the .tar.gz archive from GitHub.com', function (next) {
             var resolver;
 
-            nock('http://github.com')
+            nock('https://github.com')
             .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'));
 
