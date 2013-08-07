@@ -13,6 +13,9 @@ describe('GitHub', function () {
 
     before(function () {
         logger = new Logger();
+
+        // Turn off strict ssl because it gives problems with nock
+        defaultConfig.strictSsl = false;
     });
 
     afterEach(function () {
@@ -20,6 +23,9 @@ describe('GitHub', function () {
         nock.cleanAll();
 
         logger.removeAllListeners();
+
+        // Enable strict ssl back again
+        defaultConfig.strictSsl = true;
     });
 
     function create(decEndpoint, config) {
