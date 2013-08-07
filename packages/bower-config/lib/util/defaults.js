@@ -11,8 +11,13 @@ var proxy = process.env.HTTP_PROXY
 var httpsProxy = process.env.HTTPS_PROXY
     || process.env.https_proxy
     || proxy;
-
 /*jshint camelcase: true*/
+
+// Use a well known user agent (in this case, curl) when using a proxy,
+// to avoid potential filtering on many corporate proxies with blank or unknown agents
+var userAgent = !proxy && !httpsProxy
+    ? 'node/' + process.version + ' ' + process.platform + ' ' + process.arch
+    : 'curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5';
 
 var defaults = {
     'cwd': process.cwd(),
@@ -25,7 +30,7 @@ var defaults = {
     'timeout': 30000,
     'ca': { search: [] },
     'strict-ssl': true,
-    'user-agent': 'node/' + process.version + ' ' + process.platform + ' ' + process.arch,
+    'user-agent': userAgent,
     'color': true,
     'interactive': false,
     'storage': {
