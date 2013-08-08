@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.1 - 2013-08-08
+
+- Fix silent fail when spawning child processes in some edge cases ([#722](https://github.com/bower/bower/issues/722))
+- Fix `home` command not guessing the correct URL for `GitHub` ssh endpoints (requires `bower cache-clean`)
+- Fix bower not correctly filtering packages with symlinks in some cases ([#730](https://github.com/bower/bower/issues/730))
+- Fix multi-user usage on bower when it falls back to create a `/tmp/bower` folder ([#743](https://github.com/bower/bower/issues/743))
+- Bower now sends a fake user agent when behind a proxy by default, so that corporate proxies do not block requests ([#698](https://github.com/bower/bower/issues/698))
+- Bower now translates GitHub public `git://` URLs to `git@` when behind a proxy ([#731](https://github.com/bower/bower/issues/731))
+- Minor improvements to the CLI output on small terminals
+- Minor programmatic usage improvements
+- Minor help usage fixes
+
+
 ## 1.1.0 - 2013-08-03
 
 - __Fix `--save` and `--save-dev` not working correctly for the uninstall command in some situations__
