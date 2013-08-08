@@ -1,4 +1,3 @@
-require('colors');
 var fs = require('graceful-fs');
 var path = require('path');
 var Q = require('q');
@@ -6,6 +5,7 @@ var semver = require('semver');
 var mout = require('mout');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
+var chalk = require('chalk');
 var cmd = require('../lib/util/cmd');
 var packages = require('./packages.json');
 var nopt = require('nopt');
@@ -173,17 +173,17 @@ mout.object.forOwn(packages, function (pkg, name) {
         .then(function (exists) {
             // Skip it if already created
             if (exists) {
-                return console.log('> '.cyan + 'Package ' + name + '#' + release + ' already created');
+                return console.log(chalk.cyan('> ') + 'Package ' + name + '#' + release + ' already created');
             }
 
             // Create it based on the metadata
             return createRelease(dir, release, files)
             .then(function () {
-                console.log('> '.green + 'Package ' + name + '#' + release + ' successfully created');
+                console.log(chalk.green('> ') + 'Package ' + name + '#' + release + ' successfully created');
             });
         })
         .fail(function (err) {
-            console.log('> '.red + 'Failed to create ' + name + '#' + release);
+            console.log(chalk.red('> ') + 'Failed to create ' + name + '#' + release);
             console.log(err.message.trim());
             if (err.details) {
                 console.log(err.details.trim());

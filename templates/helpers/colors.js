@@ -1,4 +1,4 @@
-require('colors');
+var chalk = require('chalk');
 
 var templateColors = [
     'yellow',
@@ -12,7 +12,7 @@ var templateColors = [
 function colors(Handlebars) {
     templateColors.forEach(function (color) {
         Handlebars.registerHelper(color, function (context) {
-            return context.fn(this)[color];
+            return chalk[color](context.fn(this));
         });
     });
 }
