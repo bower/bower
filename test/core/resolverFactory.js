@@ -283,6 +283,81 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should recognize Google Code endpoints correctly', function (next) {
+        var promise = Q.resolve();
+        var gitGoogle;
+        var nonGitGoogle;
+
+        gitGoogle = {
+            // git+https
+            'git+https://code.google.com/p/project/blah/': 'https://code.google.com/p/project/blah/'
+        };
+
+        nonGitGoogle = [
+            'git://code.google.com/p/project/blah/',
+            'git@code.google.com:user:project/blah.git',
+            'git+ssh://git@code.google.com:project/blah',
+            'ssh://git@code.google.com.com:project:blah.git'
+        ];
+
+        // Test git @ Google Code ones
+        mout.object.forOwn(gitGoogle, function (value, key) {
+            // Test without name and target
+            promise = promise.then(function () {
+                return callFactory({ source: key });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.GitGoogle);
+                expect(resolver.getSource()).to.equal(value);
+                expect(resolver.getTarget()).to.equal('*');
+            });
+
+            // Test with target
+            promise = promise.then(function () {
+                return callFactory({ source: key, target: 'commit-ish' });
+            })
+            .then(function (resolver) {
+                if (value) {
+                    expect(resolver).to.be.a(resolvers.GitGoogle);
+                    expect(resolver.getSource()).to.equal(value);
+                    expect(resolver.getTarget()).to.equal('commit-ish');
+                } else {
+                    expect(resolver).to.not.be.a(resolvers.GitGoogle);
+                }
+            });
+
+            // Test with name
+            promise = promise.then(function () {
+                return callFactory({ name: 'foo', source: key });
+            })
+            .then(function (resolver) {
+                if (value) {
+                    expect(resolver).to.be.a(resolvers.GitGoogle);
+                    expect(resolver.getSource()).to.equal(value);
+                    expect(resolver.getName()).to.equal('foo');
+                    expect(resolver.getTarget()).to.equal('*');
+                } else {
+                    expect(resolver).to.not.be.a(resolvers.GitGoogle);
+                }
+            });
+        });
+
+        // Test similar to git @ Google Code but not real git @ Google Code
+        nonGitGoogle.forEach(function (value) {
+            promise = promise.then(function () {
+                return callFactory({ source: value });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.not.be.a(resolvers.GitGoogle);
+                expect(resolver).to.be.a(resolvers.GitRemote);
+            });
+        });
+
+        promise
+        .then(next.bind(next, null))
+        .done();
+    });
+
     it('should recognize local fs git endpoints correctly', function (next) {
         var promise = Q.resolve();
         var endpoints;
