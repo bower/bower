@@ -106,6 +106,7 @@ describe('GitRemoteResolver', function () {
             .done();
         });
 
+        it.skip('should handle gracefully servers that do not support --depth=1');
         it.skip('should report progress when it takes too long to clone');
     });
 
