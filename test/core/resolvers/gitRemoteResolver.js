@@ -45,22 +45,6 @@ describe('GitRemoteResolver', function () {
             resolver = create('git://github.com');
             expect(resolver.getName()).to.equal('github.com');
         });
-
-        it('should ensure .git in the source (except if protocol is file://)', function () {
-            var resolver;
-
-            resolver = create('git://github.com/twitter/bower');
-            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
-
-            resolver = create('git://github.com/twitter/bower.git');
-            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
-
-            resolver = create('git://github.com/twitter/bower.git/');
-            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
-
-            resolver = create('file://' + testPackage);
-            expect(resolver.getSource()).to.equal('file://' + testPackage);
-        });
     });
 
     describe('.resolve', function () {

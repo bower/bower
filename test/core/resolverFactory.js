@@ -43,40 +43,44 @@ describe('resolverFactory', function () {
 
         endpoints = {
             // git:
+            'git://hostname.com/user/project': 'git://hostname.com/user/project',
+            'git://hostname.com/user/project/': 'git://hostname.com/user/project',
             'git://hostname.com/user/project.git': 'git://hostname.com/user/project.git',
             'git://hostname.com/user/project.git/': 'git://hostname.com/user/project.git',
 
             // git@:
+            'git@hostname.com:user/project': 'git@hostname.com:user/project',
+            'git@hostname.com:user/project/': 'git@hostname.com:user/project',
             'git@hostname.com:user/project.git': 'git@hostname.com:user/project.git',
             'git@hostname.com:user/project.git/': 'git@hostname.com:user/project.git',
 
             // git+ssh:
-            'git+ssh://user@hostname.com:project': 'ssh://user@hostname.com:project.git',
-            'git+ssh://user@hostname.com:project/': 'ssh://user@hostname.com:project.git',
+            'git+ssh://user@hostname.com:project': 'ssh://user@hostname.com:project',
+            'git+ssh://user@hostname.com:project/': 'ssh://user@hostname.com:project',
             'git+ssh://user@hostname.com:project.git': 'ssh://user@hostname.com:project.git',
             'git+ssh://user@hostname.com:project.git/': 'ssh://user@hostname.com:project.git',
-            'git+ssh://user@hostname.com/project': 'ssh://user@hostname.com/project.git',
-            'git+ssh://user@hostname.com/project/': 'ssh://user@hostname.com/project.git',
+            'git+ssh://user@hostname.com/project': 'ssh://user@hostname.com/project',
+            'git+ssh://user@hostname.com/project/': 'ssh://user@hostname.com/project',
             'git+ssh://user@hostname.com/project.git': 'ssh://user@hostname.com/project.git',
             'git+ssh://user@hostname.com/project.git/': 'ssh://user@hostname.com/project.git',
 
             // git+http
-            'git+http://hostname.com/project/blah': 'http://hostname.com/project/blah.git',
-            'git+http://hostname.com/project/blah/': 'http://hostname.com/project/blah.git',
+            'git+http://hostname.com/project/blah': 'http://hostname.com/project/blah',
+            'git+http://hostname.com/project/blah/': 'http://hostname.com/project/blah',
             'git+http://hostname.com/project/blah.git': 'http://hostname.com/project/blah.git',
             'git+http://hostname.com/project/blah.git/': 'http://hostname.com/project/blah.git',
-            'git+http://user@hostname.com/project/blah': 'http://user@hostname.com/project/blah.git',
-            'git+http://user@hostname.com/project/blah/': 'http://user@hostname.com/project/blah.git',
+            'git+http://user@hostname.com/project/blah': 'http://user@hostname.com/project/blah',
+            'git+http://user@hostname.com/project/blah/': 'http://user@hostname.com/project/blah',
             'git+http://user@hostname.com/project/blah.git': 'http://user@hostname.com/project/blah.git',
             'git+http://user@hostname.com/project/blah.git/': 'http://user@hostname.com/project/blah.git',
 
             // git+https
-            'git+https://hostname.com/project/blah': 'https://hostname.com/project/blah.git',
-            'git+https://hostname.com/project/blah/': 'https://hostname.com/project/blah.git',
+            'git+https://hostname.com/project/blah': 'https://hostname.com/project/blah',
+            'git+https://hostname.com/project/blah/': 'https://hostname.com/project/blah',
             'git+https://hostname.com/project/blah.git': 'https://hostname.com/project/blah.git',
             'git+https://hostname.com/project/blah.git/': 'https://hostname.com/project/blah.git',
-            'git+https://user@hostname.com/project/blah': 'https://user@hostname.com/project/blah.git',
-            'git+https://user@hostname.com/project/blah/': 'https://user@hostname.com/project/blah.git',
+            'git+https://user@hostname.com/project/blah': 'https://user@hostname.com/project/blah',
+            'git+https://user@hostname.com/project/blah/': 'https://user@hostname.com/project/blah',
             'git+https://user@hostname.com/project/blah.git': 'https://user@hostname.com/project/blah.git',
             'git+https://user@hostname.com/project/blah.git/': 'https://user@hostname.com/project/blah.git',
 
@@ -92,7 +96,7 @@ describe('resolverFactory', function () {
             'http://user@hostname.com/project.git': 'http://user@hostname.com/project.git',
             'http://user@hostname.com/project.git/': 'http://user@hostname.com/project.git',
 
-            // https
+            // https .git$
             'https://hostname.com/project.git': 'https://hostname.com/project.git',
             'https://hostname.com/project.git/': 'https://hostname.com/project.git',
             'https://user@hostname.com/project.git': 'https://user@hostname.com/project.git',
@@ -150,10 +154,14 @@ describe('resolverFactory', function () {
 
         gitHub = {
             // git:
+            'git://github.com/user/project/blah': 'git://github.com/user/project/blah.git',
+            'git://github.com/user/project/blah/': 'git://github.com/user/project/blah.git',
             'git://github.com/user/project/blah.git': 'git://github.com/user/project/blah.git',
             'git://github.com/user/project/blah.git/': 'git://github.com/user/project/blah.git',
 
             // git@:
+            'git@github.com:user/project/blah': 'git@github.com:user/project/blah.git',
+            'git@github.com:user/project/blah/': 'git@github.com:user/project/blah.git',
             'git@github.com:user/project/blah.git': 'git@github.com:user/project/blah.git',
             'git@github.com:user/project/blah.git/': 'git@github.com:user/project/blah.git',
 
@@ -494,6 +502,7 @@ describe('resolverFactory', function () {
         callFactory({ source: 'bower/bower' })
         .then(function (resolver) {
             var config;
+
             expect(resolver.getSource()).to.equal('git://github.com/bower/bower.git');
 
             config = mout.object.fillIn({
@@ -503,11 +512,25 @@ describe('resolverFactory', function () {
             return callFactory({ source: 'IndigoUnited/promptly' }, config);
         })
         .then(function (resolver) {
-            expect(resolver.getSource()).to.equal('git://bower.io/IndigoUnited/promptly/IndigoUnited/promptly.git');
+            expect(resolver.getSource()).to.equal('git://bower.io/IndigoUnited/promptly/IndigoUnited/promptly');
             next();
         })
         .done();
     });
+
+    it('should not expand using the shorthand resolver if it looks like a SSH URL', function (next) {
+        callFactory({ source: 'bleh@xxx.com:foo/bar' })
+        .then(function (resolver) {
+            throw new Error('Should have failed');
+        }, function (err) {
+            expect(err).to.be.an(Error);
+            expect(err.code).to.equal('ENOTFOUND');
+            expect(err.message).to.contain('bleh@xxx.com:foo/bar');
+            next();
+        })
+        .done();
+    });
+
 
     it('should error out if there\'s no suitable resolver for a given source', function (next) {
         resolverFactory({ source: 'some-package-that-will-never-exist' }, defaultConfig, logger)

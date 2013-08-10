@@ -13,7 +13,9 @@ describe('GitHub', function () {
 
     before(function () {
         logger = new Logger();
+    });
 
+    beforeEach(function () {
         // Turn off strict ssl because it gives problems with nock
         defaultConfig.strictSsl = false;
     });
@@ -38,6 +40,19 @@ describe('GitHub', function () {
 
     describe('.constructor', function () {
         it.skip('should throw an error on invalid GitHub URLs');
+
+        it('should ensure .git in the source', function () {
+            var resolver;
+
+            resolver = create('git://github.com/twitter/bower');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+
+            resolver = create('git://github.com/twitter/bower.git');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+
+            resolver = create('git://github.com/twitter/bower.git/');
+            expect(resolver.getSource()).to.equal('git://github.com/twitter/bower.git');
+        });
     });
 
     describe('.resolve', function () {
@@ -71,6 +86,9 @@ describe('GitHub', function () {
                 called = true;
                 return originalCheckout.apply(this, arguments);
             };
+
+            // Remove trailing git because GitHub correctly adds it but does not work for file://
+            resolver._source = resolver._source.replace(/\.git$/, '');
 
             resolver.resolve()
             .then(function (dir) {
