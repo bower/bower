@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.2 - 2013-08-10
+
+- Detect and fallback if the git server does not support `--depth=1` when cloning ([#747](https://github.com/bower/bower/issues/747))
+
+
 ## 1.1.1 - 2013-08-08
 
 - Fix silent fail when spawning child processes in some edge cases ([#722](https://github.com/bower/bower/issues/722))
