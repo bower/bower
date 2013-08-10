@@ -14,6 +14,11 @@
             "shorthand":   "-p",
             "flag":        "--paths",
             "description": "Generates a simple JSON source mapping"
+        },
+        {
+            "shorthand":   "-r",
+            "flag":        "--relative",
+            "description": "Make paths relative to the directory config property, which defaults to bower_components"
         }
     ]
 }
