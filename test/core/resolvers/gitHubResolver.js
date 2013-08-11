@@ -78,7 +78,7 @@ describe('GitHub', function () {
         });
 
         it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: '2af02ac6ddeaac1c2f4bead8d6287ce54269c039' });
+            var resolver = create({ source: 'git://github.com/foo/bar.git', target: '2af02ac6ddeaac1c2f4bead8d6287ce54269c039' });
             var originalCheckout = GitRemoteResolver.prototype._checkout;
             var called;
 
@@ -87,8 +87,8 @@ describe('GitHub', function () {
                 return originalCheckout.apply(this, arguments);
             };
 
-            // Remove trailing git because GitHub correctly adds it but does not work for file://
-            resolver._source = resolver._source.replace(/\.git$/, '');
+            // Monkey patch source to file://
+            resolver._source = 'file://' + testPackage;
 
             resolver.resolve()
             .then(function (dir) {
