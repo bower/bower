@@ -318,6 +318,7 @@ Thanks for assistance and contributions:
 [@marcelombc](https://github.com/marcelombc),
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
+[@MrDHat](https://github.com/MrDHat),
 [@necolas](https://github.com/necolas),
 [@paulirish](https://github.com/paulirish),
 [@richo](https://github.com/richo),
