@@ -38,6 +38,11 @@ describe('GitResolver', function () {
         return new GitResolver(decEndpoint, config || defaultConfig, logger);
     }
 
+    describe('misc', function () {
+        it.skip('should error out if git is not installed');
+        it.skip('should setup git template dir to an empty folder');
+    });
+
     describe('.hasNew', function () {
         before(function () {
             mkdirp.sync(tempDir);
