@@ -1,10 +1,10 @@
-{{#cyan}}{{name}}{{/cyan}}
-
-{{#if versions}}  Versions:
+{{#if versions}}{{#cyan}}Available versions:{{/cyan}}
 {{#condense}}
 {{#versions}}
-    - {{.}}
+  - {{.}}
 {{/versions}}
 {{/condense}}
-{{else}}  No versions available.
+
+You can request info for a specific version with 'bower info {{name}}#<version>'
+{{else}}No versions available.
 {{/if}}
