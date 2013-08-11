@@ -38,7 +38,7 @@ var defaults = {
         links: path.join(paths.data, 'links'),
         completion: path.join(paths.data, 'completion'),
         registry: path.join(paths.cache, 'registry'),
-        git: path.join(paths.data, 'git')
+        empty: path.join(paths.data, 'empty')  // Empty dir, used in GIT_TEMPLATE_DIR among others
     }
 };
 
