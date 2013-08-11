@@ -5,6 +5,6 @@
 {{/versions}}
 {{/condense}}
 
-You can request info for other versions with 'bower info {{name}}#<version>'
+You can request info for a specific version with 'bower info {{name}}#<version>'
 {{else}}No versions available.
 {{/if}}
