@@ -19,7 +19,8 @@
   },
   "dependencies": {
     "deep-extend": "~0.2.5",
-    "graceful-fs": "~2.0.0"
+    "graceful-fs": "~2.0.0",
+    "intersect": "~0.0.3"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",

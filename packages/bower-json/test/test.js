@@ -25,6 +25,15 @@ describe('.find', function () {
         });
     });
 
+    it('should not fallback to the component.json file if it\'s a component(1) file', function (done) {
+        bowerJson.find(__dirname + '/pkg-component(1)-json', function (err) {
+            expect(err).to.be.an(Error);
+            expect(err.code).to.equal('ENOENT');
+            expect(err.message).to.equal('None of bower.json, component.json, .bower.json were found in ' + __dirname + '/pkg-component(1)-json');
+            done();
+        });
+    });
+
     it('should fallback to the .bower.json file', function (done) {
         bowerJson.find(__dirname + '/pkg-dot-bower-json', function (err, file) {
             if (err) {

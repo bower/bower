@@ -1,6 +1,7 @@
 var fs = require('graceful-fs');
 var path = require('path');
 var deepExtend = require('deep-extend');
+var isComponent = require('./util/isComponent');
 var createError = require('./util/createError');
 
 var possibleJsons = ['bower.json', 'component.json', '.bower.json'];
@@ -102,13 +103,14 @@ function normalize(json) {
     return json;
 }
 
-function find(folder, callback) {
-    findRec(folder, possibleJsons, callback);
-}
-
-function findRec(folder, files, callback) {
+function find(folder, files, callback) {
     var err;
     var file;
+
+    if (typeof files === 'function') {
+        callback = files;
+        files = possibleJsons;
+    }
 
     if (!files.length) {
         err = createError('None of ' + possibleJsons.join(', ') + ' were found in ' + folder, 'ENOENT');
@@ -117,11 +119,23 @@ function findRec(folder, files, callback) {
 
     file = path.resolve(path.join(folder, files[0]));
     fs.exists(file, function (exists) {
-        if (exists) {
+        if (!exists) {
+            return find(folder, files.slice(1), callback);
+        }
+
+        if (files[0] !== 'component.json') {
             return callback(null, file);
         }
 
-        findRec(folder, files.slice(1), callback);
+        // If the file is component.json, check it it's a component(1) file
+        // If it is, we ignore it and keep searching
+        isComponent(file, function (is) {
+            if (is) {
+                return find(folder, files.slice(1), callback);
+            }
+
+            callback(null, file);
+        });
     });
 }
 
