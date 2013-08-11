@@ -563,6 +563,18 @@ describe('PackageRepository', function () {
         });
     });
 
+    describe('.getRegistryClient', function () {
+        it('should return the underlying registry client', function () {
+            expect(packageRepository.getRegistryClient()).to.be.an(RegistryClient);
+        });
+    });
+
+    describe('.getResolveCache', function () {
+        it('should return the underlying resolve cache', function () {
+            expect(packageRepository.getResolveCache()).to.be.an(ResolveCache);
+        });
+    });
+
     describe('#clearRuntimeCache', function () {
         it('should clear the resolve cache runtime cache', function () {
             var called;
@@ -603,18 +615,6 @@ describe('PackageRepository', function () {
 
             packageRepository.constructor.clearRuntimeCache();
             expect(called).to.be(true);
-        });
-    });
-
-    describe('.getRegistryClient', function () {
-        it('should return the underlying registry client', function () {
-            expect(packageRepository.getRegistryClient()).to.be.an(RegistryClient);
-        });
-    });
-
-    describe('.getResolveCache', function () {
-        it('should return the underlying resolve cache', function () {
-            expect(packageRepository.getResolveCache()).to.be.an(ResolveCache);
         });
     });
 });
