@@ -44,7 +44,7 @@ However, if you still want to run commands with sudo, use `--allow-root` option.
 
 Bower offers several ways to install packages:
 
-```bash
+```
 # Using the dependencies listed in the current directory's bower.json
 bower install
 # Using a local or remote package
