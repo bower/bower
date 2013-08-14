@@ -29,6 +29,10 @@ function rc(name, defaults, cwd, argv) {
 function parse(content, file) {
     var error;
 
+    if (!content.trim().length) {
+        return {};
+    }
+
     try {
         return JSON.parse(content);
     } catch (e) {
