@@ -54,7 +54,7 @@ function json(file) {
     var content;
 
     try {
-        content = fs.readFileSync(file);
+        content = fs.readFileSync(file).toString();
     } catch (err) {
         return null;
     }
