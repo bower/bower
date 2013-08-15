@@ -506,6 +506,31 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve to a branch even if target is a range/version that does not exist', function (next) {
+            var resolver;
+
+            // See #771
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/3.0.0-wip',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('3.0.0-wip')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'branch',
+                    branch: '3.0.0-wip',
+                    commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
