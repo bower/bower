@@ -475,6 +475,42 @@ describe('ResolveCache', function () {
             .done();
         });
 
+        it('should resolve to exact match (including build metadata) if available', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            json.version = '0.1.0';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0+build.4';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.4'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.4', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0+build.5';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.5'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.5', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0+build.6';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.6'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.6', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, '0.1.0+build.5')
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta.version).to.equal('0.1.0+build.5');
+                expect(canonicalDir).to.equal(path.join(sourceDir, '0.1.0+build.5'));
+
+                next();
+            })
+            .done();
+        });
+
         it('should resolve to the _wildcard package if target is * and there are not semver versions', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);

@@ -531,6 +531,32 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve to the exact version if exists', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.8.1',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.8.1+build.1',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.8.1+build.2',
+                    'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.8.1+build.3'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('0.8.1+build.2')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: '0.8.1+build.2',
+                    commit: 'dddddddddddddddddddddddddddddddddddddddd'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
@@ -801,6 +827,18 @@ describe('GitResolver', function () {
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
                 expect(json._release).to.equal('0.0.1');
+            })
+            // Test with type 'version' + build metadata
+            .then(function () {
+                resolver._resolution = { type: 'version', tag: '0.0.1+build.5', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                return resolver._savePkgMeta({ name: 'foo' });
+            })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('0.0.1+build.5');
             })
             // Test with type 'tag'
             .then(function () {
