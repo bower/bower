@@ -432,7 +432,7 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should resolve to the highest package that matches a range target', function (next) {
+        it('should resolve to the highest package that matches a range target, ignoring pre-releases', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
@@ -448,6 +448,10 @@ describe('ResolveCache', function () {
             json.version = '0.1.0';
             fs.mkdirSync(path.join(sourceDir, '0.1.0'));
             fs.writeFileSync(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0-rc.1';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0-rc.1'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0-rc.1', '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.9';
             fs.mkdirSync(path.join(sourceDir, '0.1.9'));
@@ -469,6 +473,34 @@ describe('ResolveCache', function () {
                 expect(pkgMeta).to.be.an('object');
                 expect(pkgMeta.version).to.equal('0.2.0');
                 expect(canonicalDir).to.equal(path.join(sourceDir, '0.2.0'));
+
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to the highest package that matches a range target, not ignoring pre-releases if they are the only versions', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            json.version = '0.1.0-rc.1';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0-rc.1'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0-rc.1', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '0.1.0-rc.2';
+            fs.mkdirSync(path.join(sourceDir, '0.1.0-rc.2'));
+            fs.writeFileSync(path.join(sourceDir, '0.1.0-rc.2', '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, '~0.1.0')
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta.version).to.equal('0.1.0-rc.2');
+                expect(canonicalDir).to.equal(path.join(sourceDir, '0.1.0-rc.2'));
 
                 next();
             })
@@ -511,7 +543,7 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should resolve to the _wildcard package if target is * and there are not semver versions', function (next) {
+        it('should resolve to the _wildcard package if target is * and there are no semver versions', function (next) {
             var source = String(Math.random());
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
