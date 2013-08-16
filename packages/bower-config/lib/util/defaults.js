@@ -1,4 +1,3 @@
-var os = require('os');
 var path = require('path');
 var paths = require('./paths');
 
@@ -24,7 +23,7 @@ var defaults = {
     'directory': 'bower_components',
     'registry': 'https://bower.herokuapp.com',
     'shorthand-resolver': 'git://github.com/{{owner}}/{{package}}.git',
-    'tmp': os.tmpdir ? os.tmpdir() : os.tmpDir(),
+    'tmp': paths.tmp,
     'proxy': proxy,
     'https-proxy': httpsProxy,
     'timeout': 30000,

@@ -12,13 +12,13 @@ var paths = {
 
 // Guess some needed properties based on the user OS
 var user = (osenv.user() || 'unknown').replace(/\\/g, '-');
-var temp = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), user);
+var tmp = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), user);
 var home = osenv.home();
 var base;
 
 // Fallbacks for windows
 if (process.platform === 'win32') {
-    base = path.resolve(process.env.APPDATA || home || temp);
+    base = path.resolve(process.env.APPDATA || home || tmp);
     base = path.join(base, 'bower');
 
     paths.config = paths.config || path.join(base, 'config');
@@ -26,11 +26,13 @@ if (process.platform === 'win32') {
     paths.cache = paths.cache || path.join(base, 'cache');
 // Fallbacks for other operating systems
 } else {
-    base = path.resolve(home || temp);
+    base = path.resolve(home || tmp);
 
     paths.config = paths.config || path.join(base, '.config/bower');
     paths.data = paths.data || path.join(base, '.local/share/bower');
     paths.cache = paths.cache || path.join(base, '.cache/bower');
 }
+
+paths.tmp = path.resolve(path.join(tmp, 'bower'));
 
 module.exports = paths;
