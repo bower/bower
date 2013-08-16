@@ -490,6 +490,8 @@ describe('Resolver', function () {
         it('should remove the folder after execution', function (next) {
             var bowerOsTempDir = path.join(tmp.tmpdir, 'bower');
 
+            this.timeout(15000);  // Give some time to execute
+
             rimraf(bowerOsTempDir, function (err) {
                 if (err) return next(err);
 

@@ -38,6 +38,11 @@ describe('GitResolver', function () {
         return new GitResolver(decEndpoint, config || defaultConfig, logger);
     }
 
+    describe('misc', function () {
+        it.skip('should error out if git is not installed');
+        it.skip('should setup git template dir to an empty folder');
+    });
+
     describe('.hasNew', function () {
         before(function () {
             mkdirp.sync(tempDir);
@@ -501,6 +506,31 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve to a branch even if target is a range/version that does not exist', function (next) {
+            var resolver;
+
+            // See #771
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/3.0.0-wip',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('3.0.0-wip')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'branch',
+                    branch: '3.0.0-wip',
+                    commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
@@ -661,7 +691,7 @@ describe('GitResolver', function () {
             var resolver = create('foo');
             var dst = path.join(tempDir, '.git');
 
-            this.timeout(15000);  // Give some time to copy
+            this.timeout(30000);  // Give some time to copy
 
             // Copy .git folder to the tempDir
             copy.copyDir(path.resolve(__dirname, '../../../.git'), dst, {

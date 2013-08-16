@@ -154,16 +154,16 @@ describe('resolverFactory', function () {
 
         gitHub = {
             // git:
-            'git://github.com/user/project/blah': 'git://github.com/user/project/blah.git',
-            'git://github.com/user/project/blah/': 'git://github.com/user/project/blah.git',
-            'git://github.com/user/project/blah.git': 'git://github.com/user/project/blah.git',
-            'git://github.com/user/project/blah.git/': 'git://github.com/user/project/blah.git',
+            'git://github.com/user/project': 'git://github.com/user/project.git',
+            'git://github.com/user/project/': 'git://github.com/user/project.git',
+            'git://github.com/user/project.git': 'git://github.com/user/project.git',
+            'git://github.com/user/project.git/': 'git://github.com/user/project.git',
 
             // git@:
-            'git@github.com:user/project/blah': 'git@github.com:user/project/blah.git',
-            'git@github.com:user/project/blah/': 'git@github.com:user/project/blah.git',
-            'git@github.com:user/project/blah.git': 'git@github.com:user/project/blah.git',
-            'git@github.com:user/project/blah.git/': 'git@github.com:user/project/blah.git',
+            'git@github.com:user/project': 'git@github.com:user/project.git',
+            'git@github.com:user/project/': 'git@github.com:user/project.git',
+            'git@github.com:user/project.git': 'git@github.com:user/project.git',
+            'git@github.com:user/project.git/': 'git@github.com:user/project.git',
 
             // git+ssh:
             'git+ssh://git@github.com:project/blah': 'ssh://git@github.com:project/blah.git',
@@ -218,19 +218,20 @@ describe('resolverFactory', function () {
         };
 
         nonGitHub = [
-            'git://xxxxgithub.com/user/project/blah.git',
-            'git@xxxxgithub.com:user:project/blah.git',
-            'git@xxxxgithub.com:user/project/blah.git',
-            'git+ssh://git@xxxxgithub.com:project/blah',
-            'git+ssh://git@xxxxgithub.com/project/blah',
-            'git+http://user@xxxxgithub.com/project/blah',
-            'git+https://user@xxxxgithub.com/project/blah',
-            'ssh://git@xxxxgithub.com:project:blah.git',
-            'ssh://git@xxxxgithub.com:project/blah.git',
-            'http://xxxxgithub.com/project/blah.git',
-            'https://xxxxgithub.com/project/blah.git',
-            'http://user@xxxxgithub.com/project/blah.git',
-            'https://user@xxxxgithub.com/project/blah.git'
+            'git://github.com/user/project/bleh.git',
+            'git://xxxxgithub.com/user/project.git',
+            'git@xxxxgithub.com:user:project.git',
+            'git@xxxxgithub.com:user/project.git',
+            'git+ssh://git@xxxxgithub.com:user/project',
+            'git+ssh://git@xxxxgithub.com/user/project',
+            'git+http://user@xxxxgithub.com/user/project',
+            'git+https://user@xxxxgithub.com/user/project',
+            'ssh://git@xxxxgithub.com:user/project.git',
+            'ssh://git@xxxxgithub.com/user/project.git',
+            'http://xxxxgithub.com/user/project.git',
+            'https://xxxxgithub.com/user/project.git',
+            'http://user@xxxxgithub.com/user/project.git',
+            'https://user@xxxxgithub.com/user/project.git'
         ];
 
         // Test GitHub ones
