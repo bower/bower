@@ -452,7 +452,7 @@ describe('Resolver', function () {
             rimraf(tempDir, next);
         });
 
-        it('should create a directory inside a bower folder, located within the OS temp folder', function (next) {
+        it('should create a directory inside a "username/bower" folder, located within the OS temp folder', function (next) {
             var resolver = create('foo');
 
             resolver._createTempDir()
@@ -466,8 +466,11 @@ describe('Resolver', function () {
                 dirname = path.dirname(dir);
                 osTempDir = path.resolve(tmp.tmpdir);
 
+                expect(dir.indexOf(osTempDir)).to.be(0);
+                expect(dir.indexOf(defaultConfig.tmp)).to.be(0);
+
                 expect(path.basename(dirname)).to.equal('bower');
-                expect(path.dirname(dirname)).to.equal(osTempDir);
+                expect(path.dirname(path.dirname(dirname))).to.equal(osTempDir);
                 next();
             })
             .done();
@@ -488,17 +491,15 @@ describe('Resolver', function () {
         });
 
         it('should remove the folder after execution', function (next) {
-            var bowerOsTempDir = path.join(tmp.tmpdir, 'bower');
-
             this.timeout(15000);  // Give some time to execute
 
-            rimraf(bowerOsTempDir, function (err) {
+            rimraf(defaultConfig.tmp, function (err) {
                 if (err) return next(err);
 
                 cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
-                    expect(fs.existsSync(bowerOsTempDir)).to.be(true);
-                    expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
+                    expect(fs.existsSync(defaultConfig.tmp)).to.be(true);
+                    expect(fs.readdirSync(defaultConfig.tmp)).to.eql([]);
                     next();
                 }, function (err) {
                     next(new Error(err.details));
@@ -508,17 +509,15 @@ describe('Resolver', function () {
         });
 
         it('should remove the folder on an uncaught exception', function (next) {
-            var bowerOsTempDir = path.join(tmp.tmpdir, 'bower');
-
-            rimraf(bowerOsTempDir, function (err) {
+            rimraf(defaultConfig.tmp, function (err) {
                 if (err) return next(err);
 
                 cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
                     next(new Error('The command should have failed'));
                 }, function () {
-                    expect(fs.existsSync(bowerOsTempDir)).to.be(true);
-                    expect(fs.readdirSync(bowerOsTempDir)).to.eql([]);
+                    expect(fs.existsSync(defaultConfig.tmp)).to.be(true);
+                    expect(fs.readdirSync(defaultConfig.tmp)).to.eql([]);
                     next();
                 })
                 .done();
