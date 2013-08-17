@@ -16,8 +16,16 @@ describe('Resolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/package-a');
     var logger;
+    var dirMode0777;
 
     before(function () {
+        var stat;
+
+        mkdirp.sync(tempDir);
+        stat = fs.statSync(tempDir);
+        dirMode0777 = stat.mode;
+        rimraf.sync(tempDir);
+
         logger = new Logger();
     });
 
@@ -438,20 +446,6 @@ describe('Resolver', function () {
     });
 
     describe('._createTempDir', function () {
-        var dirMode0777;
-
-        before(function () {
-            var stat;
-
-            mkdirp.sync(tempDir);
-            stat = fs.statSync(tempDir);
-            dirMode0777 = stat.mode;
-        });
-
-        after(function (next) {
-            rimraf(tempDir, next);
-        });
-
         it('should create a directory inside a "username/bower" folder, located within the OS temp folder', function (next) {
             var resolver = create('foo');
 
@@ -531,6 +525,60 @@ describe('Resolver', function () {
             .then(function (dir) {
                 expect(resolver._tempDir).to.be.ok();
                 expect(resolver._tempDir).to.equal(dir);
+                next();
+            })
+            .done();
+        });
+    });
+
+    describe('._cleanTempDir', function () {
+        it('should not error out if temporary dir is not yet created', function (next) {
+            var resolver = create('foo');
+
+            resolver._cleanTempDir()
+            .then(next.bind(null))
+            .done();
+        });
+
+        it('should delete the temporary folder contents', function (next) {
+            var resolver = create('foo');
+
+            resolver._createTempDir()
+            .then(resolver._cleanTempDir.bind(resolver))
+            .then(function (dir) {
+                expect(dir).to.equal(resolver.getTempDir());
+                expect(fs.readdirSync(dir).length).to.be(0);
+                next();
+            })
+            .done();
+        });
+
+        it('should keep the mode', function (next) {
+            var resolver = create('foo');
+
+            resolver._createTempDir()
+            .then(resolver._cleanTempDir.bind(resolver))
+            .then(function (dir) {
+                var stat = fs.statSync(dir);
+                var expectedMode = dirMode0777 & ~process.umask();
+
+                expect(stat.mode).to.equal(expectedMode);
+                next();
+            })
+            .done();
+        });
+
+        it('should keep the dir path', function (next) {
+            var resolver = create('foo');
+            var tempDir;
+
+            resolver._createTempDir()
+            .then(function (dir) {
+                tempDir = dir;
+                return resolver._cleanTempDir();
+            })
+            .then(function (dir) {
+                expect(dir).to.equal(tempDir);
                 next();
             })
             .done();
