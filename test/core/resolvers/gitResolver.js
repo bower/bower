@@ -456,14 +456,15 @@ describe('GitResolver', function () {
             .done();
         });
 
-        it('should resolve "*" to the latest version if a repository has valid semver tags', function (next) {
+        it('should resolve "*" to the latest version if a repository has valid semver tags, ignoring pre-releases', function (next) {
             var resolver;
 
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
-                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1'
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.2.0-rc.1'  // Should ignore release candidates
                 ]);
             };
 
@@ -473,6 +474,30 @@ describe('GitResolver', function () {
                 expect(resolution).to.eql({
                     type: 'version',
                     tag: 'v0.1.1',
+                    commit: 'cccccccccccccccccccccccccccccccccccccccc'
+                });
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0-rc.1',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.0-rc.2'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('*')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: '0.1.0-rc.2',
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 });
                 next();
@@ -525,6 +550,58 @@ describe('GitResolver', function () {
                     type: 'branch',
                     branch: '3.0.0-wip',
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                });
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to the latest pre-release version that matches a range/version', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1',
+                    'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.2.0',
+                    'ffffffffffffffffffffffffffffffffffffffff refs/tags/v0.2.1-rc.1'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('~0.2.1')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: 'v0.2.1-rc.1',
+                    commit: 'ffffffffffffffffffffffffffffffffffffffff'
+                });
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve to the exact version if exists', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.8.1',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.8.1+build.1',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.8.1+build.2',
+                    'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee refs/tags/0.8.1+build.3'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('0.8.1+build.2')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: '0.8.1+build.2',
+                    commit: 'dddddddddddddddddddddddddddddddddddddddd'
                 });
                 next();
             })
@@ -801,6 +878,18 @@ describe('GitResolver', function () {
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
                 expect(json._release).to.equal('0.0.1');
+            })
+            // Test with type 'version' + build metadata
+            .then(function () {
+                resolver._resolution = { type: 'version', tag: '0.0.1+build.5', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                return resolver._savePkgMeta({ name: 'foo' });
+            })
+            .then(function () {
+                return Q.nfcall(fs.readFile, metaFile);
+            })
+            .then(function (contents) {
+                var json = JSON.parse(contents.toString());
+                expect(json._release).to.equal('0.0.1+build.5');
             })
             // Test with type 'tag'
             .then(function () {
@@ -1292,8 +1381,8 @@ describe('GitResolver', function () {
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: 'v0.2.1', commit: 'abbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
-                    { version: '0.1.1', tag: '0.1.1+build.11', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
-                    { version: '0.1.1', tag: '0.1.1+build.100', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
+                    { version: '0.1.1+build.11', tag: '0.1.1+build.11', commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' },
+                    { version: '0.1.1+build.100', tag: '0.1.1+build.100', commit: 'cccccccccccccccccccccccccccccccccccccccc' },
                     { version: '0.1.1', tag: '0.1.1', commit: 'ffffffffffffffffffffffffffffffffffffffff' },
                     { version: '0.1.1-rc.200', tag: '0.1.1-rc.200', commit: 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' },
                     { version: '0.1.1-rc.22', tag: '0.1.1-rc.22', commit: 'dddddddddddddddddddddddddddddddddddddddd' },
