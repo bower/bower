@@ -889,9 +889,11 @@ describe('ResolveCache', function () {
                 expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
                 expectedJson = expectedJson.toString();
 
-                // Trim absolute bower path from json
                 mout.object.forOwn(entries, function (entry) {
+                    // Trim absolute bower path from json
                     entry.canonicalDir = entry.canonicalDir.substr(bowerDir.length);
+                    // Convert windows \ paths to /
+                    entry.canonicalDir = entry.canonicalDir.replace(/\\/g, '/');
                 });
 
                 json = JSON.stringify(entries, null, '  ');
