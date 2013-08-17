@@ -77,6 +77,66 @@ describe('GitHub', function () {
             .done();
         });
 
+        it('should retry using the GitRemoteResolver mechanism if download failed', function (next) {
+            var resolver;
+            var retried;
+
+            nock('https://github.com')
+            .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
+            .reply(200, 'this is not a valid tar');
+
+            logger.on('log', function (entry) {
+                if (entry.level === 'warn' && entry.id === 'retry') {
+                    retried = true;
+                }
+            });
+
+            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
+
+            // Monkey patch source to file://
+            resolver._source = 'file://' + testPackage;
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(retried).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'foo'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                next();
+            })
+            .done();
+        });
+
+        it('should retry using the GitRemoteResolver mechanism if extraction failed', function (next) {
+            var resolver;
+            var retried;
+
+            nock('https://github.com')
+            .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
+            .reply(500);
+
+            logger.on('log', function (entry) {
+                if (entry.level === 'warn' && entry.id === 'retry') {
+                    retried = true;
+                }
+            });
+
+            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
+
+            // Monkey patch source to file://
+            resolver._source = 'file://' + testPackage;
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(retried).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'foo'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'bar'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                next();
+            })
+            .done();
+        });
+
         it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function (next) {
             var resolver = create({ source: 'git://github.com/foo/bar.git', target: '2af02ac6ddeaac1c2f4bead8d6287ce54269c039' });
             var originalCheckout = GitRemoteResolver.prototype._checkout;
