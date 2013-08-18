@@ -1,6 +1,12 @@
 var os = require('os');
 var path = require('path');
 var osenv = require('osenv');
+var crypto = require('crypto');
+
+function generateFakeUser() {
+    var uid = process.pid + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+    return crypto.createHash('md5').update(uid).digest('hex');
+}
 
 // Assume XDG defaults
 // See: http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
@@ -11,7 +17,7 @@ var paths = {
 };
 
 // Guess some needed properties based on the user OS
-var user = (osenv.user() || 'unknown').replace(/\\/g, '-');
+var user = (osenv.user() || generateFakeUser()).replace(/\\/g, '-');
 var tmp = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), user);
 var home = osenv.home();
 var base;
