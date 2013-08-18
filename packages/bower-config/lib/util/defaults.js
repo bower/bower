@@ -31,7 +31,7 @@ var defaults = {
     'strict-ssl': true,
     'user-agent': userAgent,
     'color': true,
-    'interactive': false,
+    'interactive': null,
     'storage': {
         packages: path.join(paths.cache, 'packages'),
         links: path.join(paths.data, 'links'),
