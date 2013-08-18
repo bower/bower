@@ -9,9 +9,16 @@ var win = process.platform === 'win32';
 var home = osenv.home();
 
 function rc(name, defaults, cwd, argv) {
+    var argvConfig;
+
     defaults = defaults || {};
     cwd = cwd || process.cwd();
     argv = argv || optimist.argv;
+
+    // Parse --config.foo=false
+    argvConfig = mout.object.map(argv.config || {}, function (value) {
+        return value === 'false' ? false : value;
+    });
 
     return mout.object.deepMixIn.apply(null, [
         {},
@@ -22,7 +29,7 @@ function rc(name, defaults, cwd, argv) {
         json(path.join(paths.config, name + 'rc')),
         json(find('.' + name + 'rc', cwd)),
         env(name + '_'),
-        typeof argv.config !== 'object' ? {} : argv.config
+        argvConfig
     ]);
 }
 
