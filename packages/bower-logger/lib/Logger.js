@@ -63,7 +63,57 @@ Logger.prototype.log = function (level, id, message, data) {
     return this;
 };
 
+Logger.prototype.prompt = function (prompts, callback) {
+    var fn;
+    var one;
+    var invalid;
+    var runned;
+    var error;
+    var validPrompts = Logger._validPrompts;
+
+    if (!Array.isArray(prompts)) {
+        prompts.name = 'prompt';
+        prompts = [prompts];
+        one = true;
+    }
+
+    // Validate prompt types
+    invalid = prompts.some(function (prompt) {
+        return validPrompts.indexOf(prompt.type) === -1;
+    });
+
+    if (invalid) {
+        error = new Error('Unknown prompt type');
+        error.code = 'ENOTSUP';
+        return callback(error);
+    }
+
+    fn = function (answers) {
+        // Run callback only once
+        if (runned) {
+            return;
+        }
+
+        runned = true;
+
+        // If only one prompt was requested, resolve with its answer
+        if (one) {
+            answers = answers.prompt;
+        }
+
+        callback(null, answers);
+    };
+
+    this.emit('prompt', prompts, fn);
+};
+
 // ------------------
+
+Logger._validPrompts = [
+    'input',
+    'confirm',
+    'password'
+];
 
 Logger.LEVELS = {
     'error': 5,

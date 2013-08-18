@@ -259,4 +259,96 @@ describe('Logger', function () {
             next();
         });
     });
+
+    describe('.prompt', function () {
+        it('should only allow calling the callback once', function () {
+            var calls = 0;
+
+            logger
+            .once('prompt', function (prompts, callback) {
+                callback('bar');
+                callback('bar');
+            })
+            .prompt({
+                type: 'input',
+                message: 'foo'
+            }, function () {
+                calls += 1;
+            });
+
+            expect(calls).to.equal(1);
+        });
+
+        it('should accept a prompt', function (next) {
+            logger
+            .once('prompt', function (prompts, callback) {
+                callback({
+                    prompt: 'bar'
+                });
+            })
+            .prompt({
+                type: 'input',
+                message: 'foo'
+            }, function (err, answer) {
+                expect(err).to.not.be.ok();
+                expect(answer).to.equal('bar');
+                next();
+            });
+        });
+
+        it('should accept several prompts', function (next) {
+            logger
+            .once('prompt', function (prompts, callback) {
+                callback({
+                    foo: 'bar',
+                    foz: 'baz'
+                });
+            })
+            .prompt([
+                {
+                    name: 'foo',
+                    type: 'input',
+                    message: 'foo'
+                },
+                {
+                    name: 'foz',
+                    type: 'confirm',
+                    message: 'foz'
+                }
+            ], function (err, answer) {
+                expect(err).to.not.be.ok();
+                expect(answer.foo).to.equal('bar');
+                expect(answer.foz).to.equal('baz');
+
+                logger
+                .once('prompt', function (prompts, callback) {
+                    callback({
+                        foo: 'bar'
+                    });
+                })
+                .prompt([
+                    {
+                        name: 'foo',
+                        type: 'input',
+                        message: 'foo'
+                    }
+                ], function (err, answer) {
+                    expect(err).to.not.be.ok();
+                    expect(answer.foo).to.equal('bar');
+                    next();
+                });
+            });
+        });
+
+        it('should error on invalid prompt type', function (next) {
+            logger.prompt({
+                type: 'xxx',
+                message: 'foo'
+            }, function (err) {
+                expect(err).to.be.an(Error);
+                expect(err.code).to.be('ENOTSUP');
+                next();
+            });
+        });
+    });
 });
