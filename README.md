@@ -253,21 +253,11 @@ This requires you to listen for the `prompt` event and handle the prompting your
 var inquirer =  require('inquirer');
 
 bower.commands
-.install(['jquery'], { 'save': true }, { interactive: true })
+.install(['jquery'], { save: true }, { interactive: true })
 // ..
 .on('prompt', function (prompts, callback) {
-    if (!Array.isArray(prompts)) {
-        prompts.name = 'prompt';
-        prompts = [prompts];
-    }
-
     inquirer.prompt(prompts, function (answers) {
-        // If only one prompt was requested, resolve with its answer
-        if (prompts.length === 1) {
-            answers = answers.prompt;
-        }
-
-        callback(null, answers);
+        callback(answers);
     });
 });
 ```

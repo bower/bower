@@ -118,7 +118,7 @@ emitter
 .on('prompt', function (prompt, callback) {
     renderer.prompt(prompt)
     .then(function (answer) {
-        callback(null, answer);
+        callback(answer);
     });
 });
 
