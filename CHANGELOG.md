@@ -2,6 +2,11 @@
 
 ## 1.2.0 - 2013-08-19
 
+- Fix bower throwing on non-semver targets ([#800](https://github.com/bower/bower/issues/800))
+
+
+## 1.2.0 - 2013-08-19
+
 - __Bower no longer installs a pre-release version by default, that is, if no version/range is specified__ ([#782](https://github.com/bower/bower/issues/782))
 - __`bower info <package>` will now show the latest `<package>` information along with the available versions__ ([#759](https://github.com/bower/bower/issues/759))
 - __`bower link` no longer requires an elevated user on Windows in most cases__ ([#472](https://github.com/bower/bower/issues/472))
