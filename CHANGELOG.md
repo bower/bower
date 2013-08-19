@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0
+## 1.2.0 - 2013-08-19
 
 - __Bower no longer installs a pre-release version by default, that is, if no version/range is specified__ ([#782](https://github.com/bower/bower/issues/782))
 - __`bower info <package>` will now show the latest `<package>` information along with the available versions__ ([#759](https://github.com/bower/bower/issues/759))
@@ -9,6 +9,7 @@
 - Changes to endpoint sources in `bower.json` are now catched up by `bower install` and `bower update` ([#788](https://github.com/bower/bower/issues/788))
 - Allow semver ranges in `bower cache clean`, e.g. `bower cache clean jquery#<2.0.0` ([#688](https://github.com/bower/bower/issues/688))
 - Normalize `bower list --paths` on Windows ([#279](https://github.com/bower/bower/issues/279))
+- Multiple mains are not correctly outputted as an array in `bower list --paths`
 - Add `--relative` option to `bower list --json` so that Bower outputs relative paths instead of absolute ([#714](https://github.com/bower/bower/issues/714))
 - `bower list --paths` now outputs relative paths by default; can be turned off with `--no-relative` ([#785](https://github.com/bower/bower/issues/785))
 - Bower  longer fails if `symlinks` to files are present in the `bower_components` folder ([#783](https://github.com/bower/bower/issues/783) and [#791](https://github.com/bower/bower/issues/791))
