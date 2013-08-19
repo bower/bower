@@ -224,7 +224,7 @@ through the `bower.commands` object.
 var bower = require('bower');
 
 bower.commands
-.install(['jquery'], { 'save': true }, { /* custom config */ })
+.install(['jquery'], { save: true }, { /* custom config */ })
 .on('end', function (installed) {
     console.log(installed);
 });
