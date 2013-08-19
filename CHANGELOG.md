@@ -9,10 +9,10 @@
 - Changes to endpoint sources in `bower.json` are now catched up by `bower install` and `bower update` ([#788](https://github.com/bower/bower/issues/788))
 - Allow semver ranges in `bower cache clean`, e.g. `bower cache clean jquery#<2.0.0` ([#688](https://github.com/bower/bower/issues/688))
 - Normalize `bower list --paths` on Windows ([#279](https://github.com/bower/bower/issues/279))
-- Multiple mains are not correctly outputted as an array in `bower list --paths`
+- Multiple mains are now correctly outputted as an array in `bower list --paths` ([#784](https://github.com/bower/bower/issues/784))
 - Add `--relative` option to `bower list --json` so that Bower outputs relative paths instead of absolute ([#714](https://github.com/bower/bower/issues/714))
 - `bower list --paths` now outputs relative paths by default; can be turned off with `--no-relative` ([#785](https://github.com/bower/bower/issues/785))
-- Bower  longer fails if `symlinks` to files are present in the `bower_components` folder ([#783](https://github.com/bower/bower/issues/783) and [#791](https://github.com/bower/bower/issues/791))
+- Bower no longer fails if `symlinks` to files are present in the `bower_components` folder ([#783](https://github.com/bower/bower/issues/783) and [#791](https://github.com/bower/bower/issues/791))
 - Disable git templates/hooks when running `git` ([#761](https://github.com/bower/bower/issues/761))
 - Add instructions to setup git workaround for proxies when execution of `git` fails ([#250](https://github.com/bower/bower/issues/250))
 - Ignore `component.json` if it looks like a component(1) file ([#556](https://github.com/bower/bower/issues/556))
