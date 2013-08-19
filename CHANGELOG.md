@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 - 2013-08-19
+## 1.2.1 - 2013-08-19
 
 - Fix bower throwing on non-semver targets ([#800](https://github.com/bower/bower/issues/800))
 
