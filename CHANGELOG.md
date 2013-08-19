@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.2.0
+
+- __Bower no longer installs a pre-release version by default, that is, if no version/range is specified__ ([#782](https://github.com/bower/bower/issues/782))
+- __`bower info <package>` will now show the latest `<package>` information along with the available versions__ ([#759](https://github.com/bower/bower/issues/759))
+- __`bower link` no longer requires an elevated user on Windows in most cases__ ([#472](https://github.com/bower/bower/issues/472))
+- __Init command now prompts for the whole `bower.json` spec properties, filling in default values for `author` and `homepage` based on `git` settings__ ([#693](https://github.com/bower/bower/issues/693))
+- Changes to endpoint sources in `bower.json` are now catched up by `bower install` and `bower update` ([#788](https://github.com/bower/bower/issues/788))
+- Allow semver ranges in `bower cache clean`, e.g. `bower cache clean jquery#<2.0.0` ([#688](https://github.com/bower/bower/issues/688))
+- Normalize `bower list --paths` on Windows ([#279](https://github.com/bower/bower/issues/279))
+- Add `--relative` option to `bower list --json` so that Bower outputs relative paths instead of absolute ([#714](https://github.com/bower/bower/issues/714))
+- `bower list --paths` now outputs relative paths by default; can be turned off with `--no-relative` ([#785](https://github.com/bower/bower/issues/785))
+- Bower now longer fails if `symlinks` to files are present in the `bower_components` folder ([#783](https://github.com/bower/bower/issues/783) and [#791](https://github.com/bower/bower/issues/791))
+- Disable git templates/hooks when running `git` ([#761](https://github.com/bower/bower/issues/761))
+- Add instructions to setup git workaround for proxies when execution of `git` fails ([#250](https://github.com/bower/bower/issues/250))
+- Ignore `component.json` if it looks like a component(1) file ([#556](https://github.com/bower/bower/issues/556))
+- Fix multi-user usage on bower when it creates temporary directories to hold some files
+- Fix prompting causing an invalid JSON output when running commands with `--json`
+- When running Bower commands programmatically, prompting is now disabled by default (see the updated progammatic [usage](https://github.com/bower/bower#programmatic-api) for more info)
+- Other minor improvements and fixes
+
+Fix for `#788` requires installed components to be re-installed.
+
+
 ## 1.1.2 - 2013-08-10
 
 - Detect and fallback if the git server does not support `--depth=1` when cloning ([#747](https://github.com/bower/bower/issues/747))
