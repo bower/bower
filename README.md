@@ -256,9 +256,7 @@ bower.commands
 .install(['jquery'], { save: true }, { interactive: true })
 // ..
 .on('prompt', function (prompts, callback) {
-    inquirer.prompt(prompts, function (answers) {
-        callback(answers);
-    });
+    inquirer.prompt(prompts, callback);
 });
 ```
 
