@@ -66,9 +66,7 @@ logger.on('prompt', function (prompts, callback) {
 
     // In this example, we will use the inquirer module to do the
     // prompting for us
-    inquirer(prompts, function (answers) {
-        callback(answers);
-    });
+    inquirer(prompts, callback);
 })
 
 logger.prompt({
