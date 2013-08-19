@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
+process.title = 'bower';
+
 var path = require('path');
-var tty = require('tty');
 var mout = require('mout');
 var updateNotifier = require('update-notifier');
 var Logger = require('bower-logger');
@@ -20,8 +21,6 @@ var commandFunc;
 var emitter;
 var notifier;
 var levels = Logger.LEVELS;
-
-process.title = 'bower';
 
 options = cli.readOptions({
     version: { type: Boolean, shorthand: 'v' },
@@ -48,10 +47,6 @@ if (bower.config.silent) {
 } else {
     loglevel = levels[bower.config.loglevel] || levels.info;
 }
-
-// Enable interactive if terminal is TTY,
-// loglevel is equal or lower then conflict
-bower.config.interactive = tty.isatty(1) && loglevel <= levels.conflict;
 
 // Get the command to execute
 while (options.argv.remain.length) {
@@ -119,6 +114,12 @@ emitter
     if (levels[log.level] >= loglevel) {
         renderer.log(log);
     }
+})
+.on('prompt', function (prompt, callback) {
+    renderer.prompt(prompt)
+    .then(function (answer) {
+        callback(answer);
+    });
 });
 
 // Check for newer version of Bower
