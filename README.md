@@ -224,7 +224,7 @@ through the `bower.commands` object.
 var bower = require('bower');
 
 bower.commands
-.install(paths, options)
+.install(['jquery'], { save: true }, { /* custom config */ })
 .on('end', function (installed) {
     console.log(installed);
 });
@@ -236,14 +236,31 @@ bower.commands
 });
 ```
 
-Commands emit three types of events: `log`, `end`, and `error`.
+Commands emit four types of events: `log`, `prompt`, `end`, `error`.
 
 * `log` is emitted to report the state/progress of the command.
+* `prompt` is emitted whenever the user needs to be prompted.
 * `error` will only be emitted if something goes wrong.
 * `end` is emitted when the command successfully ends.
 
 For a better of idea how this works, you may want to check out [our bin
 file](https://github.com/bower/bower/blob/master/bin/bower).
+
+When using bower programmatically, prompting is disabled by default. Though you can enable it when calling commands with `interactive: true` in the config.
+This requires you to listen for the `prompt` event and handle the prompting yourself. The easiest way is to use the [inquirer](https://npmjs.org/package/inquirer) npm module like so:
+
+```js
+var inquirer =  require('inquirer');
+
+bower.commands
+.install(['jquery'], { save: true }, { interactive: true })
+// ..
+.on('prompt', function (prompts, callback) {
+    inquirer.prompt(prompts, function (answers) {
+        callback(answers);
+    });
+});
+```
 
 
 ## Completion (experimental)
