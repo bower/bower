@@ -94,6 +94,15 @@ Logger.prototype.prompt = function (prompts, callback) {
             return;
         }
 
+        // Trim answers automatically
+        Object.keys(answers).forEach(function (key) {
+            var value = answers[key];
+
+            if (typeof value === 'string') {
+                answers[key] = answers[key].trim();
+            }
+        });
+
         runned = true;
 
         // If only one prompt was requested, resolve with its answer

@@ -266,8 +266,8 @@ describe('Logger', function () {
 
             logger
             .once('prompt', function (prompts, callback) {
-                callback('bar');
-                callback('bar');
+                callback({ prompt: 'bar' });
+                callback({ prompt: 'foo' });
             })
             .prompt({
                 type: 'input',
@@ -347,6 +347,23 @@ describe('Logger', function () {
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.code).to.be('ENOTSUP');
+                next();
+            });
+        });
+
+        it('should trim the answers', function (next) {
+            logger
+            .once('prompt', function (prompts, callback) {
+                callback({
+                    prompt: ' bar '
+                });
+            })
+            .prompt({
+                type: 'input',
+                message: 'foo'
+            }, function (err, answer) {
+                expect(err).to.not.be.ok();
+                expect(answer).to.equal('bar');
                 next();
             });
         });
