@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.2
+## 1.2.2 - 2013-08-20
 
 - Standardize prompt behaviour with and without `--json`
 - Improve detection of `git` servers that do not support shallow clones ([#805](https://github.com/bower/bower/issues/805))
