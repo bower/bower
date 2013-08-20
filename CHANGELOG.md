@@ -5,7 +5,7 @@
 - Standardize prompt behaviour with and without `--json`
 - Improve detection of `git` servers that do not support shallow clones ([#805](https://github.com/bower/bower/issues/805))
 - Ignore remote tags (tags ending with ^{})
-- Fix bower not saving the correct endpoint when in some edge cases ([#806](https://github.com/bower/bower/issues/806))
+- Fix bower not saving the correct endpoint in some edge cases ([#806](https://github.com/bower/bower/issues/806))
 
 
 ## 1.2.1 - 2013-08-19
