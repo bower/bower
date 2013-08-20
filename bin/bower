@@ -10,6 +10,7 @@ var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
 var rootCheck = require('../lib/util/rootCheck');
+var onlineCheck = require('../lib/util/onlineCheck');
 
 // --------
 
@@ -72,62 +73,92 @@ while (options.argv.remain.length) {
 commandFunc = command && mout.object.get(bower.commands, command);
 command = command && command.replace(/\./g, ' ');
 
-// If no command was specified, show bower help
-// Do the same if the command is unknown
-if (!commandFunc) {
-    emitter = bower.commands.help();
-    command = 'help';
-// If the user requested help, show the command's help
-// Do the same if the actual command is a group of other commands (e.g.: cache)
-} else if (options.help || !commandFunc.line) {
-    emitter = bower.commands.help(command);
-    command = 'help';
-// Call the line method
-} else {
-    emitter = commandFunc.line(process.argv);
-
-    // If the method failed to interpret the process arguments
-    // show the command help
-    if (!emitter) {
+function execute() {
+    // If no command was specified, show bower help
+    // Do the same if the command is unknown
+    if (!commandFunc) {
+        emitter = bower.commands.help();
+        command = 'help';
+    // If the user requested help, show the command's help
+    // Do the same if the actual command is a group of other commands (e.g.: cache)
+    } else if (options.help || !commandFunc.line) {
         emitter = bower.commands.help(command);
         command = 'help';
+    // Call the line method
+    } else {
+        emitter = commandFunc.line(process.argv);
+
+        // If the method failed to interpret the process arguments
+        // show the command help
+        if (!emitter) {
+            emitter = bower.commands.help(command);
+            command = 'help';
+        }
+    }
+
+    // Get the renderer and configure it with the executed command
+    renderer = cli.getRenderer(command, emitter.json, bower.config);
+
+    emitter
+    .on('end', function (data) {
+        if (!bower.config.silent) {
+            renderer.end(data);
+        }
+    })
+    .on('error', function (err)  {
+        if (levels.error >= loglevel) {
+            renderer.error(err);
+        }
+
+        process.exit(1);
+    })
+    .on('log', function (log) {
+        if (levels[log.level] >= loglevel) {
+            renderer.log(log);
+        }
+    })
+    .on('prompt', function (prompt, callback) {
+        renderer.prompt(prompt)
+        .then(function (answer) {
+            callback(answer);
+        });
+    });
+
+    // Check for newer version of Bower
+    notifier = updateNotifier({
+        packageName: pkg.name,
+        packageVersion: pkg.version
+    });
+
+    if (notifier.update && levels.info >= loglevel) {
+        renderer.updateNotice(notifier.update);
     }
 }
 
-// Get the renderer and configure it with the executed command
-renderer = cli.getRenderer(command, emitter.json, bower.config);
+var offlineCommands = ['register', 'cache.clean', 'cache.list'];
 
-emitter
-.on('end', function (data) {
-    if (!bower.config.silent) {
-        renderer.end(data);
-    }
-})
-.on('error', function (err)  {
-    if (levels.error >= loglevel) {
-        renderer.error(err);
-    }
-
-    process.exit(1);
-})
-.on('log', function (log) {
-    if (levels[log.level] >= loglevel) {
-        renderer.log(log);
-    }
-})
-.on('prompt', function (prompt, callback) {
-    renderer.prompt(prompt)
-    .then(function (answer) {
-        callback(answer);
+if ((bower.config.offline && !bower.config.force) || bower.config.force || offlineCommands.indexOf(command) !== -1) {
+    execute();
+}
+else {
+    onlineCheck()
+    .then(function (online) {
+        if (!online && !bower.config.offline && !bower.config.force) {
+            var offlineLog = cli.getRenderer('genericLog', false, bower.config);
+            bower.config.offline = true;
+            var offlineMsg = [
+                'Connectivity cannot be verified',
+                '',
+                'Defaulting to "offline" mode',
+                'This can be overridden by using: ',
+                '\tbower <command> [<args>] [<options>] --force',
+                ''
+            ];
+            offlineLog.log({ id: 'offline', message: offlineMsg.join('\n'), level: 'warn' });
+        }
+        else if (bower.config.force) {
+            bower.config.offline = false;
+        }
+        execute();
     });
-});
-
-// Check for newer version of Bower
-notifier = updateNotifier({
-    packageName: pkg.name,
-    packageVersion: pkg.version
-});
-
-if (notifier.update && levels.info >= loglevel) {
-    renderer.updateNotice(notifier.update);
 }
