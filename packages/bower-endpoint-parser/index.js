@@ -92,9 +92,9 @@ function decomposed2json(decEndpoint) {
     // If value is empty, we append the target always
     if (!value) {
         value += isWildcard(target) ? '*' : target;
-    // Otherwise append only if not a wildcard
-    } else if (!isWildcard(target)) {
-        value += '#' + target;
+    // Otherwise append only if not a wildcard or source does not look like a source
+    } else if (!isWildcard(target) || !isSource(source)) {
+        value += '#' + (target || '*');
     }
 
     ret[name] = value;
