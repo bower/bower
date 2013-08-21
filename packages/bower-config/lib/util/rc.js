@@ -81,8 +81,8 @@ function env(prefix) {
         if (mout.string.startsWith(key, prefix)) {
             var parsedKey = key
                            .substr(prefixLength)
-                           .replace(/__/g, '.')   // __ are used for nesting
-                           .replace(/_/g, '-');    // _ is used as a - separator
+                           .replace(/__/g, '.')   // __ is used for nesting
+                           .replace(/_/g, '-');   // _ is used as a - separator
             mout.object.set(obj, parsedKey, value);
         }
     });
