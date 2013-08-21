@@ -73,13 +73,16 @@ function env(prefix) {
     var obj = {};
     var prefixLength = prefix.length;
 
+    prefix = prefix.toLowerCase();
+
     mout.object.forOwn(process.env, function (value, key) {
+        key = key.toLowerCase();
+
         if (mout.string.startsWith(key, prefix)) {
             var parsedKey = key
                            .substr(prefixLength)
-                           .replace(/__/g, '.')
-                           .replace(/_/g, '-')
-                           .toLowerCase();
+                           .replace(/__/g, '.')   // __ are used for nesting
+                           .replace(/_/g, '-');    // _ is used as a - separator
             mout.object.set(obj, parsedKey, value);
         }
     });
