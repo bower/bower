@@ -75,7 +75,12 @@ function env(prefix) {
 
     mout.object.forOwn(process.env, function (value, key) {
         if (mout.string.startsWith(key, prefix)) {
-            obj[key.substr(prefixLength)] = value;
+            var parsedKey = key
+                           .substr(prefixLength)
+                           .replace(/__/g, '.')
+                           .replace(/_/g, '-')
+                           .toLowerCase();
+            mout.object.set(obj, parsedKey, value);
         }
     });
 
