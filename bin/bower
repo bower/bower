@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-process.title = 'bower';
+process.bin = process.title = 'bower';
 
 var path = require('path');
 var mout = require('mout');
