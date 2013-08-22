@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.2.3 - 2013-08-22
+
+- Fix read of environment variables with dashes and also support nested ones ([#8@bower-config](https://github.com/bower/config/issues/8))
+- Fix `bower info <package> <property>` printing the available versions (it shouldn't!)
+- Fix interactive shell not being correctly detected in node `0.8.x`
+- Fix `extraneous` flag in the `list` command being incorrectly set for saved dev dependencies in some cases
+- Fix linked dependencies not being read listed in `bower list` on Windows
+- Fix update notice not working with `--json`
+
+
 ## 1.2.2 - 2013-08-20
 
 - Standardize prompt behaviour with and without `--json`
