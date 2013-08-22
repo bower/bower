@@ -2,11 +2,11 @@
 
 ## 1.2.3 - 2013-08-22
 
-- Fix read of environment variables with dashes and also support nested ones ([#8@bower-config](https://github.com/bower/config/issues/8))
+- Fix read of environment variables that map to properties with dashes and also support nested ones ([#8@bower-config](https://github.com/bower/config/issues/8))
 - Fix `bower info <package> <property>` printing the available versions (it shouldn't!)
-- Fix interactive shell not being correctly detected in node `0.8.x`
+- Fix interactive shell not being correctly detected in node `0.8.x` ([#802](https://github.com/bower/bower/issues/802))
 - Fix `extraneous` flag in the `list` command being incorrectly set for saved dev dependencies in some cases
-- Fix linked dependencies not being read listed in `bower list` on Windows
+- Fix linked dependencies not being read in `bower list` on Windows ([#813](https://github.com/bower/bower/issues/813))
 - Fix update notice not working with `--json`
 
 
