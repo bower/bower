@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.4 - 2013-08-23
+
+- Fix ignored nested folders not being correctly handled in some cases ([#814](https://github.com/bower/bower/issues/814))
+
+
 ## 1.2.3 - 2013-08-22
 
 - Fix read of environment variables that map to config properties with dashes and also support nested ones ([#8@bower-config](https://github.com/bower/config/issues/8))
