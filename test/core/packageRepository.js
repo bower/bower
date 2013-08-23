@@ -269,7 +269,7 @@ describe('PackageRepository', function () {
                     expect(fs.existsSync(canonicalDir)).to.be(true);
                     expect(pkgMeta).to.be.an('object');
                     expect(pkgMeta.name).to.be('a');
-                    expect(pkgMeta.version).to.be('0.2.1');
+                    expect(pkgMeta.version).to.be('0.2.2');
                     next();
                 });
             })
