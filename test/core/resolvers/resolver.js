@@ -683,7 +683,7 @@ describe('Resolver', function () {
 
             // Checkout test package version 0.2.1 which has a bower.json
             // with ignores
-            cmd('git', ['checkout', '0.2.1'], { cwd: testPackage })
+            cmd('git', ['checkout', '0.2.2'], { cwd: testPackage })
             // Copy its contents to the temporary dir
             .then(function () {
                 return copy.copyDir(testPackage, tempDir);
@@ -699,7 +699,10 @@ describe('Resolver', function () {
                 return resolver._applyPkgMeta(json)
                 .then(function () {
                     expect(fs.existsSync(path.join(tempDir, 'foo'))).to.be(true);
+                    expect(fs.existsSync(path.join(tempDir, 'baz'))).to.be(true);
                     expect(fs.existsSync(path.join(tempDir, 'test'))).to.be(false);
+                    expect(fs.existsSync(path.join(tempDir, 'more/docs'))).to.be(false);
+                    expect(fs.existsSync(path.join(tempDir, 'more/assets'))).to.be(false);
                     next();
                 });
             })
