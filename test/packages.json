@@ -56,6 +56,25 @@
         ]
       }
     },
+    "0.2.2": {
+      "README.md": "",
+      "foo": "foo",
+      "bar": "bar",
+      "baz": "baz",
+      "more/more-foo": "more-foo",
+      "more/docs/doc.html": "doc",
+      "more/assets/styles.css": "css",
+      "bower.json": {
+        "name": "a",
+        "version": "0.2.2",
+        "ignore": [
+            "test/",
+            "more/docs",
+            "more/assets/",
+            "baz/"
+        ]
+      }
+    },
     "some-branch": {
       "README.md": "",
       "foo": "foo foo",
