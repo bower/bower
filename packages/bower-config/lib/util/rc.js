@@ -25,7 +25,7 @@ function rc(name, defaults, cwd, argv) {
         defaults,
         { cwd: cwd },
         win ? {} : json(path.join('/etc', name + 'rc')),
-        json(path.join(home, '.' + name + 'rc')),
+        !home ? {} : json(path.join(home, '.' + name + 'rc')),
         json(path.join(paths.config, name + 'rc')),
         json(find('.' + name + 'rc', cwd)),
         env(name + '_'),
