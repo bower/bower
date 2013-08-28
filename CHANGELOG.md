@@ -5,7 +5,7 @@
 - Fix persistent conflict resolutions not working correctly for branches ([#818](https://github.com/bower/bower/issues/818))
 - Fix Bower failing to run if HOME is not set ([#826](https://github.com/bower/bower/issues/826))
 - Bower now prints a warning if HOME is not set ([#827](https://github.com/bower/bower/issues/827))
-- Fix progress message being fired after completing for long running `git clone` commands
+- Fix progress message being fired after completion of long running `git clone` commands
 - Other minor improvements
 
 
