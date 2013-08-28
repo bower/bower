@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.5 - 2013-08-28
+
+- Fix persistent conflict resolutions not working correctly for branches ([#818](https://github.com/bower/bower/issues/818))
+- Fix Bower failing to run if HOME is not set ([#826](https://github.com/bower/bower/issues/826))
+- Bower now prints a warning if HOME is not set ([#827](https://github.com/bower/bower/issues/827))
+- Fix progress message being fired after completing for long running `git clone` commands
+- Other minor improvements
+
+
 ## 1.2.4 - 2013-08-23
 
 - Fix ignored nested folders not being correctly handled in some cases ([#814](https://github.com/bower/bower/issues/814))
