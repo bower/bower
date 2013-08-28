@@ -6,6 +6,7 @@ var path = require('path');
 var mout = require('mout');
 var updateNotifier = require('update-notifier');
 var Logger = require('bower-logger');
+var osenv = require('osenv');
 var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
@@ -18,7 +19,7 @@ var renderer;
 var loglevel;
 var command;
 var commandFunc;
-var emitter;
+var logger;
 var notifier;
 var levels = Logger.LEVELS;
 
@@ -75,29 +76,29 @@ command = command && command.replace(/\./g, ' ');
 // If no command was specified, show bower help
 // Do the same if the command is unknown
 if (!commandFunc) {
-    emitter = bower.commands.help();
+    logger = bower.commands.help();
     command = 'help';
 // If the user requested help, show the command's help
 // Do the same if the actual command is a group of other commands (e.g.: cache)
 } else if (options.help || !commandFunc.line) {
-    emitter = bower.commands.help(command);
+    logger = bower.commands.help(command);
     command = 'help';
 // Call the line method
 } else {
-    emitter = commandFunc.line(process.argv);
+    logger = commandFunc.line(process.argv);
 
     // If the method failed to interpret the process arguments
     // show the command help
-    if (!emitter) {
-        emitter = bower.commands.help(command);
+    if (!logger) {
+        logger = bower.commands.help(command);
         command = 'help';
     }
 }
 
 // Get the renderer and configure it with the executed command
-renderer = cli.getRenderer(command, emitter.json, bower.config);
+renderer = cli.getRenderer(command, logger.json, bower.config);
 
-emitter
+logger
 .on('end', function (data) {
     if (!bower.config.silent) {
         renderer.end(data);
@@ -121,6 +122,11 @@ emitter
         callback(answer);
     });
 });
+
+// Warn if HOME is not SET
+if (!osenv.home()) {
+    logger.warn('no-home', 'HOME not set, user configuration will not be loaded');
+}
 
 // Check for newer version of Bower
 notifier = updateNotifier({
