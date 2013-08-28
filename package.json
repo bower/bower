@@ -34,7 +34,7 @@
     "glob": "~3.2.1",
     "graceful-fs": "~2.0.0",
     "handlebars": "~1.0.11",
-    "inquirer": "~0.2.2",
+    "inquirer": "~0.3.0",
     "junk": "~0.2.0",
     "mkdirp": "~0.3.5",
     "mout": "~0.6.0",
