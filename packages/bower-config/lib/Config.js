@@ -68,4 +68,6 @@ Config.normalise = function (rawConfig) {
     return config;
 };
 
+Config.DEFAULT_REGISTRY = defaults.registry;
+
 module.exports = Config;
