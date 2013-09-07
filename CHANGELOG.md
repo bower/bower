@@ -5,7 +5,7 @@
 
 - Bower now reports download progress even for servers that do not respond with `content-length` header.
 - Do not translate endpoints when registering a package to a private registry server ([#832](https://github.com/bower/bower/issues/832))
-- Detect corrupted downloads by comparing downloaded bytes with `content-length` header if possible; this fixes Bower silently failing on unstable networks ([#824](https://github.com/bower/bower/issues/824)) and [#792](https://github.com/bower/bower/issues/792))
+- Detect corrupted downloads by comparing downloaded bytes with `content-length` header if possible; this fixes Bower silently failing on unstable networks ([#824](https://github.com/bower/bower/issues/824) and [#792](https://github.com/bower/bower/issues/792))
 - Fix quotes in fields causing Bower to crash in the `init` command ([#841](https://github.com/bower/bower/issues/841))
 
 
