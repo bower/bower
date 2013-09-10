@@ -906,7 +906,7 @@ describe('GitResolver', function () {
             // Test with type 'branch'
             // In this case, it should be the commit
             .then(function () {
-                resolver._resolution = { type: 'branch', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
+                resolver._resolution = { type: 'branch', branch: 'foo', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
                 return resolver._savePkgMeta({ name: 'foo' });
             })
             .then(function () {
