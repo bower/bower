@@ -1,0 +1,22 @@
+{
+  "name": "bower",
+  "version": "1.2.6",
+  "homepage": "https://github.com/glenwayguy/bower",
+  "authors": [
+    "Charley Hutchison <glenwayguy@gmail.com>"
+  ],
+  "bowerDependencies": {
+    "jquery": "*"
+    },
+  "description": "sgsdfsdf",
+  "main": "bower",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

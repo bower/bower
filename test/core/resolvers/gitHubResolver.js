@@ -68,7 +68,7 @@ describe('GitHub', function () {
             resolver.resolve()
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
-                expect(fs.existsSync(path.join(dir, '.bower.json'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, '.package.json'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-tar.tar'))).to.be(false);

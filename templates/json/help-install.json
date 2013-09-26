@@ -1,6 +1,6 @@
 {
     "command": "install",
-    "description": "Installs the project dependencies or a specific set of endpoints.\nEndpoints can have multiple forms:\n- <source>\n- <source>#<target>\n- <name>=<source>#<target>\n\nWhere:\n- <source> is a package URL, physical location or registry name\n- <target> is a valid range, commit, branch, etc.\n- <name> is the name it should have locally.",
+    "description": "Installs the project bowerDependencies or a specific set of endpoints.\nEndpoints can have multiple forms:\n- <source>\n- <source>#<target>\n- <name>=<source>#<target>\n\nWhere:\n- <source> is a package URL, physical location or registry name\n- <target> is a valid range, commit, branch, etc.\n- <name> is the name it should have locally.",
     "usage": [
         "install [<options>]",
         "install <endpoint> [<endpoint> ..] [<options>]"
@@ -19,17 +19,17 @@
         {
             "shorthand":   "-p",
             "flag":        "--production",
-            "description": "Do not install project devDependencies"
+            "description": "Do not install project devbowerDependencies"
         },
         {
             "shorthand":   "-S",
             "flag":        "--save",
-            "description": "Save installed packages into the project's bower.json dependencies"
+            "description": "Save installed packages into the project's package.json bowerDependencies"
         },
         {
             "shorthand":   "-D",
             "flag":        "--save-dev",
-            "description": "Save installed packages into the project's bower.json devDependencies"
+            "description": "Save installed packages into the project's package.json devbowerDependencies"
         }
     ]
 }

@@ -50,7 +50,7 @@ describe('GitResolver', function () {
 
         afterEach(function (next) {
             clearResolverRuntimeCache();
-            rimraf(path.join(tempDir, '.bower.json'), next);
+            rimraf(path.join(tempDir, '.package.json'), next);
         });
 
         after(function (next) {
@@ -61,7 +61,7 @@ describe('GitResolver', function () {
         it('should be true when the resolution type is different', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _resolution: {
@@ -88,7 +88,7 @@ describe('GitResolver', function () {
         it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.0',
                 _resolution: {
@@ -117,7 +117,7 @@ describe('GitResolver', function () {
         it('should be true when a resolved to a lower version of a range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -145,7 +145,7 @@ describe('GitResolver', function () {
         it('should be false when resolved to the same tag (with same commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -174,7 +174,7 @@ describe('GitResolver', function () {
         it('should be true when resolved to the same tag (with different commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -203,7 +203,7 @@ describe('GitResolver', function () {
         it('should be true when a different commit hash for a given branch is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
@@ -229,7 +229,7 @@ describe('GitResolver', function () {
         it('should be false when resolved to the the same commit hash for a given branch', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
@@ -255,7 +255,7 @@ describe('GitResolver', function () {
         it('should be false when targeting commit hashes', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
                     type: 'commit',
@@ -837,14 +837,14 @@ describe('GitResolver', function () {
         });
 
         afterEach(function (next) {
-            rimraf(path.join(tempDir, '.bower.json'), next);
+            rimraf(path.join(tempDir, '.package.json'), next);
         });
 
         after(function (next) {
             rimraf(tempDir, next);
         });
 
-        it('should save the resolution to the .bower.json to be used later by .hasNew', function (next) {
+        it('should save the resolution to the .package.json to be used later by .hasNew', function (next) {
             var resolver = create('foo');
 
             resolver._resolution = { type: 'version', tag: '0.0.1' };
@@ -852,7 +852,7 @@ describe('GitResolver', function () {
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
             .then(function () {
-                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.package.json'));
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
@@ -865,7 +865,7 @@ describe('GitResolver', function () {
 
         it('should save the release in the package meta', function (next) {
             var resolver = create('foo');
-            var metaFile = path.join(tempDir, '.bower.json');
+            var metaFile = path.join(tempDir, '.package.json');
 
             // Test with type 'version'
             resolver._resolution = { type: 'version', tag: '0.0.1', commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' };
@@ -940,7 +940,7 @@ describe('GitResolver', function () {
 
             resolver._savePkgMeta({ name: 'foo' })
             .then(function () {
-                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.package.json'));
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
@@ -959,7 +959,7 @@ describe('GitResolver', function () {
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
             .then(function () {
-                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.package.json'));
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
@@ -988,7 +988,7 @@ describe('GitResolver', function () {
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.0' })
             .then(function () {
-                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.package.json'));
             })
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
@@ -1009,7 +1009,7 @@ describe('GitResolver', function () {
 
             resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
             .then(function () {
-                return Q.nfcall(fs.readFile, path.join(tempDir, '.bower.json'));
+                return Q.nfcall(fs.readFile, path.join(tempDir, '.package.json'));
             }, null)
             .then(function (contents) {
                 var json = JSON.parse(contents.toString());
