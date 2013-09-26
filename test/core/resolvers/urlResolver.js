@@ -80,7 +80,7 @@ describe('UrlResolver', function () {
         });
 
         afterEach(function (next) {
-            rimraf(path.join(tempDir, '.bower.json'), next);
+            rimraf(path.join(tempDir, '.package.json'), next);
         });
 
         after(function (next) {
@@ -94,7 +94,7 @@ describe('UrlResolver', function () {
             .head('/foo.js')
             .reply(500);
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0'
             }));
@@ -117,7 +117,7 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
@@ -144,7 +144,7 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
@@ -172,7 +172,7 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
@@ -206,7 +206,7 @@ describe('UrlResolver', function () {
             });
 
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
@@ -231,7 +231,7 @@ describe('UrlResolver', function () {
         // package meta of a canonical dir is set to the
         // expected value
         function assertMain(dir, singleFile) {
-            return Q.nfcall(fs.readFile, path.join(dir, '.bower.json'))
+            return Q.nfcall(fs.readFile, path.join(dir, '.package.json'))
             .then(function (contents) {
                 var pkgMeta = JSON.parse(contents.toString());
 
@@ -362,7 +362,7 @@ describe('UrlResolver', function () {
             .done();
         });
 
-        it('should extract if source is an archive and not rename to index if inside it\'s just a just bower.json/component.json file in it', function (next) {
+        it('should extract if source is an archive and not rename to index if inside it\'s just a just package.json/component.json file in it', function (next) {
             var resolver;
 
             nock('http://bower.io')
@@ -375,7 +375,7 @@ describe('UrlResolver', function () {
 
             resolver.resolve()
             .then(function (dir) {
-                expect(fs.existsSync(path.join(dir, 'bower.json'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'package.json'))).to.be(true);
 
                 resolver = create('http://bower.io/package-zip-single-component-json.zip');
             })

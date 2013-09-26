@@ -89,7 +89,7 @@ describe('Resolver', function () {
         });
 
         beforeEach(function () {
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            fs.writeFileSync(path.join(tempDir, '.package.json'), JSON.stringify({
                 name: 'test'
             }));
         });
@@ -162,7 +162,7 @@ describe('Resolver', function () {
         it('should resolve to true if the there\'s an error reading the package meta', function (next) {
             var resolver = create('foo');
 
-            rimraf.sync(path.join(tempDir, '.bower.json'));
+            rimraf.sync(path.join(tempDir, '.package.json'));
             resolver.hasNew(tempDir)
             .then(function (hasNew) {
                 expect(hasNew).to.equal(true);
@@ -590,11 +590,11 @@ describe('Resolver', function () {
             rimraf(tempDir, next);
         });
 
-        it('should read the bower.json file', function (next) {
+        it('should read the package.json file', function (next) {
             var resolver = create('foo');
 
             mkdirp.sync(tempDir);
-            fs.writeFileSync(path.join(tempDir, 'bower.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
+            fs.writeFileSync(path.join(tempDir, 'package.json'), JSON.stringify({ name: 'foo', version: '0.0.0' }));
             fs.writeFileSync(path.join(tempDir, 'component.json'), JSON.stringify({ name: 'bar', version: '0.0.0' }));
 
             resolver._readJson(tempDir)
@@ -681,7 +681,7 @@ describe('Resolver', function () {
 
             mkdirp.sync(tempDir);
 
-            // Checkout test package version 0.2.1 which has a bower.json
+            // Checkout test package version 0.2.1 which has a package.json
             // with ignores
             cmd('git', ['checkout', '0.2.2'], { cwd: testPackage })
             // Copy its contents to the temporary dir
@@ -694,7 +694,7 @@ describe('Resolver', function () {
                 // This is a very rudimentary check
                 // Complete checks are made in the 'describe' below
                 resolver._tempDir = tempDir;
-                json = JSON.parse(fs.readFileSync(path.join(tempDir, 'bower.json')).toString());
+                json = JSON.parse(fs.readFileSync(path.join(tempDir, 'package.json')).toString());
 
                 return resolver._applyPkgMeta(json)
                 .then(function () {
@@ -731,7 +731,7 @@ describe('Resolver', function () {
         });
 
         afterEach(function (next) {
-            rimraf(path.join(tempDir, '.bower.json'), next);
+            rimraf(path.join(tempDir, '.package.json'), next);
         });
 
         after(function (next) {
@@ -767,14 +767,14 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should save the package meta to the package meta file (.bower.json)', function (next) {
+        it('should save the package meta to the package meta file (.package.json)', function (next) {
             var resolver = create('foo');
 
             resolver._tempDir = tempDir;
 
             resolver._savePkgMeta({ name: 'bar' })
             .then(function (retMeta) {
-                fs.readFile(path.join(tempDir, '.bower.json'), function (err, contents) {
+                fs.readFile(path.join(tempDir, '.package.json'), function (err, contents) {
                     if (err) return next(err);
 
                     contents = contents.toString();

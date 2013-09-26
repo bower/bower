@@ -45,7 +45,7 @@ However, if you still want to run commands with sudo, use `--allow-root` option.
 Bower offers several ways to install packages:
 
 ```
-# Using the dependencies listed in the current directory's bower.json
+# Using the dependencies listed in the current directory's package.json
 bower install
 # Using a local or remote package
 bower install <package>
@@ -145,23 +145,23 @@ in the `Configuration` section.
 
 ## Defining a package
 
-You must create a `bower.json` in your project's root, and specify all of its
+You must create a `package.json` in your project's root, and specify all of its
 dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`,
 and is useful for locking down a project's dependencies.
 
 *NOTE:* In versions of Bower before 0.9.0 the package metadata file was called
-`component.json` rather than `bower.json`. This has changed to avoid a name
+`component.json` rather than `package.json`. This has changed to avoid a name
 clash with another tool. You can still use `component.json` for now but it is
 deprecated and the automatic fallback is likely to be removed in an upcoming
 release.
 
-You can interactively create a `bower.json` with the following command:
+You can interactively create a `package.json` with the following command:
 
 ```
 bower init
 ```
 
-The `bower.json` defines several options:
+The `package.json` defines several options:
 
 * `name` (required): The name of your package.
 * `version`: A semantic version number (see [semver](http://semver.org/)).

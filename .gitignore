@@ -7,6 +7,6 @@
 /test/assets/package-*/
 /test/reports
 
-/bower.json
+/package.json
 /component.json
 /bower_components

@@ -13,12 +13,12 @@
         {
             "shorthand":   "-s",
             "flag":        "--save",
-            "description": "Save installed packages into the project's bower.json dependencies"
+            "description": "Save installed packages into the project's package.json dependencies"
         },
         {
             "shorthand":   "-D",
             "flag":        "--save-dev",
-            "description": "Save installed packages into the project's bower.json devDependencies"
+            "description": "Save installed packages into the project's package.json devDependencies"
         }
     ]
 }
