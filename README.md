@@ -3,7 +3,7 @@
 Bower is a package manager for the web. It offers a generic, unopinionated
 solution to the problem of **front-end package management**, while exposing the
 package dependency model via an API that can be consumed by a more opinionated
-build stack. There are no system wide dependencies, no dependencies are shared
+build stack. There are no system wide bowerDependencies, no bowerDependencies are shared
 between different apps, and the dependency tree is flat.
 
 Bower runs over Git, and is package-agnostic. A packaged component can be made
@@ -40,12 +40,12 @@ On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bo
 Bower is a user command, there is no need to execute it with superuser permissions.
 However, if you still want to run commands with sudo, use `--allow-root` option.
 
-### Installing packages and dependencies
+### Installing packages and bowerDependencies
 
 Bower offers several ways to install packages:
 
 ```
-# Using the dependencies listed in the current directory's package.json
+# Using the bowerDependencies listed in the current directory's package.json
 bower install
 # Using a local or remote package
 bower install <package>
@@ -146,8 +146,8 @@ in the `Configuration` section.
 ## Defining a package
 
 You must create a `package.json` in your project's root, and specify all of its
-dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`,
-and is useful for locking down a project's dependencies.
+bowerDependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`,
+and is useful for locking down a project's bowerDependencies.
 
 *NOTE:* In versions of Bower before 0.9.0 the package metadata file was called
 `component.json` rather than `package.json`. This has changed to avoid a name
@@ -168,8 +168,8 @@ The `package.json` defines several options:
 * `main` [string|array]: The primary endpoints of your package.
 * `ignore` [array]: An array of paths not needed in production that you want
   Bower to ignore when installing your package.
-* `dependencies` [hash]: Packages your package depends upon in production.
-* `devDependencies` [hash]: Development dependencies.
+* `bowerDependencies` [hash]: Packages your package depends upon in production.
+* `devbowerDependencies` [hash]: Development bowerDependencies.
 * `private` [boolean]: Set to true if you want to keep the package private and 
   do not want to register the package in future.
 
@@ -182,12 +182,12 @@ The `package.json` defines several options:
     ".jshintrc",
     "**/*.txt"
   ],
-  "dependencies": {
+  "bowerDependencies": {
     "<name>": "<version>",
     "<name>": "<folder>",
     "<name>": "<package>"
   },
-  "devDependencies": {
+  "devbowerDependencies": {
     "<test-framework-name>": "<version>"
   }
 }

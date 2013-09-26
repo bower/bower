@@ -18,7 +18,7 @@
         {
             "shorthand":   "-p",
             "flag":        "--production",
-            "description": "Do not install project devDependencies"
+            "description": "Do not install project devbowerDependencies"
         }
     ]
 }

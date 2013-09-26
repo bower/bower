@@ -28,8 +28,8 @@
 - Fix read of environment variables that map to config properties with dashes and also support nested ones ([#8@bower-config](https://github.com/bower/config/issues/8))
 - Fix `bower info <package> <property>` printing the available versions (it shouldn't!)
 - Fix interactive shell not being correctly detected in node `0.8.x` ([#802](https://github.com/bower/bower/issues/802))
-- Fix `extraneous` flag in the `list` command being incorrectly set for saved dev dependencies in some cases
-- Fix linked dependencies not being read in `bower list` on Windows ([#813](https://github.com/bower/bower/issues/813))
+- Fix `extraneous` flag in the `list` command being incorrectly set for saved dev bowerDependencies in some cases
+- Fix linked bowerDependencies not being read in `bower list` on Windows ([#813](https://github.com/bower/bower/issues/813))
 - Fix update notice not working with `--json`
 
 
@@ -93,8 +93,8 @@ Fix for `#788` requires installed components to be re-installed.
 - __Fix `--save` and `--save-dev` not working correctly for the uninstall command in some situations__
 - __Attempting to register a package that declares `"private": true` in `package.json` will result in an error ([#162](https://github.com/bower/bower/issues/162))__
 - __Fix retry strategy on download error that was causing some strange I/O errors__ ([#699](https://github.com/bower/bower/issues/699) and [#704](https://github.com/bower/bower/issues/704))
-- __`bower prune` now clears pruned packages dependencies if they are also extraneous__ ([#708](https://github.com/bower/bower/issues/708))
-- __`bower uninstall` now uninstalls uninstalled packages dependencies if they are not shared ([#609](https://github.com/bower/bower/issues/609))__
+- __`bower prune` now clears pruned packages bowerDependencies if they are also extraneous__ ([#708](https://github.com/bower/bower/issues/708))
+- __`bower uninstall` now uninstalls uninstalled packages bowerDependencies if they are not shared ([#609](https://github.com/bower/bower/issues/609))__
 - Fix `bower list` display the `incompatible` label even if they are compatible ([#710](https://github.com/bower/bower/issues/710))
 - Fix `bower cache clean` not working correctly when `package#non-semver` is specified
 - Implement no operation `completion` command to prevent weird output when hitting tab ([#691](https://github.com/bower/bower/issues/691))
@@ -102,8 +102,8 @@ Fix for `#788` requires installed components to be re-installed.
 - Add colorized output for `bower info <package>#<version>` ([#571](https://github.com/bower/bower/issues/571))
 - Added `bower ls` as an alias to `bower list`
 - Fix regression: do not create a json file when saving is required, warn instead
-- Ignore linked packages when reading dependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
-- `bower list` is now able to (partially) reconstruct the dependency tree, even for dependencies not declared in `package.json` ([#622](https://github.com/bower/bower/issues/622))
+- Ignore linked packages when reading bowerDependencies in `bower init` ([#709](https://github.com/bower/bower/issues/709))
+- `bower list` is now able to (partially) reconstruct the dependency tree, even for bowerDependencies not declared in `package.json` ([#622](https://github.com/bower/bower/issues/622))
 
 
 ## 1.0.3 - 2013-07-30
@@ -128,7 +128,7 @@ Fix for `#788` requires installed components to be re-installed.
 - Fix `Bower` renaming `package.json` and `component.json` files to `index.json` when it was the only file in the folder ([#674](https://github.com/bower/bower/issues/674))
 - Ignore symlinks when copying/extracting since they are not portable, specially accross different hard-drives ([#665](https://github.com/bower/bower/issues/665))
 - Local file/dir endpoints are now exclusively referenced by an absolute path or relative path starting with `.` ([#666](https://github.com/bower/bower/issues/666))
-- Linked packages `package.json` files are now parsed, making `bower list` account linked packages dependencies ([#659](https://github.com/bower/bower/issues/659))
+- Linked packages `package.json` files are now parsed, making `bower list` account linked packages bowerDependencies ([#659](https://github.com/bower/bower/issues/659))
 - Bower now fails to run with sudo unless `--allow-root` is passed ([#498](https://github.com/bower/bower/issues/498))
 - Add additional system information such as node version, bower version, OS version when an error occurs ([#670](https://github.com/bower/bower/issues/670))
 - `bower install` no longer overwrites `linked` packages unless it needs to ([#593](https://github.com/bower/bower/issues/593)).
@@ -229,7 +229,7 @@ _NOTE_: The `components` folder will still be used if already created, making it
 
 ## 0.8.0 - 2013-02-24
 - __Add init command similar to `npm init`__ ([#219](https://github.com/bower/bower/issues/219))
-- __Add devDependencies__ support ([#251](https://github.com/bower/bower/issues/251))
+- __Add devbowerDependencies__ support ([#251](https://github.com/bower/bower/issues/251))
 - __Add `--save-dev` flag to install/uninstall commands__ ([#258](https://github.com/bower/bower/issues/258))
 - `cache-clean` command now clears links pointing to nonexistent folders ([#182](https://github.com/bower/bower/issues/182))
 - Fix issue when downloading assets behind a proxy using `https` ([#230](https://github.com/bower/bower/issues/230))
@@ -265,7 +265,7 @@ _NOTE_: The `components` folder will still be used if already created, making it
 - Fix help for the ls command (alias of list)
 
 ## 0.6.7 - 2012-12-10
-- Fix uninstall removing all unsaved dependencies ([#178](https://github.com/bower/bower/issues/178))
+- Fix uninstall removing all unsaved bowerDependencies ([#178](https://github.com/bower/bower/issues/178))
 - Fix uninstall --force flag in some cases
 - Add --silent option to the register option, to avoid questioning
 - Fix possible issues with options in some commands
@@ -312,7 +312,7 @@ _NOTE_: The `components` folder will still be used if already created, making it
 - Bower automatically creates a component.json when install with `--save` is used
 - Fix issues with list command ([#142](https://github.com/bower/bower/issues/142))
 - Fix local paths not being saved when installing with --save ([#114](https://github.com/bower/bower/issues/114))
-- `uninstall` now uninstalls nested dependencies if they are not shared ([#83](https://github.com/bower/bower/issues/83))
+- `uninstall` now uninstalls nested bowerDependencies if they are not shared ([#83](https://github.com/bower/bower/issues/83))
 - `uninstall` now warns when a dependency conflict occurs and aborts.
   It will only proceed if the `--force` flag is passed
 - Bower now detects mismatches between the version specified in the component.json and the tag, informing the user
