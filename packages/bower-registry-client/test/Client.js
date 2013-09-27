@@ -1,7 +1,8 @@
-var RegistryClient = require('../Client'),
-    fs = require('fs'),
-    expect = require('expect.js'),
-    nock = require('nock');
+var RegistryClient = require('../Client');
+var fs = require('fs');
+var expect = require('expect.js');
+var md5 = require('../lib/util/md5');
+var nock = require('nock');
 
 describe('RegistryClient', function () {
     beforeEach(function () {
@@ -113,7 +114,7 @@ describe('RegistryClient', function () {
                 this.method = 'search';
                 this.pkg = 'jquery';
 
-                this.path = this.cacheDir + '/' + this.host + '/' + this.method + '/' + this.pkg;
+                this.path = this.cacheDir + '/' + this.host + '/' + this.method + '/' + this.pkg + '_' + md5(this.pkg).substr(0, 5);
             });
 
             afterEach(function (next) {
@@ -261,10 +262,10 @@ describe('RegistryClient', function () {
     });
 
     describe('calling the lookup instance method without argument', function () {
-        it('should return an error and no result', function (next) {
+        it('should return no result', function (next) {
             this.registry.lookup('', function (err, entry) {
-                expect(err).to.be.an(Error);
-                expect(entry).to.be(undefined);
+                expect(err).to.not.be.ok();
+                expect(entry).to.not.be.ok();
                 next();
             });
         });

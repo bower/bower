@@ -1,5 +1,5 @@
-var lookup = require('../../lib/lookup'),
-    expect = require('expect.js');
+var lookup = require('../../lib/lookup');
+var expect = require('expect.js');
 
 describe('lookup module', function () {
     describe('requiring the lookup module', function () {

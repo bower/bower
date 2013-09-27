@@ -6,4 +6,3 @@ require('./core/list');
 require('./core/index');
 require('./core/util/Cache');
 require('./core/util/createError');
-

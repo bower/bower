@@ -1,5 +1,5 @@
-var Cache = require('../../../lib/util/Cache'),
-    expect = require('expect.js');
+var Cache = require('../../../lib/util/Cache');
+var expect = require('expect.js');
 
 describe('Cache', function () {
     beforeEach(function () {
