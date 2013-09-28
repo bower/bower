@@ -556,6 +556,29 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve to a tag even if target is a range that does not exist', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/1.0'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('1.0')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'tag',
+                    tag: '1.0',
+                    commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should resolve to the latest pre-release version that matches a range/version', function (next) {
             var resolver;
 
