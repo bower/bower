@@ -294,14 +294,14 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should replace dir separators in the target', function (next) {
+        it('should url encode target when storing to the fs', function (next) {
             resolveCache.store(tempPackage, {
                 name: 'foo',
                 _source: 'foo',
                 _target: 'foo/bar'
             })
             .then(function (dir) {
-                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'foo-bar'));
+                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'foo%2Fbar'));
                 expect(fs.existsSync(dir)).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
                 expect(fs.existsSync(tempPackage)).to.be(false);
