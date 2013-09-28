@@ -293,6 +293,23 @@ describe('ResolveCache', function () {
             })
             .done();
         });
+
+        it('should replace dir separators in the target', function (next) {
+            resolveCache.store(tempPackage, {
+                name: 'foo',
+                _source: 'foo',
+                _target: 'foo/bar'
+            })
+            .then(function (dir) {
+                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'foo-bar'));
+                expect(fs.existsSync(dir)).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(fs.existsSync(tempPackage)).to.be(false);
+
+                next();
+            })
+            .done();
+        });
     });
 
     describe('.versions', function () {
