@@ -3,6 +3,7 @@ var path = require('path');
 var async = require('async');
 var mkdirp = require('mkdirp');
 var LRU = require('lru-cache');
+var md5 = require('./md5');
 
 function Cache(dir, options) {
     options = options || {};
@@ -180,7 +181,10 @@ Cache.prototype._hasExpired = function (json) {
 };
 
 Cache.prototype._getFile = function (key) {
-    return path.join(this._dir, encodeURIComponent(key));
+    // Append a truncated md5 to the end of the file to solve case issues
+    // on case insensitive file systems
+    // See: https://github.com/bower/bower/issues/859
+    return path.join(this._dir, encodeURIComponent(key) + '_' + md5(key).substr(0, 5));
 };
 
 Cache._cache = new LRU({

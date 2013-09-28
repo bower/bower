@@ -1,5 +1,5 @@
-var createError = require('../../../lib/util/createError'),
-    expect = require('expect.js');
+var createError = require('../../../lib/util/createError');
+var expect = require('expect.js');
 
 describe('createError', function () {
 

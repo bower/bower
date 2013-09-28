@@ -1,5 +1,5 @@
-var index = require('../../lib/index'),
-    expect = require('expect.js');
+var index = require('../../lib/index');
+var expect = require('expect.js');
 
 describe('index module', function () {
     describe('requiring the index module', function () {

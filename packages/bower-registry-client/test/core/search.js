@@ -1,5 +1,5 @@
-var search = require('../../lib/search'),
-    expect = require('expect.js');
+var search = require('../../lib/search');
+var expect = require('expect.js');
 
 describe('search module', function () {
     describe('requiring the search module', function () {

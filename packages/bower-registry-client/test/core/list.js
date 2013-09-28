@@ -1,5 +1,5 @@
-var list = require('../../lib/list'),
-    expect = require('expect.js');
+var list = require('../../lib/list');
+var expect = require('expect.js');
 
 describe('list module', function () {
     describe('requiring the list module', function () {
