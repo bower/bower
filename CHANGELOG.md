@@ -13,6 +13,8 @@
 - Fix install & update commands printing the wrong versions in some cases ([#879](https://github.com/bower/bower/issues/879))
 - Give priority to mime type headers when deciding if a package need to be extracted, except if it is `octet-stream`
 
+_NOTE_: It's advisable that users run `bower cache clean`.
+
 
 ## 1.2.6 - 2013-09-04
 
