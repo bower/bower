@@ -8,7 +8,7 @@
 - Fix `bower register` warning about URL conversion, even if no conversion occurred
 - Fix `bower update` not correctly catching up branch commits
 - Add configured directory in `.bowerrc` to the ignores in `bower init` ([#854](https://github.com/bower/bower/issues/854))
-- Fix some casing sensitive issues with data stored in registry cache (e.g.: jquery/jQuery, [#859](https://github.com/bower/bower/issues/859))
+- Fix some case sensitive issues with data stored in registry cache (e.g.: jquery/jQuery, [#859](https://github.com/bower/bower/issues/859))
 - Fix bower not checking out a tag if it looks like a semver (e.g.: 1.0, [#872](https://github.com/bower/bower/issues/872))
 - Fix install & update commands printing the wrong versions in some cases ([#879](https://github.com/bower/bower/issues/879))
 - Give priority to mime type headers when deciding if a package need to be extracted, except if it is `octet-stream`
