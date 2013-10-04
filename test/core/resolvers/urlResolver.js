@@ -43,13 +43,13 @@ describe('UrlResolver', function () {
         it('should guess the name from the URL', function () {
             var resolver = create('http://bower.io/foo.txt');
 
-            expect(resolver.getName()).to.equal('foo.txt');
+            expect(resolver.getName()).to.equal('foo');
         });
 
         it('should remove ?part from the URL when guessing the name', function () {
             var resolver = create('http://bower.io/foo.txt?bar');
 
-            expect(resolver.getName()).to.equal('foo.txt');
+            expect(resolver.getName()).to.equal('foo');
         });
 
         it('should not guess the name or remove ?part from the URL if not guessing', function () {
