@@ -31,15 +31,6 @@ packages require it to be fetched and installed.
 Much more information is available via `bower help` once it's installed. This
 is just enough to get you started.
 
-#### Warning
-
-On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
-
-#### Running commands with sudo
-
-Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
-
 ### Installing packages and dependencies
 
 Bower offers several ways to install packages:
@@ -132,6 +123,29 @@ To uninstall a locally installed package:
 ```
 bower uninstall <package-name>
 ```
+
+
+#### Warning
+
+On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
+
+#### Running commands with sudo
+
+Bower is a user command, there is no need to execute it with superuser permissions.
+However, if you still want to run commands with sudo, use `--allow-root` option.
+
+#### A note for Windows users
+
+To use Bower on Windows, you must install
+[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
+option shown below:
+
+![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+
+Note that if you use TortoiseGit and if Bower keeps asking for your SSH
+password, you should add the following environment variable: `GIT_SSH -
+C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
+path if needed.
 
 
 ## Configuration
@@ -275,20 +289,6 @@ This command will output a Bash / ZSH script to put into your `~/.bashrc`,
 ```
 bower completion >> ~/.bash_profile
 ```
-
-
-## A note for Windows users
-
-To use Bower on Windows, you must install
-[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
-option shown below:
-
-![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
-
-Note that if you use TortoiseGit and if Bower keeps asking for your SSH
-password, you should add the following environment variable: `GIT_SSH -
-C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
-path if needed.
 
 
 ## Contact
