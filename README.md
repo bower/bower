@@ -13,7 +13,7 @@ etc.).
 [View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
 
 
-## Installing Bower
+## Installation
 
 Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
@@ -149,7 +149,7 @@ The current spec can be read
 in the `Configuration` section.
 
 
-## Defining a package
+## Package Creation
 
 You must create a `bower.json` in your project's root, and specify all of its
 dependencies. This is similar to Node's `package.json`, or Ruby's `Gemfile`,
@@ -200,7 +200,7 @@ The `bower.json` defines several options:
 ```
 
 
-## Consuming a package
+## 3rd Party Tools
 
 Bower also makes available a source mapping. This can be used by build tools to
 easily consume Bower packages.
@@ -267,8 +267,9 @@ bower.commands
 ```
 
 
-## Completion (experimental)
+## CLI Completion
 
+_NOTE_: This is an experimental feature
 _NOTE_: Completion is still not implemented for the 1.0.0 release
 
 Bower now has an experimental `completion` command that is based on, and works
@@ -306,7 +307,7 @@ Have a question?
 * [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
 
 
-## Contributing to this project
+## Contributing
 
 Anyone and everyone is welcome to contribute. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
@@ -316,7 +317,7 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
-## Authors
+### Authors
 
 * [@fat](https://github.com/fat)
 * [@maccman](https://github.com/maccman)
