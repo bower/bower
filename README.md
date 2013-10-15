@@ -99,29 +99,6 @@ use a module loader. Bower is just a package manager, but there are plenty of
 other tools -- such as [Sprockets](https://github.com/sstephenson/sprockets)
 and [RequireJS](http://requirejs.org/) -- that will help you do this.
 
-### Registering packages
-
-To register a new package:
-
-* There **must** be a valid manifest JSON in the current working directory.
-* Your package should use [semver](http://semver.org/) Git tags.
-* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
-  to push your Git tags!
-
-Then use the following command:
-
-```
-bower register <my-package-name> <git-endpoint>
-```
-
-The Bower registry does not have authentication or user management at this point
-in time. It's on a first come, first served basis. Think of it like a URL
-shortener. Now anyone can run `bower install <my-package-name>`, and get your
-library installed.
-
-There is no direct way to unregister a package yet. For now, you can [request a
-package be unregistered](https://github.com/bower/bower/issues/120).
-
 ### Uninstalling packages
 
 To uninstall a locally installed package:
@@ -212,6 +189,29 @@ The `bower.json` defines several options:
   }
 }
 ```
+
+### Registering packages
+
+To register a new package:
+
+* There **must** be a valid manifest JSON in the current working directory.
+* Your package should use [semver](http://semver.org/) Git tags.
+* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
+  to push your Git tags!
+
+Then use the following command:
+
+```
+bower register <my-package-name> <git-endpoint>
+```
+
+The Bower registry does not have authentication or user management at this point
+in time. It's on a first come, first served basis. Think of it like a URL
+shortener. Now anyone can run `bower install <my-package-name>`, and get your
+library installed.
+
+There is no direct way to unregister a package yet. For now, you can [request a
+package be unregistered](https://github.com/bower/bower/issues/120).
 
 
 ## Consuming a package
