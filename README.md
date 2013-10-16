@@ -68,8 +68,8 @@ Where `<package>` can be any one of the following:
 ‡ These types of `<package>` might have versions available. You can specify a
 [semver](http://semver.org/) compatible version to fetch a specific release, and lock the
 package to that version. You can also use ranges to specify a range of versions.
-If you are using a package that is a git endpoint, you may use tags, commit hashes,
-or branches as a version. For example: `<package>#<sha>`. Note that using branches
+If you are using a package that is a git endpoint, you may use tags, commit SHAs,
+or branches as a version. For example: `<package>#<sha>`. Using branches
 is not recommended, since the contents of a branch may change.
 
 All package contents are installed in the `bower_components` directory by default.
