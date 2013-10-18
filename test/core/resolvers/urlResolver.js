@@ -568,6 +568,32 @@ describe('UrlResolver', function () {
             .done();
         });
 
+        it('should allow for query strings in URL', function (next) {
+            var resolver;
+
+            nock('http://bower.io')
+            .get('/foo.js?bar=baz')
+            .reply(200, 'foo contents');
+
+            resolver = create('http://bower.io/foo.js?bar=baz');
+
+            resolver.resolve()
+            .then(function (dir) {
+                var contents;
+
+                expect(fs.existsSync(path.join(dir, 'index.js'))).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'foo.js?bar=baz'))).to.be(false);
+
+                contents = fs.readFileSync(path.join(dir, 'index.js')).toString();
+                expect(contents).to.equal('foo contents');
+
+                assertMain(dir, 'index.js')
+                .then(next.bind(next, null));
+            })
+            .done();
+        });
+
         it('should save cache headers', function (next) {
             var resolver;
 
