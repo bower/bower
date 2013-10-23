@@ -72,8 +72,8 @@ You should **never** directly modify the contents of this directory.
 Using `bower list` will show all the packages that are installed locally.
 
 **N.B.** If you aren't authoring a package that is intended to be consumed by
-others (e.g., you're building a web app), you should always check installed
-packages into source control.
+others (e.g., you're building a web app), you should always [check installed
+packages into source control](http://addyosmani.com/blog/checking-in-front-end-dependencies/).
 
 ### Finding packages
 
