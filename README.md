@@ -1,4 +1,4 @@
-# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
+# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower) [![Code Climate](https://codeclimate.com/github/bower/bower.png)](https://codeclimate.com/github/bower/bower)
 
 Bower is a package manager for the web. It offers a generic, unopinionated
 solution to the problem of **front-end package management**, while exposing the
