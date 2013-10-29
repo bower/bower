@@ -136,7 +136,7 @@ Bower supports installing packages from its local cache (without internet connec
 ```
 bower install <package-name> --offline
 ```
-The content of the list can be listed as well, with:
+The content of the cache can be listed with:
 ```
 bower cache list
 ```
