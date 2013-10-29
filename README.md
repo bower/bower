@@ -132,7 +132,7 @@ path if needed.
 
 ### Using bower's cache
 
-Bower supports installing package from its local cache (without internet connection), if the package was installed before.
+Bower supports installing packages from its local cache (without internet connection), if the packages were installed before.
 ```
 bower install <package-name> --offline
 ```
