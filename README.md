@@ -134,7 +134,7 @@ path if needed.
 
 Bower supports installing package from its local cache (without internet connection), if the package was installed before.
 ```
-bower uninstall <package-name> --offline
+bower install <package-name> --offline
 ```
 The content of the list can be listed as well, with:
 ```
