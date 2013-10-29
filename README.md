@@ -130,6 +130,20 @@ password, you should add the following environment variable: `GIT_SSH -
 C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
 path if needed.
 
+### Using bower's cache
+
+Bower supports installing package from its local cache (without internet connection), if the package was installed before.
+```
+bower uninstall <package-name> --offline
+```
+The content of the list can be listed as well, with:
+```
+bower cache list
+```
+The cache can be cleaned with:
+```
+bower cache clean
+```
 
 ## Configuration
 
