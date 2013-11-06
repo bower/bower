@@ -138,30 +138,6 @@ describe('ResolveCache', function () {
             .done();
         });
 
-        it('should overwrite if the exact same package source/version exists', function (next) {
-            var cachePkgDir = path.join(cacheDir, md5('foo'), '1.0.0-rc.blehhh');
-
-            mkdirp.sync(cachePkgDir);
-            fs.writeFileSync(path.join(cachePkgDir, '_bleh'), 'w00t');
-
-            resolveCache.store(tempPackage, {
-                name: 'foo',
-                version: '1.0.0-rc.blehhh',
-                _source: 'foo',
-                _target: '*'
-            })
-            .then(function (dir) {
-                expect(dir).to.equal(cachePkgDir);
-                expect(fs.existsSync(dir)).to.be(true);
-                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
-                expect(fs.existsSync(tempPackage)).to.be(false);
-                expect(fs.existsSync(path.join(cachePkgDir, '_bleh'))).to.be(false);
-
-                next();
-            })
-            .done();
-        });
-
         it('should read the package meta if not present', function (next) {
             var pkgMeta = path.join(tempPackage, '.bower.json');
 
@@ -241,14 +217,14 @@ describe('ResolveCache', function () {
 
             resolveCache.store(tempPackage, {
                 name: 'foo',
-                _source: 'foo',
+                _source: 'foobar',
                 _target: 'some-branch'
             })
             .then(function (dir) {
                 // Ensure mock was called
                 expect(hittedMock).to.be(true);
 
-                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'some-branch'));
+                expect(dir).to.equal(path.join(cacheDir, md5('foobar'), 'some-branch'));
                 expect(fs.existsSync(dir)).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
                 expect(fs.existsSync(tempPackage)).to.be(false);
@@ -309,6 +285,30 @@ describe('ResolveCache', function () {
                 next();
             })
             .done();
+        });
+
+        it('should be possible to store two package at same time', function (next) {
+            var store = resolveCache.store.bind(resolveCache, tempPackage, {
+                name: 'foo',
+                _source: 'foo',
+                _target: 'foo/bar'
+            });
+            var store2 = resolveCache.store.bind(resolveCache, tempPackage2, {
+                name: 'foo',
+                _source: 'foo',
+                _target: 'foo/bar'
+            });
+
+            Q.all([store(), store2()]).then(function (dirs) {
+                var dir = dirs[0];
+                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'foo%2Fbar'));
+                expect(fs.existsSync(dir)).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(fs.existsSync(tempPackage)).to.be(false);
+                expect(fs.existsSync(tempPackage2)).to.be(false);
+
+                next();
+            }).done();
         });
     });
 
