@@ -178,7 +178,7 @@ The `bower.json` defines several options:
 
 * `name` (required): The name of your package.
 * `version`: A semantic version number (see [semver](http://semver.org/)).
-* `main` [string|array]: The primary endpoints of your package.
+* `main` [string|hash]: The primary endpoints of your package.
 * `ignore` [array]: An array of paths not needed in production that you want
   Bower to ignore when installing your package.
 * `dependencies` [hash]: Packages your package depends upon in production.
