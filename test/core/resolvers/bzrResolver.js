@@ -589,7 +589,7 @@ describe('BzrResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/tag some-branch does not exist/i);
+                expect(err.message).to.match(/target some-branch does not exist/i);
                 expect(err.details).to.match(/available tags: some-tag/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
