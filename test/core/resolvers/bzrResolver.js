@@ -318,7 +318,7 @@ describe('BzrResolver', function () {
             .done();
         });
 
-        it('should resolve "*" to the latest commit on master if a repository has no valid semver tags', function (next) {
+        it('should resolve "*" to the latest revno if a repository has no valid semver tags', function (next) {
             var resolver;
 
             BzrResolver.tags = function () {
