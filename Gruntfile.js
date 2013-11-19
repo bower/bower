@@ -21,11 +21,10 @@ module.exports = function (grunt) {
         },
         exec: {
             assets: {
-                command: 'node test/packages.js',
-                command: 'node test/packages-bzr.js'
+                command: 'node test/packages.js && node test/packages-bzr.js'
             },
             'assets-force': {
-                command: 'node test/packages.js --force'
+                command: 'node test/packages.js --force && node test/packages-bzr.js --force'
             },
             cover: {
                 command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot test/test.js'
