@@ -21,7 +21,8 @@ module.exports = function (grunt) {
         },
         exec: {
             assets: {
-                command: 'node test/packages.js'
+                command: 'node test/packages.js',
+                command: 'node test/packages-bzr.js'
             },
             'assets-force': {
                 command: 'node test/packages.js --force'
