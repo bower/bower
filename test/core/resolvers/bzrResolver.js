@@ -14,7 +14,7 @@ var defaultConfig = require('../../../lib/config');
 
 describe('BzrResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
-//    var testPackage = path.resolve(__dirname, '../../assets/package-bzr');
+    var testPackage = path.resolve(__dirname, '../../assets/package-bzr');
     var originaltags = BzrResolver.tags;
     var logger;
 
@@ -1049,5 +1049,58 @@ describe('BzrResolver', function () {
             })
             .done();
         });
+    });
+
+    // remote resolver tests
+    describe('.constructor', function () {
+        it('should guess the name from the path', function () {
+            var resolver;
+
+            resolver = create('file://' + testPackage);
+            expect(resolver.getName()).to.equal('package-bzr');
+
+            resolver = create('lp:~stephen-stewart/+junk/bower-test-package');
+            expect(resolver.getName()).to.equal('bower-test-package');
+
+        });
+    });
+    describe('.resolve', function () {
+
+        it('should checkout correctly if resolution is a tag', function (next) {
+            var resolver = create({ source: 'file://' + testPackage, target: '~0.0.1' });
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(dir).to.be.a('string');
+
+                var files = fs.readdirSync(dir);
+
+                expect(files).to.contain('foo');
+                expect(files).to.contain('bar');
+                expect(files).to.not.contain('baz');
+
+                next();
+            })
+            .done();
+        });
+
+        it('should checkout correctly if resolution is a commit', function (next) {
+            var resolver = create({ source: 'file://' + testPackage, target: 'revno:1' });
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(dir).to.be.a('string');
+
+                var files = fs.readdirSync(dir);
+
+                expect(files).to.not.contain('foo');
+                expect(files).to.not.contain('bar');
+                expect(files).to.not.contain('baz');
+                expect(files).to.contain('.master');
+                next();
+            })
+            .done();
+        });
+
     });
 });
