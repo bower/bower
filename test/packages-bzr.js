@@ -45,7 +45,7 @@ function ensurePackage(dir) {
         .then(cmd.bind(null, 'bzr', ['init'], { cwd: dir }))
         // Create dummy file
         .then(function () {
-            return Q.nfcall(fs.writeFile, path.join(dir, '.foo'), 'foo bar baz');
+            return Q.nfcall(fs.writeFile, path.join(dir, '.master'), 'foo bar baz');
         })
         // Stage files
         .then(cmd.bind(null, 'bzr', ['add'], { cwd: dir }))
