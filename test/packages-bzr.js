@@ -78,30 +78,26 @@ function createRelease(dir, release, files) {
     var branch = semver.valid(release) ? 'branch-' + release : release;
 
     // Checkout master
-    return cmd('bzr', ['whoami'], { cwd: dir })
-    // Create files
-    .then(function () {
-        var promise;
-        var promises = [];
+    var promise;
+    var promises = [];
 
-        mout.object.forOwn(files, function (contents, name) {
-            name = path.join(dir, name);
+    mout.object.forOwn(files, function (contents, name) {
+        name = path.join(dir, name);
 
-            // Convert contents to JSON if they are not a string
-            if (typeof contents !== 'string') {
-                contents = JSON.stringify(contents, null, '  ');
-            }
+        // Convert contents to JSON if they are not a string
+        if (typeof contents !== 'string') {
+            contents = JSON.stringify(contents, null, '  ');
+        }
 
-            promise = Q.nfcall(mkdirp, path.dirname(name))
-            .then(function () {
-                return Q.nfcall(fs.writeFile, name, contents);
-            });
-
-            promises.push(promise);
+        promise = Q.nfcall(mkdirp, path.dirname(name))
+        .then(function () {
+            return Q.nfcall(fs.writeFile, name, contents);
         });
 
-        return Q.all(promises);
-    })
+        promises.push(promise);
+    });
+
+    return Q.all(promises)
     // Stage files
     .then(cmd.bind(null, 'bzr', ['add'], { cwd: dir }))
     // Commit
