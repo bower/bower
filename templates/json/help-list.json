@@ -1,6 +1,6 @@
 {
     "command": "list",
-    "description": "List local packages.",
+    "description": "List local packages - and possible updates.",
     "usage": [
         "list [<options>]"
     ],
