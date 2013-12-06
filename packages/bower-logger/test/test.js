@@ -367,5 +367,23 @@ describe('Logger', function () {
                 next();
             });
         });
+
+        it('should trim multiple response answers', function (next) {
+            logger
+            .once('prompt', function (prompts, callback) {
+                callback({
+                    prompt: [' bar ', ' foo', 'baz ']
+                });
+            })
+            .prompt({
+                type: 'checkbox',
+                message: 'foo'
+            }, function (err, answer) {
+                expect(err).to.not.be.ok();
+                expect(answer).to.eql(['bar', 'foo', 'baz']);
+                next();
+            });
+        });
+
     });
 });

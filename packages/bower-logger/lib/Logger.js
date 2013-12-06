@@ -99,7 +99,13 @@ Logger.prototype.prompt = function (prompts, callback) {
             var value = answers[key];
 
             if (typeof value === 'string') {
-                answers[key] = answers[key].trim();
+                answers[key] = value.trim();
+            } else if (Array.isArray(value)) {
+                answers[key] = value.map(function (item) {
+                    if (typeof item === 'string') {
+                        return item.trim();
+                    }
+                });
             }
         });
 
@@ -121,7 +127,8 @@ Logger.prototype.prompt = function (prompts, callback) {
 Logger._validPrompts = [
     'input',
     'confirm',
-    'password'
+    'password',
+    'checkbox'
 ];
 
 Logger.LEVELS = {
