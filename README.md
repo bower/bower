@@ -95,7 +95,7 @@ The easiest approach is to use Bower statically, just reference the package's
 installed components manually using a `script` tag:
 
 ```html
-<script src="/bower_components/jquery/index.js"></script>
+<script src="/bower_components/jquery/jquery.js"></script>
 ```
 
 For more complex projects, you'll probably want to concatenate your scripts or
