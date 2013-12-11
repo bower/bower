@@ -3,6 +3,7 @@ var fs = require('fs');
 var expect = require('expect.js');
 var md5 = require('../lib/util/md5');
 var nock = require('nock');
+var http = require('http');
 
 describe('RegistryClient', function () {
     beforeEach(function () {
@@ -577,6 +578,34 @@ describe('RegistryClient', function () {
         it('should not return any errors and remove all cache items', function (next) {
             this.registry.clearCache(function (err) {
                 expect(err).to.be(null);
+                next();
+            });
+        });
+    });
+
+    //
+    // test userAgent
+    //
+    describe('add a custom userAgent with argument',function(){
+        this.timeout(5000);
+        it('should send custom userAgent to the server',function(next){
+            var self = this;
+            this.ua = '';
+            this.server = http.createServer(function (req, res) {
+                self.ua = req.headers['user-agent'];
+                res.writeHeader(200,{
+                    'Content-Type':'application/json' 
+                });
+                res.end('{"name":"jquery","url":"git://github.com/components/jquery.git"}');
+                self.server.close();
+            });
+            this.server.listen('7777', '127.0.0.1');
+            this.registry = new RegistryClient({
+                userAgent:'test agent',
+                registry:'http://127.0.0.1:7777'                
+            });
+            this.registry.search('jquery', function (err,result) {
+                expect(self.ua).to.be('test agent');
                 next();
             });
         });
