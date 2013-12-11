@@ -15,6 +15,7 @@ function register(name, url, callback) {
     request.post({
         url: requestUrl,
         proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
+        headers:headers,
         ca: config.ca.register,
         strictSSL: config.strictSsl,
         timeout: config.timeout,
