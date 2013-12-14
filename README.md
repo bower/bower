@@ -23,7 +23,7 @@ Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
 
 ```
-npm install -g bower
+sudo npm install -g bower
 ```
 
 Also make sure that [git](http://git-scm.com/) is installed as some bower
