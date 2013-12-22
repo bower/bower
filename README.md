@@ -79,6 +79,19 @@ Using `bower list` will show all the packages that are installed locally.
 others (e.g., you're building a web app), you should always [check installed
 packages into source control](http://addyosmani.com/blog/checking-in-front-end-dependencies/).
 
+#### Indicating Alternative Installation Destination
+
+If you would like to install packages into a directory different from `bower_components` you can indicate the name of the destination folder in .bowerrc file with the "directory" directive:
+
+```json
+{
+  "directory": "public/bower_components"
+}
+```
+
+**Please note:** a project-specific `.bowerrc` file *can* live in the root of your project, alongside the `bower.json` file, it doesn't have to be placed in the home folder of your user.
+
+
 ### Finding packages
 
 To search for packages registered with Bower:
