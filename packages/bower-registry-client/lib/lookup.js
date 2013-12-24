@@ -114,10 +114,14 @@ function doRequest(name, index, callback) {
             return callback(createError('Response of request to ' + requestUrl + ' is not a valid json', 'EINVRES'));
         }
 
-        callback(null, {
-            type: 'alias',
-            url: body.url
-        });
+        var data;
+        if (body.url) {
+            data = {
+                type: 'alias',
+                url: body.url
+            };
+        }
+        callback(null, data);
     }));
 
     if (this._logger) {
