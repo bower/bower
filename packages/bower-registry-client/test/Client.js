@@ -195,6 +195,65 @@ describe('RegistryClient', function () {
         });
     });
 
+    describe('calling the lookup instance method without argument', function () {
+        it('should return no result', function (next) {
+            this.registry.lookup('', function (err, entry) {
+                expect(err).to.not.be.ok();
+                expect(entry).to.not.be.ok();
+                next();
+            });
+        });
+    });
+
+    describe('calling the lookup instance method with two registries, and the first missing.', function () {
+        beforeEach(function () {
+            nock('http://custom-registry.com')
+              .get('/packages/jquery')
+              .reply(200, {
+                "error": {
+                    "message": "missing",
+                    "stack": "Error: missing"
+                }
+            });
+
+            nock('http://custom-registry2.com')
+              .get('/packages/jquery')
+              .reply(200, {
+                name: 'jquery',
+                url: 'git://github.com/foo/baz'
+            });
+
+            this.registry = new RegistryClient({
+                strictSsl: false,
+                force: true,
+                registry: {
+                    search: [
+                        'http://custom-registry.com',
+                        'http://custom-registry2.com'
+                    ]
+                }
+            });
+        });
+
+        it('should return entry type', function (next) {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry).to.be.an('object');
+                expect(entry.type).to.eql('alias');
+                next();
+            });
+        });
+
+        it('should return entry url ', function (next) {
+            this.registry.lookup('jquery', function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry).to.be.an('object');
+                expect(entry.url).to.eql('git://github.com/foo/baz');
+                next();
+            });
+        });
+    });
+
     describe('calling the lookup instance method with three registries', function () {
         beforeEach(function () {
             nock('https://bower.herokuapp.com:443')
@@ -257,16 +316,6 @@ describe('RegistryClient', function () {
                 expect(err).to.be(null);
                 expect(entry).to.be.an('object');
                 expect(entry.url).to.eql('git://github.com/foo/baz');
-                next();
-            });
-        });
-    });
-
-    describe('calling the lookup instance method without argument', function () {
-        it('should return no result', function (next) {
-            this.registry.lookup('', function (err, entry) {
-                expect(err).to.not.be.ok();
-                expect(entry).to.not.be.ok();
                 next();
             });
         });
