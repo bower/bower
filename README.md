@@ -70,6 +70,8 @@ Where `<package>` can be any one of the following:
 [semver](http://semver.org/) compatible version to fetch a specific release, and lock the
 package to that version. You can also use ranges to specify a range of versions.
 
+Using `bower install <valid package string> --save` will add the package to your `bower.json`'s list of dependencies
+
 All package contents are installed in the `bower_components` directory by default.
 You should **never** directly modify the contents of this directory.
 
