@@ -59,8 +59,8 @@ bower install <name>=<package>#<version>
 Where `<package>` can be any one of the following:
 
 * A name that maps to a package registered with Bower, e.g, `jquery`. ‡
-* A remote Git endpoint, e.g., `git://github.com/someone/some-package.git`. Can be
-  public or private. ‡
+* A public remote Git endpoint, e.g., ```git://github.com/someone/some-package.git```. ‡
+* A private Git repository, e.g., ```https://github.com/someone/some-package.git```. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., ```git@github.com:someone/some-package.git``` and can authenticate with the user's ssh public/private keys. ‡
 * A local endpoint, i.e., a folder that's a Git repository. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. Its contents will be
