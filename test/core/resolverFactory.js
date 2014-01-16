@@ -368,7 +368,11 @@ describe('resolverFactory', function () {
             'svn+ssh://hostname.com/project/blah': 'svn+ssh://hostname.com/project/blah',
             'svn+ssh://hostname.com/project/blah/': 'svn+ssh://hostname.com/project/blah',
             'svn+ssh://user@hostname.com/project/blah': 'svn+ssh://user@hostname.com/project/blah',
-            'svn+ssh://user@hostname.com/project/blah/': 'svn+ssh://user@hostname.com/project/blah'
+            'svn+ssh://user@hostname.com/project/blah/': 'svn+ssh://user@hostname.com/project/blah',
+
+            // svn+file
+            'svn+file:///project/blah': 'file:///project/blah',
+            'svn+file:///project/blah/': 'file:///project/blah'
         };
 
         mout.object.forOwn(endpoints, function (value, key) {
