@@ -1,6 +1,6 @@
 {
   "name": "bower",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "The browser package manager.",
   "author": "Twitter",
   "licenses": [
@@ -29,7 +29,7 @@
     "cardinal": "~0.4.0",
     "chalk": "~0.2.0",
     "chmodr": "~0.1.0",
-    "decompress-zip": "~0.0.3",
+    "decompress-zip": "~0.0.4",
     "fstream": "~0.1.22",
     "fstream-ignore": "~0.0.6",
     "glob": "~3.2.1",
