@@ -1167,21 +1167,21 @@ describe('GitResolver', function () {
     describe('#tags', function () {
         afterEach(clearResolverRuntimeCache);
 
-        it('should resolve to an empty array if no tags are found', function (next) {
+        it('should resolve to an empty hash if no tags are found', function (next) {
             GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
             GitResolver.tags('foo')
             .then(function (tags) {
-                expect(tags).to.be.an('array');
-                expect(tags).to.eql([]);
+                expect(tags).to.be.an('object');
+                expect(tags).to.eql({});
                 next();
             })
             .done();
         });
 
-        it('should resolve to an array of tags', function (next) {
+        it('should resolve to an hash of tags', function (next) {
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
