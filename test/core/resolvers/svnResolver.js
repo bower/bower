@@ -1085,7 +1085,7 @@ describe('SvnResolver', function () {
                 var files = fs.readdirSync(dir);
 
                 expect(files).to.contain('foo');
-                expect(files).to.contain('bar');
+                expect(files).to.not.contain('bar');
                 next();
             })
             .done();
