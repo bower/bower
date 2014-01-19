@@ -395,7 +395,7 @@ Thanks for assistance and contributions:
 [@wibblymat](https://github.com/wibblymat),
 [@wycats](https://github.com/wycats),
 [@ahmadnassri](https://github.com/ahmadnassri)
-[@ahmadnassri](https://github.com/kennethklee)
+[@kennethklee](https://github.com/kennethklee)
 
 ## License
 

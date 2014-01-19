@@ -14,7 +14,8 @@ var defaultConfig = require('../../../lib/config');
 
 describe('SvnResolver', function () {
     var tempDir = path.resolve(__dirname, '../../assets/tmp');
-    var testPackage = path.resolve(__dirname, '../../assets/package-svn');
+    var testPackage = path.resolve(__dirname, '../../assets/package-svn/repo');
+    var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
     var originaltags = SvnResolver.tags;
     var logger;
 
@@ -71,9 +72,16 @@ describe('SvnResolver', function () {
                     commit: 123
                 }
             }));
+
             SvnResolver.tags = function () {
                 return Q.resolve({
                     'boo': 123  // same commit hash on purpose
+                });
+            };
+
+            SvnResolver.branches = function () {
+                return Q.resolve({
+                    'trunk': '*'
                 });
             };
 
@@ -98,6 +106,7 @@ describe('SvnResolver', function () {
                     commit: 3
                 }
             }));
+
             SvnResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2,
@@ -204,7 +213,7 @@ describe('SvnResolver', function () {
             fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
                 name: 'foo',
                 _resolution: {
-                    type: 'revno',
+                    type: 'commit',
                     commit: 1
                 }
             }));
@@ -318,7 +327,7 @@ describe('SvnResolver', function () {
             .done();
         });
 
-        it('should resolve "*" to the latest revno if a repository has no valid semver tags', function (next) {
+        it('should resolve "*" to the trunk if a repository has no valid semver tags', function (next) {
             var resolver;
 
             SvnResolver.tags = function () {
@@ -331,8 +340,9 @@ describe('SvnResolver', function () {
             resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
-                    type: 'revno',
-                    commit: '-1'
+                    type: 'branch',
+                    branch: 'trunk',
+                    commit: '*'
                 });
                 next();
             })
@@ -531,7 +541,7 @@ describe('SvnResolver', function () {
             .done();
         });
 
-        it('should resolve to the specified revno', function (next) {
+        it('should resolve to the specified commit', function (next) {
             var resolver;
 
             SvnResolver.tags = function () {
@@ -541,10 +551,10 @@ describe('SvnResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('revno:1')
+            resolver._findResolution('r1')
             .then(function (resolution) {
                 expect(resolution).to.eql({
-                    type: 'revno',
+                    type: 'commit',
                     commit: 1
                 });
                 next();
@@ -619,7 +629,7 @@ describe('SvnResolver', function () {
             this.timeout(30000);  // Give some time to copy
 
             // Copy .svn folder to the tempDir
-            copy.copyDir(path.resolve(__dirname, '../../assets/package-svn/.svn'), dst, {
+            copy.copyDir(path.resolve(__dirname, '../../assets/package-svn/repo/.svn'), dst, {
                 mode: 0777
             })
             .then(function () {
@@ -1057,17 +1067,16 @@ describe('SvnResolver', function () {
             var resolver;
 
             resolver = create('file://' + testPackage);
-            expect(resolver.getName()).to.equal('package-svn');
+            expect(resolver.getName()).to.equal('repo');
 
-            resolver = create('lp:~stephen-stewart/+junk/bower-test-package');
-            expect(resolver.getName()).to.equal('bower-test-package');
-
+            resolver = create('svn+http://yii.googlecode.com/svn');
+            expect(resolver.getName()).to.equal('svn');
         });
     });
     describe('.resolve', function () {
 
         it('should checkout correctly if resolution is a tag', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: '~0.0.1' });
+            var resolver = create({ source: 'file://' + testPackageAdmin, target: '0.0.1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1077,15 +1086,13 @@ describe('SvnResolver', function () {
 
                 expect(files).to.contain('foo');
                 expect(files).to.contain('bar');
-                expect(files).to.not.contain('baz');
-
                 next();
             })
             .done();
         });
 
         it('should checkout correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: 'file://' + testPackage, target: 'revno:1' });
+            var resolver = create({ source: 'file://' + testPackageAdmin, target: 'r1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1096,7 +1103,6 @@ describe('SvnResolver', function () {
                 expect(files).to.not.contain('foo');
                 expect(files).to.not.contain('bar');
                 expect(files).to.not.contain('baz');
-                expect(files).to.contain('.master');
                 next();
             })
             .done();

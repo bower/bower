@@ -383,7 +383,7 @@ describe('resolverFactory', function () {
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Svn);
                 expect(resolver).to.not.be(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
                 expect(resolver.getTarget()).to.equal('*');
             });
 
@@ -394,7 +394,7 @@ describe('resolverFactory', function () {
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Svn);
                 expect(resolver).to.not.be(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
                 expect(resolver.getTarget()).to.equal('commit-ish');
             });
 
@@ -405,7 +405,7 @@ describe('resolverFactory', function () {
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Svn);
                 expect(resolver).to.not.be(resolvers.GitHub);
-                expect(resolver.getSource()).to.equal(value);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
                 expect(resolver.getName()).to.equal('foo');
                 expect(resolver.getTarget()).to.equal('*');
             });
