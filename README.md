@@ -349,11 +349,17 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
-## Authors
+## Bower Team
 
-* [@fat](https://github.com/fat)
-* [@maccman](https://github.com/maccman)
+### Core team
+
 * [@satazor](https://github.com/satazor)
+* [@wibblymat](https://github.com/wibblymat)
+* [@necolas](https://github.com/necolas)
+* [@paulirish](https://github.com/paulirish)
+* [@benschwarz](https://github.com/benschwarz)
+* [@sindresorhus](https://github.com/sindresorhus)
+* [@svnlto](https://github.com/svnlto)
 
 Thanks for assistance and contributions:
 
@@ -373,20 +379,21 @@ Thanks for assistance and contributions:
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
 [@MrDHat](https://github.com/MrDHat),
-[@necolas](https://github.com/necolas),
-[@paulirish](https://github.com/paulirish),
 [@richo](https://github.com/richo),
 [@rvagg](https://github.com/rvagg),
-[@sindresorhus](https://github.com/sindresorhus),
+[@ryanflorence](https://github.com/ryanflorence),
 [@SlexAxton](https://github.com/SlexAxton),
 [@sstephenson](https://github.com/sstephenson),
-[@svnlto](https://github.com/svnlto),
 [@tomdale](https://github.com/tomdale),
 [@uzquiano](https://github.com/uzquiano),
 [@visionmedia](https://github.com/visionmedia),
 [@wagenet](https://github.com/wagenet),
-[@wibblymat](https://github.com/wibblymat),
 [@wycats](https://github.com/wycats)
+
+### Bower Alumni
+
+* [@fat](https://github.com/fat)
+* [@maccman](https://github.com/maccman)
 
 
 ## License
