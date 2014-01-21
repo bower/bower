@@ -45,9 +45,9 @@ describe('FsResolver', function () {
 
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
-            var resolver = create(testPackage);
+            var resolver = create(path.resolve('../../assets/package-zip.zip'));
 
-            expect(resolver.getName()).to.equal('package-a');
+            expect(resolver.getName()).to.equal('package-zip');
         });
 
         it('should make paths absolute and normalized', function () {
