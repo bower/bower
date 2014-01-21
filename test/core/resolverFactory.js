@@ -303,6 +303,11 @@ describe('resolverFactory', function () {
         temp = path.resolve(__dirname, '../assets/package-a');
         endpoints[temp] = temp;
 
+        // Absolute path that ends with a /
+        // See: https://github.com/bower/bower/issues/898
+        temp = path.resolve(__dirname, '../assets/package-a') + '/';
+        endpoints[temp] = temp;
+
         // Relative path
         endpoints[__dirname + '/../assets/package-a'] = temp;
 

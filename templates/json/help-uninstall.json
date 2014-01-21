@@ -11,7 +11,7 @@
             "description": "Show this help message"
         },
         {
-            "shorthand":   "-s",
+            "shorthand":   "-S",
             "flag":        "--save",
             "description": "Save installed packages into the project's bower.json dependencies"
         },

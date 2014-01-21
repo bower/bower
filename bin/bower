@@ -2,6 +2,7 @@
 
 process.bin = process.title = 'bower';
 
+var Q = require('q');
 var path = require('path');
 var mout = require('mout');
 var updateNotifier = require('update-notifier');
@@ -11,6 +12,7 @@ var bower = require('../lib');
 var pkg = require(path.join(__dirname, '..', 'package.json'));
 var cli = require('../lib/util/cli');
 var rootCheck = require('../lib/util/rootCheck');
+var analytics = require('../lib/util/analytics');
 
 // --------
 
@@ -43,6 +45,7 @@ if (bower.config.silent) {
     loglevel = levels.error;
 } else if (bower.config.verbose) {
     loglevel = -Infinity;
+    Q.longStackSupport = true;
 } else if (bower.config.quiet) {
     loglevel = levels.warn;
 } else {
@@ -69,71 +72,74 @@ while (options.argv.remain.length) {
     options.argv.remain.pop();
 }
 
-// Execute the command
-commandFunc = command && mout.object.get(bower.commands, command);
-command = command && command.replace(/\./g, ' ');
+// Ask for Insights on first run.
+analytics.setup().then(function () {
+    // Execute the command
+    commandFunc = command && mout.object.get(bower.commands, command);
+    command = command && command.replace(/\./g, ' ');
 
-// If no command was specified, show bower help
-// Do the same if the command is unknown
-if (!commandFunc) {
-    logger = bower.commands.help();
-    command = 'help';
-// If the user requested help, show the command's help
-// Do the same if the actual command is a group of other commands (e.g.: cache)
-} else if (options.help || !commandFunc.line) {
-    logger = bower.commands.help(command);
-    command = 'help';
-// Call the line method
-} else {
-    logger = commandFunc.line(process.argv);
-
-    // If the method failed to interpret the process arguments
-    // show the command help
-    if (!logger) {
+    // If no command was specified, show bower help
+    // Do the same if the command is unknown
+    if (!commandFunc) {
+        logger = bower.commands.help();
+        command = 'help';
+    // If the user requested help, show the command's help
+    // Do the same if the actual command is a group of other commands (e.g.: cache)
+    } else if (options.help || !commandFunc.line) {
         logger = bower.commands.help(command);
         command = 'help';
-    }
-}
+    // Call the line method
+    } else {
+        logger = commandFunc.line(process.argv);
 
-// Get the renderer and configure it with the executed command
-renderer = cli.getRenderer(command, logger.json, bower.config);
-
-logger
-.on('end', function (data) {
-    if (!bower.config.silent) {
-        renderer.end(data);
-    }
-})
-.on('error', function (err)  {
-    if (levels.error >= loglevel) {
-        renderer.error(err);
+        // If the method failed to interpret the process arguments
+        // show the command help
+        if (!logger) {
+            logger = bower.commands.help(command);
+            command = 'help';
+        }
     }
 
-    process.exit(1);
-})
-.on('log', function (log) {
-    if (levels[log.level] >= loglevel) {
-        renderer.log(log);
-    }
-})
-.on('prompt', function (prompt, callback) {
-    renderer.prompt(prompt)
-    .then(function (answer) {
-        callback(answer);
+    // Get the renderer and configure it with the executed command
+    renderer = cli.getRenderer(command, logger.json, bower.config);
+
+    logger
+    .on('end', function (data) {
+        if (!bower.config.silent) {
+            renderer.end(data);
+        }
+    })
+    .on('error', function (err)  {
+        if (levels.error >= loglevel) {
+            renderer.error(err);
+        }
+
+        process.exit(1);
+    })
+    .on('log', function (log) {
+        if (levels[log.level] >= loglevel) {
+            renderer.log(log);
+        }
+    })
+    .on('prompt', function (prompt, callback) {
+        renderer.prompt(prompt)
+        .then(function (answer) {
+            callback(answer);
+        });
     });
+
+    // Warn if HOME is not SET
+    if (!osenv.home()) {
+        logger.warn('no-home', 'HOME not set, user configuration will not be loaded');
+    }
+
+    // Check for newer version of Bower
+    notifier = updateNotifier({
+        packageName: pkg.name,
+        packageVersion: pkg.version
+    });
+
+    if (notifier.update && levels.info >= loglevel) {
+        renderer.updateNotice(notifier.update);
+    }
 });
-
-// Warn if HOME is not SET
-if (!osenv.home()) {
-    logger.warn('no-home', 'HOME not set, user configuration will not be loaded');
-}
-
-// Check for newer version of Bower
-notifier = updateNotifier({
-    packageName: pkg.name,
-    packageVersion: pkg.version
-});
-
-if (notifier.update && levels.info >= loglevel) {
-    renderer.updateNotice(notifier.update);
-}

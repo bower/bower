@@ -1,4 +1,8 @@
-# BOWER [![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
+# Bower
+
+[![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower) [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/bower/bower/counters/views-24h.png)](https://sourcegraph.com/github.com/bower/bower)
+
+<img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
 Bower is a package manager for the web. It offers a generic, unopinionated
 solution to the problem of **front-end package management**, while exposing the
@@ -31,35 +35,32 @@ packages require it to be fetched and installed.
 Much more information is available via `bower help` once it's installed. This
 is just enough to get you started.
 
-#### Warning
-
-On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
-
-#### Running commands with sudo
-
-Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
-
 ### Installing packages and dependencies
 
 Bower offers several ways to install packages:
 
+#####Using the dependencies listed in the current directory's bower.json
 ```
-# Using the dependencies listed in the current directory's bower.json
 bower install
-# Using a local or remote package
+```
+##### Using a local or remote package
+```
 bower install <package>
-# Using a specific version of a package
+```
+##### Using a specific version of a package
+```
 bower install <package>#<version>
-# Using a different name and a specific version of a package
+```
+##### Using a different name and a specific version of a package
+```
 bower install <name>=<package>#<version>
 ```
 
 Where `<package>` can be any one of the following:
 
 * A name that maps to a package registered with Bower, e.g, `jquery`. ‡
-* A remote Git endpoint, e.g., `git://github.com/someone/some-package.git`. Can be
-  public or private. ‡
+* A public remote Git endpoint, e.g., ```git://github.com/someone/some-package.git```. ‡
+* A private Git repository, e.g., ```https://github.com/someone/some-package.git```. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., ```git@github.com:someone/some-package.git``` and can authenticate with the user's ssh public/private keys. ‡
 * A local endpoint, i.e., a folder that's a Git repository. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. Its contents will be
@@ -68,6 +69,9 @@ Where `<package>` can be any one of the following:
 ‡ These types of `<package>` might have versions available. You can specify a
 [semver](http://semver.org/) compatible version to fetch a specific release, and lock the
 package to that version. You can also use ranges to specify a range of versions.
+If you are using a package that is a git endpoint, you may use any tag, commit SHA,
+or branch name as a version. For example: `<package>#<sha>`. Using branches is not
+recommended because the HEAD does not reference a fixed commit SHA.
 
 All package contents are installed in the `bower_components` directory by default.
 You should **never** directly modify the contents of this directory.
@@ -75,8 +79,20 @@ You should **never** directly modify the contents of this directory.
 Using `bower list` will show all the packages that are installed locally.
 
 **N.B.** If you aren't authoring a package that is intended to be consumed by
-others (e.g., you're building a web app), you should always check installed
-packages into source control.
+others (e.g., you're building a web app), you should always [check installed
+packages into source control](http://addyosmani.com/blog/checking-in-front-end-dependencies/).
+
+
+### Custom install directory
+
+A custom install location can be set in a .bowerrc file using the `directory` property. The .bowerrc file should be a sibling of your project's bower.json.
+
+```json
+{
+  "directory": "public/bower_components"
+}
+```
+
 
 ### Finding packages
 
@@ -94,36 +110,13 @@ The easiest approach is to use Bower statically, just reference the package's
 installed components manually using a `script` tag:
 
 ```html
-<script src="/bower_components/jquery/index.js"></script>
+<script src="/bower_components/jquery/jquery.js"></script>
 ```
 
 For more complex projects, you'll probably want to concatenate your scripts or
 use a module loader. Bower is just a package manager, but there are plenty of
 other tools -- such as [Sprockets](https://github.com/sstephenson/sprockets)
 and [RequireJS](http://requirejs.org/) -- that will help you do this.
-
-### Registering packages
-
-To register a new package:
-
-* There **must** be a valid manifest JSON in the current working directory.
-* Your package should use [semver](http://semver.org/) Git tags.
-* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
-  to push your Git tags!
-
-Then use the following command:
-
-```
-bower register <my-package-name> <git-endpoint>
-```
-
-The Bower registry does not have authentication or user management at this point
-in time. It's on a first come, first served basis. Think of it like a URL
-shortener. Now anyone can run `bower install <my-package-name>`, and get your
-library installed.
-
-There is no direct way to unregister a package yet. For now, you can [request a
-package be unregistered](https://github.com/bower/bower/issues/120).
 
 ### Uninstalling packages
 
@@ -133,6 +126,43 @@ To uninstall a locally installed package:
 bower uninstall <package-name>
 ```
 
+
+#### Warning
+
+On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
+
+#### Running commands with sudo
+
+Bower is a user command, there is no need to execute it with superuser permissions.
+However, if you still want to run commands with sudo, use `--allow-root` option.
+
+#### A note for Windows users
+
+To use Bower on Windows, you must install
+[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
+option shown below:
+
+![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+
+Note that if you use TortoiseGit and if Bower keeps asking for your SSH
+password, you should add the following environment variable: `GIT_SSH -
+C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
+path if needed.
+
+### Using bower's cache
+
+Bower supports installing packages from its local cache (without internet connection), if the packages were installed before.
+```
+bower install <package-name> --offline
+```
+The content of the cache can be listed with:
+```
+bower cache list
+```
+The cache can be cleaned with:
+```
+bower cache clean
+```
 
 ## Configuration
 
@@ -192,6 +222,29 @@ The `bower.json` defines several options:
   }
 }
 ```
+
+### Registering packages
+
+To register a new package:
+
+* There **must** be a valid manifest JSON in the current working directory.
+* Your package should use [semver](http://semver.org/) Git tags.
+* Your package **must** be available at a Git endpoint (e.g., GitHub); remember
+  to push your Git tags!
+
+Then use the following command:
+
+```
+bower register <my-package-name> <git-endpoint>
+```
+
+The Bower registry does not have authentication or user management at this point
+in time. It's on a first come, first served basis. Think of it like a URL
+shortener. Now anyone can run `bower install <my-package-name>`, and get your
+library installed.
+
+There is no direct way to unregister a package yet. For now, you can [request a
+package be unregistered](https://github.com/bower/bower/issues/120).
 
 
 ## Consuming a package
@@ -277,20 +330,6 @@ bower completion >> ~/.bash_profile
 ```
 
 
-## A note for Windows users
-
-To use Bower on Windows, you must install
-[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
-option shown below:
-
-![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
-
-Note that if you use TortoiseGit and if Bower keeps asking for your SSH
-password, you should add the following environment variable: `GIT_SSH -
-C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
-path if needed.
-
-
 ## Contact
 
 Have a question?
@@ -310,11 +349,17 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
-## Authors
+## Bower Team
 
-* [@fat](https://github.com/fat)
-* [@maccman](https://github.com/maccman)
+### Core team
+
 * [@satazor](https://github.com/satazor)
+* [@wibblymat](https://github.com/wibblymat)
+* [@necolas](https://github.com/necolas)
+* [@paulirish](https://github.com/paulirish)
+* [@benschwarz](https://github.com/benschwarz)
+* [@sindresorhus](https://github.com/sindresorhus)
+* [@svnlto](https://github.com/svnlto)
 
 Thanks for assistance and contributions:
 
@@ -334,20 +379,21 @@ Thanks for assistance and contributions:
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
 [@MrDHat](https://github.com/MrDHat),
-[@necolas](https://github.com/necolas),
-[@paulirish](https://github.com/paulirish),
 [@richo](https://github.com/richo),
 [@rvagg](https://github.com/rvagg),
-[@sindresorhus](https://github.com/sindresorhus),
+[@ryanflorence](https://github.com/ryanflorence),
 [@SlexAxton](https://github.com/SlexAxton),
 [@sstephenson](https://github.com/sstephenson),
-[@svnlto](https://github.com/svnlto),
 [@tomdale](https://github.com/tomdale),
 [@uzquiano](https://github.com/uzquiano),
 [@visionmedia](https://github.com/visionmedia),
 [@wagenet](https://github.com/wagenet),
-[@wibblymat](https://github.com/wibblymat),
 [@wycats](https://github.com/wycats)
+
+### Bower Alumni
+
+* [@fat](https://github.com/fat)
+* [@maccman](https://github.com/maccman)
 
 
 ## License

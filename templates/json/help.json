@@ -16,7 +16,8 @@
         "register":        "Register a package",
         "search":          "Search for a package by name",
         "update":          "Update a local package",
-        "uninstall":       "Remove a local package"
+        "uninstall":       "Remove a local package",
+        "version":         "Bump a package version"
     },
     "options": [
         {
