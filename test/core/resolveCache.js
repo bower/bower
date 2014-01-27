@@ -529,6 +529,7 @@ describe('ResolveCache', function () {
             var sourceId = md5(source);
             var sourceDir = path.join(cacheDir, sourceId);
             var json = { name: 'foo' };
+            var encoded;
 
             // Create some versions
             fs.mkdirSync(sourceDir);
@@ -538,22 +539,25 @@ describe('ResolveCache', function () {
             fs.writeFileSync(path.join(sourceDir, '0.1.0', '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.0+build.4';
-            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.4'));
-            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.4', '.bower.json'), JSON.stringify(json, null, '  '));
+            encoded = encodeURIComponent('0.1.0+build.4');
+            fs.mkdirSync(path.join(sourceDir, encoded));
+            fs.writeFileSync(path.join(sourceDir, encoded, '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.0+build.5';
-            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.5'));
-            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.5', '.bower.json'), JSON.stringify(json, null, '  '));
+            encoded = encodeURIComponent('0.1.0+build.5');
+            fs.mkdirSync(path.join(sourceDir, encoded));
+            fs.writeFileSync(path.join(sourceDir, encoded, '.bower.json'), JSON.stringify(json, null, '  '));
 
             json.version = '0.1.0+build.6';
-            fs.mkdirSync(path.join(sourceDir, '0.1.0+build.6'));
-            fs.writeFileSync(path.join(sourceDir, '0.1.0+build.6', '.bower.json'), JSON.stringify(json, null, '  '));
+            encoded = encodeURIComponent('0.1.0+build.6');
+            fs.mkdirSync(path.join(sourceDir, encoded));
+            fs.writeFileSync(path.join(sourceDir, encoded, '.bower.json'), JSON.stringify(json, null, '  '));
 
             resolveCache.retrieve(source, '0.1.0+build.5')
             .spread(function (canonicalDir, pkgMeta) {
                 expect(pkgMeta).to.be.an('object');
                 expect(pkgMeta.version).to.equal('0.1.0+build.5');
-                expect(canonicalDir).to.equal(path.join(sourceDir, '0.1.0+build.5'));
+                expect(canonicalDir).to.equal(path.join(sourceDir, encodeURIComponent('0.1.0+build.5')));
 
                 next();
             })
