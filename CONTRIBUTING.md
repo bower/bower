@@ -21,7 +21,7 @@ Bower is a large community project with many different developers contributing a
 
 ## Team Meetings
 
-We meet on Monday at 1:00pm PST, 8:00pm UTC in #bower on Freenode. [The meeting notes](http://goo.gl/NJZ1o2).
+We meet on Monday at 1:00pm PST, 9:00pm UTC in #bower on Freenode. [The meeting notes](http://goo.gl/NJZ1o2).
 
 <hr>
 
