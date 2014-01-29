@@ -1,6 +1,6 @@
 # Bower
 
-[![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower) [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/bower/bower/counters/views-24h.png)](https://sourcegraph.com/github.com/bower/bower)
+[![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
