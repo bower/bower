@@ -1,6 +1,6 @@
 # Bower
 
-[![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower) [![Views in the last 24 hours](https://sourcegraph.com/api/repos/github.com/bower/bower/counters/views-24h.png)](https://sourcegraph.com/github.com/bower/bower)
+[![Build Status](https://secure.travis-ci.org/bower/bower.png?branch=master)](http://travis-ci.org/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
@@ -356,15 +356,22 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
-## Authors
+## Bower Team
 
-* [@fat](https://github.com/fat)
-* [@maccman](https://github.com/maccman)
+### Core team
+
 * [@satazor](https://github.com/satazor)
+* [@wibblymat](https://github.com/wibblymat)
+* [@necolas](https://github.com/necolas)
+* [@paulirish](https://github.com/paulirish)
+* [@benschwarz](https://github.com/benschwarz)
+* [@sindresorhus](https://github.com/sindresorhus)
+* [@svnlto](https://github.com/svnlto)
 
 Thanks for assistance and contributions:
 
 [@addyosmani](https://github.com/addyosmani),
+[@ahmadnassri](https://github.com/ahmadnassri),
 [@angus-c](https://github.com/angus-c),
 [@borismus](https://github.com/borismus),
 [@carsonmcdonald](https://github.com/carsonmcdonald),
@@ -376,26 +383,27 @@ Thanks for assistance and contributions:
 [@isaacs](https://github.com/isaacs),
 [@josh](https://github.com/josh),
 [@jrburke](https://github.com/jrburke),
+[@kennethklee](https://github.com/kennethklee),
 [@marcelombc](https://github.com/marcelombc),
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
 [@MrDHat](https://github.com/MrDHat),
-[@necolas](https://github.com/necolas),
-[@paulirish](https://github.com/paulirish),
 [@richo](https://github.com/richo),
 [@rvagg](https://github.com/rvagg),
-[@sindresorhus](https://github.com/sindresorhus),
+[@ryanflorence](https://github.com/ryanflorence),
 [@SlexAxton](https://github.com/SlexAxton),
 [@sstephenson](https://github.com/sstephenson),
-[@svnlto](https://github.com/svnlto),
 [@tomdale](https://github.com/tomdale),
 [@uzquiano](https://github.com/uzquiano),
 [@visionmedia](https://github.com/visionmedia),
 [@wagenet](https://github.com/wagenet),
-[@wibblymat](https://github.com/wibblymat),
-[@wycats](https://github.com/wycats),
-[@ahmadnassri](https://github.com/ahmadnassri)
-[@kennethklee](https://github.com/kennethklee)
+[@wycats](https://github.com/wycats)
+
+### Bower Alumni
+
+* [@fat](https://github.com/fat)
+* [@maccman](https://github.com/maccman)
+
 
 ## License
 

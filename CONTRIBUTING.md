@@ -1,7 +1,29 @@
 # Contributing to Bower
 
-Please take a moment to review this document in order to make the contribution
-process easy and effective for everyone involved.
+Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now.  (Jan 2014)
+
+## Casual Involvement
+* Improve the bower.io site ([tickets](https://github.com/bower/bower.github.io/issues))
+* Move forward [bower.io redesign](https://github.com/bower/bower.github.io/issues/7)
+* Attend team meetings
+* Comment on issues and drive to resolution
+
+## High-impact Involvement
+
+* Maintaining the bower client. 
+  * [Authoring client tests](https://github.com/bower/bower/issues/801)
+  * Read [Architecture doc](https://github.com/bower/bower/wiki/Rewrite-architecture)
+  * Triage, close, fix and resolve [issues](https://github.com/bower/bower/issues)
+* Developing the [new registry server](https://github.com/bower/registry/tree/node_rewrite)
+  * Hooking in to Elastic Search rather than the in-memory search
+  * Getting bower/registry-client to talk to the new server without breaking backwards compatibility
+  * DevOps for the server
+
+## Team Meetings
+
+We meet on Monday at 1:00pm PST, 9:00pm UTC in #bower on Freenode. [The meeting notes](http://goo.gl/NJZ1o2).
+
+<hr>
 
 Following these guidelines helps to communicate that you respect the time of
 the developers managing and developing this open source project. In return,
@@ -10,6 +32,8 @@ changes, and helping you finalize your pull requests.
 
 
 ## Using the issue tracker
+
+* 
 
 The issue tracker is the preferred channel for [bug reports](#bugs),
 [features requests](#features) and [submitting pull
