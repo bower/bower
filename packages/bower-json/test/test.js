@@ -181,6 +181,49 @@ describe('.validate', function () {
             bowerJson.validate({});
         }).to.throwException(/name/);
     });
+
+    it('should validate the name length', function () {
+        var json = { name: 'a_123456789_123456789_123456789_123456789_123456789_z' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name is lowercase', function () {
+        var json = { name: 'gruNt' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name starts with lowercase', function () {
+        var json = { name: 'Grunt' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name starts with lowercase', function () {
+        var json = { name: '.grunt' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name ends with lowercase', function () {
+        var json = { name: 'grunT' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name ends with lowercase', function () {
+        var json = { name: 'grun.' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the name is valid', function () {
+        var json = { name: 'gru.n-t' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.not.throwException();
+    });
 });
 
 describe('.normalize', function () {

@@ -88,7 +88,23 @@ function validate(json) {
         throw createError('No name property set', 'EINVALID');
     }
 
-    // TODO
+    if (json.name.length > 50) {
+        throw createError('The name is too long. 50 character should be more than enough', 'EINVALID');
+    }
+
+    if (/[A-Z]/.test(json.name)) {
+        throw createError('The name contains upper case letters', 'EINVALID');
+    }
+
+    if (!/^[a-z]/.test(json.name)) {
+        throw createError('The name has to start with a lower case character from a to z', 'EINVALID');
+    }
+
+    if (!/[a-z]$/.test(json.name)) {
+        throw createError('The name has to end with a lower case character from a to z', 'EINVALID');
+    }
+
+    // TODO https://github.com/bower/bower.json-spec
 
     return json;
 }
