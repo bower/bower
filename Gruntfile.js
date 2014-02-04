@@ -1,4 +1,7 @@
 module.exports = function (grunt) {
+
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
         jshint: {
             options: {
@@ -36,10 +39,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('assets', ['exec:assets-force']);
     grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);
