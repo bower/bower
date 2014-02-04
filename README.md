@@ -398,6 +398,6 @@ Thanks for assistance and contributions:
 
 ## License
 
-Copyright 2012 Twitter, Inc.
+Copyright (c) 2014 Twitter and other contributors
 
 Licensed under the MIT License
