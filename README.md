@@ -14,7 +14,7 @@ Bower runs over Git, and is package-agnostic. A packaged component can be made
 up of any type of asset, and use any type of transport (e.g., AMD, CommonJS,
 etc.).
 
-[View all packages available through Bower's registry](http://sindresorhus.com/bower-components/).
+[View all packages available through Bower's registry](http://bower.io/search/).
 
 
 ## Installing Bower
