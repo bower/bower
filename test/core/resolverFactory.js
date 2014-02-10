@@ -339,6 +339,83 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should recognize svn remote endpoints correctly', function (next) {
+        var promise = Q.resolve();
+        var endpoints;
+
+        endpoints = {
+            // svn:
+            'svn://hostname.com/user/project': 'http://hostname.com/user/project',
+            'svn://hostname.com/user/project/': 'http://hostname.com/user/project',
+
+            // svn@:
+            'svn://svn@hostname.com:user/project': 'http://svn@hostname.com:user/project',
+            'svn://svn@hostname.com:user/project/': 'http://svn@hostname.com:user/project',
+
+            // svn+http
+            'svn+http://hostname.com/project/blah': 'http://hostname.com/project/blah',
+            'svn+http://hostname.com/project/blah/': 'http://hostname.com/project/blah',
+            'svn+http://user@hostname.com/project/blah': 'http://user@hostname.com/project/blah',
+            'svn+http://user@hostname.com/project/blah/': 'http://user@hostname.com/project/blah',
+
+            // svn+https
+            'svn+https://hostname.com/project/blah': 'https://hostname.com/project/blah',
+            'svn+https://hostname.com/project/blah/': 'https://hostname.com/project/blah',
+            'svn+https://user@hostname.com/project/blah': 'https://user@hostname.com/project/blah',
+            'svn+https://user@hostname.com/project/blah/': 'https://user@hostname.com/project/blah',
+
+            // svn+ssh
+            'svn+ssh://hostname.com/project/blah': 'svn+ssh://hostname.com/project/blah',
+            'svn+ssh://hostname.com/project/blah/': 'svn+ssh://hostname.com/project/blah',
+            'svn+ssh://user@hostname.com/project/blah': 'svn+ssh://user@hostname.com/project/blah',
+            'svn+ssh://user@hostname.com/project/blah/': 'svn+ssh://user@hostname.com/project/blah',
+
+            // svn+file
+            'svn+file:///project/blah': 'file:///project/blah',
+            'svn+file:///project/blah/': 'file:///project/blah'
+        };
+
+        mout.object.forOwn(endpoints, function (value, key) {
+            // Test without name and target
+            promise = promise.then(function () {
+                return callFactory({ source: key });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Svn);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getTarget()).to.equal('*');
+            });
+
+            // Test with target
+            promise = promise.then(function () {
+                return callFactory({ source: key, target: 'commit-ish' });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Svn);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getTarget()).to.equal('commit-ish');
+            });
+
+            // Test with name
+            promise = promise.then(function () {
+                return callFactory({ name: 'foo', source: key });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Svn);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
+            });
+        });
+
+        promise
+        .then(next.bind(next, null))
+        .done();
+    });
+
     it('should recognize local fs files/folder endpoints correctly', function (next) {
         var promise = Q.resolve();
         var endpoints;

@@ -62,6 +62,9 @@ Where `<package>` can be any one of the following:
 * A public remote Git endpoint, e.g., ```git://github.com/someone/some-package.git```. ‡
 * A private Git repository, e.g., ```https://github.com/someone/some-package.git```. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., ```git@github.com:someone/some-package.git``` and can authenticate with the user's ssh public/private keys. ‡
 * A local endpoint, i.e., a folder that's a Git repository. ‡
+* A public remote Subversion endpoint, e.g., ```svn+http://package.googlecode.com/svn/```. ‡
+* A private Subversion repository, e.g., ```svn+ssh://package.googlecode.com/svn/```. ‡
+* A local endpoint, i.e., a folder that's an Subversion repository, e.g., ```svn+file:///path/to/svn/```. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. Its contents will be
   extracted.
@@ -69,9 +72,13 @@ Where `<package>` can be any one of the following:
 ‡ These types of `<package>` might have versions available. You can specify a
 [semver](http://semver.org/) compatible version to fetch a specific release, and lock the
 package to that version. You can also use ranges to specify a range of versions.
+
 If you are using a package that is a git endpoint, you may use any tag, commit SHA,
 or branch name as a version. For example: `<package>#<sha>`. Using branches is not
 recommended because the HEAD does not reference a fixed commit SHA.
+
+If you are using a package that is a subversion endpoint, you may use any tag, revision number,
+or branch name as a version. For example: `<package>#<revision>`.
 
 All package contents are installed in the `bower_components` directory by default.
 You should **never** directly modify the contents of this directory.
@@ -85,7 +92,7 @@ packages into source control](http://addyosmani.com/blog/checking-in-front-end-d
 
 ### Custom install directory
 
-A custom install location can be set in a .bowerrc file using the `directory` property. The .bowerrc file should be a sibling of your project's bower.json.
+A custom install location can be set in a `.bowerrc` file using the `directory` property. The .bowerrc file should be a sibling of your project's bower.json.
 
 ```json
 {
@@ -200,7 +207,7 @@ The `bower.json` defines several options:
   Bower to ignore when installing your package.
 * `dependencies` [hash]: Packages your package depends upon in production.
 * `devDependencies` [hash]: Development dependencies.
-* `private` [boolean]: Set to true if you want to keep the package private and 
+* `private` [boolean]: Set to true if you want to keep the package private and
   do not want to register the package in future.
 
 ```json
@@ -364,6 +371,7 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 Thanks for assistance and contributions:
 
 [@addyosmani](https://github.com/addyosmani),
+[@ahmadnassri](https://github.com/ahmadnassri),
 [@angus-c](https://github.com/angus-c),
 [@borismus](https://github.com/borismus),
 [@carsonmcdonald](https://github.com/carsonmcdonald),
@@ -375,6 +383,7 @@ Thanks for assistance and contributions:
 [@isaacs](https://github.com/isaacs),
 [@josh](https://github.com/josh),
 [@jrburke](https://github.com/jrburke),
+[@kennethklee](https://github.com/kennethklee),
 [@marcelombc](https://github.com/marcelombc),
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
