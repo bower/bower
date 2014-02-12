@@ -4,7 +4,7 @@
 // so we need to require that before
 require('../lib/core/resolvers/Resolver');
 process.removeAllListeners('uncaughtException');
-
+//
 require('./core/resolvers/resolver');
 require('./core/resolvers/urlResolver');
 require('./core/resolvers/fsResolver');
