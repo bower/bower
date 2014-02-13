@@ -362,7 +362,6 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 
 * [@satazor](https://github.com/satazor)
 * [@wibblymat](https://github.com/wibblymat)
-* [@necolas](https://github.com/necolas)
 * [@paulirish](https://github.com/paulirish)
 * [@benschwarz](https://github.com/benschwarz)
 * [@sindresorhus](https://github.com/sindresorhus)
@@ -388,6 +387,7 @@ Thanks for assistance and contributions:
 [@marcooliveira](https://github.com/marcooliveira),
 [@mklabs](https://github.com/mklabs),
 [@MrDHat](https://github.com/MrDHat),
+[@necolas](https://github.com/necolas),
 [@richo](https://github.com/richo),
 [@rvagg](https://github.com/rvagg),
 [@ryanflorence](https://github.com/ryanflorence),
