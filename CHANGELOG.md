@@ -1,14 +1,30 @@
 # Changelog
 
 
-##1.2.8 - 2013-12-02
+## master
+
+- Add `moduleType` property to bower init ([#934](https://github.com/bower/bower/pull/934))
+- Fix prune command to log only after cleanup is completed ([#1023](https://github.com/bower/bower/issues/1023))
+- Fix git resolver to ignore pre-release versions ([#1017](https://github.com/bower/bower/issues/1017))
+- Fix shorthand flag for `save` option on `uninstall` command ([#1031](https://github.com/bower/bower/pull/1031))
+- Add `bower version` command ([#961](https://github.com/bower/bower/pull/961))
+- Make `--save` option default when using `bower install` commnand ([#1074](https://github.com/bower/bower/pull/1074))
+- Fix git resolver caching ([#1083](https://github.com/bower/bower/issues/1083))
+- Fix reading versions from cache directory ([#1076](https://github.com/bower/bower/pull/1076))
+- Add svn support ([#1055](https://github.com/bower/bower/pull/1055))
+- Allow circular dependencies to be installed ([#1104](https://github.com/bower/bower/pull/1104))
+- Add scripts/hooks support ([#718](https://github.com/bower/bower/pull/718))
+
+_NOTE_: It's advisable that users use `--config.interactive=false` on automated scripts.
+
+
+## 1.2.8 - 2013-12-02
 - Fix absolute paths ending with / not going through the FsResolver, ([#898](https://github.com/bower/bower/issues/898))
 - Allow query string parameters in package URLs
 - Swapped 'unzip' module for 'decompress-zip', and some other small unzipping fixes([#873](https://github.com/bower/bower/issues/873), [#896](https://github.com/bower/bower/issues/896))
 - Allow the root-check to be overidden when calling bower programmatically.
 - Fixed some bugs relating to packages with a very large dependency tree
 - Fix a bug caused by a recent change to semver
-
 
 
 ## 1.2.7 - 2013-09-29
