@@ -11,9 +11,11 @@ describe('scripts', function () {
     var tempDir = path.join(__dirname, '../assets/temp-scripts');
     var packageName = 'package-zip';
     var packageDir = path.join('..', packageName + '.zip');
+    var componentsDir = tempDir + '/foo';
 
     var config = {
         cwd: tempDir,
+        componentsDir: componentsDir,
         scripts: {
             preinstall: 'touch preinstall_%',
             postinstall: 'touch postinstall_%',

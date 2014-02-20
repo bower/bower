@@ -46,6 +46,11 @@
             "description": "Only output important information"
         },
         {
+            "shorthand":   "-c",
+            "flag":        "--componentsDir",
+            "description": "Change default components directory"
+        },
+        {
             "shorthand":   "-s",
             "flag":        "--silent",
             "description": "Do not output anything, besides errors"
