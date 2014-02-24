@@ -1,7 +1,7 @@
 # Changelog
 
 
-## master
+## 1.3.0 (canary)
 
 - Add `moduleType` property to bower init ([#934](https://github.com/bower/bower/pull/934))
 - Fix prune command to log only after cleanup is completed ([#1023](https://github.com/bower/bower/issues/1023))
