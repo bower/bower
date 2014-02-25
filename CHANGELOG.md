@@ -9,7 +9,7 @@
 - Fix git resolver to ignore pre-release versions ([#1017](https://github.com/bower/bower/issues/1017))
 - Fix shorthand flag for `save` option on `uninstall` command ([#1031](https://github.com/bower/bower/pull/1031))
 - Add `bower version` command ([#961](https://github.com/bower/bower/pull/961))
-- Make `--save` option default when using `bower install` commnand ([#1074](https://github.com/bower/bower/pull/1074))
+- Make `--save` option default when using `bower install` command ([#1074](https://github.com/bower/bower/pull/1074))
 - Fix git resolver caching ([#1083](https://github.com/bower/bower/issues/1083))
 - Fix reading versions from cache directory ([#1076](https://github.com/bower/bower/pull/1076))
 - Add svn support ([#1055](https://github.com/bower/bower/pull/1055))
@@ -23,7 +23,7 @@ _NOTE_: It's advisable that users use `--config.interactive=false` on automated 
 - Fix absolute paths ending with / not going through the FsResolver, ([#898](https://github.com/bower/bower/issues/898))
 - Allow query string parameters in package URLs
 - Swapped 'unzip' module for 'decompress-zip', and some other small unzipping fixes([#873](https://github.com/bower/bower/issues/873), [#896](https://github.com/bower/bower/issues/896))
-- Allow the root-check to be overidden when calling bower programmatically.
+- Allow the root-check to be overridden when calling bower programmatically.
 - Fixed some bugs relating to packages with a very large dependency tree
 - Fix a bug caused by a recent change to semver
 
@@ -106,7 +106,7 @@ _NOTE_: It's advisable that users run `bower cache clean`.
 - Ignore `component.json` if it looks like a component(1) file ([#556](https://github.com/bower/bower/issues/556))
 - Fix multi-user usage on bower when it creates temporary directories to hold some files
 - Fix prompting causing an invalid JSON output when running commands with `--json`
-- When running Bower commands programmatically, prompting is now disabled by default (see the updated progammatic [usage](https://github.com/bower/bower#programmatic-api) for more info)
+- When running Bower commands programmatically, prompting is now disabled by default (see the updated programmatic [usage](https://github.com/bower/bower#programmatic-api) for more info)
 - Other minor improvements and fixes
 
 Fix for `#788` requires installed components to be re-installed.
@@ -168,7 +168,7 @@ Fix for `#788` requires installed components to be re-installed.
 - Fix `Bower` not working when calling `.bat`/`.cmd` commands on Windows; it affected people using `Git portable` ([#626](https://github.com/bower/bower/issues/626))
 - Fix `bower list --paths` not resolving all files to absolute paths when the `main` property contained multiple files ([660](https://github.com/bower/bower/issues/660))
 - Fix `Bower` renaming `bower.json` and `component.json` files to `index.json` when it was the only file in the folder ([#674](https://github.com/bower/bower/issues/674))
-- Ignore symlinks when copying/extracting since they are not portable, specially accross different hard-drives ([#665](https://github.com/bower/bower/issues/665))
+- Ignore symlinks when copying/extracting since they are not portable, specially across different hard-drives ([#665](https://github.com/bower/bower/issues/665))
 - Local file/dir endpoints are now exclusively referenced by an absolute path or relative path starting with `.` ([#666](https://github.com/bower/bower/issues/666))
 - Linked packages `bower.json` files are now parsed, making `bower list` account linked packages dependencies ([#659](https://github.com/bower/bower/issues/659))
 - Bower now fails to run with sudo unless `--allow-root` is passed ([#498](https://github.com/bower/bower/issues/498))
@@ -332,7 +332,7 @@ _NOTE_: The `components` folder will still be used if already created, making it
 
 ## 0.6.1 - 2012-11-22
 - Fix uninstall when the project component.json has no deps saved ([#153](https://github.com/bower/bower/issues/153))
-- Fix uncaught errors when using file writter (they are now caught and reported)
+- Fix uncaught errors when using file writer (they are now caught and reported)
 - Fix temporary directories not being deleted when an exception occurs ([#153](https://github.com/bower/bower/issues/140))
 
 ## 0.6.0 - 2012-11-21
