@@ -1,6 +1,5 @@
 var expect = require('expect.js');
 var validate = require('../../lib/commands/validate');
-var Logger = require('bower-logger');
 
 describe('bower-validate', function () {
 
