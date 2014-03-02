@@ -1,0 +1,15 @@
+{
+    "command": "validate",
+    "description": "Validates an existing bower.json file, if you provide no arguments it will look for a bower.json file in the current folder.",
+    "usage": [
+        "validate [<options>]",
+        "validate <file> [<options>]"
+    ],
+    "options": [
+        {
+            "shorthand":   "-h",
+            "flag":        "--help",
+            "description": "Show this help message"
+        }
+    ]
+}
