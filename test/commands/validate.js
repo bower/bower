@@ -46,9 +46,37 @@ describe('bower-validate', function () {
 
     });
 
+    it('should emit error when bower.json does not have a name property', function (done) {
+
+        var filename = './test/assets/bower-json-samples/no_name.json';
+
+        logger = validate(filename);
+        logger.on('error', function (log) {
+            expect(log).to.be.an('object');
+            expect(log.code).to.be('NO_NAME');
+            expect(log.message).to.be(validate._nameErrorMessage(filename));
+            done();
+        });
+
+    });
+
     it('should emit error when bower.json does not have a valid version', function (done) {
 
         var filename = './test/assets/bower-json-samples/no_version.json';
+
+        logger = validate(filename);
+        logger.on('error', function (log) {
+            expect(log).to.be.an('object');
+            expect(log.code).to.be('SEMVER');
+            expect(log.message).to.be(validate._versionErrorMessage(filename));
+            done();
+        });
+
+    });
+
+    it('should emit error when bower.json does not have a version property', function (done) {
+
+        var filename = './test/assets/bower-json-samples/no_version_prop.json';
 
         logger = validate(filename);
         logger.on('error', function (log) {
