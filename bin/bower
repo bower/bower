@@ -62,7 +62,7 @@ while (options.argv.remain.length) {
         break;
     }
 
-    command = command.replace(/s/g, '.');
+    command = command.replace(/\s/g, '.');
 
     // Direct lookup
     if (mout.object.has(bower.commands, command)) {
