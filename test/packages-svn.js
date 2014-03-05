@@ -64,7 +64,7 @@ function checkRelease(dir, release) {
     if (semver.valid(release)) {
         return cmd('svn', ['list', 'tags'], { cwd: dir })
         .spread(function (stdout) {
-            return stdout.split(/\s*\r*\n\s*/).some(function (tag) {
+            return stdout.split(/\/\s*\r*\n\s*/).some(function (tag) {
                 return semver.clean(tag) === release;
             });
         });
@@ -72,7 +72,7 @@ function checkRelease(dir, release) {
 
     return cmd('svn', ['list', 'branches'], { cwd: dir })
     .spread(function (stdout) {
-        return stdout.split(/\s*\r*\n\s*/).some(function (branch) {
+        return stdout.split(/\/\s*\r*\n\s*/).some(function (branch) {
             branch = branch.trim().replace(/^\*?\s*/, '');
             return branch === release;
         });
