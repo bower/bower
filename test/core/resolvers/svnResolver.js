@@ -1061,6 +1061,34 @@ describe('SvnResolver', function () {
         });
     });
 
+    describe('#parseSubversionListOutput', function () {
+
+        var list = [
+            '  12345 username              Jan 1 12:34 ./',
+            '  12346 username              Feb 2 12:34 branch-name/',
+            '  12347 username              Mar 3 12:34 branch_name/',
+            '  12348 username              Apr 4 12:34 branch.1.2.3/',
+            '  12349 username              Jun 5 12:34 BranchName/'
+        ].join('\r\n');
+
+        it('should not include the . (dot)path', function () {
+            var actual = SvnResolver.parseSubversionListOutput(list);
+
+            expect(actual).to.not.have.keys('.');
+        });
+
+        it('should parse path names with alphanumerics, dashes, dots and underscores', function () {
+            var actual = SvnResolver.parseSubversionListOutput(list);
+
+            expect(actual).to.eql({
+                'branch-name'   : '12346',
+                'branch_name'   : '12347',
+                'branch.1.2.3'  : '12348',
+                'BranchName'    : '12349'
+            });
+        });
+    });
+
     // remote resolver tests
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
@@ -1107,6 +1135,9 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
     });
+
+
+
+
 });
