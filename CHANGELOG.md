@@ -1,15 +1,15 @@
 # Changelog
 
 
-## master
-#### Available in `bower-canary`'s 1.3.0
+## 1.3.0 - 2014-03-10
 
+- **Removed support for node 0.8.** It may still work but we will no longer fix bugs for older versions of node.
 - Add `moduleType` property to bower init ([#934](https://github.com/bower/bower/pull/934))
 - Fix prune command to log only after cleanup is completed ([#1023](https://github.com/bower/bower/issues/1023))
 - Fix git resolver to ignore pre-release versions ([#1017](https://github.com/bower/bower/issues/1017))
 - Fix shorthand flag for `save` option on `uninstall` command ([#1031](https://github.com/bower/bower/pull/1031))
 - Add `bower version` command ([#961](https://github.com/bower/bower/pull/961))
-- Make `--save` option default when using `bower install` command ([#1074](https://github.com/bower/bower/pull/1074))
+- Add .bowerrc option to use `--save` by default when using `bower install` command ([#1074](https://github.com/bower/bower/pull/1074))
 - Fix git resolver caching ([#1083](https://github.com/bower/bower/issues/1083))
 - Fix reading versions from cache directory ([#1076](https://github.com/bower/bower/pull/1076))
 - Add svn support ([#1055](https://github.com/bower/bower/pull/1055))
@@ -181,7 +181,7 @@ Fix for `#788` requires installed components to be re-installed.
 ## 1.0.0 - 2013-07-23
 
 Total rewrite of bower.
-The list bellow highlights the most important stuff.   
+The list bellow highlights the most important stuff.
 For a complete list of changes that this rewrite and release brings please read: https://github.com/bower/bower/wiki/Rewrite-state
 
 
@@ -204,7 +204,7 @@ Non-backwards compatible changes:
 - `--map` and `--sources` from the list command were removed, use `--json` instead
 - Programmatic usage changed, specially the commands interface
 
-Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.   
+Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.
 Additionally you may remove the `~/.bower` folder manually since it's no longer used.
 On Windows the folder is located in `AppData/bower`.
 
