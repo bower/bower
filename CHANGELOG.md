@@ -4,6 +4,10 @@
 ## 1.3.0 - 2014-03-10
 
 - **Removed support for node 0.8.** It may still work but we will no longer fix bugs for older versions of node.
+- Add **Bower Insight** for opt-in analytics integration to help improve tool and gain insight on community trends
+  - Old overview of [Insight](https://github.com/yeoman/yeoman/wiki/Insight), [Issue #260](https://github.com/bower/bower/issues/260)
+  - Reporting to GA. Public Dashboard is in progress.
+  - [Turn off interactive mode](https://github.com/bower/bower/issues/1162) if you run Bower in a CI environment
 - Add `moduleType` property to bower init ([#934](https://github.com/bower/bower/pull/934))
 - Fix prune command to log only after cleanup is completed ([#1023](https://github.com/bower/bower/issues/1023))
 - Fix git resolver to ignore pre-release versions ([#1017](https://github.com/bower/bower/issues/1017))
