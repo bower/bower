@@ -183,7 +183,27 @@ in the `Configuration` section.
 
 Bower will skip some interactive and analytics operations if it finds a `CI` environmental variable set to `true`. You will find that the `CI` variable is already set for you on many continuous integration servers, e.g., [CircleCI](https://circleci.com/docs/environment-variables#basics) and [Travis-CI](http://docs.travis-ci.com/user/ci-environment/#Environment-variables).
 
+You may try to set manually set `CI` variable manually before running your Bower commands.
+
+### Linux
+
+```bash
+export CI=true
+```
+
+### Windows
+
+```bash
+set CI=true
+```
+
+### Command line arguments
+
 If you cannot set the `CI` flag, you may need to pass `--config.interactive=false` to the Bower CLI in your build scripts.
+
+```
+bower install --config.interactive=false
+```
 
 ## Defining a package
 
