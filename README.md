@@ -179,6 +179,11 @@ The current spec can be read
 [here](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/edit#heading=h.4pzytc1f9j8k)
 in the `Configuration` section.
 
+## Running on a continuous integration server
+
+Bower will skip some interactive and analytics operations if it finds a `CI` environmental variable set to `true`. You will find that the `CI` variable is already set for you on many continuous integration servers, e.g., [CircleCI](https://circleci.com/docs/environment-variables#basics) and [Travis-CI](http://docs.travis-ci.com/user/ci-environment/#Environment-variables).
+
+If you cannot set the `CI` flag, you may need to pass `--config.interactive=false` to the Bower CLI in your build scripts.
 
 ## Defining a package
 
