@@ -1,6 +1,10 @@
 # Changelog
 
 
+## 1.3.1 - 2014-03-10
+- No longer ask for permission to gather analytics when running on in a CI environment.
+
+
 ## 1.3.0 - 2014-03-10
 
 - **Removed support for node 0.8.** It may still work but we will no longer fix bugs for older versions of node.
