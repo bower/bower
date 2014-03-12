@@ -58,7 +58,9 @@
     "p-throttler": "~0.0.1",
     "insight": "~0.3.0",
     "is-root": "~0.1.0",
-    "shell-quote": "~1.4.1"
+    "shell-quote": "~1.4.1",
+    "findup-sync": "~0.1.2",
+    "zlib": "~1.0.5"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",

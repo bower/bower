@@ -13,6 +13,7 @@
         "list":            "List local packages",
         "lookup":          "Look up a package URL by name",
         "prune":           "Removes local extraneous packages",
+        "publish":         "Publishes a package",
         "register":        "Register a package",
         "search":          "Search for a package by name",
         "update":          "Update a local package",
