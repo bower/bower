@@ -71,7 +71,7 @@ Where `<package>` can be any one of the following:
 
 ‡ These types of `<package>` might have versions available. You can specify a
 [semver](http://semver.org/) compatible version to fetch a specific release, and lock the
-package to that version. You can also specify a [range](https://www.npmjs.org/doc/misc/semver.html#Ranges) of versions.
+package to that version. You can also specify a [range](https://github.com/isaacs/node-semver#ranges) of versions.
 
 If you are using a package that is a git endpoint, you may use any tag, commit SHA,
 or branch name as a version. For example: `<package>#<sha>`. Using branches is not
@@ -215,7 +215,7 @@ The `bower.json` defines several options:
 * `ignore` [array]: An array of paths not needed in production that you want
   Bower to ignore when installing your package.
 * `dependencies` [hash]: Packages your package depends upon in production.
-  Note that you can specify [ranges](https://www.npmjs.org/doc/misc/semver.html#Ranges)
+  Note that you can specify [ranges](https://github.com/isaacs/node-semver#ranges)
   of versions for your dependencies.
 * `devDependencies` [hash]: Development dependencies.
 * `private` [boolean]: Set to true if you want to keep the package private and
