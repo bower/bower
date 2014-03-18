@@ -676,7 +676,7 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should remove files that match the ignore patterns', function (next) {
+        it('should remove files that match the ignore patterns excluding main files', function (next) {
             var resolver = create({ source: 'foo', name: 'foo' });
 
             mkdirp.sync(tempDir);
@@ -701,6 +701,7 @@ describe('Resolver', function () {
                     expect(fs.existsSync(path.join(tempDir, 'foo'))).to.be(true);
                     expect(fs.existsSync(path.join(tempDir, 'baz'))).to.be(true);
                     expect(fs.existsSync(path.join(tempDir, 'test'))).to.be(false);
+                    expect(fs.existsSync(path.join(tempDir, 'main.js'))).to.be(true);
                     expect(fs.existsSync(path.join(tempDir, 'more/docs'))).to.be(false);
                     expect(fs.existsSync(path.join(tempDir, 'more/assets'))).to.be(false);
                     next();
