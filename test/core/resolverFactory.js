@@ -201,6 +201,12 @@ describe('resolverFactory', function () {
             'ssh://git@github.com/project/blah.git': 'ssh://git@github.com/project/blah.git',
             'ssh://git@github.com/project/blah.git/': 'ssh://git@github.com/project/blah.git',
 
+            // http
+            'http://github.com/project/blah': 'http://github.com/project/blah.git',
+            'http://github.com/project/blah/': 'http://github.com/project/blah.git',
+            'http://user@github.com/project/blah': 'http://user@github.com/project/blah.git',
+            'http://user@github.com/project/blah/': 'http://user@github.com/project/blah.git',
+
             // http .git$
             'http://github.com/project/blah.git': 'http://github.com/project/blah.git',
             'http://github.com/project/blah.git/': 'http://github.com/project/blah.git',
@@ -208,6 +214,12 @@ describe('resolverFactory', function () {
             'http://user@github.com/project/blah.git/': 'http://user@github.com/project/blah.git',
 
             // https
+            'https://github.com/project/blah': 'https://github.com/project/blah.git',
+            'https://github.com/project/blah/': 'https://github.com/project/blah.git',
+            'https://user@github.com/project/blah': 'https://user@github.com/project/blah.git',
+            'https://user@github.com/project/blah/': 'https://user@github.com/project/blah.git',
+
+            // https .git$
             'https://github.com/project/blah.git': 'https://github.com/project/blah.git',
             'https://github.com/project/blah.git/': 'https://github.com/project/blah.git',
             'https://user@github.com/project/blah.git': 'https://user@github.com/project/blah.git',
