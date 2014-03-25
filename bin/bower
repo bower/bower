@@ -2,6 +2,7 @@
 
 process.bin = process.title = 'bower';
 
+var Q = require('q');
 var path = require('path');
 var mout = require('mout');
 var updateNotifier = require('update-notifier');
@@ -44,6 +45,7 @@ if (bower.config.silent) {
     loglevel = levels.error;
 } else if (bower.config.verbose) {
     loglevel = -Infinity;
+    Q.longStackSupport = true;
 } else if (bower.config.quiet) {
     loglevel = levels.warn;
 } else {
@@ -60,7 +62,7 @@ while (options.argv.remain.length) {
         break;
     }
 
-    command = command.replace(/s/g, '.');
+    command = command.replace(/\s/g, '.');
 
     // Direct lookup
     if (mout.object.has(bower.commands, command)) {

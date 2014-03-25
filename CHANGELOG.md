@@ -1,14 +1,39 @@
 # Changelog
 
 
-##1.2.8 - 2013-12-02
+## 1.3.1 - 2014-03-10
+- No longer ask for permission to gather analytics when running on in a CI environment.
+
+
+## 1.3.0 - 2014-03-10
+
+- **Removed support for node 0.8.** It may still work but we will no longer fix bugs for older versions of node.
+- Add **Bower Insight** for opt-in analytics integration to help improve tool and gain insight on community trends
+  - Old overview of [Insight](https://github.com/yeoman/yeoman/wiki/Insight), [Issue #260](https://github.com/bower/bower/issues/260)
+  - Reporting to GA. Public Dashboard is in progress.
+  - [Turn off interactive mode](https://github.com/bower/bower/issues/1162) if you run Bower in a CI environment
+- Add `moduleType` property to bower init ([#934](https://github.com/bower/bower/pull/934))
+- Fix prune command to log only after cleanup is completed ([#1023](https://github.com/bower/bower/issues/1023))
+- Fix git resolver to ignore pre-release versions ([#1017](https://github.com/bower/bower/issues/1017))
+- Fix shorthand flag for `save` option on `uninstall` command ([#1031](https://github.com/bower/bower/pull/1031))
+- Add `bower version` command ([#961](https://github.com/bower/bower/pull/961))
+- Add .bowerrc option to use `--save` by default when using `bower install` command ([#1074](https://github.com/bower/bower/pull/1074))
+- Fix git resolver caching ([#1083](https://github.com/bower/bower/issues/1083))
+- Fix reading versions from cache directory ([#1076](https://github.com/bower/bower/pull/1076))
+- Add svn support ([#1055](https://github.com/bower/bower/pull/1055))
+- Allow circular dependencies to be installed ([#1104](https://github.com/bower/bower/pull/1104))
+- Add scripts/hooks support ([#718](https://github.com/bower/bower/pull/718))
+
+_NOTE_: It's advisable that users use `--config.interactive=false` on automated scripts.
+
+
+## 1.2.8 - 2013-12-02
 - Fix absolute paths ending with / not going through the FsResolver, ([#898](https://github.com/bower/bower/issues/898))
 - Allow query string parameters in package URLs
 - Swapped 'unzip' module for 'decompress-zip', and some other small unzipping fixes([#873](https://github.com/bower/bower/issues/873), [#896](https://github.com/bower/bower/issues/896))
-- Allow the root-check to be overidden when calling bower programmatically.
+- Allow the root-check to be overridden when calling bower programmatically.
 - Fixed some bugs relating to packages with a very large dependency tree
 - Fix a bug caused by a recent change to semver
-
 
 
 ## 1.2.7 - 2013-09-29
@@ -89,7 +114,7 @@ _NOTE_: It's advisable that users run `bower cache clean`.
 - Ignore `component.json` if it looks like a component(1) file ([#556](https://github.com/bower/bower/issues/556))
 - Fix multi-user usage on bower when it creates temporary directories to hold some files
 - Fix prompting causing an invalid JSON output when running commands with `--json`
-- When running Bower commands programmatically, prompting is now disabled by default (see the updated progammatic [usage](https://github.com/bower/bower#programmatic-api) for more info)
+- When running Bower commands programmatically, prompting is now disabled by default (see the updated programmatic [usage](https://github.com/bower/bower#programmatic-api) for more info)
 - Other minor improvements and fixes
 
 Fix for `#788` requires installed components to be re-installed.
@@ -151,7 +176,7 @@ Fix for `#788` requires installed components to be re-installed.
 - Fix `Bower` not working when calling `.bat`/`.cmd` commands on Windows; it affected people using `Git portable` ([#626](https://github.com/bower/bower/issues/626))
 - Fix `bower list --paths` not resolving all files to absolute paths when the `main` property contained multiple files ([660](https://github.com/bower/bower/issues/660))
 - Fix `Bower` renaming `bower.json` and `component.json` files to `index.json` when it was the only file in the folder ([#674](https://github.com/bower/bower/issues/674))
-- Ignore symlinks when copying/extracting since they are not portable, specially accross different hard-drives ([#665](https://github.com/bower/bower/issues/665))
+- Ignore symlinks when copying/extracting since they are not portable, specially across different hard-drives ([#665](https://github.com/bower/bower/issues/665))
 - Local file/dir endpoints are now exclusively referenced by an absolute path or relative path starting with `.` ([#666](https://github.com/bower/bower/issues/666))
 - Linked packages `bower.json` files are now parsed, making `bower list` account linked packages dependencies ([#659](https://github.com/bower/bower/issues/659))
 - Bower now fails to run with sudo unless `--allow-root` is passed ([#498](https://github.com/bower/bower/issues/498))
@@ -164,7 +189,7 @@ Fix for `#788` requires installed components to be re-installed.
 ## 1.0.0 - 2013-07-23
 
 Total rewrite of bower.
-The list bellow highlights the most important stuff.   
+The list bellow highlights the most important stuff.
 For a complete list of changes that this rewrite and release brings please read: https://github.com/bower/bower/wiki/Rewrite-state
 
 
@@ -187,7 +212,7 @@ Non-backwards compatible changes:
 - `--map` and `--sources` from the list command were removed, use `--json` instead
 - Programmatic usage changed, specially the commands interface
 
-Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.   
+Users upgrading from `bower-canary` and `bower@~0.x.x` should do a `bower cache clean`.
 Additionally you may remove the `~/.bower` folder manually since it's no longer used.
 On Windows the folder is located in `AppData/bower`.
 
@@ -315,7 +340,7 @@ _NOTE_: The `components` folder will still be used if already created, making it
 
 ## 0.6.1 - 2012-11-22
 - Fix uninstall when the project component.json has no deps saved ([#153](https://github.com/bower/bower/issues/153))
-- Fix uncaught errors when using file writter (they are now caught and reported)
+- Fix uncaught errors when using file writer (they are now caught and reported)
 - Fix temporary directories not being deleted when an exception occurs ([#153](https://github.com/bower/bower/issues/140))
 
 ## 0.6.0 - 2012-11-21

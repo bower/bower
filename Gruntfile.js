@@ -1,4 +1,7 @@
 module.exports = function (grunt) {
+
+    require('load-grunt-tasks')(grunt);
+
     grunt.initConfig({
         jshint: {
             options: {
@@ -21,10 +24,10 @@ module.exports = function (grunt) {
         },
         exec: {
             assets: {
-                command: 'node test/packages.js'
+                command: 'node test/packages.js && node test/packages-svn.js'
             },
             'assets-force': {
-                command: 'node test/packages.js --force'
+                command: 'node test/packages.js --force && node test/packages-svn.js --force'
             },
             cover: {
                 command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot test/test.js'
@@ -36,10 +39,6 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-simple-mocha');
-    grunt.loadNpmTasks('grunt-exec');
 
     grunt.registerTask('assets', ['exec:assets-force']);
     grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);

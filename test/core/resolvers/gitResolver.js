@@ -481,6 +481,31 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve "0.1.*" to the latest version if a repository has valid semver tags, ignoring pre-releases', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/v0.1.1',
+                    'dddddddddddddddddddddddddddddddddddddddd refs/tags/0.1.2-rc.1'  // Should ignore release candidates
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('0.1.*')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: 'v0.1.1',
+                    commit: 'cccccccccccccccccccccccccccccccccccccccc'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
             var resolver;
 
@@ -494,6 +519,30 @@ describe('GitResolver', function () {
 
             resolver = create('foo');
             resolver._findResolution('*')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'version',
+                    tag: '0.1.0-rc.2',
+                    commit: 'cccccccccccccccccccccccccccccccccccccccc'
+                });
+                next();
+            })
+            .done();
+        });
+
+        it('should resolve "0.1.*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
+                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0-rc.1',
+                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.0-rc.2'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('0.1.*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',
@@ -1167,21 +1216,21 @@ describe('GitResolver', function () {
     describe('#tags', function () {
         afterEach(clearResolverRuntimeCache);
 
-        it('should resolve to an empty array if no tags are found', function (next) {
+        it('should resolve to an empty hash if no tags are found', function (next) {
             GitResolver.refs = function () {
                 return Q.resolve([]);
             };
 
             GitResolver.tags('foo')
             .then(function (tags) {
-                expect(tags).to.be.an('array');
-                expect(tags).to.eql([]);
+                expect(tags).to.be.an('object');
+                expect(tags).to.eql({});
                 next();
             })
             .done();
         });
 
-        it('should resolve to an array of tags', function (next) {
+        it('should resolve to an hash of tags', function (next) {
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
