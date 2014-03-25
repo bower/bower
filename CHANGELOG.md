@@ -1,6 +1,16 @@
 # Changelog
 
 
+##1.2.8 - 2013-12-02
+- Fix absolute paths ending with / not going through the FsResolver, ([#898](https://github.com/bower/bower/issues/898))
+- Allow query string parameters in package URLs
+- Swapped 'unzip' module for 'decompress-zip', and some other small unzipping fixes([#873](https://github.com/bower/bower/issues/873), [#896](https://github.com/bower/bower/issues/896))
+- Allow the root-check to be overidden when calling bower programmatically.
+- Fixed some bugs relating to packages with a very large dependency tree
+- Fix a bug caused by a recent change to semver
+
+
+
 ## 1.2.7 - 2013-09-29
 
 - Do not swallow sync errors when using the programmatic API ([#849](https://github.com/bower/bower/issues/849))
