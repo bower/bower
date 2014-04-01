@@ -210,9 +210,9 @@ describe('RegistryClient', function () {
             nock('http://custom-registry.com')
               .get('/packages/jquery')
               .reply(200, {
-                "error": {
-                    "message": "missing",
-                    "stack": "Error: missing"
+                'error': {
+                    'message': 'missing',
+                    'stack': 'Error: missing'
                 }
             });
 
@@ -378,6 +378,77 @@ describe('RegistryClient', function () {
         });
     });
 
+
+    //
+    // unregister
+    //
+    describe('calling the unregister instance method with argument', function () {
+        beforeEach(function () {
+            this.pkg = 'testfoo';
+            this.accessToken = '12345678';
+            this.registry._config.accessToken = this.accessToken;
+
+            nock('https://bower.herokuapp.com:443')
+              .delete('/packages/' + this.pkg + '?access_token=' + this.accessToken)
+              .reply(204);
+        });
+
+        it('should not return an error when valid', function (next) {
+            this.registry.unregister(this.pkg, function (err) {
+                expect(err).to.be(null);
+                next();
+            });
+        });
+
+        it('should return entry name', function (next) {
+            var self = this;
+
+            this.registry.unregister(this.pkg, function (err, entry) {
+                expect(err).to.be(null);
+                expect(entry.name).to.eql(self.pkg);
+                next();
+            });
+        });
+    });
+
+    describe('calling the unregister instance method with invalid token', function () {
+        beforeEach(function () {
+            this.pkg = 'testfoo';
+            this.registry._config.accessToken = '';
+
+            nock('https://bower.herokuapp.com:443')
+              .delete('/packages/' + this.pkg)
+              .reply(403);
+        });
+
+        it('should return an error', function (next) {
+            this.registry.unregister(this.pkg, function (err, entry) {
+                expect(err).to.be.an(Error);
+                expect(entry).to.be(undefined);
+                next();
+            });
+        });
+    });
+
+    describe('calling the unregister instance method with invalid package', function () {
+        beforeEach(function () {
+            this.notpkg = 'testbar';
+            this.accessToken = '12345678';
+            this.registry._config.accessToken = this.accessToken;
+
+            nock('https://bower.herokuapp.com:443')
+              .delete('/packages/' + this.notpkg + '?access_token=' + this.accessToken)
+              .reply(404);
+        });
+
+        it('should return an error', function (next) {
+            this.registry.unregister(this.notpkg, function (err, entry) {
+                expect(err).to.be.an(Error);
+                expect(entry).to.be(undefined);
+                next();
+            });
+        });
+    });
 
     //
     // search
@@ -635,25 +706,25 @@ describe('RegistryClient', function () {
     //
     // test userAgent
     //
-    describe('add a custom userAgent with argument',function(){
+    describe('add a custom userAgent with argument', function () {
         this.timeout(5000);
-        it('should send custom userAgent to the server',function(next){
+        it('should send custom userAgent to the server', function (next) {
             var self = this;
             this.ua = '';
             this.server = http.createServer(function (req, res) {
                 self.ua = req.headers['user-agent'];
-                res.writeHeader(200,{
-                    'Content-Type':'application/json' 
+                res.writeHeader(200, {
+                    'Content-Type': 'application/json'
                 });
                 res.end('{"name":"jquery","url":"git://github.com/components/jquery.git"}');
                 self.server.close();
             });
             this.server.listen('7777', '127.0.0.1');
             this.registry = new RegistryClient({
-                userAgent:'test agent',
-                registry:'http://127.0.0.1:7777'                
+                userAgent: 'test agent',
+                registry: 'http://127.0.0.1:7777'
             });
-            this.registry.search('jquery', function (err,result) {
+            this.registry.search('jquery', function (err, result) {
                 expect(self.ua).to.be('test agent');
                 next();
             });
