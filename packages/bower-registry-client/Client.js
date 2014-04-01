@@ -21,6 +21,7 @@ RegistryClient.prototype.lookup = methods.lookup;
 RegistryClient.prototype.search = methods.search;
 RegistryClient.prototype.list = methods.list;
 RegistryClient.prototype.register = methods.register;
+RegistryClient.prototype.unregister = methods.unregister;
 
 RegistryClient.prototype.clearCache = function (name, callback) {
     if (typeof name === 'function') {
