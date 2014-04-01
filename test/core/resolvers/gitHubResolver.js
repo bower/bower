@@ -70,6 +70,8 @@ describe('GitHub', function () {
         });
 
         it('should retry using the GitRemoteResolver mechanism if download failed', function (next) {
+            this.timeout(20000);
+
             var resolver;
             var retried;
 
@@ -100,6 +102,8 @@ describe('GitHub', function () {
         });
 
         it('should retry using the GitRemoteResolver mechanism if extraction failed', function (next) {
+            this.timeout(20000);
+
             var resolver;
             var retried;
 
