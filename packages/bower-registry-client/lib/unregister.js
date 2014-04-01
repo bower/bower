@@ -16,8 +16,6 @@ function unregister(name, callback) {
         requestUrl += '?access_token=' + config.accessToken;
     }
 
-    console.log(requestUrl);
-
     request.del({
         url: requestUrl,
         proxy: remote.protocol === 'https:' ? config.httpsProxy : config.proxy,
