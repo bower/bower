@@ -1,5 +1,6 @@
 var path = require('path');
 var expect = require('expect.js');
+var _s = require('underscore.string');
 var bowerJson = require('../lib/json');
 
 describe('.find', function () {
@@ -220,6 +221,24 @@ describe('.validate', function () {
     });
     it('should validate the name is valid', function () {
         var json = { name: 'gru.n-t' };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.not.throwException();
+    });
+    it('should validate the description length', function () {
+        var json = {
+            name: 'foo',
+            description: _s.repeat('æ', 141)
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the description is valid', function () {
+        var json = {
+            name: 'foo',
+            description: _s.repeat('æ', 140)
+        };
         expect(function () {
             bowerJson.validate(json);
         }).to.not.throwException();

@@ -20,15 +20,16 @@
   "dependencies": {
     "deep-extend": "~0.2.5",
     "graceful-fs": "~2.0.0",
-    "intersect": "~0.0.3"
+    "intersect": "~0.1.0"
   },
   "devDependencies": {
-    "expect.js": "~0.2.0",
-    "mocha": "~1.12.0",
-    "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.4.4",
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-simple-mocha": "~0.4.0"
+    "expect.js": "~0.3.1",
+    "mocha": "~1.18.2",
+    "grunt": "~0.4.4",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-simple-mocha": "~0.4.0",
+    "underscore.string": "~2.3.3"
   },
   "scripts": {
     "test": "grunt test"

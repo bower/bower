@@ -89,7 +89,7 @@ function validate(json) {
     }
 
     if (json.name.length > 50) {
-        throw createError('The name is too long. 50 character should be more than enough', 'EINVALID');
+        throw createError('The name is too long. 50 characters should be more than enough', 'EINVALID');
     }
 
     if (/[A-Z]/.test(json.name)) {
@@ -102,6 +102,10 @@ function validate(json) {
 
     if (!/[a-z]$/.test(json.name)) {
         throw createError('The name has to end with a lower case character from a to z', 'EINVALID');
+    }
+    
+    if (json.description && json.description.length > 140) {
+        throw createError('The description is too long. 140 characters should be more than enough', 'EINVALID');
     }
 
     // TODO https://github.com/bower/bower.json-spec
