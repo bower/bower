@@ -310,30 +310,6 @@ describe('ResolveCache', function () {
             })
             .done();
         });
-
-        it('should be possible to store two package at same time', function (next) {
-            var store = resolveCache.store.bind(resolveCache, tempPackage, {
-                name: 'foo',
-                _source: 'foo',
-                _target: 'foo/bar'
-            });
-            var store2 = resolveCache.store.bind(resolveCache, tempPackage2, {
-                name: 'foo',
-                _source: 'foo',
-                _target: 'foo/bar'
-            });
-
-            Q.all([store(), store2()]).then(function (dirs) {
-                var dir = dirs[0];
-                expect(dir).to.equal(path.join(cacheDir, md5('foo'), 'foo%2Fbar'));
-                expect(fs.existsSync(dir)).to.be(true);
-                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
-                expect(fs.existsSync(tempPackage)).to.be(false);
-                expect(fs.existsSync(tempPackage2)).to.be(false);
-
-                next();
-            }).done();
-        });
     });
 
     describe('.versions', function () {
