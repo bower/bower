@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.2 - 2014-04-05
+- Added yui moduleType [PR #1129](https://github.com/bower/bower/pull/1129)
+- Fixes for concurrency issues [PR #1211](https://github.com/bower/bower/pull/1211)
+- `link` now installs package dependencies [PR #891](https://github.com/bower/bower/pull/891)
+- Improved conflict installation message [Commit](https://github.com/bower/bower/commit/bea533acf87903d4b411bfbaa7df93f852ef46a3)
+- Add --production switch to "prune" command [PR #1168](https://github.com/bower/bower/pull/1168)
 
 ## 1.3.1 - 2014-03-10
 - No longer ask for permission to gather analytics when running on in a CI environment.
