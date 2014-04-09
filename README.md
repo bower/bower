@@ -63,7 +63,7 @@ Where `<package>` can be any one of the following:
 * A private Git repository, e.g., ```https://github.com/someone/some-package.git```. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., ```git@github.com:someone/some-package.git``` and can authenticate with the user's ssh public/private keys. ‡
 * A local endpoint, i.e., a folder that's a Git repository. ‡
 * A public remote Subversion endpoint, e.g., ```svn+http://package.googlecode.com/svn/```. ‡
-* A private Subversion repository, e.g., ```svn+ssh://package.googlecode.com/svn/```. ‡
+* A private Subversion repository, e.g., ```svn+ssh://package.googlecode.com/svn/``` or ```svn+https://package.googlecode.com/svn/```. ‡
 * A local endpoint, i.e., a folder that's an Subversion repository, e.g., ```svn+file:///path/to/svn/```. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. Its contents will be
