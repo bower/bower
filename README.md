@@ -207,7 +207,7 @@ You can interactively create a `bower.json` with the following command:
 bower init
 ```
 
-The `bower.json` defines several options:
+The `bower.json` ([spec](https://github.com/bower/bower.json-spec)) defines several options, including:
 
 * `name` (required): The name of your package.
 * `version`: A semantic version number (see [semver](http://semver.org/)).
@@ -224,6 +224,7 @@ The `bower.json` defines several options:
 ```json
 {
   "name": "my-project",
+  "description": "My project does XYZ...",
   "version": "1.0.0",
   "main": "path/to/main.css",
   "ignore": [
@@ -271,7 +272,7 @@ Bower also makes available a source mapping. This can be used by build tools to
 easily consume Bower packages.
 
 If you pass the `--paths` option to Bower's `list` command, you will get a
-simple path-to-name mapping:
+simple name-to-path mapping:
 
 ```json
 {
