@@ -146,7 +146,7 @@ However, if you still want to run commands with sudo, use `--allow-root` option.
 #### A note for Windows users
 
 To use Bower on Windows, you must install
-[msysgit](http://code.google.com/p/msysgit/) correctly. Be sure to check the
+[msysgit](http://msysgit.github.io/) correctly. Be sure to check the
 option shown below:
 
 ![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
