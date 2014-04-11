@@ -17,6 +17,7 @@
         "search":          "Search for a package by name",
         "update":          "Update a local package",
         "uninstall":       "Remove a local package",
+        "validate":        "Validates an existing bower.json file",
         "version":         "Bump a package version"
     },
     "options": [

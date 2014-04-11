@@ -1,0 +1,5 @@
+{
+    "name" : "test-package",
+    "version" : "",
+    "main" : "test-package.js"
+}
