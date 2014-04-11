@@ -2,13 +2,11 @@ var expect = require('expect.js');
 var util = require('util');
 var path = require('path');
 var fs = require('graceful-fs');
-var chmodr = require('chmodr');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var Q = require('q');
 var mout = require('mout');
 var Logger = require('bower-logger');
-var copy = require('../../../lib/util/copy');
 var SvnResolver = require('../../../lib/core/resolvers/SvnResolver');
 var defaultConfig = require('../../../lib/config');
 
@@ -271,20 +269,11 @@ describe('SvnResolver', function () {
                 }.bind(this));
             };
 
-            DummyResolver.prototype._checkout = function () {
-                this._stack.push('before _checkout');
+            DummyResolver.prototype._export = function () {
+                this._stack.push('before _export');
                 return Q.resolve()
                 .then(function (val) {
-                    this._stack.push('after _checkout');
-                    return val;
-                }.bind(this));
-            };
-
-            DummyResolver.prototype._cleanup = function () {
-                this._stack.push('before _cleanup');
-                return SvnResolver.prototype._cleanup.apply(this, arguments)
-                .then(function (val) {
-                    this._stack.push('after _cleanup');
+                    this._stack.push('after _export');
                     return val;
                 }.bind(this));
             };
@@ -296,10 +285,8 @@ describe('SvnResolver', function () {
                 expect(resolver.getStack()).to.eql([
                     'before _findResolution',
                     'after _findResolution',
-                    'before _checkout',
-                    'after _checkout',
-                    'before _cleanup',
-                    'after _cleanup'
+                    'before _export',
+                    'after _export'
                 ]);
                 next();
             })
@@ -602,87 +589,6 @@ describe('SvnResolver', function () {
                 expect(err.message).to.match(/target some-branch does not exist/i);
                 expect(err.details).to.match(/available tags: some-tag/i);
                 expect(err.code).to.equal('ENORESTARGET');
-                next();
-            })
-            .done();
-        });
-    });
-
-    describe('._cleanup', function () {
-        beforeEach(function () {
-            mkdirp.sync(tempDir);
-        });
-
-        afterEach(function (next) {
-            clearResolverRuntimeCache();
-            // Need to chmodr before removing..at least on windows
-            // because .svn has some read only files
-            chmodr(tempDir, 0777, function () {
-                rimraf(tempDir, next);
-            });
-        });
-
-        it('should remove the .svn folder from the temp dir', function (next) {
-            var resolver = create('foo');
-            var dst = path.join(tempDir, '.svn');
-
-            this.timeout(30000);  // Give some time to copy
-
-            // Copy .svn folder to the tempDir
-            copy.copyDir(path.resolve(__dirname, '../../assets/package-svn/repo/.svn'), dst, {
-                mode: 0777
-            })
-            .then(function () {
-                resolver._tempDir = tempDir;
-
-                return resolver._cleanup()
-                .then(function () {
-                    expect(fs.existsSync(dst)).to.be(false);
-                    next();
-                });
-            })
-            .done();
-        });
-
-        it('should not fail if .svn does not exist for some reason', function (next) {
-            var resolver = create('foo');
-            var dst = path.join(tempDir, '.svn');
-
-            resolver._tempDir = tempDir;
-
-            resolver._cleanup()
-            .then(function () {
-                expect(fs.existsSync(dst)).to.be(false);
-                next();
-            })
-            .done();
-        });
-
-        it('should sill run even if _checkout fails for some reason', function (next) {
-            var resolver = create('foo');
-            var called = false;
-
-            SvnResolver.tags = function () {
-                return Q.resolve({
-                    '1.0.0': 1
-                });
-            };
-
-            resolver._tempDir = tempDir;
-            resolver._checkout = function () {
-                return Q.reject(new Error('Some error'));
-            };
-
-            resolver._cleanup = function () {
-                called = true;
-                return SvnResolver.prototype._cleanup.apply(this, arguments);
-            };
-
-            resolver.resolve()
-            .then(function () {
-                next(new Error('Should have failed'));
-            }, function () {
-                expect(called).to.be(true);
                 next();
             })
             .done();
@@ -1101,9 +1007,10 @@ describe('SvnResolver', function () {
             expect(resolver.getName()).to.equal('svn');
         });
     });
+
     describe('.resolve', function () {
 
-        it('should checkout correctly if resolution is a tag', function (next) {
+        it('should export correctly if resolution is a tag', function (next) {
             var resolver = create({ source: 'file://' + testPackageAdmin, target: '0.0.1' });
 
             resolver.resolve()
@@ -1119,7 +1026,7 @@ describe('SvnResolver', function () {
             .done();
         });
 
-        it('should checkout correctly if resolution is a commit', function (next) {
+        it('should export correctly if resolution is a commit', function (next) {
             var resolver = create({ source: 'file://' + testPackageAdmin, target: 'r1' });
 
             resolver.resolve()
@@ -1136,8 +1043,4 @@ describe('SvnResolver', function () {
             .done();
         });
     });
-
-
-
-
 });
