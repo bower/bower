@@ -96,7 +96,7 @@ A custom install location can be set in a `.bowerrc` file using the `directory` 
 
 ```json
 {
-  "directory": "public/bower_components"
+  "directory": "app/components"
 }
 ```
 
@@ -113,17 +113,9 @@ Using just `bower search` will list all packages in the registry.
 
 ### Using packages
 
-The easiest approach is to use Bower statically, just reference the package's
-installed components manually using a `script` tag:
+We discourage using bower components statically for performance and security reasons (if component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
 
-```html
-<script src="/bower_components/jquery/jquery.js"></script>
-```
-
-For more complex projects, you'll probably want to concatenate your scripts or
-use a module loader. Bower is just a package manager, but there are plenty of
-other tools -- such as [Sprockets](https://github.com/sstephenson/sprockets)
-and [RequireJS](http://requirejs.org/) -- that will help you do this.
+The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using module loader (like [RequireJS](http://requirejs.org/)).
 
 ### Uninstalling packages
 
