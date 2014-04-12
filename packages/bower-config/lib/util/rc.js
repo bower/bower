@@ -2,7 +2,8 @@ var path = require('path');
 var fs = require('graceful-fs');
 var optimist = require('optimist');
 var osenv = require('osenv');
-var mout = require('mout');
+var object = require('mout/object');
+var string = require('mout/string');
 var paths = require('./paths');
 
 var win = process.platform === 'win32';
@@ -16,11 +17,11 @@ function rc(name, defaults, cwd, argv) {
     argv = argv || optimist.argv;
 
     // Parse --config.foo=false
-    argvConfig = mout.object.map(argv.config || {}, function (value) {
+    argvConfig = object.map(argv.config || {}, function (value) {
         return value === 'false' ? false : value;
     });
 
-    return mout.object.deepMixIn.apply(null, [
+    return object.deepMixIn.apply(null, [
         {},
         defaults,
         { cwd: cwd },
@@ -75,15 +76,15 @@ function env(prefix) {
 
     prefix = prefix.toLowerCase();
 
-    mout.object.forOwn(process.env, function (value, key) {
+    object.forOwn(process.env, function (value, key) {
         key = key.toLowerCase();
 
-        if (mout.string.startsWith(key, prefix)) {
+        if (string.startsWith(key, prefix)) {
             var parsedKey = key
                            .substr(prefixLength)
                            .replace(/__/g, '.')   // __ is used for nesting
                            .replace(/_/g, '-');   // _ is used as a - separator
-            mout.object.set(obj, parsedKey, value);
+            object.set(obj, parsedKey, value);
         }
     });
 

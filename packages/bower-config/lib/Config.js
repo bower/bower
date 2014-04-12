@@ -1,4 +1,5 @@
-var mout = require('mout');
+var lang = require('mout/lang');
+var object = require('mout/object');
 var rc = require('./util/rc');
 var defaults = require('./util/defaults');
 var expand = require('./util/expand');
@@ -32,7 +33,7 @@ Config.prototype.save = function (where, callback) {
 };
 
 Config.prototype.toObject = function () {
-    var config = mout.lang.deepClone(this._config);
+    var config = lang.deepClone(this._config);
 
     config = Config.normalise(config);
     return config;
@@ -51,7 +52,7 @@ Config.normalise = function (rawConfig) {
     var config = {};
 
     // Mix in defaults and raw config
-    mout.object.deepMixIn(config, expand(defaults), expand(rawConfig));
+    object.deepMixIn(config, expand(defaults), expand(rawConfig));
 
     // Some backwards compatible things..
     config.shorthandResolver = config.shorthandResolver
