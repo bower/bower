@@ -1,5 +1,6 @@
 var expect = require('expect.js');
-var mout = require('mout');
+var lang = require('mout/lang');
+var object = require('mout/object');
 var endpointParser = require('../');
 
 describe('endpoint-parser', function () {
@@ -19,7 +20,7 @@ describe('endpoint-parser', function () {
                 'bootstrap=http://twitter.github.io/bootstrap/assets/bootstrap.zip#latest': { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap.zip', target: '*' }
             };
 
-            mout.object.forOwn(suite, function (decEndpoint, endpoint) {
+            object.forOwn(suite, function (decEndpoint, endpoint) {
                 expect(endpointParser.decompose(endpoint)).to.eql(decEndpoint);
             });
         });
@@ -52,8 +53,8 @@ describe('endpoint-parser', function () {
                 'bootstrap=http://twitter.github.io/bootstrap/assets/bootstrap.zip': { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap.zip', target: '*' }
             };
 
-            mout.object.forOwn(suite, function (decEndpoints, endpoint) {
-                decEndpoints = mout.lang.toArray(decEndpoints);
+            object.forOwn(suite, function (decEndpoints, endpoint) {
+                decEndpoints = lang.toArray(decEndpoints);
                 decEndpoints.forEach(function (decEndpoint) {
                     expect(endpointParser.compose(decEndpoint)).to.equal(endpoint);
                 });
@@ -126,7 +127,7 @@ describe('endpoint-parser', function () {
             };
             var x = 0;
 
-            mout.object.forOwn(dependencies, function (value, key) {
+            object.forOwn(dependencies, function (value, key) {
                 expect(endpointParser.json2decomposed(key, value)).to.eql(expected[x]);
                 x += 1;
             });
@@ -149,7 +150,7 @@ describe('endpoint-parser', function () {
             };
             var x = 0;
 
-            mout.object.forOwn(dependencies, function (value, key) {
+            object.forOwn(dependencies, function (value, key) {
                 expect(endpointParser.json2decomposed(key, value)).to.eql(expected[x]);
                 x += 1;
             });
