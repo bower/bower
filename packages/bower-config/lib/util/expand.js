@@ -1,17 +1,19 @@
-var mout = require('mout');
+var object = require('mout/object');
+var lang = require('mout/lang');
+var string = require('mout/string');
 
 function camelCase(config) {
     var camelCased = {};
 
     // Camel case
-    mout.object.forOwn(config, function (value, key) {
+    object.forOwn(config, function (value, key) {
         // Ignore null values
         if (value == null) {
             return;
         }
 
-        key = mout.string.camelCase(key.replace(/_/g, '-'));
-        camelCased[key] = mout.lang.isPlainObject(value) ? camelCase(value) : value;
+        key = string.camelCase(key.replace(/_/g, '-'));
+        camelCased[key] = lang.isPlainObject(value) ? camelCase(value) : value;
     });
 
     return camelCased;
