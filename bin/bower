@@ -5,7 +5,6 @@ process.bin = process.title = 'bower';
 var Q = require('q');
 var path = require('path');
 var mout = require('mout');
-var updateNotifier = require('update-notifier');
 var Logger = require('bower-logger');
 var osenv = require('osenv');
 var bower = require('../lib');
@@ -73,7 +72,7 @@ while (options.argv.remain.length) {
 }
 
 // Ask for Insights on first run.
-analytics.setup().then(function () {
+analytics.setup(bower.config).then(function () {
     // Execute the command
     commandFunc = command && mout.object.get(bower.commands, command);
     command = command && command.replace(/\./g, ' ');
@@ -133,13 +132,17 @@ analytics.setup().then(function () {
         logger.warn('no-home', 'HOME not set, user configuration will not be loaded');
     }
 
-    // Check for newer version of Bower
-    notifier = updateNotifier({
-        packageName: pkg.name,
-        packageVersion: pkg.version
-    });
+    if (bower.config.interactive) {
+        var updateNotifier = require('update-notifier');
 
-    if (notifier.update && levels.info >= loglevel) {
-        renderer.updateNotice(notifier.update);
+        // Check for newer version of Bower
+        notifier = updateNotifier({
+            packageName: pkg.name,
+            packageVersion: pkg.version
+        });
+
+        if (notifier.update && levels.info >= loglevel) {
+            renderer.updateNotice(notifier.update);
+        }
     }
 });
