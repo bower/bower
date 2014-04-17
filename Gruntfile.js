@@ -40,6 +40,9 @@ module.exports = function (grunt) {
             },
             cover: {
                 command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot test/test.js'
+            },
+            coveralls: {
+                command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'
             }
         },
         watch: {
@@ -51,5 +54,6 @@ module.exports = function (grunt) {
     grunt.registerTask('assets', ['exec:assets-force']);
     grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
+    grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 };
