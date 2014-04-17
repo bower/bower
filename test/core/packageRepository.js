@@ -18,9 +18,9 @@ describe('PackageRepository', function () {
     var resolverFactoryHook;
     var resolverFactoryClearHook;
     var testPackage = path.resolve(__dirname, '../assets/package-a');
-    var tempPackage = path.resolve(__dirname, '../assets/temp');
-    var packagesCacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
-    var registryCacheDir = path.join(__dirname, '../assets/temp-registry-cache');
+    var tempPackage = path.resolve(__dirname, '../tmp/temp-package');
+    var packagesCacheDir = path.join(__dirname, '../tmp/temp-resolve-cache');
+    var registryCacheDir = path.join(__dirname, '../tmp/temp-registry-cache');
     var mockSource = 'file://' + testPackage;
     var forceCaching = true;
 

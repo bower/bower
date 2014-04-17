@@ -14,9 +14,9 @@ var md5 = require('../../lib/util/md5');
 describe('ResolveCache', function () {
     var resolveCache;
     var testPackage = path.resolve(__dirname, '../assets/package-a');
-    var tempPackage = path.resolve(__dirname, '../assets/temp');
-    var tempPackage2 = path.resolve(__dirname, '../assets/temp2');
-    var cacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
+    var tempPackage = path.resolve(__dirname, '../tmp/temp-package');
+    var tempPackage2 = path.resolve(__dirname, '../tmp/temp2-package');
+    var cacheDir = path.join(__dirname, '../tmp/temp-resolve-cache');
 
     before(function (next) {
         // Delete cache folder
@@ -908,7 +908,7 @@ describe('ResolveCache', function () {
                 expect(entries).to.be.an('array');
 
                 expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
-                expectedJson = expectedJson.toString();
+                expectedJson = expectedJson.toString().trim();
 
                 mout.object.forOwn(entries, function (entry) {
                     // Trim absolute bower path from json

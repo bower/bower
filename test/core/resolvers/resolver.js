@@ -13,7 +13,7 @@ var Resolver = require('../../../lib/core/resolvers/Resolver');
 var defaultConfig = require('../../../lib/config');
 
 describe('Resolver', function () {
-    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/package-a');
     var logger;
     var dirMode0777;
