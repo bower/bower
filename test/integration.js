@@ -2,8 +2,9 @@ var path = require('path');
 var bower = require('../lib/index.js');
 var mkdirp = require('mkdirp');
 var rimraf = require('rimraf');
+var fs = require('graceful-fs');
 var expect = require('expect.js');
-var Q = require('Q');
+var Q = require('q');
 
 function expectEvent(emitter, eventName) {
     var deferred = Q.defer();
@@ -33,21 +34,32 @@ describe('integration tests', function () {
         var logger = bower.commands.init(config);
 
         return expectEvent(logger, 'prompt')
-        .then(function (prompt, callback) {
-            callback({
+        .spread(function (prompt, answer) {
+            answer({
                 name: 'test-name',
                 version: 'test-version',
                 description: 'test-description',
                 moduleType: 'test-moduleType',
-                keywords: ['test-keyword'],
-                authors: ['test-answer'],
-                license: ['test-license'],
-                homepage: ['test-homepage'],
+                keywords: 'test-keyword',
+                authors: 'test-author',
+                license: 'test-license',
+                homepage: 'test-homepage',
                 private: true
             });
+
+            return expectEvent(logger, 'prompt');
+        })
+        .spread(function (prompt, answer) {
+            answer({
+                prompt: true
+            });
+
+            return expectEvent(logger, 'end');
         })
         .then(function () {
-            return expectEvent(logger, 'end');
+            var bowerJsonPath = path.join(tempDir, 'bower.json');
+
+            expect(fs.existsSync(bowerJsonPath)).to.be(true);
         });
     });
 });
