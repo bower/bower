@@ -8,9 +8,9 @@ var scripts = require('../../lib/core/scripts.js');
 
 describe('scripts', function () {
 
-    var tempDir = path.join(__dirname, '../assets/temp-scripts');
+    var tempDir = path.join(__dirname, '../tmp/temp-scripts');
     var packageName = 'package-zip';
-    var packageDir = path.join('..', packageName + '.zip');
+    var packageDir = path.join(__dirname, '../assets/' + packageName + '.zip');
 
     var config = {
         cwd: tempDir,

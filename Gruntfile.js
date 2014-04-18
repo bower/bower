@@ -13,7 +13,8 @@ module.exports = function (grunt) {
                 'lib/**/*.js',
                 'test/**/*.js',
                 '!test/assets/**/*',
-                '!test/reports/**/*'
+                '!test/reports/**/*',
+                '!test/tmp/**/*'
             ]
         },
         simplemocha: {

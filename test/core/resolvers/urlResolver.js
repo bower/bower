@@ -13,7 +13,7 @@ var defaultConfig = require('../../../lib/config');
 
 describe('UrlResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/package-a');
-    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var logger;
 
     before(function (next) {

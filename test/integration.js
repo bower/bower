@@ -15,7 +15,7 @@ function expectEvent(emitter, eventName) {
 }
 
 describe('integration tests', function () {
-    var tempDir = path.join(__dirname, '../assets/temp-integration');
+    var tempDir = path.join(__dirname, 'tmp/cwd');
     var bowerJsonPath = path.join(tempDir, 'bower.json');
 
     function bowerJson() {

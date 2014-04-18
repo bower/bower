@@ -82,7 +82,7 @@ describe('FsResolver', function () {
         it('should resolve always to true (for now..)', function (next) {
             var resolver = create(testPackage);
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            tempSource = path.resolve(__dirname, '../../tmp/tmp');
             mkdirp.sync(tempSource);
             fs.writeFileSync(path.join(tempSource, '.bower.json'), JSON.stringify({
                 name: 'test'
@@ -161,7 +161,7 @@ describe('FsResolver', function () {
         it('should rename to index if source is a folder with just one file in it', function (next) {
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            tempSource = path.resolve(__dirname, '../../tmp/tmp');
 
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
@@ -181,7 +181,7 @@ describe('FsResolver', function () {
         it('should not rename to index if source is a folder with just bower.json/component.json file in it', function (next) {
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            tempSource = path.resolve(__dirname, '../../tmp/tmp');
 
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
@@ -235,7 +235,7 @@ describe('FsResolver', function () {
             var mode0777;
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/temp');
+            tempSource = path.resolve(__dirname, '../../tmp/temp-source');
             resolver = create(tempSource);
 
             copy.copyFile(path.join(testPackage, 'foo'), tempSource)
