@@ -19,3 +19,4 @@ require('./core/packageRepository');
 require('./core/scripts');
 require('./core/Manager');
 require('./integration.js');
+require('./commands/index.js');
