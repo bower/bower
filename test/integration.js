@@ -16,6 +16,12 @@ function expectEvent(emitter, eventName) {
 
 describe('integration tests', function () {
     var tempDir = path.join(__dirname, '../assets/temp-integration');
+    var bowerJsonPath = path.join(tempDir, 'bower.json');
+
+    function bowerJson() {
+        return JSON.parse(fs.readFileSync(bowerJsonPath));
+    }
+
 
     var config = {
         cwd: tempDir,
@@ -57,9 +63,41 @@ describe('integration tests', function () {
             return expectEvent(logger, 'end');
         })
         .then(function () {
-            var bowerJsonPath = path.join(tempDir, 'bower.json');
-
             expect(fs.existsSync(bowerJsonPath)).to.be(true);
+        });
+    });
+
+    it('bower install', function () {
+        var logger = bower.commands.install([], undefined, config);
+
+        return expectEvent(logger, 'end');
+    });
+
+    it('bower install <package>', function () {
+        var logger = bower.commands.install(['underscore'], undefined, config);
+
+        return expectEvent(logger, 'end')
+        .then(function () {
+            expect(bowerJson()).to.not.have.key('dependencies');
+        });
+    });
+
+    it('bower install <package> --save', function () {
+        var logger = bower.commands.install(['underscore'], {save: true}, config);
+
+        return expectEvent(logger, 'end')
+        .then(function () {
+            expect(bowerJson()).to.have.key('dependencies');
+        });
+    });
+
+    it('bower uninstall <package>', function () {
+        var logger = bower.commands.uninstall(['underscore'], {save: true}, config);
+
+        return expectEvent(logger, 'end')
+        .then(function () {
+            expect(bowerJson()).to.have.key('dependencies');
+            expect(bowerJson().dependencies).to.eql({});
         });
     });
 });
