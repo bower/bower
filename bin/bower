@@ -4,7 +4,6 @@
 process.bin = process.title = 'bower';
 
 var Q = require('q');
-var path = require('path');
 var mout = require('mout');
 var Logger = require('bower-logger');
 var osenv = require('osenv');
