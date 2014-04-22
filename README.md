@@ -1,6 +1,6 @@
 # Bower
 
-[![Build Status](https://secure.travis-ci.org/bower/bower.svg?branch=master)](http://travis-ci.org/bower/bower)
+[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
@@ -19,11 +19,11 @@ etc.).
 
 ## Installing Bower
 
-Bower depends on [Node](http://nodejs.org/) and [npm](http://npmjs.org/). It's
+Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). It's
 installed globally using npm:
 
-```
-npm install -g bower
+```sh
+$ npm install -g bower
 ```
 
 Also make sure that [git](http://git-scm.com/) is installed as some bower

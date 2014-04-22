@@ -1,5 +1,5 @@
+'use strict';
 module.exports = function (grunt) {
-
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
@@ -7,14 +7,23 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            files: ['Gruntfile.js', 'bin/*', 'lib/**/*.js', 'test/**/*.js', '!test/assets/**/*', '!test/reports/**/*']
+            files: [
+                'Gruntfile.js',
+                'bin/*',
+                'lib/**/*.js',
+                'test/**/*.js',
+                '!test/assets/**/*',
+                '!test/reports/**/*'
+            ]
         },
         simplemocha: {
             options: {
                 reporter: 'spec',
                 timeout: '5000'
             },
-            full: { src: ['test/test.js'] },
+            full: {
+                src: ['test/test.js']
+            },
             short: {
                 options: {
                     reporter: 'dot'
@@ -38,7 +47,6 @@ module.exports = function (grunt) {
             tasks: ['jshint', 'simplemocha:short']
         }
     });
-
 
     grunt.registerTask('assets', ['exec:assets-force']);
     grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);

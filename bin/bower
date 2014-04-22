@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+'use strict';
 
 process.bin = process.title = 'bower';
 
@@ -8,12 +9,10 @@ var mout = require('mout');
 var Logger = require('bower-logger');
 var osenv = require('osenv');
 var bower = require('../lib');
-var pkg = require(path.join(__dirname, '..', 'package.json'));
+var pkg = require('../package.json');
 var cli = require('../lib/util/cli');
 var rootCheck = require('../lib/util/rootCheck');
 var analytics = require('../lib/util/analytics');
-
-// --------
 
 var options;
 var renderer;
