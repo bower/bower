@@ -1,32 +1,23 @@
-# Bower
-
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
+# Bower [![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
-Bower is a package manager for the web. It offers a generic, unopinionated
-solution to the problem of **front-end package management**, while exposing the
-package dependency model via an API that can be consumed by a more opinionated
-build stack. There are no system wide dependencies, no dependencies are shared
-between different apps, and the dependency tree is flat.
+> A package manager for the web
 
-Bower runs over Git, and is package-agnostic. A packaged component can be made
-up of any type of asset, and use any type of transport (e.g., AMD, CommonJS,
-etc.).
+It offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
+
+Bower runs over Git, and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
 
 [View all packages available through Bower's registry](http://bower.io/search/).
 
 
-## Installing Bower
-
-Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). It's
-installed globally using npm:
+## Install
 
 ```sh
 $ npm install -g bower
 ```
 
-Also make sure that [git](http://git-scm.com/) is installed as some bower
+Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). Also make sure that [git](http://git-scm.com/) is installed as some bower
 packages require it to be fetched and installed.
 
 
@@ -39,32 +30,39 @@ is just enough to get you started.
 
 Bower offers several ways to install packages:
 
-#####Using the dependencies listed in the current directory's bower.json
+##### Using the dependencies listed in the current directory's bower.json
+
+```sh
+$ bower install
 ```
-bower install
-```
+
 ##### Using a local or remote package
+
+```sh
+$ bower install <package>
 ```
-bower install <package>
-```
+
 ##### Using a specific version of a package
+
+```sh
+$ bower install <package>#<version>
 ```
-bower install <package>#<version>
-```
+
 ##### Using a different name and a specific version of a package
-```
-bower install <name>=<package>#<version>
+
+```sh
+$ bower install <name>=<package>#<version>
 ```
 
 Where `<package>` can be any one of the following:
 
 * A name that maps to a package registered with Bower, e.g, `jquery`. ‡
-* A public remote Git endpoint, e.g., ```git://github.com/someone/some-package.git```. ‡
-* A private Git repository, e.g., ```https://github.com/someone/some-package.git```. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., ```git@github.com:someone/some-package.git``` and can authenticate with the user's ssh public/private keys. ‡
+* A public remote Git endpoint, e.g., `git://github.com/someone/some-package.git`. ‡
+* A private Git repository, e.g., `https://github.com/someone/some-package.git`. If the protocol is https, a prompt will ask for the credentials. ssh can also be used, e.g., `git@github.com:someone/some-package.git` and can authenticate with the user's ssh public/private keys. ‡
 * A local endpoint, i.e., a folder that's a Git repository. ‡
-* A public remote Subversion endpoint, e.g., ```svn+http://package.googlecode.com/svn/```. ‡
-* A private Subversion repository, e.g., ```svn+ssh://package.googlecode.com/svn/``` or ```svn+https://package.googlecode.com/svn/```. ‡
-* A local endpoint, i.e., a folder that's an Subversion repository, e.g., ```svn+file:///path/to/svn/```. ‡
+* A public remote Subversion endpoint, e.g., `svn+http://package.googlecode.com/svn/`. ‡
+* A private Subversion repository, e.g., `svn+ssh://package.googlecode.com/svn/` or `svn+https://package.googlecode.com/svn/`. ‡
+* A local endpoint, i.e., a folder that's an Subversion repository, e.g., `svn+file:///path/to/svn/`. ‡
 * A shorthand endpoint, e.g., `someone/some-package` (defaults to GitHub). ‡
 * A URL to a file, including `zip` and `tar` files. Its contents will be
   extracted.
@@ -105,8 +103,8 @@ A custom install location can be set in a `.bowerrc` file using the `directory` 
 
 To search for packages registered with Bower:
 
-```
-bower search [<name>]
+```sh
+$ bower search [<name>]
 ```
 
 Using just `bower search` will list all packages in the registry.
@@ -121,8 +119,8 @@ The best approach is to process components installed by bower with build tool (l
 
 To uninstall a locally installed package:
 
-```
-bower uninstall <package-name>
+```sh
+$ bower uninstall <package-name>
 ```
 
 
@@ -151,16 +149,21 @@ path if needed.
 ### Using bower's cache
 
 Bower supports installing packages from its local cache (without internet connection), if the packages were installed before.
+
+```sh
+$ bower install <package-name> --offline
 ```
-bower install <package-name> --offline
-```
+
 The content of the cache can be listed with:
+
+```sh
+$ bower cache list
 ```
-bower cache list
-```
+
 The cache can be cleaned with:
-```
-bower cache clean
+
+```sh
+$ bower cache clean
 ```
 
 ## Configuration
@@ -195,8 +198,8 @@ release.
 
 You can interactively create a `bower.json` with the following command:
 
-```
-bower init
+```sh
+$ bower init
 ```
 
 The `bower.json` ([spec](https://github.com/bower/bower.json-spec)) defines several options, including:
@@ -245,8 +248,8 @@ To register a new package:
 
 Then use the following command:
 
-```
-bower register <my-package-name> <git-endpoint>
+```sh
+$ bower register <my-package-name> <git-endpoint>
 ```
 
 The Bower registry does not have authentication or user management at this point
@@ -336,23 +339,21 @@ not available for Windows users.
 This command will output a Bash / ZSH script to put into your `~/.bashrc`,
 `~/.bash_profile`, or `~/.zshrc` file.
 
+```sh
+$ bower completion >> ~/.bash_profile
 ```
-bower completion >> ~/.bash_profile
-```
 
 
-## Contact
-
-Have a question?
+## Support
 
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
 * [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
 
 
-## Contributing to this project
+## Contributing
 
-Anyone and everyone is welcome to contribute. Please take a moment to
+We welcome contributions of all kinds from anyone. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
 * [Bug reports](CONTRIBUTING.md#bugs)
