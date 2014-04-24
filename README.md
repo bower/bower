@@ -371,6 +371,7 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [@benschwarz](https://github.com/benschwarz)
 * [@sindresorhus](https://github.com/sindresorhus)
 * [@svnlto](https://github.com/svnlto)
+* [@sheerun](https://github.com/sheerun)
 
 Thanks for assistance and contributions:
 

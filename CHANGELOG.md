@@ -1,13 +1,26 @@
 # Changelog
 
+## 1.3.3 - 2014-04-24
+
+- Do not cache moving targets like branches ([#1242](https://github.com/bower/bower/issues/1242))
+- Suppress output if --quiet option is specified ([#1124](https://github.com/bower/bower/pull/1124))
+- Use "svn export" for efficiency ([#1224](https://github.com/bower/bower/pull/1224))
+- Prevent loading insights and analytics on CI ([#1221](https://github.com/bower/bower/issues/1221))
+- Make "bower list" respect custom components directory ([#1237](https://github.com/bower/bower/issues/1237))
+- Improve non-interactive loading performance 2x ([#1238](https://github.com/bower/bower/issues/1238))
+- Load commands only on demand, improving performance ([#1232](https://github.com/bower/bower/pull/1232))
+
 ## 1.3.2 - 2014-04-05
+
 - Added yui moduleType [PR #1129](https://github.com/bower/bower/pull/1129)
 - Fixes for concurrency issues [PR #1211](https://github.com/bower/bower/pull/1211)
 - `link` now installs package dependencies [PR #891](https://github.com/bower/bower/pull/891)
 - Improved conflict installation message [Commit](https://github.com/bower/bower/commit/bea533acf87903d4b411bfbaa7df93f852ef46a3)
 - Add --production switch to "prune" command [PR #1168](https://github.com/bower/bower/pull/1168)
 
+
 ## 1.3.1 - 2014-03-10
+
 - No longer ask for permission to gather analytics when running on in a CI environment.
 
 
