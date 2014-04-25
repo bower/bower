@@ -750,6 +750,27 @@ describe('GitResolver', function () {
             .done();
         });
 
+        it('should resolve to the specified short commit', function (next) {
+            var resolver;
+
+            GitResolver.refs = function () {
+                return Q.resolve([
+                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
+                ]);
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('bbbbbbb')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'commit',
+                    commit: 'bbbbbbb'
+                });
+                next();
+            })
+            .done();
+        });
+
         it('should resolve to the specified tag if it exists', function (next) {
             var resolver;
 
