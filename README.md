@@ -343,6 +343,19 @@ This command will output a Bash / ZSH script to put into your `~/.bashrc`,
 $ bower completion >> ~/.bash_profile
 ```
 
+## Analytics
+
+Bower collects anonymous usage statistics in order to be able to improve bower, and to publically display package and command usage rankings. Data is tracked using Google Analytics and is made available to all bower team members.
+
+If you'd prefer to disable analytics in Bower altogether, then create either a local, or global `.bowerrc` file with `analytics = false`.
+
+```json
+{
+  "analytics": false
+}
+```
+
+
 
 ## Support
 
