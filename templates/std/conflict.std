@@ -1,7 +1,7 @@
 {{#yellow}}Unable to find a suitable version for {{name}}, please choose one:{{/yellow}}
 {{#condense}}
 {{#each picks}}
-    {{#magenta}}{{sum @index 1}}){{/magenta}} {{#cyan}}{{endpoint.name}}#{{endpoint.target}}{{/cyan}}{{#if pkgMeta._release}} which resolved to {{#white}}{{pkgMeta._release}}{{/white}}{{/if}}{{#if dependants}} and is required by {{#white}}{{dependants}}{{/white}} {{/if}}
+    {{#magenta}}{{sum @index 1}}){{/magenta}} {{#cyan}}{{endpoint.name}}#{{endpoint.target}}{{/cyan}}{{#if pkgMeta._release}} which resolved to {{#green}}{{pkgMeta._release}}{{/green}}{{/if}}{{#if dependants}} and is required by {{#green}}{{dependants}}{{/green}} {{/if}}
 {{/each}}
 {{/condense}}
 {{#unless saveResolutions}}
