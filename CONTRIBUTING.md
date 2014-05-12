@@ -33,8 +33,6 @@ changes, and helping you finalize your pull requests.
 
 ## Using the issue tracker
 
-* 
-
 The issue tracker is the preferred channel for [bug reports](#bugs),
 [features requests](#features) and [submitting pull
 requests](#pull-requests), but please respect the following restrictions:
