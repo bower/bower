@@ -3,6 +3,7 @@ var object = require('mout/object');
 var rc = require('./util/rc');
 var defaults = require('./util/defaults');
 var expand = require('./util/expand');
+var path = require('path');
 
 function Config(cwd) {
     this._cwd = cwd || process.cwd();
@@ -11,6 +12,7 @@ function Config(cwd) {
 
 Config.prototype.load = function () {
     this._config = rc('bower', defaults, this._cwd);
+    this._config.tmp = path.resolve(this._config.tmp);
     return this;
 };
 
