@@ -11,25 +11,25 @@ The config spec can be read [here](https://docs.google.com/document/d/1APq7oA9tN
 Loads the bower configuration from the configuration files.
 
 
-#### .get(key)
+#### .get(key) - NOT YET IMPLEMENTED
 
 Returns a configuration value by `key`.   
 Keys with dots are supported to access deep values.
 
 
-#### .set(key, value)
+#### .set(key, value) - NOT YET IMPLEMENTED
 
 Sets a configuration value for `key`.   
 Keys with dots are supported to set deep values.
 
 
-#### .del(key)
+#### .del(key) - NOT YET IMPLEMENTED
 
 Removes configuration named `key`.   
 Keys with dots are supported to delete deep keys.
 
 
-#### .save(where, callback)
+#### .save(where, callback) - NOT YET IMPLEMENTED
 
 Saves changes to `where`.   
 The `where` argument can be a path to a configuration file or:
