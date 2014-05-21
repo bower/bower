@@ -12,7 +12,6 @@ function Config(cwd) {
 
 Config.prototype.load = function () {
     this._config = rc('bower', defaults, this._cwd);
-    this._config.tmp = path.resolve(this._config.tmp);
     return this;
 };
 
@@ -67,6 +66,7 @@ Config.normalise = function (rawConfig) {
     });
     config.registry.register = config.registry.register.replace(/\/+$/, '');
     config.registry.publish = config.registry.publish.replace(/\/+$/, '');
+    config.tmp = path.resolve(config.tmp);
 
     return config;
 };
