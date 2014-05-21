@@ -1,6 +1,6 @@
 {
   "name": "bower-registry-client",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Provides easy interaction with the Bower registry.",
   "author": "Twitter",
   "licenses": [
