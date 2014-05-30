@@ -58,6 +58,10 @@
         {
             "flag":        "--allow-root",
             "description": "Allows running commands as root"
+        },
+        {
+            "flag":        "--remove-unnecessary-resolutions",
+            "description": "Remove unnecessary resolutions from bower.json"
         }
     ]
 }
