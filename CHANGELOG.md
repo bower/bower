@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.4 - 2014-06-02
+
+- Resolve a situation in which the install process gets into an infinite loop ([#1169](https://github.com/bower/bower/issues/1169))
+- Improved CLI output for conflicts ([#1284](https://github.com/bower/bower/issues/1284))
+- Changed `bower version` to mirror the tag format of `npm version` ([#1278](https://github.com/bower/bower/issues/1278))
+- Allow short commit SHAs to be used ([#990](https://github.com/bower/bower/issues/990))
+
 ## 1.3.3 - 2014-04-24
 
 - Do not cache moving targets like branches ([#1242](https://github.com/bower/bower/issues/1242))
