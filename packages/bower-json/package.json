@@ -19,12 +19,12 @@
   },
   "dependencies": {
     "deep-extend": "~0.2.5",
-    "graceful-fs": "~2.0.0",
+    "graceful-fs": "~3.0.0",
     "intersect": "~0.1.0"
   },
   "devDependencies": {
     "expect.js": "~0.3.1",
-    "mocha": "~1.18.2",
+    "mocha": "~1.20.0",
     "grunt": "~0.4.4",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-jshint": "~0.10.0",

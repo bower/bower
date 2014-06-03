@@ -1,17 +1,8 @@
 {
-    "predef": [
-        "console",
-        "describe",
-        "it",
-        "after",
-        "afterEach",
-        "before",
-        "beforeEach"
-    ],
-
     "indent": 4,
     "node": true,
     "devel": true,
+    "mocha": true,
 
     "bitwise": false,
     "curly": false,
@@ -29,7 +20,6 @@
     "unused": true,
     "quotmark": "single",
     "strict": false,
-    "trailing": true,
     "camelcase": true,
 
     "asi": false,
@@ -51,12 +41,8 @@
     "onecase": true,
     "regexdash": false,
     "scripturl": false,
-    "smarttabs": false,
     "shadow": false,
     "sub": false,
     "supernew": true,
-    "validthis": false,
-
-    "nomen": false,
-    "white": true
+    "validthis": false
 }
