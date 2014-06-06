@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.5 - 2014-06-06
+- Search compatible versions in fetching packages ([#1147](https://github.com/bower/bower/issues/1147))
+
 ## 1.3.4 - 2014-06-02
 
 - Resolve a situation in which the install process gets into an infinite loop ([#1169](https://github.com/bower/bower/issues/1169))
