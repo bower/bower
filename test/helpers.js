@@ -13,8 +13,8 @@ exports.require = function (name) {
 exports.createTmpDir = function (files) {
     var tempDir = path.join(__dirname, 'tmp/' + uuid.v4());
 
-    before(function (next) {
-        mkdirp(tempDir, next);
+    beforeEach(function () {
+        mkdirp.sync(tempDir);
 
         if (files) {
             object.forOwn(files, function (contents, filepath) {
@@ -22,13 +22,15 @@ exports.createTmpDir = function (files) {
                     contents = JSON.stringify(contents, null, ' ');
                 }
 
-                fs.writeFileSync(path.join(tempDir, filepath), contents);
+                var fullPath = path.join(tempDir, filepath);
+                mkdirp.sync(path.dirname(fullPath));
+                fs.writeFileSync(fullPath, contents);
             });
         }
     });
 
-    after(function (next) {
-        rimraf(tempDir,  next);
+    afterEach(function () {
+        rimraf.sync(tempDir);
     });
 
     return tempDir;
