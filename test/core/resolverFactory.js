@@ -421,7 +421,7 @@ describe('resolverFactory', function () {
         var endpoints;
         var temp;
 
-        tempSource = path.resolve(__dirname, '../assets/tmp');
+        tempSource = path.resolve(__dirname, '../tmp/tmp');
         mkdirp.sync(tempSource);
         fs.writeFileSync(path.join(tempSource, '.git'), 'foo');
         fs.writeFileSync(path.join(tempSource, 'file.with.multiple.dots'), 'foo');
@@ -431,7 +431,7 @@ describe('resolverFactory', function () {
         // Absolute path to folder with .git file
         endpoints[tempSource] = tempSource;
         // Relative path to folder with .git file
-        endpoints[__dirname + '/../assets/tmp'] = tempSource;
+        endpoints[__dirname + '/../tmp/tmp'] = tempSource;
 
         // Absolute path to folder
         temp = path.resolve(__dirname, '../assets/test-temp-dir');

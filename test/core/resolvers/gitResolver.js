@@ -13,7 +13,7 @@ var GitResolver = require('../../../lib/core/resolvers/GitResolver');
 var defaultConfig = require('../../../lib/config');
 
 describe('GitResolver', function () {
-    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var originalrefs = GitResolver.refs;
     var logger;
 

@@ -69,7 +69,9 @@
     "load-grunt-tasks": "~0.4.0",
     "mocha": "~1.18",
     "nock": "~0.28.2",
-    "proxyquire": "~0.6.0"
+    "proxyquire": "~0.6.0",
+    "coveralls": "~2.10.0",
+    "node-uuid": "~1.4.1"
   },
   "scripts": {
     "test": "grunt test"

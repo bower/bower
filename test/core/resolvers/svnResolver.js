@@ -11,7 +11,7 @@ var SvnResolver = require('../../../lib/core/resolvers/SvnResolver');
 var defaultConfig = require('../../../lib/config');
 
 describe('SvnResolver', function () {
-    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/package-svn/repo');
     var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
     var originaltags = SvnResolver.tags;
