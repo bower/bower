@@ -54,7 +54,7 @@
     "shell-quote": "~1.4.1",
     "stringify-object": "~0.2.0",
     "tar": "~0.1.17",
-    "tmp": "~0.0.20",
+    "tmp": "~0.0.23",
     "update-notifier": "~0.1.8",
     "which": "~1.0.5"
   },
