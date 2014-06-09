@@ -3,6 +3,7 @@ var object = require('mout/object');
 var rc = require('./util/rc');
 var defaults = require('./util/defaults');
 var expand = require('./util/expand');
+var path = require('path');
 
 function Config(cwd) {
     this._cwd = cwd || process.cwd();
@@ -65,6 +66,7 @@ Config.normalise = function (rawConfig) {
     });
     config.registry.register = config.registry.register.replace(/\/+$/, '');
     config.registry.publish = config.registry.publish.replace(/\/+$/, '');
+    config.tmp = path.resolve(config.tmp);
 
     return config;
 };
