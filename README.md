@@ -345,9 +345,9 @@ $ bower completion >> ~/.bash_profile
 
 ## Analytics
 
-Bower collects anonymous usage statistics in order to be able to improve bower, and to publically display package and command usage rankings. Data is tracked using Google Analytics and is made available to all bower team members.
+Bower can collect anonymous usage statistics. This allows the community to improve Bower and publicly display insights into CLI usage and packages at [stats.bower.io](http://stats.bower.io).
 
-If you'd prefer to disable analytics in Bower altogether, then create either a local, or global `.bowerrc` file with `analytics = false`.
+Data is tracked using Google Analytics and instrumented via [Insight](https://github.com/yeoman/insight). It is made available to all bower team members. Tracking is opt-in upon initial usage. If you'd prefer to disable analytics altogether, you can manually opt-out, or create either a local, or global `.bowerrc` file with below flag:
 
 ```json
 {
