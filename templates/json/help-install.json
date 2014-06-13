@@ -30,6 +30,11 @@
             "shorthand":   "-D",
             "flag":        "--save-dev",
             "description": "Save installed packages into the project's bower.json devDependencies"
+        },
+        {
+            "shorthand":   "-L",
+            "flag":        "--local-dir",
+            "description": "Install from a local directory, not a local Git/Svn repository"
         }
     ]
 }
