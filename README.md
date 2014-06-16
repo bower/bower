@@ -1,4 +1,4 @@
-# Bower [![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
+# Bower [![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=91759)](https://www.bountysource.com/trackers/91759-bower?utm_source=91759&utm_medium=shield&utm_campaign=TRACKER_BADGE)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
