@@ -189,7 +189,8 @@ describe('endpoint-parser', function () {
             { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
             { bootstrap: 'http://twitter.github.io/bootstrap/assets/bootstrap' },
             { ssh: 'git@example.com' },
-            { git: 'git://example.com' }
+            { git: 'git://example.com' },
+            { ckeditor: '#full/4.3.3' }
         ];
 
         it('should compose endpoints to json correctly', function () {
@@ -206,7 +207,8 @@ describe('endpoint-parser', function () {
                 { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '' },
                 { name: 'bootstrap', source: 'http://twitter.github.io/bootstrap/assets/bootstrap', target: '*' },
                 { name: 'ssh', source: 'git@example.com', target: '*' },
-                { name: 'git', source: 'git://example.com', target: '*' }
+                { name: 'git', source: 'git://example.com', target: '*' },
+                { name: 'ckeditor', source: 'ckeditor', target: 'full/4.3.3' }
             ];
             var x = 0;
 
