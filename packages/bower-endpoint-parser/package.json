@@ -1,6 +1,6 @@
 {
   "name": "bower-endpoint-parser",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Little module that helps with endpoints parsing.",
   "author": "Twitter",
   "licenses": [
