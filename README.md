@@ -263,11 +263,11 @@ package be unregistered](https://github.com/bower/bower/issues/120).
 
 ### Maintaining dependencies
 
-Adding the `--save` option to Bower's `install` command will save installed
-packages into the project's bower.json depencies.
+Using `bower install pkgName --save` will add `pkgName` to your project's
+bower.json `"depenencies"` array.
 
-Similarly, passing `--save-dev` will save installed packages into the project's
-bower.json devDependencies.
+Similarly, using `bower install pkgName --save-dev` will add `pkgName` to your
+project's bower.json `"devDependencies"` array.
 
 
 ## Consuming a package
