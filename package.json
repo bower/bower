@@ -18,8 +18,8 @@
   "dependencies": {
     "abbrev": "~1.0.4",
     "archy": "~0.0.2",
-    "bower-config": "~0.5.0",
-    "bower-endpoint-parser": "~0.2.0",
+    "bower-config": "~0.5.2",
+    "bower-endpoint-parser": "~0.2.2",
     "bower-json": "~0.4.0",
     "bower-logger": "~0.2.2",
     "bower-registry-client": "~0.2.0",
