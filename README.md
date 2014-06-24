@@ -261,6 +261,15 @@ There is no direct way to unregister a package yet. For now, you can [request a
 package be unregistered](https://github.com/bower/bower/issues/120).
 
 
+### Maintaining dependencies
+
+Adding the `--save` option to Bower's `install` command will save installed
+packages into the project's bower.json depencies.
+
+Similarly, passing `--save-dev` will save installed packages into the project's
+bower.json devDependencies.
+
+
 ## Consuming a package
 
 Bower also makes available a source mapping. This can be used by build tools to
