@@ -58,6 +58,10 @@
         {
             "flag":        "--allow-root",
             "description": "Allows running commands as root"
+        },
+        {
+            "flag":        "--version",
+            "description": "Output Bower version"
         }
     ]
 }
