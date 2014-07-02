@@ -19,12 +19,6 @@ describe('bower install', function () {
         interactive: true
     };
 
-    it('does nothing if no bower.json is present', function () {
-        var logger = bower.commands.install([], undefined, config);
-
-        return helpers.expectEvent(logger, 'end');
-    });
-
     it.skip('installs a package', function () {
         this.timeout(10000);
         var logger = bower.commands.install(['underscore'], undefined, config);
