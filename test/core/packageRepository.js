@@ -22,6 +22,7 @@ describe('PackageRepository', function () {
     var packagesCacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
     var registryCacheDir = path.join(__dirname, '../assets/temp-registry-cache');
     var mockSource = 'file://' + testPackage;
+    var forceCaching = true;
 
     after(function () {
         rimraf.sync(registryCacheDir);
@@ -51,6 +52,14 @@ describe('PackageRepository', function () {
             decEndpoint.source = mockSource;
 
             resolver = new resolvers.GitRemote(decEndpoint, _config, _logger);
+
+            if (forceCaching) {
+                // Force to use cache even for local resources
+                resolver.isNotCacheable = function () {
+                    return false;
+                };
+            }
+
             resolverFactoryHook(resolver);
 
             return Q.resolve(resolver);
@@ -140,7 +149,7 @@ describe('PackageRepository', function () {
         });
 
         it('should attempt to retrieve a resolved package from the resolve package', function (next) {
-            var called;
+            var called = false;
             var originalRetrieve = packageRepository._resolveCache.retrieve;
 
             packageRepository._resolveCache.retrieve = function (source) {
@@ -156,6 +165,31 @@ describe('PackageRepository', function () {
                 expect(pkgMeta).to.be.an('object');
                 expect(pkgMeta.name).to.be('package-a');
                 expect(pkgMeta.version).to.be('0.1.1');
+                next();
+            })
+            .done();
+        });
+
+        it('should avoid using cache for local resources', function (next) {
+            forceCaching = false;
+
+            var called = false;
+            var originalRetrieve = packageRepository._resolveCache.retrieve;
+
+            packageRepository._resolveCache.retrieve = function (source) {
+                called = true;
+                expect(source).to.be(mockSource);
+                return originalRetrieve.apply(this, arguments);
+            };
+
+            packageRepository.fetch({ name: '', source: testPackage, target: '~0.1.0' })
+            .spread(function (canonicalDir, pkgMeta) {
+                expect(called).to.be(false);
+                expect(fs.existsSync(canonicalDir)).to.be(true);
+                expect(pkgMeta).to.be.an('object');
+                expect(pkgMeta.name).to.be('package-a');
+                expect(pkgMeta.version).to.be('0.1.1');
+                forceCaching = true;
                 next();
             })
             .done();
