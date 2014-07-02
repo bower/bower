@@ -27,6 +27,7 @@
     "chalk": "^1.0.0",
     "chmodr": "0.1.0",
     "decompress-zip": "^0.1.0",
+    "deep-sort-object": "~0.1.1",
     "fstream": "^1.0.3",
     "fstream-ignore": "^1.0.2",
     "glob": "^4.3.2",
