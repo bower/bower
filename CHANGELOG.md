@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.3.6 - 2014-07-02
+
+- [fix] Make --force always re-run installation (#931)
+- [fix] Disable caching for local resources (#1356)
+- [fix] Emit errors instead throwing them when using bower.commands API (#1297)
+- [fix] Main files and bower.json are never ignored (#547)
+- [fix] Check if pkgMeta is undefined during uninstall command (#1329)
+- [fix] Make custom tmp dir and ignores play well with each other (#1299)
+- Warn users when installing package with missing properties (#694)
+
 ## 1.3.5 - 2014-06-06
 - Search compatible versions in fetching packages ([#1147](https://github.com/bower/bower/issues/1147))
 
