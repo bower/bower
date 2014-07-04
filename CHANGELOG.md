@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.3.7 - 2014-07-04
+
+- [fix] callstack error when processing installed packages with circular dependencies (#1349)
+- [fix] Prevent bower list --paths` failing with TypeError (#1383)
+- "bower install" fails if there's no bower.json in current directory (#922)
+
 ## 1.3.6 - 2014-07-02
 
 - [fix] Make --force always re-run installation (#931)
