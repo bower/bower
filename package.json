@@ -24,7 +24,7 @@
     "bower-logger": "~0.2.2",
     "bower-registry-client": "~0.2.0",
     "cardinal": "~0.4.0",
-    "chalk": "~0.4.0",
+    "chalk": "~0.5.0",
     "chmodr": "~0.1.0",
     "decompress-zip": "~0.0.6",
     "fstream": "~0.1.22",
@@ -59,6 +59,7 @@
     "which": "~1.0.5"
   },
   "devDependencies": {
+    "coveralls": "~2.11.0",
     "expect.js": "~0.3.1",
     "grunt": "~0.4.4",
     "grunt-contrib-jshint": "~0.10.0",
@@ -66,12 +67,11 @@
     "grunt-exec": "~0.4.2",
     "grunt-simple-mocha": "~0.4.0",
     "istanbul": "~0.2.4",
-    "load-grunt-tasks": "~0.4.0",
+    "load-grunt-tasks": "~0.6.0",
     "mocha": "~1.20.1",
-    "nock": "~0.34.1",
-    "proxyquire": "~1.0.1",
-    "coveralls": "~2.10.0",
-    "node-uuid": "~1.4.1"
+    "nock": "~0.41.0",
+    "node-uuid": "~1.4.1",
+    "proxyquire": "~1.0.1"
   },
   "scripts": {
     "test": "grunt test"
