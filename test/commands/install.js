@@ -38,4 +38,13 @@ describe('bower install', function () {
         });
     });
 
+    it.skip('installs package with --full-depth flag', function () {
+        var logger = bower.commands.install(['underscore'], {fullDepth: true}, config);
+
+        return helpers.expectEvent(logger, 'end')
+        .then(function () {
+            expect(bowerJson()).to.have.key('name');
+        });
+    });
+
 });
