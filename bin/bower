@@ -19,7 +19,6 @@ var loglevel;
 var command;
 var commandFunc;
 var logger;
-var notifier;
 var levels = Logger.LEVELS;
 
 options = cli.readOptions({
@@ -134,13 +133,13 @@ analytics.setup(bower.config).then(function () {
         var updateNotifier = require('update-notifier');
 
         // Check for newer version of Bower
-        notifier = updateNotifier({
+        var notifier = updateNotifier({
             packageName: pkg.name,
             packageVersion: pkg.version
         });
 
         if (notifier.update && levels.info >= loglevel) {
-            renderer.updateNotice(notifier.update);
+            notifier.notify();
         }
     }
 });
