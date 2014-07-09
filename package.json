@@ -55,7 +55,7 @@
     "stringify-object": "~0.2.0",
     "tar": "~0.1.17",
     "tmp": "~0.0.23",
-    "update-notifier": "~0.1.8",
+    "update-notifier": "~0.2.0",
     "which": "~1.0.5"
   },
   "devDependencies": {
