@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.8 - 2014-7-11
+
+- [fix] Lock down `tmp` package dep (#1403, #1407)
+
 ## 1.3.7 - 2014-07-04
 
 - [fix] callstack error when processing installed packages with circular dependencies (#1349)
