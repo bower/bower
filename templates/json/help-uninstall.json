@@ -13,12 +13,12 @@
         {
             "shorthand":   "-S",
             "flag":        "--save",
-            "description": "Save installed packages into the project's bower.json dependencies"
+            "description": "Remove uninstalled packages from the project's bower.json dependencies"
         },
         {
             "shorthand":   "-D",
             "flag":        "--save-dev",
-            "description": "Save installed packages into the project's bower.json devDependencies"
+            "description": "Remove uninstalled packages from the project's bower.json devDependencies"
         }
     ]
 }
