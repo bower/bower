@@ -34,14 +34,11 @@ See complete command line reference at [bower.io/docs/api/](http://bower.io/docs
 # install dependencies listed in bower.json
 $ bower install
 
-# install a package
-$ bower install <package>
-
-# install specific version of a package
-$ bower install <package>#<version>
-
-# install and save to bower.json dependencies
+# install a package and add it to bower.json
 $ bower install <package> --save
+
+# install specific version of a package and add it to bower.json
+$ bower install <package>#<version> --save
 ```
 
 ### Using packages
