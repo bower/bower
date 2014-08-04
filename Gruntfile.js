@@ -34,7 +34,7 @@ module.exports = function (grunt) {
         },
         exec: {
             assets: {
-                command: 'node test/packages.js && node test/packages-svn.js'
+                command: 'node test/packages.js && node test/packages-svn.js && node test/packages-hg.js'
             },
             'assets-force': {
                 command: 'node test/packages.js --force && node test/packages-svn.js --force'

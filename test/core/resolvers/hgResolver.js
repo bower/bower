@@ -7,15 +7,14 @@ var mkdirp = require('mkdirp');
 var Q = require('q');
 var mout = require('mout');
 var Logger = require('bower-logger');
-var SvnResolver = require('../../../lib/core/resolvers/SvnResolver');
+var HgResolver = require('../../../lib/core/resolvers/HgResolver');
 var defaultConfig = require('../../../lib/config');
 
-describe('SvnResolver', function () {
+describe('HgResolver', function () {
     var tempDir = path.resolve(__dirname, '../../tmp/tmp');
-    var testPackage = path.resolve(__dirname, '../../assets/package-svn/repo');
-    var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
-	var fileProtocol = 'file://' + (/^win/.test(process.platform) ? '/' : '');
-    var originaltags = SvnResolver.tags;
+    var testPackage = path.resolve(__dirname, '../../assets/package-hg');
+    var originaltags = HgResolver.tags;
+    var originalbranches = HgResolver.branches;
     var logger;
 
     before(function () {
@@ -25,26 +24,29 @@ describe('SvnResolver', function () {
     afterEach(function () {
         logger.removeAllListeners();
     });
-
-    function clearResolverRuntimeCache() {
-        SvnResolver.tags = originaltags;
-        SvnResolver.clearRuntimeCache();
+	
+	
+	function clearResolverRuntimeCache() {
+        HgResolver.tags = originaltags;
+        HgResolver.branches = originalbranches;
+        HgResolver.clearRuntimeCache();
     }
-
+	
     function create(decEndpoint, config) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new SvnResolver(decEndpoint, config || defaultConfig, logger);
+        var resolver = new HgResolver(decEndpoint, config || defaultConfig, logger);
+		resolver._tempDir = tempDir;
+		return resolver;
     }
-
-    describe('misc', function () {
-        it.skip('should error out if svn is not installed');
-        it.skip('should setup svn template dir to an empty folder');
+	
+	describe('misc', function () {
+        it.skip('should error out if hg is not installed');
     });
-
-    describe('.hasNew', function () {
+	
+	describe('.hasNew', function () {
         before(function () {
             mkdirp.sync(tempDir);
         });
@@ -72,15 +74,15 @@ describe('SvnResolver', function () {
                 }
             }));
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'boo': 123  // same commit hash on purpose
                 });
             };
 
-            SvnResolver.branches = function () {
+            HgResolver.branches = function () {
                 return Q.resolve({
-                    'trunk': '*'
+                    'default': '*'
                 });
             };
 
@@ -92,8 +94,8 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should be true when a higher version for a range is available', function (next) {
+		
+		it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
             fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
@@ -106,7 +108,7 @@ describe('SvnResolver', function () {
                 }
             }));
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2,
                     '1.0.1': 2  // same commit hash on purpose
@@ -134,7 +136,8 @@ describe('SvnResolver', function () {
                     commit: 3
                 }
             }));
-            SvnResolver.tags = function () {
+			
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2
                 });
@@ -161,7 +164,8 @@ describe('SvnResolver', function () {
                     commit: 2
                 }
             }));
-            SvnResolver.tags = function () {
+			
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 1,
                     '1.0.1': 2
@@ -189,7 +193,8 @@ describe('SvnResolver', function () {
                     commit: 3
                 }
             }));
-            SvnResolver.tags = function () {
+			
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2,
                     '1.0.1': 4
@@ -216,7 +221,8 @@ describe('SvnResolver', function () {
                     commit: 1
                 }
             }));
-            SvnResolver.tags = function () {
+			
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2
                 });
@@ -231,20 +237,20 @@ describe('SvnResolver', function () {
             .done();
         });
     });
-
-    describe('._resolve', function () {
+	
+	describe('._resolve', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should call the necessary functions by the correct order', function (next) {
             var resolver;
 
             function DummyResolver() {
-                SvnResolver.apply(this, arguments);
+                HgResolver.apply(this, arguments);
                 this._stack = [];
             }
 
-            util.inherits(DummyResolver, SvnResolver);
-            mout.object.mixIn(DummyResolver, SvnResolver);
+            util.inherits(DummyResolver, HgResolver);
+            mout.object.mixIn(DummyResolver, HgResolver);
 
             DummyResolver.prototype.getStack = function () {
                 return this._stack;
@@ -258,23 +264,23 @@ describe('SvnResolver', function () {
 
             DummyResolver.prototype.resolve = function () {
                 this._stack = [];
-                return SvnResolver.prototype.resolve.apply(this, arguments);
+                return HgResolver.prototype.resolve.apply(this, arguments);
             };
 
             DummyResolver.prototype._findResolution = function () {
                 this._stack.push('before _findResolution');
-                return SvnResolver.prototype._findResolution.apply(this, arguments)
+                return HgResolver.prototype._findResolution.apply(this, arguments)
                 .then(function (val) {
                     this._stack.push('after _findResolution');
                     return val;
                 }.bind(this));
             };
 
-            DummyResolver.prototype._export = function () {
-                this._stack.push('before _export');
+            DummyResolver.prototype._clone = function () {
+                this._stack.push('before _clone');
                 return Q.resolve()
                 .then(function (val) {
-                    this._stack.push('after _export');
+                    this._stack.push('after _clone');
                     return val;
                 }.bind(this));
             };
@@ -286,8 +292,8 @@ describe('SvnResolver', function () {
                 expect(resolver.getStack()).to.eql([
                     'before _findResolution',
                     'after _findResolution',
-                    'before _export',
-                    'after _export'
+                    'before _clone',
+                    'after _clone'
                 ]);
                 next();
             })
@@ -295,32 +301,44 @@ describe('SvnResolver', function () {
         });
 
     });
-
-    describe('._findResolution', function () {
+	
+	describe('._findResolution', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an object', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({});
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({
+                    'default': '1'
+                });
             };
 
             resolver = create('foo');
             resolver._findResolution('*')
             .then(function (resolution) {
-                expect(resolution).to.be.an('object');
+				expect(resolution).to.be.an('object');
                 next();
             })
             .done();
         });
-
-        it('should resolve "*" to the trunk if a repository has no valid semver tags', function (next) {
+		
+		it('should resolve "*" to default if a repository has no valid semver tags', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'some-tag': 1
+                });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({
+                    'default': '1'
                 });
             };
 
@@ -329,18 +347,18 @@ describe('SvnResolver', function () {
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'branch',
-                    branch: 'trunk',
-                    commit: '*'
+                    branch: 'default',
+                    commit: '1'
                 });
                 next();
             })
             .done();
         });
-
-        it('should resolve "*" to the latest version if a repository has valid semver tags, ignoring pre-releases', function (next) {
+		
+		it('should resolve "*" to the latest version if a repository has valid semver tags, ignoring pre-releases', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0': 1,
                     'v0.1.1': 2,
@@ -360,11 +378,11 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
+		
+		it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0-rc.1': 1,
                     '0.1.0-rc.2': 2
@@ -383,11 +401,11 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to the latest version that matches a range/version', function (next) {
+		
+		it('should resolve to the latest version that matches a range/version', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0': 1,
                     'v0.1.1': 2,
@@ -408,14 +426,18 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to a tag even if target is a range that does not exist', function (next) {
+		
+		it('should resolve to a tag even if target is a range that does not exist', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0': 1
                 });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({});
             };
 
             resolver = create('foo');
@@ -430,11 +452,11 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to the latest pre-release version that matches a range/version', function (next) {
+		
+		it('should resolve to the latest pre-release version that matches a range/version', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0': 1,
                     'v0.1.1': 2,
@@ -455,11 +477,11 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to the exact version if exists', function (next) {
+		
+		it('should resolve to the exact version if exists', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.8.1' : 1,
                     '0.8.1+build.1': 2,
@@ -480,15 +502,19 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should fail to resolve if none of the versions matched a range/version', function (next) {
+		
+		it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0': 1,
                     'v0.1.1': 2
                 });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({});
             };
 
             resolver = create('foo');
@@ -504,14 +530,18 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should fail to resolve if there are no versions to match a range/version', function (next) {
+		
+		it('should fail to resolve if there are no versions to match a range/version', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'foo': 1
                 });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({});
             };
 
             resolver = create('foo');
@@ -528,11 +558,11 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to the specified commit', function (next) {
+		
+		it('should resolve to the specified commit', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'some-tag': 1
                 });
@@ -549,14 +579,18 @@ describe('SvnResolver', function () {
             })
             .done();
         });
-
-        it('should resolve to the specified tag if it exists', function (next) {
+		
+		it('should resolve to the specified tag if it exists', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'some-tag': 1
                 });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({});
             };
 
             resolver = create('foo');
@@ -571,13 +605,47 @@ describe('SvnResolver', function () {
             })
             .done();
         });
+		
+		it('should resolve to the specified branches if it exists', function (next) {
+            var resolver;
+			
+			HgResolver.tags = function () {
+                return Q.resolve({
+                    'some-tag': 1
+                });
+            };
 
-        it('should fail to resolve to the specified tag if it doesn\'t exists', function (next) {
+            HgResolver.branches = function () {
+                return Q.resolve({
+                    'some-branch': 1
+                });
+            };
+
+            resolver = create('foo');
+            resolver._findResolution('some-branch')
+            .then(function (resolution) {
+                expect(resolution).to.eql({
+                    type: 'branch',
+                    branch: 'some-branch',
+                    commit: 1
+                });
+                next();
+            })
+            .done();
+        });
+		
+		it('should fail to resolve to the specified tag/branch if it doesn\'t exist', function (next) {
             var resolver;
 
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'some-tag': 2
+                });
+            };
+			
+			HgResolver.branches = function () {
+                return Q.resolve({
+                    'default': 2
                 });
             };
 
@@ -587,16 +655,17 @@ describe('SvnResolver', function () {
                 next(new Error('Should have failed'));
             }, function (err) {
                 expect(err).to.be.an(Error);
-                expect(err.message).to.match(/target some-branch does not exist/i);
+                expect(err.message).to.match(/tag\/branch some-branch does not exist/i);
+                expect(err.details).to.match(/available branches: default/i);
                 expect(err.details).to.match(/available tags: some-tag/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
             })
             .done();
         });
-    });
-
-    describe('._savePkgMeta', function () {
+	});
+	
+	describe('._savePkgMeta', function () {
         before(function () {
             mkdirp.sync(tempDir);
         });
@@ -630,13 +699,14 @@ describe('SvnResolver', function () {
 
         it('should save the release in the package meta', function (next) {
             var resolver = create('foo');
-            var metaFile = path.join(tempDir, '.bower.json');
+			var metaFile;
 
             // Test with type 'version'
-            resolver._resolution = { type: 'version', tag: '0.0.1', commit: '1' };
-            resolver._tempDir = tempDir;
-
-            resolver._savePkgMeta({ name: 'foo', version: '0.0.1' })
+            resolver._resolution = { type: 'version', tag: '0.0.1', commit: '1' };			
+			resolver._clonePath.then(function (clonePath) {
+				metaFile = path.join(clonePath, '.bower.json');
+			})
+			.then(resolver._savePkgMeta.bind(resolver, { name: 'foo', version: '0.0.1' }))
             .then(function () {
                 return Q.nfcall(fs.readFile, metaFile);
             })
@@ -786,37 +856,36 @@ describe('SvnResolver', function () {
             .done();
         });
     });
-
-    describe('#clearRuntimeCache', function () {
-        // Use a class that inherit the SvnResolver to see if it uses
+	
+	describe('#clearRuntimeCache', function () {
+        // Use a class that inherit the HgResolver to see if it uses
         // late binding when clearing the cache
-        function CustomSvnResolver() {}
-        util.inherits(CustomSvnResolver, SvnResolver);
-        mout.object.mixIn(CustomSvnResolver, SvnResolver);
-
+        function CustomHgResolver() {}
+        util.inherits(CustomHgResolver, HgResolver);
+        mout.object.mixIn(CustomHgResolver, HgResolver);
 
         it('should clear tags cache', function () {
-            CustomSvnResolver._cache.tags.set('foo', {});
-            CustomSvnResolver.clearRuntimeCache();
-            expect(CustomSvnResolver._cache.tags.has('foo')).to.be(false);
+            CustomHgResolver._cache.tags.set('foo', {});
+            CustomHgResolver.clearRuntimeCache();
+            expect(CustomHgResolver._cache.tags.has('foo')).to.be(false);
         });
 
         it('should clear versions cache', function () {
-            CustomSvnResolver._cache.versions.set('foo', {});
-            CustomSvnResolver.clearRuntimeCache();
-            expect(CustomSvnResolver._cache.versions.has('foo')).to.be(false);
+            CustomHgResolver._cache.versions.set('foo', {});
+            CustomHgResolver.clearRuntimeCache();
+            expect(CustomHgResolver._cache.versions.has('foo')).to.be(false);
         });
     });
-
-    describe('#versions', function () {
+	
+	describe('#versions', function () {
         afterEach(clearResolverRuntimeCache);
 
         it('should resolve to an empty array if no tags are found', function (next) {
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({});
             };
 
-            SvnResolver.versions('foo')
+            HgResolver.versions('foo')
             .then(function (versions) {
                 expect(versions).to.be.an('array');
                 expect(versions).to.eql([]);
@@ -826,7 +895,7 @@ describe('SvnResolver', function () {
         });
 
         it('should resolve to an empty array if no valid semver tags', function (next) {
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     'foo': 1,
                     'bar': 2,
@@ -834,7 +903,7 @@ describe('SvnResolver', function () {
                 });
             };
 
-            SvnResolver.versions('foo')
+            HgResolver.versions('foo')
             .then(function (versions) {
                 expect(versions).to.be.an('array');
                 expect(versions).to.eql([]);
@@ -844,7 +913,7 @@ describe('SvnResolver', function () {
         });
 
         it('should resolve to an array of versions, ignoring invalid semver tags', function (next) {
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.2.1':     1,
                     'v0.1.1':    2,
@@ -855,7 +924,7 @@ describe('SvnResolver', function () {
                 });
             };
 
-            SvnResolver.versions('foo', true)
+            HgResolver.versions('foo', true)
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: '0.2.1', commit: 1 },
@@ -864,7 +933,7 @@ describe('SvnResolver', function () {
                 ]);
             })
             .then(function () {
-                return SvnResolver.versions('foo');
+                return HgResolver.versions('foo');
             })
             .then(function (versions) {
                 expect(versions).to.eql(['0.2.1', '0.1.1', '0.1.0']);
@@ -874,7 +943,7 @@ describe('SvnResolver', function () {
         });
 
         it('should order the versions according to the semver spec', function (next) {
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.1.0':           1,
                     '0.1.1+build.11':  2,
@@ -886,7 +955,7 @@ describe('SvnResolver', function () {
                 });
             };
 
-            SvnResolver.versions('foo', true)
+            HgResolver.versions('foo', true)
             .then(function (versions) {
                 expect(versions).to.eql([
                     { version: '0.2.1', tag: 'v0.2.1', commit: '7' },
@@ -903,7 +972,7 @@ describe('SvnResolver', function () {
         });
 
         it('should cache the result for each source', function (next) {
-            SvnResolver.tags = function (source) {
+            HgResolver.tags = function (source) {
                 if (source === 'foo') {
                     return Q.resolve({
                         '0.2.1': 123,
@@ -918,26 +987,26 @@ describe('SvnResolver', function () {
 
             };
 
-            SvnResolver.versions('foo')
+            HgResolver.versions('foo')
             .then(function (versions) {
                 expect(versions).to.eql(['0.2.1', '0.1.0']);
 
-                return SvnResolver.versions('bar');
+                return HgResolver.versions('bar');
             })
             .then(function (versions) {
                 expect(versions).to.eql(['0.3.1', '0.3.0']);
 
 
                 // Manipulate the cache and check if it resolves for the cached ones
-                SvnResolver._cache.versions.get('foo').splice(1, 1);
-                SvnResolver._cache.versions.get('bar').splice(1, 1);
+                HgResolver._cache.versions.get('foo').splice(1, 1);
+                HgResolver._cache.versions.get('bar').splice(1, 1);
 
-                return SvnResolver.versions('foo');
+                return HgResolver.versions('foo');
             })
             .then(function (versions) {
                 expect(versions).to.eql(['0.2.1']);
 
-                return SvnResolver.versions('bar');
+                return HgResolver.versions('bar');
             })
             .then(function (versions) {
                 expect(versions).to.eql(['0.3.1']);
@@ -947,7 +1016,7 @@ describe('SvnResolver', function () {
         });
 
         it('should work if requested in parallel for the same source', function (next) {
-            SvnResolver.tags = function () {
+            HgResolver.tags = function () {
                 return Q.resolve({
                     '0.2.1': 123,
                     '0.1.0': 456
@@ -955,8 +1024,8 @@ describe('SvnResolver', function () {
             };
 
             Q.all([
-                SvnResolver.versions('foo'),
-                SvnResolver.versions('foo')
+                HgResolver.versions('foo'),
+                HgResolver.versions('foo')
             ])
             .spread(function (versions1, versions2) {
                 expect(versions1).to.eql(['0.2.1', '0.1.0']);
@@ -967,52 +1036,49 @@ describe('SvnResolver', function () {
             .done();
         });
     });
-
-    describe('#parseSubversionListOutput', function () {
-
+	
+	describe('#parseMercurialListOutput', function () {
         var list = [
-            '  12345 username              Jan 1 12:34 ./',
-            '  12346 username              Feb 2 12:34 branch-name/',
-            '  12347 username              Mar 3 12:34 branch_name/',
-            '  12348 username              Apr 4 12:34 branch.1.2.3/',
-            '  12349 username              Jun 5 12:34 BranchName/'
+			'branch-4                       5:ce686073241f',
+			'branchNo.3                     4:c4473daeb66f (inactive)',
+			'branch#2TEST                   3:4a953a54dc8d (inactive)',
+			'branch1.0.0                    2:6e37fd1b6d6f (inactive)',
+			'default                        1:38564357c0db (inactive)'
         ].join('\r\n');
 
         it('should not include the . (dot)path', function () {
-            var actual = SvnResolver.parseSubversionListOutput(list);
+            var actual = HgResolver.parseMercurialListOutput(list);
 
             expect(actual).to.not.have.keys('.');
         });
 
         it('should parse path names with alphanumerics, dashes, dots and underscores', function () {
-            var actual = SvnResolver.parseSubversionListOutput(list);
+            var actual = HgResolver.parseMercurialListOutput(list);
 
             expect(actual).to.eql({
-                'branch-name'   : '12346',
-                'branch_name'   : '12347',
-                'branch.1.2.3'  : '12348',
-                'BranchName'    : '12349'
+				'branch-4'      : '5',
+                'branchNo.3'    : '4',
+                'branch#2TEST'   : '3',
+                'branch1.0.0'   : '2',
+                'default'    : '1'
             });
         });
     });
-
-    // remote resolver tests
+	
+	// remote resolver tests
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
             var resolver;
 
-            resolver = create('file://' + testPackage);
-            expect(resolver.getName()).to.equal('repo');
-
-            resolver = create('svn+http://yii.googlecode.com/svn');
-            expect(resolver.getName()).to.equal('svn');
+            resolver = create('hg+http://yii.googlecode.com/hg');
+            expect(resolver.getName()).to.equal('hg');
         });
     });
-
-    describe('.resolve', function () {
+	
+	describe('.resolve', function () {
 
         it('should export correctly if resolution is a tag', function (next) {
-            var resolver = create({ source: fileProtocol + testPackageAdmin, target: '0.0.1' });
+            var resolver = create({ source: testPackage, target: 'tag-0.0.1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1028,7 +1094,7 @@ describe('SvnResolver', function () {
         });
 
         it('should export correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: fileProtocol + testPackageAdmin, target: 'r1' });
+            var resolver = create({ source: testPackage, target: 'r0' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1039,6 +1105,22 @@ describe('SvnResolver', function () {
                 expect(files).to.not.contain('foo');
                 expect(files).to.not.contain('bar');
                 expect(files).to.not.contain('baz');
+                next();
+            })
+            .done();
+        });
+		
+		it('should export correctly if resolution is a branch', function (next) {
+            var resolver = create({ source: testPackage, target: 'branch-0.0.1' });
+
+            resolver.resolve()
+            .then(function (dir) {
+                expect(dir).to.be.a('string');
+
+                var files = fs.readdirSync(dir);
+
+                expect(files).to.contain('foo');
+                expect(files).to.not.contain('bar');
                 next();
             })
             .done();
