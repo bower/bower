@@ -17,6 +17,7 @@ var options = nopt({
 });
 
 var env = {};
+var fileProtocol = 'file://' + (/^win/.test(process.platform) ? '/' : '');
 
 // Preserve the original environment
 mout.object.mixIn(env, process.env);
@@ -42,7 +43,7 @@ function ensurePackage(admin, dir) {
         // Init svn repo
         .then(cmd.bind(null, 'svnadmin', ['create', admin]))
         // checkout the repo
-        .then(cmd.bind(null, 'svn', ['checkout', 'file://' + admin, dir]))
+        .then(cmd.bind(null, 'svn', ['checkout', fileProtocol + admin, dir]))
         // create directory structure
         .then(cmd.bind(null, 'svn', ['mkdir', 'trunk'], { cwd: dir }))
         .then(cmd.bind(null, 'svn', ['mkdir', 'tags'], { cwd: dir }))
@@ -81,7 +82,7 @@ function checkRelease(dir, release) {
 
 function createRelease(admin, dir, release, files) {
     // checkout the repo
-    return cmd('svn', ['checkout', 'file://' + admin, dir])
+    return cmd('svn', ['checkout', fileProtocol + admin, dir])
     // Attempt to delete branch, ignoring the error
     .then(function () {
         return cmd('svn', ['delete', dir + '/branches/' + release], { cwd: dir })
