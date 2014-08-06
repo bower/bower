@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.9 - 2014-08-06
+
+- [fix] Handle `tmp` sometimes returning an array (#1434)
+
 ## 1.3.8 - 2014-7-11
 
 - [fix] Lock down `tmp` package dep (#1403, #1407)
