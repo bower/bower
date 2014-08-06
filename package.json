@@ -46,7 +46,7 @@
     "p-throttler": "0.0.1",
     "promptly": "~0.2.0",
     "q": "~1.0.1",
-    "request": "~2.36.0",
+    "request": "~2.40.0",
     "request-progress": "~0.3.0",
     "retry": "~0.6.0",
     "rimraf": "~2.2.0",
