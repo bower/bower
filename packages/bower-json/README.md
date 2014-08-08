@@ -95,7 +95,7 @@ var json = {
     main: 'foo.js,bar.js'
 };
 
-bowerJson.nornalize(json);
+bowerJson.normalize(json);
 json.main // ['foo.js', 'bar.js']
 ```
 
