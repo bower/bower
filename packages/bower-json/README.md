@@ -2,6 +2,7 @@
 
 Read `bower.json` files with semantics, normalisation, defaults and validation.
 
+Install via [npm](https://www.npmjs.org/package/bower-json): `npm install --save bower-json`
 
 ## Usage
 
