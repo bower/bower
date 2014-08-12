@@ -2,6 +2,12 @@
 
 The logger used in the various architecture components of Bower.
 
+Install
+
+```sh
+npm install --save bower-logger
+```
+
 
 ## Usage
 
