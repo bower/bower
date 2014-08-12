@@ -1,7 +1,12 @@
 # bower-registry-client [![Build Status](https://secure.travis-ci.org/bower/registry-client.png?branch=master)](http://travis-ci.org/bower/registry-client)
 
-This module allows you to easily interact with the Bower server API.
+This module allows you to easily interact with the Bower registry server API.
 
+Install
+
+```sh
+npm install --save bower-registry-client
+```
 
 ## Usage
 
