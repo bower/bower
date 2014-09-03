@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
 var fs = require('graceful-fs');
-var path = require('path');
 var nock = require('nock');
 var Q = require('q');
 var rimraf = require('rimraf');
