@@ -2,27 +2,28 @@
 
 ## 1.3.9 - 2014-08-06
 
-- [fix] Handle `tmp` sometimes returning an array (#1434)
+- [fix] Handle `tmp` sometimes returning an array ([#1434](https://github.com/bower/bower/pull/1434))
 
 ## 1.3.8 - 2014-7-11
 
-- [fix] Lock down `tmp` package dep (#1403, #1407)
+- [fix] Lock down `tmp` package dep ([#1403](https://github.com/bower/bower/pull/1403), [#1407](https://github.com/bower/bower/pull/1407))
 
 ## 1.3.7 - 2014-07-04
 
-- [fix] callstack error when processing installed packages with circular dependencies (#1349)
-- [fix] Prevent bower list --paths` failing with TypeError (#1383)
-- "bower install" fails if there's no bower.json in current directory (#922)
+- [fix] callstack error when processing installed packages with circular dependencies ([#1349](https://github.com/bower/bower/issues/1349))
+- [fix] Prevent bower list --paths` failing with TypeError ([#1383](https://github.com/bower/bower/issues/1383))
+- "bower install" fails if there's no bower.json in current directory ([#922](https://github.com/bower/bower/issues/922))
 
 ## 1.3.6 - 2014-07-02
 
-- [fix] Make --force always re-run installation (#931)
-- [fix] Disable caching for local resources (#1356)
-- [fix] Emit errors instead throwing them when using bower.commands API (#1297)
-- [fix] Main files and bower.json are never ignored (#547)
-- [fix] Check if pkgMeta is undefined during uninstall command (#1329)
-- [fix] Make custom tmp dir and ignores play well with each other (#1299)
-- Warn users when installing package with missing properties (#694)
+- [fix] Make --force always re-run installation ([#931](https://github.com/bower/bower/issues/931))
+- [fix] Disable caching for local resources ([#1356](https://github.com/bower/bower/issues/1356))
+- [fix] Emit errors instead throwing them when using bower.commands API ([#1297](https://github.com/bower/bower/issues/1297))
+- [fix] Main files and bower.json are never ignored ([#547](https://github.com/bower/bower/issues/547))
+- [fix] Check if pkgMeta is undefined during uninstall command ([#1329](https://github.com/bower/bower/issues/1329))
+- [fix] Make custom tmp dir and ignores play well with each other ([#1299](https://github.com/bower/bower/issues/1299))
+- Warn users when installing package with missing properties ([#694](https://github.com/bower/bower/issues/694))
+
 
 ## 1.3.5 - 2014-06-06
 - Search compatible versions in fetching packages ([#1147](https://github.com/bower/bower/issues/1147))
