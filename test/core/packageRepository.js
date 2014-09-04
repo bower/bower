@@ -55,8 +55,8 @@ describe('PackageRepository', function () {
 
             if (forceCaching) {
                 // Force to use cache even for local resources
-                resolver.isNotCacheable = function () {
-                    return false;
+                resolver.isCacheable = function () {
+                    return true;
                 };
             }
 
