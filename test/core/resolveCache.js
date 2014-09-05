@@ -23,7 +23,7 @@ describe('ResolveCache', function () {
         rimraf.sync(cacheDir);
 
         // Instantiate resolver cache
-        resolveCache = new ResolveCache(mout.object.deepMixIn(defaultConfig, {
+        resolveCache = new ResolveCache(defaultConfig({
             storage: {
                 packages: cacheDir
             }
@@ -55,7 +55,7 @@ describe('ResolveCache', function () {
         });
 
         function initialize(cacheDir) {
-            return new ResolveCache(mout.object.deepMixIn(defaultConfig, {
+            return new ResolveCache(defaultConfig({
                 storage: {
                     packages: cacheDir
                 }

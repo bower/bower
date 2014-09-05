@@ -1,6 +1,5 @@
 var expect = require('expect.js');
 var path = require('path');
-var mout = require('mout');
 var rimraf = require('rimraf');
 var Logger = require('bower-logger');
 var Manager = require('../../lib/core/Manager');
@@ -23,7 +22,7 @@ describe('Manager', function () {
     beforeEach(function (next) {
         var logger = new Logger();
 
-        var config = mout.object.deepMixIn({}, defaultConfig, {
+        var config = defaultConfig({
             storage: {
                 packages: packagesCacheDir,
                 registry: registryCacheDir

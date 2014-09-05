@@ -7,7 +7,7 @@ var bower = helpers.require('lib/index');
 
 describe('bower uninstall', function () {
 
-    var tempDir = helpers.createTmpDir({
+    var tempDir = new helpers.TempDir({
         'bower.json': {
             name: 'hello-world',
             dependencies: {
@@ -16,14 +16,18 @@ describe('bower uninstall', function () {
         }
     });
 
-    var bowerJsonPath = path.join(tempDir, 'bower.json');
+    beforeEach(function() {
+        tempDir.prepare();
+    });
+
+    var bowerJsonPath = path.join(tempDir.path, 'bower.json');
 
     function bowerJson() {
         return JSON.parse(fs.readFileSync(bowerJsonPath));
     }
 
     var config = {
-        cwd: tempDir,
+        cwd: tempDir.path,
         interactive: true
     };
 

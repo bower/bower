@@ -30,12 +30,12 @@ describe('SvnResolver', function () {
         SvnResolver.clearRuntimeCache();
     }
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new SvnResolver(decEndpoint, config || defaultConfig, logger);
+        return new SvnResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('misc', function () {
@@ -278,7 +278,7 @@ describe('SvnResolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig, logger);
+            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig(), logger);
 
             resolver.resolve()
             .then(function () {
