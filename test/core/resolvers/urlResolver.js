@@ -31,12 +31,12 @@ describe('UrlResolver', function () {
         nock.cleanAll();
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new UrlResolver(decEndpoint, config || defaultConfig, logger);
+        return new UrlResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {

@@ -15,27 +15,19 @@ describe('GitHub', function () {
         logger = new Logger();
     });
 
-    beforeEach(function () {
-        // Turn off strict ssl because it gives problems with nock
-        defaultConfig.strictSsl = false;
-    });
-
     afterEach(function () {
         // Clean nocks
         nock.cleanAll();
 
         logger.removeAllListeners();
-
-        // Enable strict ssl back again
-        defaultConfig.strictSsl = true;
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new GitHubResolver(decEndpoint, config || defaultConfig, logger);
+        return new GitHubResolver(decEndpoint, defaultConfig({ strictSsl: false }), logger);
     }
 
     describe('.constructor', function () {
