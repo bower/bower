@@ -35,7 +35,7 @@ describe('PackageRepository', function () {
         var logger = new Logger();
 
         // Config
-        config = mout.object.deepMixIn({}, defaultConfig, {
+        config = defaultConfig({
             storage: {
                 packages: packagesCacheDir,
                 registry: registryCacheDir

@@ -21,12 +21,12 @@ describe('GitRemoteResolver', function () {
         GitRemoteResolver.clearRuntimeCache();
     }
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new GitRemoteResolver(decEndpoint, config || defaultConfig, logger);
+        return new GitRemoteResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {
