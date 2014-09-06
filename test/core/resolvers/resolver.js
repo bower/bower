@@ -831,5 +831,43 @@ describe('Resolver', function () {
             })
             .done();
         });
+
+    });
+
+    describe('#isCacheable', function () {
+        it('caches for normal name', function () {
+            var resolver = new Resolver({ source: 'foo' });
+            expect(resolver.isCacheable()).to.be(true);
+        });
+
+        it('does not cache for absolute paths', function () {
+            var resolver = new Resolver({ source: '/foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for relative paths', function () {
+            var resolver = new Resolver({ source: './foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for parent paths', function () {
+            var resolver = new Resolver({ source: '../foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for file:/// prefix', function () {
+            var resolver = new Resolver({ source: 'file:///foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for windows paths', function () {
+            var resolver = new Resolver({ source: '..\\foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for windows absolute paths', function () {
+            var resolver = new Resolver({ source: 'C:\\foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
     });
 });
