@@ -33,7 +33,7 @@
     "graceful-fs": "~3.0.1",
     "handlebars": "~2.0.0",
     "inquirer": "~0.7.1",
-    "insight": "~0.4.1",
+    "insight": "~0.4.3",
     "is-root": "~1.0.0",
     "junk": "~1.0.0",
     "lockfile": "~1.0.0",
