@@ -6,11 +6,16 @@ var uuid = require('node-uuid');
 var object = require('mout/object');
 var fs = require('fs');
 var object = require('mout/object');
+var config = require('../lib/config');
 
 exports.require = function (name) {
     return require(path.join(__dirname, '../', name));
 };
 
+// We need to reset cache because tests are reusing temp directories
+beforeEach(function () {
+    config.reset();
+});
 
 after(function () {
     rimraf.sync(path.join(__dirname, 'tmp'));
@@ -34,7 +39,7 @@ exports.TempDir = (function() {
         if (files) {
             object.forOwn(files, function (contents, filepath) {
                 if (typeof contents === 'object') {
-                    contents = JSON.stringify(contents, null, ' ');
+                    contents = JSON.stringify(contents, null, ' ') + '\n';
                 }
 
                 var fullPath = path.join(that.path, filepath);
@@ -48,6 +53,10 @@ exports.TempDir = (function() {
 
     TempDir.prototype.read = function (name) {
         return fs.readFileSync(path.join(this.path, name), 'utf8');
+    };
+
+    TempDir.prototype.exists = function (name) {
+        return fs.existsSync(path.join(this.path, name));
     };
 
     return TempDir;
