@@ -14,6 +14,8 @@ describe('bower install', function () {
         }
     }).prepare();
 
+    var gitPackage = new helpers.TempDir();
+
     var install = function(packages, options, config) {
         config = object.merge(config || {}, {
             cwd: tempDir.path
@@ -137,6 +139,36 @@ describe('bower install', function () {
 
         return install([package.path], { save: true }).then(function() {
             expect(tempDir.read('hook.txt')).to.contain('dependencies');
+        });
+    });
+
+    it('works for git repositories', function () {
+        return gitPackage.prepareGit({
+            '1.0.0': {
+                'bower.json': {
+                    name: 'package'
+                },
+                'version.txt': '1.0.0'
+            },
+            '1.0.1': {
+                'bower.json': {
+                    name: 'package'
+                },
+                'version.txt': '1.0.1'
+            }
+        }).then(function() {
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.0'
+                    }
+                }
+            });
+
+            return install().then(function() {
+                expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+            });
         });
     });
 });
