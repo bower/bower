@@ -10,6 +10,18 @@ var os = require('os');
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
 
+var env = {
+    'GIT_AUTHOR_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
+    'GIT_AUTHOR_NAME': 'André Cruz',
+    'GIT_AUTHOR_EMAIL': 'amdfcruz@gmail.com',
+    'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
+    'GIT_COMMITTER_NAME': 'André Cruz',
+    'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com'
+};
+
+// Preserve the original environment
+object.mixIn(env, process.env);
+
 var tmpLocation = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), 'bower-tests');
 
 exports.require = function (name) {
@@ -63,7 +75,6 @@ exports.TempDir = (function() {
     TempDir.prototype.prepareGit = function (revisions) {
         var that = this;
 
-
         revisions = object.merge(revisions || {}, this.defaults);
 
         rimraf.sync(that.path);
@@ -74,7 +85,7 @@ exports.TempDir = (function() {
 
         object.forOwn(revisions, function (files, tag) {
             promise = promise.then(function () {
-                return cmd('git', ['init'], { cwd: that.path });
+                return that.git('init');
             }).then(function () {
                 that.glob('./!(.git)').map(function (removePath) {
                     var fullPath = path.join(that.path, removePath);
@@ -84,11 +95,11 @@ exports.TempDir = (function() {
 
                 that.create(files);
             }).then(function () {
-                return cmd('git', ['add', '-A'], { cwd: that.path });
+                return that.git('add', '-A');
             }).then(function () {
-                return cmd('git', ['commit', '-m"commit"'], { cwd: that.path });
+                return that.git('commit', '-m"commit"');
             }).then(function () {
-                return cmd('git', ['tag', tag], { cwd: that.path });
+                return that.git('tag', tag);
             });
         });
 
@@ -104,6 +115,12 @@ exports.TempDir = (function() {
 
     TempDir.prototype.read = function (name) {
         return fs.readFileSync(path.join(this.path, name), 'utf8');
+    };
+
+    TempDir.prototype.git = function () {
+        var args = Array.prototype.slice.call(arguments);
+
+        return cmd('git', args, { cwd: this.path, env: env });
     };
 
     TempDir.prototype.exists = function (name) {
