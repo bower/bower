@@ -142,6 +142,37 @@ describe('bower install', function () {
         });
     });
 
+    it('display the output of hook scripts', function () {
+        var logger = new (require('bower-logger'))(),
+            log = '';
+
+        package.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: package.path
+                }
+            },
+            '.bowerrc': {
+                scripts: {
+                    postinstall: 'bash -c "echo %; date +%Y-%m-%d"'
+                }
+            }
+        });
+
+        logger.intercept(function(l){
+            log = l.message;
+        });
+        helpers.require('lib/commands/install')(
+            logger, null, null, {cwd: tempDir.path}
+        ).done(function(){
+           var date = new Date().toISOString();
+           expect(log).to.equal(date.substr(0, date.indexOf('T')));
+        });
+    });
+
     it('works for git repositories', function () {
         return gitPackage.prepareGit({
             '1.0.0': {
