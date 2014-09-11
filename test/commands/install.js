@@ -16,14 +16,16 @@ describe('bower install', function () {
 
     var gitPackage = new helpers.TempDir();
 
-    var install = function(packages, options, config) {
+    var installLogger = function(packages, options, config) {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
 
-        var logger = commands.install(
-            packages, options, config
-        );
+        return commands.install(packages, options, config);
+    };
+
+    var install = function(packages, options, config) {
+        var logger = installLogger(packages, options, config);
 
         return helpers.expectEvent(logger, 'end');
     };
@@ -139,6 +141,34 @@ describe('bower install', function () {
 
         return install([package.path], { save: true }).then(function() {
             expect(tempDir.read('hook.txt')).to.contain('dependencies');
+        });
+    });
+
+    it('display the output of hook scripts', function () {
+        package.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: package.path
+                }
+            },
+            '.bowerrc': {
+                scripts: {
+                    postinstall: 'bash -c "echo foobar"'
+                }
+            }
+        });
+
+        var lastAction = null;
+
+        installLogger().intercept(function (log) {
+            if (log.level === 'action') {
+                lastAction = log;
+            }
+        }).on('end', function () {
+            expect(lastAction.message).to.be('foobar');
         });
     });
 
