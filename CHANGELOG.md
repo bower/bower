@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.3.10 - 2014-09-13
+
+- [fix] Back down concurrency from 50 to 5 ([#1483](https://github.com/bower/bower/pull/1483))
+- [fix] Read .bowerrc from specified cwd ([#1301](https://github.com/bower/bower/pull/1301))
+- [fix] Disable shallow clones except those from GitHub ([#1393](https://github.com/bower/bower/pull/1393))
+- [fix] Expose bower version ([#1478](https://github.com/bower/bower/pull/1478))
+- [fix] Bump dependencies, including "request" ([#1467](https://github.com/bower/bower/pull/1467))
+- [fix] Prevent an error when piping bower output to head ([#1508](https://github.com/bower/bower/pull/1508))
+- [fix] Disable removing unnecessary resolutions ([#1061](https://github.com/bower/bower/pull/1061))
+- [fix] Display the output of hooks again ([#1484](https://github.com/bower/bower/issues/1484))
+- [fix] analytics: true in .bowerrc prevents user prompt ([#1470](https://github.com/bower/bower/pull/1470))
+- [perf] Use `tar-fs` instead of `tar` for faster TAR extraction ([#1490](https://github.com/bower/bower/pull/1490))
+
 ## 1.3.9 - 2014-08-06
 
 - [fix] Handle `tmp` sometimes returning an array ([#1434](https://github.com/bower/bower/pull/1434))
