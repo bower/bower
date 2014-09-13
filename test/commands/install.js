@@ -144,7 +144,7 @@ describe('bower install', function () {
         });
     });
 
-    it('display the output of hook scripts', function () {
+    it('display the output of hook scripts', function (next) {
         package.prepare();
 
         tempDir.prepare({
@@ -169,6 +169,7 @@ describe('bower install', function () {
             }
         }).on('end', function () {
             expect(lastAction.message).to.be('foobar');
+            next();
         });
     });
 
