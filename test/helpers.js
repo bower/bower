@@ -22,7 +22,11 @@ var env = {
 // Preserve the original environment
 object.mixIn(env, process.env);
 
-var tmpLocation = path.join(os.tmpdir ? os.tmpdir() : os.tmpDir(), 'bower-tests');
+var tmpLocation = path.join(
+    os.tmpdir ? os.tmpdir() : os.tmpDir(),
+    'bower-tests',
+    uuid.v4().slice(0, 8)
+);
 
 exports.require = function (name) {
     return require(path.join(__dirname, '../', name));
@@ -34,12 +38,12 @@ beforeEach(function () {
 });
 
 after(function () {
-    rimraf.sync(path.join(tmpLocation, 'tmp'));
+    rimraf.sync(tmpLocation);
 });
 
 exports.TempDir = (function() {
     function TempDir (defaults) {
-        this.path = path.join(tmpLocation, 'tmp/' + uuid.v4());
+        this.path = path.join(tmpLocation, uuid.v4());
         this.defaults = defaults;
     }
 
