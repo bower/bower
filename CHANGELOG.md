@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.11 - 2014-09-17
+
+- [fix] Restore install missing dependencies on update ([1519](https://github.com/bower/bower/pull/1519))
+
 ## 1.3.10 - 2014-09-13
 
 - [fix] Back down concurrency from 50 to 5 ([#1483](https://github.com/bower/bower/pull/1483))
