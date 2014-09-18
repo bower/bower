@@ -21,7 +21,8 @@ describe('PackageRepository', function () {
     var tempPackage = path.resolve(__dirname, '../tmp/temp-package');
     var packagesCacheDir = path.join(__dirname, '../tmp/temp-resolve-cache');
     var registryCacheDir = path.join(__dirname, '../tmp/temp-registry-cache');
-    var mockSource = 'file://' + testPackage;
+    var fileProtocol = 'file://' + (/^win/.test(process.platform) ? '/' : '');
+    var mockSource = fileProtocol + testPackage;
     var forceCaching = true;
 
     after(function () {
@@ -65,7 +66,7 @@ describe('PackageRepository', function () {
             return Q.resolve(resolver);
         }
         resolverFactory.getConstructor = function () {
-            return Q.resolve([resolvers.GitRemote, 'file://' + testPackage, false]);
+            return Q.resolve([resolvers.GitRemote, fileProtocol + testPackage, false]);
         };
         resolverFactory.clearRuntimeCache = function () {
             resolverFactoryClearHook();

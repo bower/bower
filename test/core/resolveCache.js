@@ -908,7 +908,8 @@ describe('ResolveCache', function () {
                 expect(entries).to.be.an('array');
 
                 expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
-                expectedJson = expectedJson.toString().trim();
+				// Convert Windows \r\n to \n
+                expectedJson = expectedJson.toString().trim().replace(/\r\n/g, '\n');
 
                 mout.object.forOwn(entries, function (entry) {
                     // Trim absolute bower path from json

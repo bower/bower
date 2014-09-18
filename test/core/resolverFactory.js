@@ -523,6 +523,71 @@ describe('resolverFactory', function () {
         .done();
     });
 
+	it('should recognize Mercurial endpoints correctly', function (next) {
+		var promise = Q.resolve();
+        var endpoints;
+
+        endpoints = {
+            // hg+http
+            'hg+http://hostname.com/project/blah': 'http://hostname.com/project/blah',
+            'hg+http://hostname.com/project/blah/': 'http://hostname.com/project/blah',
+            'hg+http://user@hostname.com/project/blah': 'http://user@hostname.com/project/blah',
+            'hg+http://user@hostname.com/project/blah/': 'http://user@hostname.com/project/blah',
+
+            // hg+https
+            'hg+https://hostname.com/project/blah': 'https://hostname.com/project/blah',
+            'hg+https://hostname.com/project/blah/': 'https://hostname.com/project/blah',
+            'hg+https://user@hostname.com/project/blah': 'https://user@hostname.com/project/blah',
+            'hg+https://user@hostname.com/project/blah/': 'https://user@hostname.com/project/blah',
+
+            // hg+ssh
+            'hg+ssh://hostname.com/project/blah': 'ssh://hostname.com/project/blah',
+            'hg+ssh://hostname.com/project/blah/': 'ssh://hostname.com/project/blah',
+            'hg+ssh://user@hostname.com/project/blah': 'ssh://user@hostname.com/project/blah',
+            'hg+ssh://user@hostname.com/project/blah/': 'ssh://user@hostname.com/project/blah'
+        };
+
+        mout.object.forOwn(endpoints, function (value, key) {
+            // Test without name and target
+            promise = promise.then(function () {
+                return callFactory({ source: key });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Hg);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Hg.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getTarget()).to.equal('*');
+            });
+
+            // Test with target
+            promise = promise.then(function () {
+                return callFactory({ source: key, target: 'commit-ish' });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Hg);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Hg.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getTarget()).to.equal('commit-ish');
+            });
+
+            // Test with name
+            promise = promise.then(function () {
+                return callFactory({ name: 'foo', source: key });
+            })
+            .then(function (resolver) {
+                expect(resolver).to.be.a(resolvers.Hg);
+                expect(resolver).to.not.be(resolvers.GitHub);
+                expect(resolvers.Hg.getSource(resolver.getSource())).to.equal(value);
+                expect(resolver.getName()).to.equal('foo');
+                expect(resolver.getTarget()).to.equal('*');
+            });
+        });
+
+        promise
+        .then(next.bind(next, null))
+        .done();
+	});
+	
     it('should recognize registry endpoints correctly', function (next) {
         // Create a 'dejavu' file at the root to prevent regressions of #666
         fs.writeFileSync('dejavu', 'foo');
