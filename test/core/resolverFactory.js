@@ -383,7 +383,7 @@ describe('resolverFactory', function () {
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.Svn);
                 expect(resolver).to.not.be(resolvers.GitHub);
-                expect(resolvers.Svn.getSource(resolver.getSource())).to.equal(value);
+                expect(resolvers.Svn.getSource(resolver.getSource().original)).to.equal(value);
                 expect(resolver.getTarget()).to.equal('*');
             });
 
