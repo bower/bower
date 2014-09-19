@@ -5,5 +5,10 @@
     {{#cyan}}{{{name}}}{{/cyan}} {{{url}}}
 {{/.}}
 {{/condense}}
-{{else}}No results.
+
+
+{{else}}
+
+No results.
+
 {{/if}}
