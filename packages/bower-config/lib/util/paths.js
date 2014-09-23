@@ -24,7 +24,7 @@ var base;
 
 // Fallbacks for windows
 if (process.platform === 'win32') {
-    base = path.resolve(process.env.APPDATA || home || tmp);
+    base = path.resolve(process.env.LOCALAPPDATA || home || tmp);
     base = path.join(base, 'bower');
 
     paths.config = paths.config || path.join(base, 'config');
