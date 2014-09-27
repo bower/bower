@@ -36,6 +36,7 @@
     "insight": "0.4.3",
     "is-root": "~1.0.0",
     "junk": "~1.0.0",
+    "linqjs": "0.0.1",
     "lockfile": "~1.0.0",
     "lru-cache": "~2.5.0",
     "mkdirp": "0.5.0",
