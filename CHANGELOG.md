@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.3.12 - 2014-09-28
+
+- [stability] Fix versions for unstable dependencies ([#1532](https://github.com/bower/bower/pull/1532))
+- [fix] Update tar-fs to support old tar format ([#1537](https://github.com/bower/bower/issues/1537))
+- [fix] Make analytics work again ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Always disable analytics for non-interactive mode ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Bower init can create private packages again ([#1522](https://github.com/bower/bower/issues/1522))
+- [fix] Show again missing newline for bower search output ([#1538](https://github.com/bower/bower/issues/1538))
+
 ## 1.3.11 - 2014-09-17
 
 - [fix] Restore install missing dependencies on update ([1519](https://github.com/bower/bower/pull/1519))
