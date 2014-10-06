@@ -5,5 +5,6 @@
 {{/each}}
 {{/condense}}
 {{#unless saveResolutions}}
+
 Prefix the choice with ! to persist it to bower.json
 {{/unless}}
