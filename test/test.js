@@ -12,6 +12,7 @@ require('./core/resolvers/gitResolver');
 require('./core/resolvers/gitFsResolver');
 require('./core/resolvers/gitRemoteResolver');
 require('./core/resolvers/gitHubResolver');
+require('./core/resolvers/bitBucketResolver');
 require('./core/resolvers/svnResolver');
 require('./core/resolverFactory');
 require('./core/resolveCache');
