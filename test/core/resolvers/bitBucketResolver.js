@@ -58,7 +58,7 @@ describe('BitBucket', function () {
             .get('/drublic/bower-test/get/0.1.0.tar.gz')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'));
 
-            resolver = create({ source: 'git@bitbucket.org:drublic/bower-test.git', target: '0.1.0' });
+            resolver = create({ source: 'https://bitbucket.org/drublic/bower-test.git', target: '0.1.0' });
             resolver.resolve()
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'foo'))).to.be(true);

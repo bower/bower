@@ -5,8 +5,5 @@ node_js:
 matrix:
   allow_failures:
     - node_js: '0.11'
-before_script:
-    - sudo cp travis/travis.known_hosts ~/.ssh/known_hosts
-    - git ls-remote --tags --heads git@bitbucket.org:drublic/bower-test.git
 script:
   - grunt travis
