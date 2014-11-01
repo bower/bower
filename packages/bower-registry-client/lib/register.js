@@ -35,7 +35,7 @@ function register(name, url, callback) {
         }
 
         // Duplicate
-        if (response.statusCode === 406) {
+        if (response.statusCode === 403) {
             return callback(createError('Duplicate package', 'EDUPLICATE'));
         }
 
