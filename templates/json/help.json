@@ -14,6 +14,7 @@
         "lookup":          "Look up a package URL by name",
         "prune":           "Removes local extraneous packages",
         "register":        "Register a package",
+        "reset":           "Clears cache and re-installs depdencies",
         "search":          "Search for a package by name",
         "update":          "Update a local package",
         "uninstall":       "Remove a local package",
