@@ -3,4 +3,5 @@ describe('integration tests', function () {
     require('./install');
     require('./uninstall');
     require('./update');
+    require('./list');
 });
