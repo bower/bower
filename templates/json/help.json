@@ -15,6 +15,7 @@
         "prune":           "Removes local extraneous packages",
         "register":        "Register a package",
         "search":          "Search for a package by name",
+        "shrinkwrap":      "Locks down bower.json dependencies"
         "update":          "Update a local package",
         "uninstall":       "Remove a local package",
         "version":         "Bump a package version"
