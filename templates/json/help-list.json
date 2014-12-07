@@ -16,6 +16,10 @@
             "description": "Generates a simple JSON source mapping"
         },
         {
+            "flag":        "--sorted-paths",
+            "description": "Outputs an array of source paths in dependency loading order"
+        },
+        {
             "shorthand":   "-r",
             "flag":        "--relative",
             "description": "Make paths relative to the directory config property, which defaults to bower_components"
