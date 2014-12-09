@@ -65,7 +65,7 @@
         },
         {
             "flag":        "--no-color",
-            "description": "Disable output colors. Useful for logs and CI servers"
+            "description": "Disable colors"
         }
     ]
 }
