@@ -42,7 +42,6 @@
     "mout": "~0.9.0",
     "nopt": "~3.0.0",
     "opn": "~1.0.0",
-    "osenv": "0.1.0",
     "p-throttler": "0.1.0",
     "promptly": "0.2.0",
     "q": "~1.0.1",
@@ -56,6 +55,7 @@
     "tar-fs": "~1.0.0",
     "tmp": "0.0.23",
     "update-notifier": "0.2.0",
+    "user-home": "^1.1.0",
     "which": "~1.0.5"
   },
   "devDependencies": {

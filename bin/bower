@@ -6,7 +6,7 @@ process.bin = process.title = 'bower';
 var Q = require('q');
 var mout = require('mout');
 var Logger = require('bower-logger');
-var osenv = require('osenv');
+var userHome = require('user-home');
 var bower = require('../lib');
 var pkg = require('../package.json');
 var cli = require('../lib/util/cli');
@@ -125,8 +125,8 @@ analytics.setup(bower.config).then(function () {
     });
 
     // Warn if HOME is not SET
-    if (!osenv.home()) {
-        logger.warn('no-home', 'HOME not set, user configuration will not be loaded');
+    if (!userHome) {
+        logger.warn('no-home', 'HOME environment variable not set. User config will not be loaded.');
     }
 
     if (bower.config.interactive) {
