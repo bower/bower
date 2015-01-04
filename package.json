@@ -26,7 +26,7 @@
     "cardinal": "0.4.4",
     "chalk": "0.5.1",
     "chmodr": "0.1.0",
-    "decompress-zip": "0.0.8",
+    "decompress-zip": "^0.1.0",
     "fstream": "~1.0.3",
     "fstream-ignore": "~1.0.2",
     "glob": "~4.3.2",
