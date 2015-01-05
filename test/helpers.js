@@ -139,8 +139,12 @@ exports.TempDir = (function() {
 exports.expectEvent = function expectEvent(emitter, eventName) {
     var deferred = Q.defer();
 
-    emitter.once(eventName, function () {
-        deferred.resolve(arguments);
+    emitter.once(eventName, function (payload) {
+        deferred.resolve(payload);
+    });
+
+    emitter.once('error', function (reason) {
+        deferred.reject(reason);
     });
 
     return deferred.promise;
@@ -152,7 +156,5 @@ exports.run = function run(name, args) {
     }
 
     var installer = commands[name].apply(commands[name], args || []);
-    return exports.expectEvent(installer, 'end').then(function(results) {
-        return results[0];
-    });
+    return exports.expectEvent(installer, 'end');
 };

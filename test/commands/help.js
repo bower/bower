@@ -31,4 +31,12 @@ describe('bower help', function () {
             });
         });
     });
+
+    it('displays error for non-existing command', function() {
+        return helpers.run('help', ['fuu']).fail(function(e) {
+            expect(e.message).to.be('Unknown command: fuu');
+            expect(e.command).to.be('fuu');
+            expect(e.code).to.be('EUNKNOWNCMD');
+        });
+    });
 });
