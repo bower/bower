@@ -17,7 +17,10 @@ describe('bower', function () {
 
     it('runs bower installation', function (done) {
         helpers.require('bin/bower');
-        done();
+
+        setTimeout(function() {
+            done();
+        }, 250);
     });
 
     after(function() {
