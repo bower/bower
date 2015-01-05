@@ -9,6 +9,7 @@ var glob = require('glob');
 var os = require('os');
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
+var commands = require('../lib/index').commands;
 
 // Those are needed for Travis or not configured git environment
 var env = {
@@ -135,7 +136,7 @@ exports.TempDir = (function() {
     return TempDir;
 })();
 
-exports.expectEvent = function (emitter, eventName) {
+exports.expectEvent = function expectEvent(emitter, eventName) {
     var deferred = Q.defer();
 
     emitter.once(eventName, function () {
@@ -143,4 +144,15 @@ exports.expectEvent = function (emitter, eventName) {
     });
 
     return deferred.promise;
+};
+
+exports.run = function run(name, args) {
+    if (!commands[name]) {
+        throw new Error('No such command: ' + name);
+    }
+
+    var installer = commands[name].apply(commands[name], args || []);
+    return exports.expectEvent(installer, 'end').then(function(results) {
+        return results[0];
+    });
 };
