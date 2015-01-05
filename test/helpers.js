@@ -53,10 +53,11 @@ exports.TempDir = (function() {
         this.defaults = defaults;
     }
 
-    TempDir.prototype.create = function (files) {
+    TempDir.prototype.create = function (files, defaults) {
         var that = this;
 
-        files = object.merge(files || {}, this.defaults);
+        defaults = defaults || this.defaults || {};
+        files = object.merge(files || {}, defaults);
 
         if (files) {
             object.forOwn(files, function (contents, filepath) {
@@ -103,7 +104,7 @@ exports.TempDir = (function() {
                     rimraf.sync(fullPath);
                 });
 
-                that.create(files);
+                that.create(files, {});
             }).then(function () {
                 return that.git('add', '-A');
             }).then(function () {
