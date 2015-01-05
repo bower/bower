@@ -3,6 +3,11 @@ var object = require('mout').object;
 
 var helpers = require('../helpers');
 
+var commands = {
+    install: helpers.command('install'),
+    list: helpers.command('list')
+};
+
 describe('bower list', function () {
 
     var tempDir = new helpers.TempDir();
@@ -14,7 +19,7 @@ describe('bower list', function () {
             cwd: tempDir.path
         });
 
-        return helpers.run('install', [packages, options, config]);
+        return helpers.run(commands.install, [packages, options, config]);
     };
 
     var list = function(options, config) {
@@ -22,7 +27,7 @@ describe('bower list', function () {
             cwd: tempDir.path
         });
 
-        return helpers.run('list', [options, config]);
+        return helpers.run(commands.list, [options, config]);
     };
 
     it('lists no packages when nothing installed', function () {

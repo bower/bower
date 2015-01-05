@@ -7,9 +7,9 @@ var object = require('mout/object');
 var fs = require('fs');
 var glob = require('glob');
 var os = require('os');
+var proxyquire = require('proxyquire').noCallThru();
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
-var commands = require('../lib/index').commands;
 
 // Those are needed for Travis or not configured git environment
 var env = {
@@ -30,8 +30,12 @@ var tmpLocation = path.join(
     uuid.v4().slice(0, 8)
 );
 
-exports.require = function (name) {
-    return require(path.join(__dirname, '../', name));
+exports.require = function (name, stubs) {
+    if (stubs) {
+        return proxyquire(path.join(__dirname, '../', name), stubs);
+    } else {
+        return require(path.join(__dirname, '../', name));
+    }
 };
 
 // We need to reset cache because tests are reusing temp directories
@@ -150,11 +154,36 @@ exports.expectEvent = function expectEvent(emitter, eventName) {
     return deferred.promise;
 };
 
-exports.run = function run(name, args) {
-    if (!commands[name]) {
-        throw new Error('No such command: ' + name);
+exports.command = function (command, stubs) {
+    var commandStubs = {};
+
+    commandStubs['./' + command] = exports.require(
+        'lib/commands/' + command, stubs
+    );
+
+    var instance = exports.require(
+        'lib/commands/index', commandStubs
+    )[command];
+
+    if (!instance) {
+        throw new Error('Unknown command: ' + command);
     }
 
-    var installer = commands[name].apply(commands[name], args || []);
+    return instance;
+};
+
+exports.run = function (command, args) {
+    var installer = command.apply(command, args || []);
     return exports.expectEvent(installer, 'end');
+};
+
+exports.ensureDone = function(done, callback) {
+    return function() {
+        try {
+            callback.apply(null, arguments);
+            done();
+        } catch(e) {
+            done(e);
+        }
+    };
 };

@@ -1,14 +1,11 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
+var help = helpers.command('help');
 
 describe('bower help', function () {
 
-    var tempDir = new helpers.TempDir();
-
     it('shows general help', function () {
-        tempDir.prepare();
-
-        return helpers.run('help').spread(function(result) {
+        return helpers.run(help).spread(function(result) {
             expect(result.usage[0]).to.be.a('string');
             expect(result.commands).to.be.a('object');
             expect(result.options).to.be.a('object');
@@ -24,7 +21,7 @@ describe('bower help', function () {
 
     commands.forEach(function(command) {
         it('shows help for ' + command + ' command', function() {
-            return helpers.run('help', [command]).spread(function(result) {
+            return helpers.run(help, [command]).spread(function(result) {
                 expect(result.command).to.be(command);
                 expect(result.description).to.be.a('string');
                 expect(result.usage[0]).to.be.a('string');
@@ -33,7 +30,7 @@ describe('bower help', function () {
     });
 
     it('displays error for non-existing command', function() {
-        return helpers.run('help', ['fuu']).fail(function(e) {
+        return helpers.run(help, ['fuu']).fail(function(e) {
             expect(e.message).to.be('Unknown command: fuu');
             expect(e.command).to.be('fuu');
             expect(e.code).to.be('EUNKNOWNCMD');
