@@ -1,4 +1,5 @@
 describe('integration tests', function () {
+    require('./bower');
     require('./help');
     require('./home');
     require('./info');
