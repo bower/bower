@@ -139,8 +139,8 @@ exports.TempDir = (function() {
 exports.expectEvent = function expectEvent(emitter, eventName) {
     var deferred = Q.defer();
 
-    emitter.once(eventName, function (payload) {
-        deferred.resolve(payload);
+    emitter.once(eventName, function () {
+        deferred.resolve(arguments);
     });
 
     emitter.once('error', function (reason) {
