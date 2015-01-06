@@ -100,7 +100,7 @@ describe('bower register', function () {
         return helpers.expectEvent(promise.logger, 'confirm')
         .spread(helpers.ensureDone(done, function(e) {
             expect(e.type).to.be('confirm');
-            expect(e.message).to.be('Registering a package will make it installable via the registry (\u001b[4m\u001b[36mhttps://bower.herokuapp.com\u001b[39m\u001b[24m), continue?');
+            expect(e.message).to.be('Registering a package will make it installable via the registry (https://bower.herokuapp.com), continue?');
             expect(e.default).to.be(true);
         }));
     });

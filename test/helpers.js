@@ -1,3 +1,6 @@
+// So CLI output is monochrome in tests
+process.env.TERM = 'dumb';
+
 var Q = require('q');
 var path = require('path');
 var mkdirp = require('mkdirp');
@@ -18,7 +21,7 @@ var env = {
     'GIT_AUTHOR_EMAIL': 'amdfcruz@gmail.com',
     'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
     'GIT_COMMITTER_NAME': 'André Cruz',
-    'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com'
+    'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com',
 };
 
 // Preserve the original environment
