@@ -34,8 +34,7 @@ var env = {
     'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com',
 };
 
-// Preserve the original environment
-object.mixIn(env, process.env);
+object.mixIn(process.env, env);
 
 var tmpLocation = path.join(
     os.tmpdir ? os.tmpdir() : os.tmpDir(),
