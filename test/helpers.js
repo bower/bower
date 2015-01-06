@@ -21,6 +21,9 @@ var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
 
+// For better promise errors
+Q.longStackSupport = true;
+
 // Those are needed for Travis or not configured git environment
 var env = {
     'GIT_AUTHOR_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
