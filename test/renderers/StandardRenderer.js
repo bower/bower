@@ -108,7 +108,7 @@ describe('StandardRenderer', function () {
             expect(stderr).to.match(new RegExp(multiline(function(){/*
                 Console trace:
                 Trace
-                    at StandardRenderer.error ([^:]+:82:17)
+                    at StandardRenderer.error ([^:]+:\d+:\d+)
             */})));
         });
     });
