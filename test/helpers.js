@@ -7,7 +7,7 @@ var object = require('mout/object');
 var fs = require('fs');
 var glob = require('glob');
 var os = require('os');
-var proxyquire = require('proxyquire').noCallThru();
+var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
 
@@ -58,6 +58,14 @@ exports.TempDir = (function() {
 
         defaults = defaults || this.defaults || {};
         files = object.merge(files || {}, defaults);
+
+        this.meta = function(tag) {
+            if (tag) {
+                return files[tag]['bower.json'];
+            } else {
+                return files['bower.json'];
+            }
+        };
 
         if (files) {
             object.forOwn(files, function (contents, filepath) {
@@ -174,11 +182,23 @@ exports.command = function (command, stubs) {
 };
 
 exports.run = function (command, args) {
-    var installer = command.apply(command, args || []);
-    return exports.expectEvent(installer, 'end');
+    var logger = command.apply(command, args || []);
+
+    // Hack so we can intercept prompring for data
+    logger.prompt = function(data) {
+        logger.emit('confirm', data);
+    };
+
+    var promise = exports.expectEvent(logger, 'end');
+
+    promise.logger = logger;
+
+    return promise;
 };
 
 exports.ensureDone = function(done, callback) {
+    callback = callback || function() {};
+
     return function() {
         try {
             callback.apply(null, arguments);
