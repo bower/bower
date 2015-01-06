@@ -1,6 +1,13 @@
 // So CLI output is monochrome in tests
 process.env.TERM = 'dumb';
 
+// We need to reload supports-color and chalk that caches its result
+Object.keys(require.cache).map(function(e) {
+    if (e.match('supports-color') || e.match('chalk')) {
+        delete require.cache[e];
+    }
+});
+
 var Q = require('q');
 var path = require('path');
 var mkdirp = require('mkdirp');
