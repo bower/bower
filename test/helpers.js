@@ -149,6 +149,10 @@ exports.TempDir = (function() {
         return fs.readFileSync(path.join(this.path, name), 'utf8');
     };
 
+    TempDir.prototype.readJson = function (name) {
+        return JSON.parse(this.read(name));
+    };
+
     TempDir.prototype.git = function () {
         var args = Array.prototype.slice.call(arguments);
 
