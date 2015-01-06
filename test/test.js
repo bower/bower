@@ -18,5 +18,6 @@ require('./core/resolveCache');
 require('./core/packageRepository');
 require('./core/scripts');
 require('./core/Manager');
+require('./renderers/StandardRenderer.js');
 require('./commands/index.js');
 require('./util/index.js');

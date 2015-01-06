@@ -218,3 +218,31 @@ exports.ensureDone = function(done, callback) {
         }
     };
 };
+
+exports.capture = function(callback) {
+    var oldStdout = process.stdout.write;
+    var oldStderr = process.stderr.write;
+
+    var stdout = '';
+    var stderr = '';
+
+    process.stdout.write = function(text) {
+        stdout += text;
+    };
+
+    process.stderr.write = function(text) {
+        stderr += text;
+    };
+
+    return Q.fcall(callback).then(function() {
+        process.stdout.write = oldStdout;
+        process.stderr.write = oldStderr;
+
+        return [stdout, stderr];
+    }).fail(function(e) {
+        process.stdout.write = oldStdout;
+        process.stderr.write = oldStderr;
+
+        throw e;
+    });
+};
