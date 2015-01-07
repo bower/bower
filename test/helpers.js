@@ -212,19 +212,7 @@ exports.run = function (command, args) {
     return promise;
 };
 
-exports.ensureDone = function(done, callback) {
-    callback = callback || function() {};
-
-    return function() {
-        try {
-            callback.apply(null, arguments);
-            done();
-        } catch(e) {
-            done(e);
-        }
-    };
-};
-
+// Captures all stdout and stderr
 exports.capture = function(callback) {
     var oldStdout = process.stdout.write;
     var oldStderr = process.stderr.write;

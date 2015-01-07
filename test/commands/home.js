@@ -1,3 +1,4 @@
+var Q = require('q');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
@@ -16,43 +17,37 @@ describe('bower home', function () {
         }
     });
 
-    it('opens repository home page in web browser', function (done) {
+    it('opens repository home page in web browser', function () {
         package.prepare();
 
-        var home = helpers.command('home', {
-            opn: helpers.ensureDone(done, function(url) {
-                expect(url).to.be('http://bower.io');
-            })
+        return Q.Promise(function(resolve) {
+            var home = helpers.command('home', { opn: resolve });
+            helpers.run(home, [package.path]);
+        }).then(function(url) {
+            expect(url).to.be('http://bower.io');
         });
-
-        return helpers.run(home, [package.path]);
     });
 
-    it('opens home page of current repository', function (done) {
+    it('opens home page of current repository', function () {
         package.prepare();
 
-        var home = helpers.command('home', {
-            opn: helpers.ensureDone(done, function(url) {
-                expect(url).to.be('http://bower.io');
-            })
+        return Q.Promise(function(resolve) {
+            var home = helpers.command('home', { opn: resolve });
+            helpers.run(home, [undefined, { cwd: package.path }]);
+        }).then(function(url) {
+            expect(url).to.be('http://bower.io');
         });
-
-        return helpers.run(home, [undefined, { cwd: package.path }]);
     });
 
-    it('errors if no homepage is set', function (done) {
+    it('errors if no homepage is set', function () {
         wrongPackage.prepare();
 
-        var home = helpers.command('home', {
-            opn: helpers.ensureDone(done, function(url) {
-                expect(url).to.be('http://bower.io');
-            })
-        });
-
-        return helpers.run(home, [wrongPackage.path])
-        .fail(helpers.ensureDone(done, function(reason) {
+        return Q.Promise(function(resolve) {
+            var home = helpers.command('home', { opn: resolve });
+            helpers.run(home, [wrongPackage.path]).fail(resolve);
+        }).then(function(reason) {
             expect(reason.message).to.be('No homepage set for package');
             expect(reason.code).to.be('ENOHOME');
-        }));
+        });
     });
 });
