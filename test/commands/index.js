@@ -1,4 +1,5 @@
 describe('integration tests', function () {
+    require('./cache/list');
     require('./help');
     require('./home');
     require('./info');

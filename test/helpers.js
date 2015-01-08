@@ -144,8 +144,12 @@ exports.TempDir = (function() {
         });
     };
 
+    TempDir.prototype.getPath = function (name) {
+        return path.join(this.path, name);
+    };
+
     TempDir.prototype.read = function (name) {
-        return fs.readFileSync(path.join(this.path, name), 'utf8');
+        return fs.readFileSync(this.getPath(name), 'utf8');
     };
 
     TempDir.prototype.readJson = function (name) {
@@ -188,7 +192,13 @@ exports.command = function (command, stubs) {
 
     var instance = exports.require(
         'lib/commands/index', commandStubs
-    )[command];
+    );
+    
+    var commandParts = command.split('/');
+
+    while (commandParts.length > 0) {
+        instance = instance[commandParts.shift()];
+    }
 
     if (!instance) {
         throw new Error('Unknown command: ' + command);
