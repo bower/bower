@@ -5,6 +5,7 @@ describe('integration tests', function () {
     require('./init');
     require('./install');
     require('./list');
+    require('./link');
     require('./prune');
     require('./register');
     require('./uninstall');
