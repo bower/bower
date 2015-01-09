@@ -8,11 +8,14 @@ describe('integration tests', function () {
     require('./install');
     require('./list');
     require('./link');
+    require('./lookup');
     require('./prune');
     require('./register');
+    require('./search');
     require('./uninstall');
     require('./update');
     require('./version');
+
     // run last because it changes defaults
     require('./bower');
 });
