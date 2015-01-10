@@ -17,6 +17,7 @@ var object = require('mout/object');
 var fs = require('fs');
 var glob = require('glob');
 var os = require('os');
+var which = require('which');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var cmd = require('../lib/util/cmd');
 var config = require('../lib/config');
@@ -268,4 +269,13 @@ exports.capture = function(callback) {
 
         throw e;
     });
+};
+
+exports.hasSvn = function() {
+    try {
+        which.sync('svn');
+        return true;
+    } catch (ex) {
+        return false;
+    }
 };

@@ -10,6 +10,7 @@ var Logger = require('bower-logger');
 var resolverFactory = require('../../lib/core/resolverFactory');
 var resolvers = require('../../lib/core/resolvers');
 var defaultConfig = require('../../lib/config');
+var helpers = require('../helpers');
 
 describe('resolverFactory', function () {
     var tempSource;
@@ -339,7 +340,9 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it('should recognize svn remote endpoints correctly', function (next) {
+    if (!helpers.hasSvn())
+        describe.skip('should recognize svn remote endpoints correctly', function() {});
+    else it('should recognize svn remote endpoints correctly', function (next) {
         var promise = Q.resolve();
         var endpoints;
 
