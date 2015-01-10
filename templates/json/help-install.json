@@ -30,6 +30,11 @@
             "shorthand":   "-D",
             "flag":        "--save-dev",
             "description": "Save installed packages into the project's bower.json devDependencies"
+        },
+        {
+            "shorthand":   "-E",
+            "flag":        "--save-exact",
+            "description": "Configure installed packages with an exact version rather than semver"
         }
     ]
 }
