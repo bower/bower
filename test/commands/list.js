@@ -30,6 +30,22 @@ describe('bower list', function () {
         return helpers.run(commands.list, [options, config]);
     };
 
+    it('correctly reads arguments', function() {
+        expect(commands.list.readOptions(['-p', '-r']))
+        .to.eql([{
+            paths: true,
+            relative: true
+        }]);
+    });
+
+    it('correctly reads long arguments', function() {
+        expect(commands.list.readOptions(['--paths', '--relative']))
+        .to.eql([{
+            paths: true,
+            relative: true
+        }]);
+    });
+
     it('lists no packages when nothing installed', function () {
         tempDir.prepare();
 

@@ -1,12 +1,33 @@
 var expect = require('expect.js');
-var object = require('mout').object;
-
 var helpers = require('../helpers');
-var commands = helpers.require('lib/index').commands;
 
 describe('bower install', function () {
 
     var tempDir = new helpers.TempDir();
+
+    var install = helpers.command('install', { cwd: tempDir.path });
+
+    it('correctly reads arguments', function() {
+        expect(install.readOptions(['jquery', 'angular', '-F', '-p', '-S', '-D']))
+        .to.eql([['jquery', 'angular'], {
+            forceLatest: true,
+            production: true,
+            save: true,
+            saveDev: true
+        }]);
+    });
+
+    it('correctly reads long arguments', function() {
+        expect(install.readOptions([
+            'jquery', 'angular',
+            '--force-latest', '--production', '--save', '--save-dev'
+        ])).to.eql([['jquery', 'angular'], {
+            forceLatest: true,
+            production: true,
+            save: true,
+            saveDev: true
+        }]);
+    });
 
     var package = new helpers.TempDir({
         'bower.json': {
@@ -15,20 +36,6 @@ describe('bower install', function () {
     }).prepare();
 
     var gitPackage = new helpers.TempDir();
-
-    var installLogger = function(packages, options, config) {
-        config = object.merge(config || {}, {
-            cwd: tempDir.path
-        });
-
-        return commands.install(packages, options, config);
-    };
-
-    var install = function(packages, options, config) {
-        var logger = installLogger(packages, options, config);
-
-        return helpers.expectEvent(logger, 'end');
-    };
 
     it('writes to bower.json if --save flag is used', function () {
         package.prepare();
@@ -39,7 +46,7 @@ describe('bower install', function () {
             }
         });
 
-        return install([package.path], { save: true }).then(function() {
+        return helpers.run(install, [[package.path], { save: true }]).then(function() {
             expect(tempDir.read('bower.json')).to.contain('dependencies');
         });
     });
@@ -57,7 +64,7 @@ describe('bower install', function () {
             }
         });
 
-        return install().then(function() {
+        return helpers.run(install).then(function() {
             expect(tempDir.read('assets/package/foo')).to.be('bar');
         });
     });
@@ -79,7 +86,7 @@ describe('bower install', function () {
             }
         });
 
-        return install().then(function() {
+        return helpers.run(install).then(function() {
             expect(tempDir.read('preinstall.txt')).to.be('package');
         });
     });
@@ -101,7 +108,7 @@ describe('bower install', function () {
             }
         });
 
-        return install().then(function() {
+        return helpers.run(install).then(function() {
             expect(tempDir.read('postinstall.txt')).to.be('package');
         });
     });
@@ -120,7 +127,7 @@ describe('bower install', function () {
             }
         });
 
-        return install().then(function() {
+        return helpers.run(install).then(function() {
             expect(tempDir.exists('hooks.txt')).to.be(false);
         });
     });
@@ -139,7 +146,7 @@ describe('bower install', function () {
             }
         });
 
-        return install([package.path], { save: true }).then(function() {
+        return helpers.run(install, [[package.path], { save: true }]).then(function() {
             expect(tempDir.read('hook.txt')).to.contain('dependencies');
         });
     });
@@ -163,7 +170,7 @@ describe('bower install', function () {
 
         var lastAction = null;
 
-        installLogger().intercept(function (log) {
+        helpers.run(install).logger.intercept(function (log) {
             if (log.level === 'action') {
                 lastAction = log;
             }
@@ -197,7 +204,7 @@ describe('bower install', function () {
                 }
             });
 
-            return install().then(function() {
+            return helpers.run(install).then(function() {
                 expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
             });
         });

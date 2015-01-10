@@ -27,6 +27,11 @@ describe('bower link', function () {
         linksDir.prepare();
     });
 
+    it('correctly reads arguments', function() {
+        expect(link.readOptions(['jquery', 'angular']))
+        .to.eql(['jquery', 'angular']);
+    });
+
     it('creates self link', function () {
         return helpers.run(link, [undefined, undefined,
             {

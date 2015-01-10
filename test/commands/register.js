@@ -2,6 +2,8 @@ var Q = require('q');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
+var register = helpers.command('register');
+
 var fakeRepositoryFactory = function (canonicalDir, pkgMeta) {
     function FakeRepository() { }
 
@@ -38,6 +40,11 @@ describe('bower register', function () {
         'bower.json': {
             name: 'package'
         }
+    });
+
+    it('correctly reads arguments', function() {
+        expect(register.readOptions(['jquery', 'url']))
+        .to.eql(['jquery', 'url']);
     });
 
     it('errors if name is not provided', function () {

@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var object = require('mout').object;
 
 var helpers = require('../helpers');
+var updateCmd = helpers.command('update');
 var commands = helpers.require('lib/index').commands;
 
 describe('bower update', function () {
@@ -55,6 +56,11 @@ describe('bower update', function () {
 
         return helpers.expectEvent(logger, 'end');
     };
+
+    it('correctly reads arguments', function() {
+        expect(updateCmd.readOptions(['jquery', '-F', '-p']))
+        .to.eql([['jquery'], { forceLatest: true, production: true }]);
+    });
 
     it('install missing packages', function () {
         package.prepare();

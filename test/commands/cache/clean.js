@@ -38,6 +38,11 @@ describe('bower cache clean', function () {
 
     var cacheDir = new helpers.TempDir(cacheFiles);
 
+    it('correctly reads arguments', function() {
+        expect(cacheClean.readOptions(['jquery', 'angular']))
+        .to.eql([['jquery', 'angular'], {}]);
+    });
+
     it('removes all cache', function () {
         cacheDir.prepare();
 

@@ -1,6 +1,8 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
+var lookup = helpers.command('lookup');
+
 describe('bower lookup', function () {
 
     var lookupWithResult = function (response) {
@@ -18,6 +20,11 @@ describe('bower lookup', function () {
             }
         });
     };
+
+    it('correctly reads arguments', function() {
+        expect(lookup.readOptions(['jquery']))
+        .to.eql(['jquery']);
+    });
 
     it('lookups package by name', function () {
         var lookup = lookupWithResult({ jquery: { url: 'http://jquery.org' } });

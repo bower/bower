@@ -20,6 +20,11 @@ describe('bower cache list', function () {
         }
     });
 
+    it('correctly reads arguments', function() {
+        expect(cacheList.readOptions(['jquery', 'angular']))
+        .to.eql([['jquery', 'angular'], {}]);
+    });
+
     it('lists packages from cache', function () {
         cacheDir.prepare();
 

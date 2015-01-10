@@ -7,6 +7,11 @@ describe('bower init', function () {
 
     var package = new helpers.TempDir();
 
+    it('correctly reads arguments', function() {
+        expect(init.readOptions([]))
+        .to.eql([]);
+    });
+
     it('generates bower.json file', function () {
         package.prepare();
 

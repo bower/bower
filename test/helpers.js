@@ -184,16 +184,27 @@ exports.expectEvent = function expectEvent(emitter, eventName) {
 };
 
 exports.command = function (command, stubs) {
+    var rawCommand;
     var commandStubs = {};
 
-    commandStubs['./' + command] = exports.require(
+    stubs = stubs || {};
+    var cwd = stubs.cwd;
+    delete stubs.cwd;
+
+    rawCommand = exports.require(
         'lib/commands/' + command, stubs
     );
+
+    commandStubs['./' + command] = function () {
+        var args = [].slice.call(arguments);
+        args[rawCommand.length - 1] = object.merge({ cwd: cwd }, args[rawCommand.length - 1] || {});
+        return rawCommand.apply(null, args);
+    };
 
     var instance = exports.require(
         'lib/commands/index', commandStubs
     );
-    
+
     var commandParts = command.split('/');
 
     while (commandParts.length > 0) {
@@ -203,6 +214,14 @@ exports.command = function (command, stubs) {
     if (!instance) {
         throw new Error('Unknown command: ' + command);
     }
+
+    // TODO: refactor tests, so they can use readOptions directly
+    instance.readOptions = function (argv) {
+        argv = ['node', 'bower'].concat(argv);
+        argv = command.split('/').concat(argv);
+
+        return rawCommand.readOptions(argv);
+    };
 
     return instance;
 };
