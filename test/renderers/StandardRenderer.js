@@ -19,7 +19,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.eq(multiline(function(){/*
                 bower foobar        hello world
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -33,7 +34,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stderr).to.eq(multiline(function(){/*
                 bower EFOOBAR       Hello error
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -52,7 +54,8 @@ describe('StandardRenderer', function () {
                 Additional error details:
                 Some awesome details
                 Multiline!
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -65,12 +68,14 @@ describe('StandardRenderer', function () {
                 details: '  Some awesome details\nMultiline!    '
             });
         }).spread(function(stdout, stderr) {
+            console.log('asA');
             expect(stderr).to.match(new RegExp(multiline(function(){/*
                 System info:
-                Bower version: [^\n]+
-                Node version: [^\n]+
-                OS: [^\n]+
-            */}) + '\n'));
+                Bower version: [^\r\n]+
+                Node version: [^\r\n]+
+                OS: [^\r\n]+
+
+            */})));
         });
     });
 
@@ -107,8 +112,9 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stderr).to.match(new RegExp(multiline(function(){/*
                 Console trace:
-                Trace
-                    at StandardRenderer.error ([^:]+:\d+:\d+)
+                Error
+                    at StandardRenderer.error \(.+?\)
+
             */})));
         });
     });
@@ -124,7 +130,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 bower checkout      jquery#foobar
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -139,7 +146,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 bower jquery#master           progress foobar
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -154,7 +162,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 bower progress      jquery#master foobar
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -169,7 +178,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 bower jquery#master            extract foobar
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -242,7 +252,9 @@ describe('StandardRenderer', function () {
                     jquery2 depends on fizfuz2#
                 Resort to using foobar#~0.1.1 which resolved to foobar#0.1.2
                 Code incompatibilities may occur.
-            */}) + '\n\n');
+
+
+            */}));
         });
     });
 
@@ -307,7 +319,9 @@ describe('StandardRenderer', function () {
                     2) fizfuz2# and is required by jquery2
 
                 Prefix the choice with ! to persist it to bower.json
-            */}) + '\n\n');
+
+
+            */}));
         });
     });
 
@@ -334,7 +348,9 @@ describe('StandardRenderer', function () {
                     fuz: 'faz'
                   }
                 }
-            */}) + '\n\n');
+
+
+            */}));
         });
     });
 
@@ -349,7 +365,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 bower origin                    cached message
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -378,7 +395,8 @@ describe('StandardRenderer', function () {
                 bower short-origin             generic message
                 bower very-very-long-origin-string          generic message
                 bower short-origin                          generic message
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -516,28 +534,55 @@ describe('StandardRenderer', function () {
                 }
             ]);
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            if (helpers.isWin()) {
+                expect(stdout).to.equal(multiline(function(){/*
 
-                jquery#0.1.2 components/jquery
+                    jquery#0.1.2 components\jquery
 
-                jquery#0.1.2 components/jquery
+                    jquery#0.1.2 components\jquery
 
-                jquery components/jquery not installed
+                    jquery components\jquery not installed
 
-                jquery#0.1.2 components/jquery different
+                    jquery#0.1.2 components\jquery different
 
-                jquery#0.1.2 components/jquery linked
+                    jquery#0.1.2 components\jquery linked
 
-                jquery#0.1.2 components/jquery incompatible with ~0.1.2
+                    jquery#0.1.2 components\jquery incompatible with ~0.1.2
 
-                jquery#0.1.2 components/jquery extraneous
+                    jquery#0.1.2 components\jquery extraneous
 
-                jquery#0.1.2 components/jquery (0.1.5 available, latest is 0.2.0)
+                    jquery#0.1.2 components\jquery (0.1.5 available, latest is 0.2.0)
 
-                jquery#0.1.2 components/jquery
-                ├── angular#0.1.3
-                └── ember#0.2.3
-            */}) + '\n');
+                    jquery#0.1.2 components\jquery
+                    ├── angular#0.1.3
+                    └── ember#0.2.3
+
+                */}));
+            } else {
+                expect(stdout).to.equal(multiline(function(){/*
+
+                    jquery#0.1.2 components/jquery
+
+                    jquery#0.1.2 components/jquery
+
+                    jquery components/jquery not installed
+
+                    jquery#0.1.2 components/jquery different
+
+                    jquery#0.1.2 components/jquery linked
+
+                    jquery#0.1.2 components/jquery incompatible with ~0.1.2
+
+                    jquery#0.1.2 components/jquery extraneous
+
+                    jquery#0.1.2 components/jquery (0.1.5 available, latest is 0.2.0)
+
+                    jquery#0.1.2 components/jquery
+                    ├── angular#0.1.3
+                    └── ember#0.2.3
+
+                */}));
+            }
         });
     });
 
@@ -554,7 +599,7 @@ describe('StandardRenderer', function () {
                   version: '1.2.3'
                 }
 
-            */}) + '\n');
+            */}));
         });
     });
 
@@ -584,7 +629,8 @@ describe('StandardRenderer', function () {
                   - 1.2.1
                   - 1.2.2
                 You can request info for a specific version with 'bower info foo#<version>'
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -602,7 +648,8 @@ describe('StandardRenderer', function () {
             expect(stdout).to.equal(multiline(function(){/*
                 bower http://bower.io
                 Package not found.
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -623,11 +670,21 @@ describe('StandardRenderer', function () {
                 }]
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
-                bower                    link ./bar > ./foo
+            if (helpers.isWin()) {
+                expect(stdout).to.equal(multiline(function(){/*
+                    bower                    link ./bar > ./foo
 
-                jquery#0.1.2 components/jquery
-            */}) + '\n');
+                    jquery#0.1.2 components\jquery
+
+                */}));
+            } else {
+                expect(stdout).to.equal(multiline(function(){/*
+                    bower                    link ./bar > ./foo
+
+                    jquery#0.1.2 components/jquery
+
+                */}));
+            }
         });
     });
 
@@ -650,7 +707,8 @@ describe('StandardRenderer', function () {
 
                     jquery http://jquery.io
                     bower http://bower.io
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -669,7 +727,8 @@ describe('StandardRenderer', function () {
                 To publish a new version, just release a valid semver tag.
 
                 Run bower info jquery to list the available versions.
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -688,7 +747,8 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function(){/*
                 awesome-jquery=jquery#0.1.1
-            */}) + '\n');
+
+            */}));
         });
     });
 
@@ -735,7 +795,8 @@ describe('StandardRenderer', function () {
                 Description:
 
                     Uninstalls a package locally from your bower_components directory
-            */}) + '\n');
+
+            */}));
         });
     });
 });

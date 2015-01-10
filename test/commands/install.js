@@ -81,7 +81,7 @@ describe('bower install', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    preinstall: 'bash -c "echo -n % > preinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\''
                 }
             }
         });
@@ -103,7 +103,7 @@ describe('bower install', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
@@ -121,8 +121,8 @@ describe('bower install', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > hooks.txt"',
-                    preinstall: 'bash -c "echo -n % > hooks.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("hooks.txt", "%")\'',
+                    preinstall: 'node -e \'require("fs").writeFileSync("hooks.txt", "%")\''
                 }
             }
         });
@@ -141,7 +141,7 @@ describe('bower install', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "cat bower.json > hook.txt"',
+                    postinstall: 'node -e \'var fs = require("fs"); fs.writeFileSync("hook.txt", fs.readFileSync("bower.json"));\''
                 }
             }
         });
@@ -163,7 +163,7 @@ describe('bower install', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo foobar"'
+                    postinstall: 'node -e \'process.stdout.write("foobar")\''
                 }
             }
         });

@@ -1,5 +1,6 @@
 var expect = require('expect.js');
 var object = require('mout').object;
+var path = require('path');
 
 var helpers = require('../helpers');
 
@@ -81,7 +82,9 @@ describe('bower list', function () {
                 expect(results.dependencies.package).to.be.an(Object);
                 expect(results.dependencies.package.pkgMeta).to.be.an(Object);
                 expect(results.dependencies.package.pkgMeta.main).to.equal('test.txt');
-                expect(results.dependencies.package.canonicalDir).to.equal(tempDir.path + '/bower_components/package');
+                expect(results.dependencies.package.canonicalDir).to.equal(
+                    path.join(tempDir.path, 'bower_components/package')
+                );
                 expect(results.dependencies.package.dependencies).to.eql({});
                 expect(results.dependencies.package.nrDependants).to.equal(1);
                 expect(results.dependencies.package.versions).to.eql([]);
@@ -112,7 +115,9 @@ describe('bower list', function () {
                 expect(results.pkgMeta.dependencies).to.eql({
                     package: package.path + '#*'
                 });
-                expect(results.dependencies.package.canonicalDir).to.equal('bower_components/package');
+                expect(results.dependencies.package.canonicalDir).to.equal(
+                    path.normalize('bower_components/package')
+                );
             });
         });
     });
@@ -130,7 +135,9 @@ describe('bower list', function () {
         return install([package.path]).then(function() {
             return list({paths: true}).spread(function(results) {
                 expect(results).to.be.an(Object);
-                expect(results.package).to.equal('bower_components/package/test.txt');
+                expect(results.package).to.equal(
+                    'bower_components/package/test.txt'
+                );
             });
         });
     });
@@ -149,7 +156,10 @@ describe('bower list', function () {
             return list({paths: true}).spread(function(results) {
                 expect(results).to.be.an(Object);
                 expect(results.package).to.be.an(Object);
-                expect(results.package).to.eql(['bower_components/package/test.txt', 'bower_components/package/test2.txt']);
+                expect(results.package).to.eql([
+                    'bower_components/package/test.txt',
+                    'bower_components/package/test2.txt'
+                ]);
             });
         });
     });
@@ -190,7 +200,9 @@ describe('bower list', function () {
                     expect(results.dependencies.package).to.be.an(Object);
                     expect(results.dependencies.package.pkgMeta).to.be.an(Object);
                     expect(results.dependencies.package.pkgMeta.main).to.equal('test.txt');
-                    expect(results.dependencies.package.canonicalDir).to.equal(tempDir.path + '/bower_components/package');
+                    expect(results.dependencies.package.canonicalDir).to.equal(
+                        path.join(tempDir.path, 'bower_components/package')
+                    );
                     expect(results.dependencies.package.dependencies).to.eql({});
                     expect(results.dependencies.package.nrDependants).to.equal(1);
                     expect(results.dependencies.package.versions).to.eql(['1.0.1', '1.0.0']);
@@ -232,7 +244,9 @@ describe('bower list', function () {
                     expect(results.pkgMeta.dependencies).to.eql({
                         package: gitPackage.path + '#1.0.0'
                     });
-                    expect(results.dependencies.package.canonicalDir).to.equal('bower_components/package');
+                    expect(results.dependencies.package.canonicalDir).to.equal(
+                        path.normalize('bower_components/package')
+                    );
                 });
             });
         });

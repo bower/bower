@@ -92,7 +92,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    preinstall: 'bash -c "echo -n % > preinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\''
                 }
             }
         });
@@ -114,7 +114,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
@@ -136,7 +136,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
@@ -189,7 +189,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    preinstall: 'bash -c "echo -n % > preinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\''
                 }
             }
         });
@@ -221,7 +221,8 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\'',
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
