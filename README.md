@@ -114,6 +114,12 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
+Note that on Windows for tests to pass you need to configure Git before cloning:
+
+```
+git config --global core.autocrlf input
+```
+
 ## Bower Team
 
 Bower is made by lots of people across the globe, contributions large and small. Our thanks to everyone who has played a part.
