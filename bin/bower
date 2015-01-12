@@ -133,10 +133,7 @@ analytics.setup(bower.config).then(function () {
         var updateNotifier = require('update-notifier');
 
         // Check for newer version of Bower
-        var notifier = updateNotifier({
-            packageName: pkg.name,
-            packageVersion: pkg.version
-        });
+        var notifier = updateNotifier({pkg: pkg});
 
         if (notifier.update && levels.info >= loglevel) {
             notifier.notify();
