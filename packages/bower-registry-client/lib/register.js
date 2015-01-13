@@ -46,7 +46,7 @@ function register(name, url, callback) {
 
         // Everything other than 201 is unknown
         if (response.statusCode !== 201) {
-            return callback(createError('Unknown error: ' + response.statusCode, 'EUNKNOWN'));
+            return callback(createError('Unknown error: ' + response.statusCode + ' - ' + response.body, 'EUNKNOWN'));
         }
 
         callback(null, {
