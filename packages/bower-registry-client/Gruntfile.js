@@ -1,14 +1,10 @@
+'use strict';
 module.exports = function (grunt) {
-
-    'use strict';
-
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-simple-mocha');
 
-    // Project configuration.
     grunt.initConfig({
-
         jshint: {
             files: [
                 'Gruntfile.js',
@@ -19,12 +15,14 @@ module.exports = function (grunt) {
                 jshintrc: '.jshintrc'
             }
         },
-
         simplemocha: {
             options: {
-                reporter: 'spec'
+                reporter: 'spec',
+                timeout: 20000
             },
-            full: { src: ['test/runner.js'] },
+            full: {
+                src: ['test/runner.js']
+            },
             short: {
                 options: {
                     reporter: 'dot'
@@ -38,16 +36,12 @@ module.exports = function (grunt) {
                 src: ['test/runner.js']
             }
         },
-
-
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'simplemocha:short']
         }
-
     });
 
-    // Default task.
     grunt.registerTask('test', ['simplemocha:full']);
     grunt.registerTask('default', ['jshint', 'test']);
 };

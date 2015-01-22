@@ -1,7 +1,7 @@
 {
   "name": "bower-registry-client",
   "version": "0.2.2",
-  "description": "Provides easy interaction with the Bower registry.",
+  "description": "Provides easy interaction with the Bower registry",
   "author": "Twitter",
   "licenses": [
     {
@@ -9,13 +9,10 @@
       "url": "https://github.com/bower/registry-client/blob/master/LICENSE"
     }
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bower/registry-client.git"
-  },
+  "repository": "bower/registry-client",
   "main": "Client",
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "dependencies": {
     "async": "~0.2.8",
@@ -30,8 +27,9 @@
   "devDependencies": {
     "expect.js": "~0.2.0",
     "grunt": "~0.4.1",
-    "grunt-contrib-watch": "~0.5.0",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.0",
     "grunt-simple-mocha": "~0.4.0",
     "mocha": "~1.12.0",
     "nock": "~0.22.0"

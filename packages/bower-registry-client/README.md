@@ -1,17 +1,18 @@
-# bower-registry-client [![Build Status](https://secure.travis-ci.org/bower/registry-client.png?branch=master)](http://travis-ci.org/bower/registry-client)
+# bower-registry-client [![Build Status](https://travis-ci.org/bower/registry-client.png?branch=master)](https://travis-ci.org/bower/registry-client)
 
-This module allows you to easily interact with the Bower registry server API.
+> Provides easy interaction with the Bower registry
 
-Install
 
-```sh
-npm install --save bower-registry-client
+## Install
+
 ```
+$ npm install --save bower-registry-client
+```
+
 
 ## Usage
 
 ```js
-
 var RegistryClient = require('bower-registry-client');
 var registry = new RegistryClient(options, logger);
 ```
@@ -145,7 +146,6 @@ If that's a problem, you should create fresh instances instead.
 ```js
 RegistryClient.clearRuntimeCache();
 ```
-
 
 
 ## License
