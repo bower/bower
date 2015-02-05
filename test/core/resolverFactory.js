@@ -690,4 +690,22 @@ describe('resolverFactory', function () {
             expect(called.sort()).to.eql(Object.keys(resolvers).sort());
         });
     });
+
+    describe('.extractRegistryPrefix', function (){
+        it('Should know how to extract the registry prefix for resolver plugin', function (){
+            var resolverFactory = require('../../lib/core/resolverFactory');
+            var endpoints = {
+                'git': 'git://github.com/user/project/bleh.git',
+                'bitbucket': 'bitbucket:jquery/jquery'
+            };
+
+            mout.object.forOwn(endpoints, function (value, key) {
+                var prefix = resolverFactory.extractRegistryPrefix(value);
+                expect(prefix).to.eql(key);
+            });
+
+            var prefix = resolverFactory.extractRegistryPrefix('jquery');
+            expect(prefix).to.be(null);
+        });
+    });
 });
