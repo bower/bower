@@ -1,7 +1,7 @@
 {
   "name": "bower-json",
   "version": "0.4.0",
-  "description": "Read bower.json files with semantics, normalisation, defaults and validation.",
+  "description": "Read bower.json files with semantics, normalisation, defaults and validation",
   "author": "Twitter",
   "licenses": [
     {
@@ -9,29 +9,30 @@
       "url": "https://github.com/bower/json/blob/master/LICENSE"
     }
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bower/json.git"
-  },
+  "repository": "bower/json",
   "main": "lib/json",
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "dependencies": {
-    "deep-extend": "~0.2.5",
-    "graceful-fs": "~3.0.0",
-    "intersect": "~0.1.0"
+    "deep-extend": "^0.3.2",
+    "graceful-fs": "^3.0.0",
+    "intersect": "^0.1.0"
   },
   "devDependencies": {
-    "expect.js": "~0.3.1",
-    "mocha": "~1.20.0",
-    "grunt": "~0.4.4",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-jshint": "~0.10.0",
-    "grunt-simple-mocha": "~0.4.0",
-    "underscore.string": "~2.3.3"
+    "expect.js": "^0.3.1",
+    "grunt": "^0.4.4",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-simple-mocha": "^0.4.0",
+    "mocha": "*",
+    "underscore.string": "^2.3.3"
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "files": [
+    "lib"
+  ]
 }
