@@ -24,7 +24,7 @@
     "bower-logger": "^0.2.2",
     "bower-registry-client": "^0.2.1",
     "cardinal": "0.4.4",
-    "chalk": "0.5.1",
+    "chalk": "^1.0.0",
     "chmodr": "0.1.0",
     "decompress-zip": "^0.1.0",
     "fstream": "^1.0.3",
