@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
 var fs = require('graceful-fs');
-var path = require('path');
 var nock = require('nock');
 var Q = require('q');
 var rimraf = require('rimraf');
@@ -31,12 +30,12 @@ describe('UrlResolver', function () {
         nock.cleanAll();
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new UrlResolver(decEndpoint, config || defaultConfig, logger);
+        return new UrlResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {

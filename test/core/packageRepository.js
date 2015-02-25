@@ -11,6 +11,7 @@ var defaultConfig = require('../../lib/config');
 var ResolveCache = require('../../lib/core/ResolveCache');
 var resolvers = require('../../lib/core/resolvers');
 var copy = require('../../lib/util/copy');
+var helpers = require('../helpers');
 
 describe('PackageRepository', function () {
     var packageRepository;
@@ -21,8 +22,8 @@ describe('PackageRepository', function () {
     var tempPackage = path.resolve(__dirname, '../tmp/temp-package');
     var packagesCacheDir = path.join(__dirname, '../tmp/temp-resolve-cache');
     var registryCacheDir = path.join(__dirname, '../tmp/temp-registry-cache');
-    var fileProtocol = 'file://' + (/^win/.test(process.platform) ? '/' : '');
-    var mockSource = fileProtocol + testPackage;
+    var mockSource = helpers.localSource(testPackage);
+
     var forceCaching = true;
 
     after(function () {
@@ -36,7 +37,7 @@ describe('PackageRepository', function () {
         var logger = new Logger();
 
         // Config
-        config = mout.object.deepMixIn({}, defaultConfig, {
+        config = defaultConfig({
             storage: {
                 packages: packagesCacheDir,
                 registry: registryCacheDir
@@ -56,8 +57,8 @@ describe('PackageRepository', function () {
 
             if (forceCaching) {
                 // Force to use cache even for local resources
-                resolver.isNotCacheable = function () {
-                    return false;
+                resolver.isCacheable = function () {
+                    return true;
                 };
             }
 
@@ -66,7 +67,7 @@ describe('PackageRepository', function () {
             return Q.resolve(resolver);
         }
         resolverFactory.getConstructor = function () {
-            return Q.resolve([resolvers.GitRemote, fileProtocol + testPackage, false]);
+            return Q.resolve([resolvers.GitRemote, helpers.localSource(testPackage), false]);
         };
         resolverFactory.clearRuntimeCache = function () {
             resolverFactoryClearHook();
@@ -183,7 +184,7 @@ describe('PackageRepository', function () {
                 return originalRetrieve.apply(this, arguments);
             };
 
-            packageRepository.fetch({ name: '', source: testPackage, target: '~0.1.0' })
+            packageRepository.fetch({ name: '', source: helpers.localSource(testPackage), target: '~0.1.0' })
             .spread(function (canonicalDir, pkgMeta) {
                 expect(called).to.be(false);
                 expect(fs.existsSync(canonicalDir)).to.be(true);

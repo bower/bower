@@ -24,28 +24,27 @@ describe('HgResolver', function () {
     afterEach(function () {
         logger.removeAllListeners();
     });
-	
-	
+
+
 	function clearResolverRuntimeCache() {
         HgResolver.tags = originaltags;
         HgResolver.branches = originalbranches;
         HgResolver.clearRuntimeCache();
     }
-	
-    function create(decEndpoint, config) {
+
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
-
-        var resolver = new HgResolver(decEndpoint, config || defaultConfig, logger);
+        var resolver = new HgResolver(decEndpoint, defaultConfig(), logger);
 		resolver._tempDir = tempDir;
 		return resolver;
     }
-	
+
 	describe('misc', function () {
         it.skip('should error out if hg is not installed');
     });
-	
+
 	describe('.hasNew', function () {
         before(function () {
             mkdirp.sync(tempDir);
@@ -94,7 +93,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
@@ -136,7 +135,7 @@ describe('HgResolver', function () {
                     commit: 3
                 }
             }));
-			
+
             HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2
@@ -164,7 +163,7 @@ describe('HgResolver', function () {
                     commit: 2
                 }
             }));
-			
+
             HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 1,
@@ -193,7 +192,7 @@ describe('HgResolver', function () {
                     commit: 3
                 }
             }));
-			
+
             HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2,
@@ -221,7 +220,7 @@ describe('HgResolver', function () {
                     commit: 1
                 }
             }));
-			
+
             HgResolver.tags = function () {
                 return Q.resolve({
                     '1.0.0': 2
@@ -237,7 +236,7 @@ describe('HgResolver', function () {
             .done();
         });
     });
-	
+
 	describe('._resolve', function () {
         afterEach(clearResolverRuntimeCache);
 
@@ -285,7 +284,7 @@ describe('HgResolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig, logger);
+            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig(), logger);
 
             resolver.resolve()
             .then(function () {
@@ -301,7 +300,7 @@ describe('HgResolver', function () {
         });
 
     });
-	
+
 	describe('._findResolution', function () {
         afterEach(clearResolverRuntimeCache);
 
@@ -311,7 +310,7 @@ describe('HgResolver', function () {
             HgResolver.tags = function () {
                 return Q.resolve({});
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({
                     'default': '1'
@@ -326,7 +325,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve "*" to default if a repository has no valid semver tags', function (next) {
             var resolver;
 
@@ -335,7 +334,7 @@ describe('HgResolver', function () {
                     'some-tag': 1
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({
                     'default': '1'
@@ -354,7 +353,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve "*" to the latest version if a repository has valid semver tags, ignoring pre-releases', function (next) {
             var resolver;
 
@@ -378,7 +377,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
             var resolver;
 
@@ -401,7 +400,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the latest version that matches a range/version', function (next) {
             var resolver;
 
@@ -426,7 +425,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to a tag even if target is a range that does not exist', function (next) {
             var resolver;
 
@@ -435,7 +434,7 @@ describe('HgResolver', function () {
                     '1.0': 1
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({});
             };
@@ -452,7 +451,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the latest pre-release version that matches a range/version', function (next) {
             var resolver;
 
@@ -477,7 +476,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the exact version if exists', function (next) {
             var resolver;
 
@@ -502,7 +501,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should fail to resolve if none of the versions matched a range/version', function (next) {
             var resolver;
 
@@ -512,7 +511,7 @@ describe('HgResolver', function () {
                     'v0.1.1': 2
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({});
             };
@@ -530,7 +529,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should fail to resolve if there are no versions to match a range/version', function (next) {
             var resolver;
 
@@ -539,7 +538,7 @@ describe('HgResolver', function () {
                     'foo': 1
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({});
             };
@@ -558,7 +557,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the specified commit', function (next) {
             var resolver;
 
@@ -569,7 +568,7 @@ describe('HgResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('r1')
+            resolver._findResolution('1')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'commit',
@@ -579,7 +578,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the specified tag if it exists', function (next) {
             var resolver;
 
@@ -588,7 +587,7 @@ describe('HgResolver', function () {
                     'some-tag': 1
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({});
             };
@@ -605,10 +604,10 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should resolve to the specified branches if it exists', function (next) {
             var resolver;
-			
+
 			HgResolver.tags = function () {
                 return Q.resolve({
                     'some-tag': 1
@@ -633,7 +632,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should fail to resolve to the specified tag/branch if it doesn\'t exist', function (next) {
             var resolver;
 
@@ -642,7 +641,7 @@ describe('HgResolver', function () {
                     'some-tag': 2
                 });
             };
-			
+
 			HgResolver.branches = function () {
                 return Q.resolve({
                     'default': 2
@@ -664,7 +663,7 @@ describe('HgResolver', function () {
             .done();
         });
 	});
-	
+
 	describe('._savePkgMeta', function () {
         before(function () {
             mkdirp.sync(tempDir);
@@ -702,7 +701,7 @@ describe('HgResolver', function () {
 			var metaFile;
 
             // Test with type 'version'
-            resolver._resolution = { type: 'version', tag: '0.0.1', commit: '1' };			
+            resolver._resolution = { type: 'version', tag: '0.0.1', commit: '1' };
 			resolver._clonePath.then(function (clonePath) {
 				metaFile = path.join(clonePath, '.bower.json');
 			})
@@ -856,7 +855,7 @@ describe('HgResolver', function () {
             .done();
         });
     });
-	
+
 	describe('#clearRuntimeCache', function () {
         // Use a class that inherit the HgResolver to see if it uses
         // late binding when clearing the cache
@@ -876,7 +875,7 @@ describe('HgResolver', function () {
             expect(CustomHgResolver._cache.versions.has('foo')).to.be(false);
         });
     });
-	
+
 	describe('#versions', function () {
         afterEach(clearResolverRuntimeCache);
 
@@ -1036,7 +1035,7 @@ describe('HgResolver', function () {
             .done();
         });
     });
-	
+
 	describe('#parseMercurialListOutput', function () {
         var list = [
 			'branch-4                       5:ce686073241f',
@@ -1064,7 +1063,7 @@ describe('HgResolver', function () {
             });
         });
     });
-	
+
 	// remote resolver tests
     describe('.constructor', function () {
         it('should guess the name from the path', function () {
@@ -1074,7 +1073,7 @@ describe('HgResolver', function () {
             expect(resolver.getName()).to.equal('hg');
         });
     });
-	
+
 	describe('.resolve', function () {
 
         it('should export correctly if resolution is a tag', function (next) {
@@ -1094,7 +1093,7 @@ describe('HgResolver', function () {
         });
 
         it('should export correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: testPackage, target: 'r0' });
+            var resolver = create({ source: testPackage, target: '0' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1109,7 +1108,7 @@ describe('HgResolver', function () {
             })
             .done();
         });
-		
+
 		it('should export correctly if resolution is a branch', function (next) {
             var resolver = create({ source: testPackage, target: 'branch-0.0.1' });
 

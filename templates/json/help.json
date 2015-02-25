@@ -10,7 +10,7 @@
         "init":            "Interactively create a bower.json file",
         "install":         "Install a package locally",
         "link":            "Symlink a package folder",
-        "list":            "List local packages",
+        "list":            "List local packages - and possible updates",
         "lookup":          "Look up a package URL by name",
         "prune":           "Removes local extraneous packages",
         "register":        "Register a package",
@@ -62,6 +62,10 @@
         {
             "flag":        "--version",
             "description": "Output Bower version"
+        },
+        {
+            "flag":        "--no-color",
+            "description": "Disable colors"
         }
     ]
 }

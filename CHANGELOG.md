@@ -1,24 +1,55 @@
 # Changelog
 
+## 1.3.12 - 2014-09-28
+
+- [stability] Fix versions for unstable dependencies ([#1532](https://github.com/bower/bower/pull/1532))
+- [fix] Update tar-fs to support old tar format ([#1537](https://github.com/bower/bower/issues/1537))
+- [fix] Make analytics work again ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Always disable analytics for non-interactive mode ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Bower init can create private packages again ([#1522](https://github.com/bower/bower/issues/1522))
+- [fix] Show again missing newline for bower search output ([#1538](https://github.com/bower/bower/issues/1538))
+
+## 1.3.11 - 2014-09-17
+
+- [fix] Restore install missing dependencies on update ([1519](https://github.com/bower/bower/pull/1519))
+
+## 1.3.10 - 2014-09-13
+
+- [fix] Back down concurrency from 50 to 5 ([#1483](https://github.com/bower/bower/pull/1483))
+- [fix] Read .bowerrc from specified cwd ([#1301](https://github.com/bower/bower/pull/1301))
+- [fix] Disable shallow clones except those from GitHub ([#1393](https://github.com/bower/bower/pull/1393))
+- [fix] Expose bower version ([#1478](https://github.com/bower/bower/pull/1478))
+- [fix] Bump dependencies, including "request" ([#1467](https://github.com/bower/bower/pull/1467))
+- [fix] Prevent an error when piping bower output to head ([#1508](https://github.com/bower/bower/pull/1508))
+- [fix] Disable removing unnecessary resolutions ([#1061](https://github.com/bower/bower/pull/1061))
+- [fix] Display the output of hooks again ([#1484](https://github.com/bower/bower/issues/1484))
+- [fix] analytics: true in .bowerrc prevents user prompt ([#1470](https://github.com/bower/bower/pull/1470))
+- [perf] Use `tar-fs` instead of `tar` for faster TAR extraction ([#1490](https://github.com/bower/bower/pull/1490))
+
+## 1.3.9 - 2014-08-06
+
+- [fix] Handle `tmp` sometimes returning an array ([#1434](https://github.com/bower/bower/pull/1434))
+
 ## 1.3.8 - 2014-7-11
 
-- [fix] Lock down `tmp` package dep (#1403, #1407)
+- [fix] Lock down `tmp` package dep ([#1403](https://github.com/bower/bower/pull/1403), [#1407](https://github.com/bower/bower/pull/1407))
 
 ## 1.3.7 - 2014-07-04
 
-- [fix] callstack error when processing installed packages with circular dependencies (#1349)
-- [fix] Prevent bower list --paths` failing with TypeError (#1383)
-- "bower install" fails if there's no bower.json in current directory (#922)
+- [fix] callstack error when processing installed packages with circular dependencies ([#1349](https://github.com/bower/bower/issues/1349))
+- [fix] Prevent bower list --paths` failing with TypeError ([#1383](https://github.com/bower/bower/issues/1383))
+- "bower install" fails if there's no bower.json in current directory ([#922](https://github.com/bower/bower/issues/922))
 
 ## 1.3.6 - 2014-07-02
 
-- [fix] Make --force always re-run installation (#931)
-- [fix] Disable caching for local resources (#1356)
-- [fix] Emit errors instead throwing them when using bower.commands API (#1297)
-- [fix] Main files and bower.json are never ignored (#547)
-- [fix] Check if pkgMeta is undefined during uninstall command (#1329)
-- [fix] Make custom tmp dir and ignores play well with each other (#1299)
-- Warn users when installing package with missing properties (#694)
+- [fix] Make --force always re-run installation ([#931](https://github.com/bower/bower/issues/931))
+- [fix] Disable caching for local resources ([#1356](https://github.com/bower/bower/issues/1356))
+- [fix] Emit errors instead throwing them when using bower.commands API ([#1297](https://github.com/bower/bower/issues/1297))
+- [fix] Main files and bower.json are never ignored ([#547](https://github.com/bower/bower/issues/547))
+- [fix] Check if pkgMeta is undefined during uninstall command ([#1329](https://github.com/bower/bower/issues/1329))
+- [fix] Make custom tmp dir and ignores play well with each other ([#1299](https://github.com/bower/bower/issues/1299))
+- Warn users when installing package with missing properties ([#694](https://github.com/bower/bower/issues/694))
+
 
 ## 1.3.5 - 2014-06-06
 - Search compatible versions in fetching packages ([#1147](https://github.com/bower/bower/issues/1147))

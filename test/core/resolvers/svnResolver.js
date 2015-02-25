@@ -9,8 +9,10 @@ var mout = require('mout');
 var Logger = require('bower-logger');
 var SvnResolver = require('../../../lib/core/resolvers/SvnResolver');
 var defaultConfig = require('../../../lib/config');
+var helpers = require('../../helpers');
 
-describe('SvnResolver', function () {
+if (!helpers.hasSvn()) describe.skip('SvnResolver', function() {});
+else describe('SvnResolver', function () {
     var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/package-svn/repo');
     var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
@@ -31,12 +33,12 @@ describe('SvnResolver', function () {
         SvnResolver.clearRuntimeCache();
     }
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new SvnResolver(decEndpoint, config || defaultConfig, logger);
+        return new SvnResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('misc', function () {
@@ -279,7 +281,7 @@ describe('SvnResolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig, logger);
+            resolver = new DummyResolver({ source: 'foo', target: '1.0.0' }, defaultConfig(), logger);
 
             resolver.resolve()
             .then(function () {

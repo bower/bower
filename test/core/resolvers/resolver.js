@@ -17,6 +17,7 @@ describe('Resolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/package-a');
     var logger;
     var dirMode0777;
+    var config = defaultConfig();
 
     before(function () {
         var stat;
@@ -33,12 +34,12 @@ describe('Resolver', function () {
         logger.removeAllListeners();
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new Resolver(decEndpoint, config || defaultConfig, logger);
+        return new Resolver(decEndpoint, config, logger);
     }
 
     describe('.getSource', function () {
@@ -333,7 +334,7 @@ describe('Resolver', function () {
                 }.bind(this));
             };
 
-            resolver = new DummyResolver({ source: 'foo'}, defaultConfig, logger);
+            resolver = new DummyResolver({ source: 'foo'}, config, logger);
 
             resolver.resolve()
             .then(function () {
@@ -461,7 +462,7 @@ describe('Resolver', function () {
                 osTempDir = path.resolve(tmp.tmpdir);
 
                 expect(dir.indexOf(osTempDir)).to.be(0);
-                expect(dir.indexOf(defaultConfig.tmp)).to.be(0);
+                expect(dir.indexOf(config.tmp)).to.be(0);
 
                 expect(path.basename(dirname)).to.equal('bower');
                 expect(path.dirname(path.dirname(dirname))).to.equal(osTempDir);
@@ -487,13 +488,13 @@ describe('Resolver', function () {
         it('should remove the folder after execution', function (next) {
             this.timeout(15000);  // Give some time to execute
 
-            rimraf(defaultConfig.tmp, function (err) {
+            rimraf(config.tmp, function (err) {
                 if (err) return next(err);
 
                 cmd('node', ['test/assets/test-temp-dir/test.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
-                    expect(fs.existsSync(defaultConfig.tmp)).to.be(true);
-                    expect(fs.readdirSync(defaultConfig.tmp)).to.eql([]);
+                    expect(fs.existsSync(config.tmp)).to.be(true);
+                    expect(fs.readdirSync(config.tmp)).to.eql([]);
                     next();
                 }, function (err) {
                     next(new Error(err.details));
@@ -503,15 +504,15 @@ describe('Resolver', function () {
         });
 
         it('should remove the folder on an uncaught exception', function (next) {
-            rimraf(defaultConfig.tmp, function (err) {
+            rimraf(config.tmp, function (err) {
                 if (err) return next(err);
 
                 cmd('node', ['test/assets/test-temp-dir/test-exception.js'], { cwd: path.resolve(__dirname, '../../..') })
                 .then(function () {
                     next(new Error('The command should have failed'));
                 }, function () {
-                    expect(fs.existsSync(defaultConfig.tmp)).to.be(true);
-                    expect(fs.readdirSync(defaultConfig.tmp)).to.eql([]);
+                    expect(fs.existsSync(config.tmp)).to.be(true);
+                    expect(fs.readdirSync(config.tmp)).to.eql([]);
                     next();
                 })
                 .done();
@@ -830,6 +831,44 @@ describe('Resolver', function () {
                 next();
             })
             .done();
+        });
+
+    });
+
+    describe('#isCacheable', function () {
+        it('caches for normal name', function () {
+            var resolver = new Resolver({ source: 'foo' });
+            expect(resolver.isCacheable()).to.be(true);
+        });
+
+        it('does not cache for absolute paths', function () {
+            var resolver = new Resolver({ source: '/foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for relative paths', function () {
+            var resolver = new Resolver({ source: './foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for parent paths', function () {
+            var resolver = new Resolver({ source: '../foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for file:/// prefix', function () {
+            var resolver = new Resolver({ source: 'file:///foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for windows paths', function () {
+            var resolver = new Resolver({ source: '..\\foo' });
+            expect(resolver.isCacheable()).to.be(false);
+        });
+
+        it('does not cache for windows absolute paths', function () {
+            var resolver = new Resolver({ source: 'C:\\foo' });
+            expect(resolver.isCacheable()).to.be(false);
         });
     });
 });
