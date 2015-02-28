@@ -130,7 +130,6 @@ Bower is made by lots of people across the globe, contributions large and small.
 * [@wibblymat](https://github.com/wibblymat)
 * [@paulirish](https://github.com/paulirish)
 * [@benschwarz](https://github.com/benschwarz)
-* [@sindresorhus](https://github.com/sindresorhus)
 * [@svnlto](https://github.com/svnlto)
 * [@sheerun](https://github.com/sheerun)
 
