@@ -15,7 +15,7 @@ if (!helpers.hasSvn()) describe.skip('SvnResolver', function() {});
 else describe('SvnResolver', function () {
     var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var testPackage = path.resolve(__dirname, '../../assets/package-svn/repo');
-    var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
+    // var testPackageAdmin = path.resolve(__dirname, '../../assets/package-svn/admin');
     var originaltags = SvnResolver.tags;
     var logger;
 
@@ -1002,7 +1002,7 @@ else describe('SvnResolver', function () {
         it('should guess the name from the path', function () {
             var resolver;
 
-            resolver = create('file://' + testPackage);
+            resolver = create(helpers.localSource(testPackage));
             expect(resolver.getName()).to.equal('repo');
 
             resolver = create('svn+http://yii.googlecode.com/svn');
@@ -1013,7 +1013,7 @@ else describe('SvnResolver', function () {
     describe('.resolve', function () {
 
         it('should export correctly if resolution is a tag', function (next) {
-            var resolver = create({ source: 'file://' + testPackageAdmin, target: '0.0.1' });
+            var resolver = create({ source: testPackage, target: '0.0.1' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -1029,7 +1029,7 @@ else describe('SvnResolver', function () {
         });
 
         it('should export correctly if resolution is a commit', function (next) {
-            var resolver = create({ source: 'file://' + testPackageAdmin, target: 'r1' });
+            var resolver = create({ source: testPackage, target: 'r1' });
 
             resolver.resolve()
             .then(function (dir) {

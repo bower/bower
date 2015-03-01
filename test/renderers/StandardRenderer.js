@@ -68,7 +68,6 @@ describe('StandardRenderer', function () {
                 details: '  Some awesome details\nMultiline!    '
             });
         }).spread(function(stdout, stderr) {
-            console.log('asA');
             expect(stderr).to.match(new RegExp(multiline(function(){/*
                 System info:
                 Bower version: [^\r\n]+

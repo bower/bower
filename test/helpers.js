@@ -286,3 +286,16 @@ exports.localSource = function (localPath) {
 
     return localPath;
 };
+
+// Used for example by "svn checkout" and "svn export"
+exports.localUrl = function (localPath) {
+    localPath = path.normalize(localPath);
+
+    if (!exports.isWin()) {
+        localPath = 'file://' + localPath;
+    } else {
+        localPath = 'file:///' + localPath;
+    }
+
+    return localPath;
+};
