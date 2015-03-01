@@ -31,7 +31,7 @@ describe('resolverFactory', function () {
     });
 
     after(function (next) {
-        rimraf('dejavu', next);
+        rimraf('pure', next);
     });
 
     function callFactory(decEndpoint, config) {
@@ -527,31 +527,31 @@ describe('resolverFactory', function () {
     });
 
     it('should recognize registry endpoints correctly', function (next) {
-        // Create a 'dejavu' file at the root to prevent regressions of #666
-        fs.writeFileSync('dejavu', 'foo');
+        // Create a 'pure' file at the root to prevent regressions of #666
+        fs.writeFileSync('pure', 'foo');
 
-        callFactory({ source: 'dejavu' })
+        callFactory({ source: 'pure' })
         .then(function (resolver) {
             expect(resolver).to.be.a(resolvers.GitRemote);
-            expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
+            expect(resolver.getSource()).to.equal('git://github.com/yui/pure-release.git');
             expect(resolver.getTarget()).to.equal('*');
         })
         .then(function () {
             // Test with name
-            return callFactory({ source: 'dejavu', name: 'foo' })
+            return callFactory({ source: 'pure', name: 'foo' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.GitRemote);
-                expect(resolver.getSource()).to.equal('git://github.com/IndigoUnited/dejavu.git');
+                expect(resolver.getSource()).to.equal('git://github.com/yui/pure-release.git');
                 expect(resolver.getName()).to.equal('foo');
                 expect(resolver.getTarget()).to.equal('*');
             });
         })
         .then(function () {
             // Test with target
-            return callFactory({ source: 'dejavu', target: '~2.0.0' })
+            return callFactory({ source: 'pure', target: '~0.4.0' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.GitRemote);
-                expect(resolver.getTarget()).to.equal('~2.0.0');
+                expect(resolver.getTarget()).to.equal('~0.4.0');
 
                 next();
             });
@@ -574,7 +574,7 @@ describe('resolverFactory', function () {
     });
 
     it('should set registry to true on the decomposed endpoint if fetched from the registry', function (next) {
-        var decEndpoint = { source: 'dejavu' };
+        var decEndpoint = { source: 'pure' };
 
         callFactory(decEndpoint)
         .then(function () {
