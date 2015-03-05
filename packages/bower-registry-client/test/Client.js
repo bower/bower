@@ -197,6 +197,7 @@ describe('RegistryClient', function () {
 
     describe('calling the lookup instance method without argument', function () {
         it('should return no result', function (next) {
+            this.timeout(10000);
             this.registry.lookup('', function (err, entry) {
                 expect(err).to.not.be.ok();
                 expect(entry).to.not.be.ok();
