@@ -31,12 +31,12 @@ function unregister(name, callback) {
 
         // Forbidden
         if (response.statusCode === 403) {
-            return callback(createError('Not authorized', 'EFORBIDDEN'));
+            return callback(createError(response.body, 'EFORBIDDEN'));
         }
 
         // Everything other than 204 is unknown
         if (response.statusCode !== 204) {
-            return callback(createError('Unknown error: ' + response.statusCode + ', ' + response.body, 'EUNKNOWN'));
+            return callback(createError(response.body, 'EUNKNOWN'));
         }
 
         callback(null, {
