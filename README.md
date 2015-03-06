@@ -141,6 +141,6 @@ Bower is made by lots of people across the globe, contributions large and small.
 
 ## License
 
-Copyright (c) 2014 Twitter and other contributors
+Copyright (c) 2015 Twitter and other contributors
 
 Licensed under the MIT License
