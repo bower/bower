@@ -109,21 +109,21 @@ describe('bower init', function () {
 
             // Get defaults from prompt
             var defaults = prompt.reduce(function(memo, obj){
-                memo[obj.name] = obj["default"];
+                memo[obj.name] = obj['default'];
                 return memo;
             }, {});
 
             // Answer with defaults
             answer({
-                name: defaults["name"],
-                version: defaults["version"],
-                description: defaults["description"],
-                main: defaults["main"],
-                moduleType: defaults["moduleType"],
-                keywords: defaults["keywords"],
-                authors: defaults["authors"],
-                license: defaults["license"],
-                homepage: "test-homepage",
+                name: defaults.name,
+                version: defaults.version,
+                description: defaults.description,
+                main: defaults.main,
+                moduleType: defaults.moduleType,
+                keywords: defaults.keywords,
+                authors: defaults.authors,
+                license: defaults.license,
+                homepage: 'test-homepage',
                 private: true
             });
 
@@ -145,7 +145,7 @@ describe('bower init', function () {
                 ],
                 'authors': ['JD Isaacks'],
                 'license': 'ISC',
-                'homepage': "test-homepage"
+                'homepage': 'test-homepage'
             });
         });
     });
