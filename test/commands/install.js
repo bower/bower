@@ -1,5 +1,6 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
+var path = require('path');
 
 describe('bower install', function () {
 
@@ -95,7 +96,7 @@ describe('bower install', function () {
         });
     });
 
-    
+
     it('does not write to bower.json if only --save-exact flag is used', function() {
         package.prepare({
             'bower.json': {
@@ -271,6 +272,49 @@ describe('bower install', function () {
             return helpers.run(install).then(function() {
                 expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
             });
+        });
+    });
+
+    it('resolves nested local components', function () {
+        //Create 2 modules with different relative path from parent
+        var dependency = new helpers.TempDir();
+        dependency.path = path.join(tempDir.path, 'dependency');
+        var nestedDep = new helpers.TempDir();
+        nestedDep.path = path.join(tempDir.path, 'nestedDep');
+
+        //Creates a module that depends on dependency
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    dependency: dependency.path
+                }
+            }
+        });
+
+        //Dependency depends on a nestedDep, that it is called with relative path
+        dependency.prepare({
+            'bower.json': {
+                name: 'dependency',
+                dependencies: {
+                    nestedDep: './../nestedDep'
+                }
+            },
+            'version.txt': '1.0.0'
+        });
+
+        nestedDep.prepare({
+            'bower.json': {
+                name: 'nestedDep'
+            },
+            'version.txt': '2.0.0'
+        });
+
+
+
+        return helpers.run(install, [[tempDir.path], { save: true }]).then(function() {
+            expect(tempDir.read('bower_components/dependency/version.txt')).to.contain('1.0.0');
+            expect(tempDir.read('bower_components/nestedDep/version.txt')).to.contain('2.0.0');
         });
     });
 });
