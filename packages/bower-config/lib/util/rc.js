@@ -29,6 +29,7 @@ function rc(name, defaults, cwd, argv) {
         !home ? {} : json(path.join(home, '.' + name + 'rc')),
         json(path.join(paths.config, name + 'rc')),
         json(find('.' + name + 'rc', cwd)),
+        env('npm_package_config_' + name + '_'),
         env(name + '_'),
         argvConfig
     ]);
