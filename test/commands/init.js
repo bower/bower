@@ -1,24 +1,24 @@
-var path = require('path');
 var expect = require('expect.js');
-var fs = require('fs');
-
 var helpers = require('../helpers');
-var bower = helpers.require('lib/index');
+
+var init = helpers.command('init');
 
 describe('bower init', function () {
 
-    var tempDir = new helpers.TempDir();
-    var bowerJsonPath = path.join(tempDir.path, 'bower.json');
+    var package = new helpers.TempDir();
 
-    var config = {
-        cwd: tempDir.path,
-        interactive: true
-    };
+    it('correctly reads arguments', function() {
+        expect(init.readOptions([]))
+        .to.eql([]);
+    });
 
     it('generates bower.json file', function () {
-        tempDir.prepare();
+        package.prepare();
 
-        var logger = bower.commands.init(config);
+        var logger = init({
+            cwd: package.path,
+            interactive: true
+        });
 
         return helpers.expectEvent(logger, 'prompt')
         .spread(function (prompt, answer) {
@@ -37,14 +37,49 @@ describe('bower init', function () {
             return helpers.expectEvent(logger, 'prompt');
         })
         .spread(function (prompt, answer) {
-            answer({
-                prompt: true
-            });
-
+            answer({ prompt: true });
             return helpers.expectEvent(logger, 'end');
         })
         .then(function () {
-            expect(fs.existsSync(bowerJsonPath)).to.be(true);
+            expect(package.readJson('bower.json')).to.eql({
+                name: 'test-name',
+                version: 'test-version',
+                homepage: 'test-homepage',
+                authors: [ 'test-author' ],
+                description: 'test-description',
+                moduleType: 'test-moduleType',
+                keywords: [ 'test-keyword' ],
+                license: 'test-license'
+            });
+        });
+    });
+
+    it('errors on non-interactive mode', function () {
+        package.prepare();
+
+        return helpers.run(init, { cwd: package.path }).then(
+            function () { throw 'should fail'; },
+            function (reason) {
+                expect(reason.message).to.be('Register requires an interactive shell');
+                expect(reason.code).to.be('ENOINT');
+            }
+        );
+    });
+
+    it('warns about existing bower.json', function () {
+        package.prepare({
+            'bower.json': {
+                name: 'foobar'
+            }
+        });
+
+        var logger = init({ cwd: package.path, interactive: true });
+
+        return helpers.expectEvent(logger, 'log').spread(function(event) {
+            expect(event.level).to.be('warn');
+            expect(event.message).to.be(
+                'The existing bower.json file will be used and filled in'
+            );
         });
     });
 });

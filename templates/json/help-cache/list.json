@@ -1,5 +1,5 @@
 {
-    "command": "cache clean",
+    "command": "cache list",
     "description": "Lists cached packages.",
     "usage": [
         "cache list [<options>]",

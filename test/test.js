@@ -1,3 +1,11 @@
+var helpers = require('./helpers');
+
+if (!helpers.hasSvn()) {
+    console.warn('#######################################################');
+    console.warn('It is recommended you install svn for complete testing!');
+    console.warn('#######################################################');
+}
+
 // Cleanup the uncaughtException added by the tmp module
 // It messes with the mocha uncaughtException event to caught errors
 // Please note that is the Resolver that calls tmp.setGracefulCleanup()
@@ -18,5 +26,7 @@ require('./core/resolveCache');
 require('./core/packageRepository');
 require('./core/scripts');
 require('./core/Manager');
+require('./renderers/StandardRenderer.js');
+require('./renderers/JsonRenderer.js');
 require('./commands/index.js');
 require('./util/index.js');

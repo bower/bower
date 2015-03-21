@@ -908,7 +908,6 @@ describe('ResolveCache', function () {
                 expect(entries).to.be.an('array');
 
                 expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
-                expectedJson = expectedJson.toString().trim();
 
                 mout.object.forOwn(entries, function (entry) {
                     // Trim absolute bower path from json
@@ -917,8 +916,7 @@ describe('ResolveCache', function () {
                     entry.canonicalDir = entry.canonicalDir.replace(/\\/g, '/');
                 });
 
-                json = JSON.stringify(entries, null, '  ');
-                expect(json).to.equal(expectedJson);
+                expect(entries).to.eql(JSON.parse(expectedJson));
 
                 next();
             })

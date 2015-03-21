@@ -10,6 +10,23 @@ var cmd = require('../lib/util/cmd');
 var packages = require('./packages-svn.json');
 var nopt = require('nopt');
 
+var isWin = function() {
+    return process.platform === 'win32';
+};
+
+var pathToUrl = function (localPath) {
+    localPath = path.normalize(localPath);
+
+    if (!isWin()) {
+        localPath = 'file://' + localPath;
+    } else {
+        localPath = 'file:///' + localPath;
+    }
+
+    return localPath;
+};
+
+
 var options = nopt({
     'force': Boolean
 }, {
@@ -22,15 +39,22 @@ var env = {};
 mout.object.mixIn(env, process.env);
 
 function ensurePackage(admin, dir) {
-    var promise;
+    var promise = new Q();
 
     // If force is specified, delete folder
     if (options.force) {
-        promise = Q.nfcall(rimraf, dir)
-        .then(function () {
+        promise = promise.then(function () {
+            return Q.nfcall(rimraf, admin);
+        });
+
+        promise = promise.then(function () {
+            return Q.nfcall(rimraf, dir);
+        });
+
+        promise = promise.then(function () {
             throw new Error();
         });
-    // Otherwise check if .svn is already created
+    // Otherwise check if .git is already created
     } else {
         promise = Q.nfcall(fs.stat, path.join(dir, '.svn'));
     }
@@ -40,9 +64,9 @@ function ensurePackage(admin, dir) {
         // Create dir
         return Q.nfcall(mkdirp, dir)
         // Init svn repo
-        .then(cmd.bind(null, 'svnadmin', ['create', admin]))
+        .then(cmd.bind(null, 'svnadmin', ['create', admin], {}))
         // checkout the repo
-        .then(cmd.bind(null, 'svn', ['checkout', 'file://' + admin, dir]))
+        .then(cmd.bind(null, 'svn', ['checkout', pathToUrl(admin), dir], {}))
         // create directory structure
         .then(cmd.bind(null, 'svn', ['mkdir', 'trunk'], { cwd: dir }))
         .then(cmd.bind(null, 'svn', ['mkdir', 'tags'], { cwd: dir }))
@@ -81,7 +105,7 @@ function checkRelease(dir, release) {
 
 function createRelease(admin, dir, release, files) {
     // checkout the repo
-    return cmd('svn', ['checkout', 'file://' + admin, dir])
+    return cmd('svn', ['checkout', pathToUrl(admin), dir])
     // Attempt to delete branch, ignoring the error
     .then(function () {
         return cmd('svn', ['delete', dir + '/branches/' + release], { cwd: dir })

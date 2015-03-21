@@ -12,12 +12,22 @@ describe('scripts', function () {
     var packageName = 'package-zip';
     var packageDir = path.join(__dirname, '../assets/' + packageName + '.zip');
 
+    // We cannot use pure touch, because Windows
+    var touch = function (file) {
+       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(\'' + file + '\', \'w\'));"';
+    };
+
+    // We cannot use pure touch, because Windows
+    var touchWithPid = function (file) {
+       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
+    };
+
     var config = {
         cwd: tempDir,
         scripts: {
-            preinstall: 'touch preinstall_%',
-            postinstall: 'touch postinstall_%',
-            preuninstall: 'touch preuninstall_%'
+            preinstall: touch('preinstall_%'),
+            postinstall: touch('postinstall_%'),
+            preuninstall: touch('preuninstall_%')
         }
     };
 
@@ -112,7 +122,7 @@ describe('scripts', function () {
 
     it('should process scripts with quotes and vars in the cmd properly.', function (next) {
 
-        config.scripts.preinstall = 'touch "$BOWER_PID %"';
+        config.scripts.preinstall = touchWithPid(' %');
 
         bower.commands
         .install([packageDir], undefined, config)
