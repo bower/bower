@@ -95,7 +95,7 @@ describe('bower install', function () {
         });
     });
 
-    
+
     it('does not write to bower.json if only --save-exact flag is used', function() {
         package.prepare({
             'bower.json': {
@@ -271,6 +271,25 @@ describe('bower install', function () {
             return helpers.run(install).then(function() {
                 expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
             });
+        });
+    });
+
+    it('does not work if lock file is missing if production', function (next) {
+        package.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: package.path
+                }
+            }
+        });
+
+        return helpers.run(install, [[], { production: true }]).then(function() {
+            next(new Error('Error Not Thrown'));
+        }).catch(function() {
+            next();
         });
     });
 });
