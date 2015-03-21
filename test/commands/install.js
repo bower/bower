@@ -292,6 +292,7 @@ describe('bower install', function () {
 
         return helpers.run(install).then(function() {
             expect(tempDir.readJson('bower.lock')).to.not.be(undefined);
+            expect(tempDir.readJson('bower.lock')).to.not.eql({});
         });
     });
 });
