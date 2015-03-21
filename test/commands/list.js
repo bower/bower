@@ -10,7 +10,6 @@ var commands = {
 };
 
 describe('bower list', function () {
-
     var tempDir = new helpers.TempDir();
 
     var gitPackage = new helpers.TempDir();
