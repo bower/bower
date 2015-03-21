@@ -39,6 +39,8 @@ describe('bower install', function () {
 
     var gitPackage = new helpers.TempDir();
 
+    var lockFile = {};
+
     it('writes to bower.json if --save flag is used', function () {
         package.prepare();
 
@@ -279,16 +281,18 @@ describe('bower install', function () {
 
         tempDir.prepare({
             'bower.json': {
-                name: 'test'
-            },
-            dependencies: {
-                package: package.path
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
             }
         });
 
         return helpers.run(install).then(function() {
-            expect(tempDir.readJson('bower.lock')).to.not.be(undefined);
-            expect(tempDir.readJson('bower.lock')).to.not.eql({});
+            var lockFileContents = tempDir.readJson('bower.lock');
+            expect(lockFileContents).to.not.be(undefined);
+            expect(lockFileContents).to.not.eql({});
+            lockFile = lockFileContents;
         });
     });
 
@@ -297,14 +301,54 @@ describe('bower install', function () {
 
         tempDir.prepare({
             'bower.json': {
-                name: 'test'
-            },
-            dependencies: {
-                package: package.path
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
             }
         });
 
         return helpers.run(install, [[], {production: true}]).then(function() {
+            next(new Error('Error not thrown as expected'));
+        }, function() {
+            next();
+        });
+    });
+
+    it('installs from lockFile when exists', function (next) {
+        package.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            },
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install).then(function() {
+            next();
+        }, function() {
+            next();
+        });
+    });
+
+    it('error when tampering with version number', function (next) {
+        package.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.1'
+                }
+            },
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install).then(function() {
             next(new Error('Error not thrown as expected'));
         }, function() {
             next();
