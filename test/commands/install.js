@@ -275,11 +275,7 @@ describe('bower install', function () {
     });
 
     it('generates a lockFile', function () {
-        package.prepare({
-            'bower.json': {
-                version: '0.1.0'
-            }
-        });
+        package.prepare();
 
         tempDir.prepare({
             'bower.json': {
