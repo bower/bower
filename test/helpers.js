@@ -53,6 +53,16 @@ after(function () {
     rimraf.sync(tmpLocation);
 });
 
+afterEach(function () {
+    glob.sync('**/bower.lock', {
+        cwd: tmpLocation,
+        dot: true
+    }).map(function (removePath) {
+        var fullPath = path.join(tmpLocation, removePath);
+        rimraf.sync(fullPath);
+    });
+});
+
 exports.TempDir = (function() {
     function TempDir (defaults) {
         this.path = path.join(tmpLocation, uuid.v4());
