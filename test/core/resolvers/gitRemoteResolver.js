@@ -333,5 +333,151 @@ describe('GitRemoteResolver', function () {
                 next();
             });
         });
+
+        it('should cache hosts that support shallow cloning', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        return Q.reject(new Error('More calls than expected'));
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    console.log('Error', err);
+                    next(err);
+                });
+            });
+        });
+
+        it('should cache hosts that support shallow cloning across multiple repos', function (next) {
+            var testSource1 = 'https://foo/bar.git';
+            var testSource2 = 'https://foo/barbaz.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        return Q.reject(new Error('More calls than expected'));
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    console.log('Error', err);
+                    next(err);
+                });
+            });
+        });
+
+        it('should run separate checks for separate hosts ', function (next) {
+            var testSource1 = 'https://foo/bar.git';
+            var testSource2 = 'https://foo.bar.baz/barbaz.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource2 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: barbaz
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    console.log('Error', err);
+                    next(err);
+                });
+            });
+        });
     });
 });
