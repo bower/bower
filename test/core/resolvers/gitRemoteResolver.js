@@ -314,6 +314,28 @@ describe('GitRemoteResolver', function () {
             });
         });
 
+        it('should evaluate to false when the URL can not be parsed', function (next) {
+            var testSource = 'grmblfjx///:::.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: none
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            }, function (err) {
+                next(err);
+            });
+        });
+
         it('should evaluate to true when the smart content type is returned', function (next) {
             var testSource = 'https://foo/bar.git';
 
@@ -373,7 +395,6 @@ describe('GitRemoteResolver', function () {
 
                     next();
                 }, function(err) {
-                    console.log('Error', err);
                     next(err);
                 });
             });
@@ -419,7 +440,6 @@ describe('GitRemoteResolver', function () {
 
                     next();
                 }, function(err) {
-                    console.log('Error', err);
                     next(err);
                 });
             });
@@ -474,7 +494,6 @@ describe('GitRemoteResolver', function () {
 
                     next();
                 }, function(err) {
-                    console.log('Error', err);
                     next(err);
                 });
             });
