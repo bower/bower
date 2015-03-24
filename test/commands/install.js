@@ -366,7 +366,7 @@ describe('bower install', function () {
             var lockFileContents = tempDir.read('bower.lock');
             expect(lockFileContents).to.contain('"package"');
             expect(lockFileContents).to.contain('"_release": "0.1.1"');
-            lockFile = lockFileContents;
+            lockFile = JSON.parse(lockFileContents);
         });
     });
 
@@ -377,7 +377,6 @@ describe('bower install', function () {
         // test bower.json to test that
         // even though a newer version is available
         // the lock file is installing what it has
-        lockFile = JSON.parse(lockFile);
         lockFile.dependencies.package.endpoint.target = '~0.1.0';
 
         tempDir.prepare({
@@ -434,8 +433,8 @@ describe('bower install', function () {
             expect(tempDir.read('bower_components/angular/bower.json')).to.contain('"version": "1.3.15"');
             expect(tempDir.read('bower.lock')).to.contain('"angular"');
             expect(tempDir.read('bower.json')).to.contain('"angular"');
-            bowerJson = tempDir.read('bower.json');
-            lockFile = tempDir.read('bower.lock');
+            bowerJson = tempDir.readJson('bower.json');
+            lockFile = tempDir.readJson('bower.lock');
         });
     });
 
@@ -446,10 +445,41 @@ describe('bower install', function () {
         });
 
         return helpers.run(install, [['jquery'], {saveDev: true}]).then(function() {
-            bowerJson = tempDir.read('bower.json');
-            console.log(bowerJson);
             expect(tempDir.read('bower.lock')).to.contain('"jquery"');
-            lockFile = tempDir.read('bower.lock');
+            bowerJson = tempDir.readJson('bower.json');
+            lockFile = tempDir.readJson('bower.lock');
+        });
+    });
+
+    it('should install dev and non-dev dependencies from lockfile', function () {
+        // Need a new tempDir to validate this
+        tempDir = new helpers.TempDir();
+        install = helpers.command('install', { cwd: tempDir.path });
+
+        tempDir.prepare({
+            'bower.json': bowerJson,
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install).then(function() {
+            expect(tempDir.exists('bower_components/angular/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/jquery/bower.json')).to.equal(true);
+        });
+    });
+
+    it('should install dev dependencies only from lockfile when using production flag', function () {
+        // Need a new tempDir to validate this
+        tempDir = new helpers.TempDir();
+        install = helpers.command('install', { cwd: tempDir.path });
+
+        tempDir.prepare({
+            'bower.json': bowerJson,
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install, [[], {production: true}]).then(function() {
+            expect(tempDir.exists('bower_components/angular/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/jquery/bower.json')).to.equal(false);
         });
     });
 });
