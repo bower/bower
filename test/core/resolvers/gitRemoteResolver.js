@@ -287,7 +287,7 @@ describe('GitRemoteResolver', function () {
 
             var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
 
-            resolver._shallowClone.then(function (shallowCloningSupported) {
+            resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(false);
 
                 next();
@@ -307,7 +307,7 @@ describe('GitRemoteResolver', function () {
 
             var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
 
-            resolver._shallowClone.then(function (shallowCloningSupported) {
+            resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(false);
 
                 next();
@@ -327,7 +327,7 @@ describe('GitRemoteResolver', function () {
 
             var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
 
-            resolver._shallowClone.then(function (shallowCloningSupported) {
+            resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(true);
 
                 next();
