@@ -416,6 +416,8 @@ describe('bower install', function () {
         });
     });
 
+    var bowerJson = null;
+
     it('should install package when specifying package and be in lockFile with save argument', function () {
         tempDir.prepare({
             'bower.json': {
@@ -431,6 +433,23 @@ describe('bower install', function () {
         return helpers.run(install, [['angular'], {save: true}]).then(function() {
             expect(tempDir.read('bower_components/angular/bower.json')).to.contain('"version": "1.3.15"');
             expect(tempDir.read('bower.lock')).to.contain('"angular"');
+            expect(tempDir.read('bower.json')).to.contain('"angular"');
+            bowerJson = tempDir.read('bower.json');
+            lockFile = tempDir.read('bower.lock');
+        });
+    });
+
+    it('should install package when specifying package and be in lockFile with save-dev argument', function () {
+        tempDir.prepare({
+            'bower.json': bowerJson,
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install, [['jquery'], {saveDev: true}]).then(function() {
+            bowerJson = tempDir.read('bower.json');
+            console.log(bowerJson);
+            expect(tempDir.read('bower.lock')).to.contain('"jquery"');
+            lockFile = tempDir.read('bower.lock');
         });
     });
 });
