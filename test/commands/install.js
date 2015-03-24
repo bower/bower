@@ -397,4 +397,40 @@ describe('bower install', function () {
             expect(tempDir.read('bower.lock')).to.contain('"_release": "0.1.1"');
         });
     });
+
+    it('should install package when specifying package but not be in lockFile', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    packageGit: gitPackage.path + '#1.0.0',
+                    package: '~0.1.0'
+                }
+            },
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install, [['angular']]).then(function() {
+            expect(tempDir.read('bower_components/angular/bower.json')).to.contain('"version": "1.3.15"');
+            expect(tempDir.read('bower.lock')).to.not.contain('"angular"');
+        });
+    });
+
+    it('should install package when specifying package and be in lockFile with save argument', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    packageGit: gitPackage.path + '#1.0.0',
+                    package: '~0.1.0'
+                }
+            },
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install, [['angular'], {save: true}]).then(function() {
+            expect(tempDir.read('bower_components/angular/bower.json')).to.contain('"version": "1.3.15"');
+            expect(tempDir.read('bower.lock')).to.contain('"angular"');
+        });
+    });
 });
