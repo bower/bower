@@ -24,6 +24,20 @@ describe('rc', function() {
         var config = rc('bower', defaults, tempDir.path);
 
         expect(config.key).to.eql('value');
+        expect(config.key2).to.eql(undefined);
+    });
+
+    it('correctly reads .bowerrc files from child', function() {
+        var config = rc('bower', defaults, tempDir.path + '/child/');
+
+        expect(config.key).to.eql('value');
         expect(config.key2).to.eql('value2');
+    });
+
+    it('correctly reads .bowerrc files from child2', function() {
+        var config = rc('bower', defaults, tempDir.path + '/child2/');
+
+        expect(config.key).to.eql('value');
+        expect(config.key2).to.eql(undefined);
     });
 });

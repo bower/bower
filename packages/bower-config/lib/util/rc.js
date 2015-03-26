@@ -5,7 +5,7 @@ var osenv = require('osenv');
 var object = require('mout/object');
 var string = require('mout/string');
 var paths = require('./paths');
-var glob = require('glob');
+//var glob = require('glob');
 
 var win = process.platform === 'win32';
 var home = osenv.home();
@@ -103,14 +103,23 @@ function env(prefix) {
 }
 
 function find(filename, dir) {
-    var files = glob.sync('**/' + filename, {
-        cwd: dir
-    });
-    files.forEach(function(file, index) {
-        files[index] = path.join(dir, file);
-    });
-    // Reverse the array so that merges are done hierarchically
-    files.reverse();
+    var files = [];
+
+    var walk = function (filename, dir) {
+        var file = path.join(dir, filename);
+        var parent = path.dirname(dir);
+
+        if (fs.existsSync(file)) {
+            files.push(file);
+            if (parent !== dir) {
+                walk(filename, parent);
+            }
+        }
+    };
+
+    dir = dir || process.cwd();
+    walk(filename, dir);
+
     return files;
 }
 
