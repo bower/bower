@@ -119,7 +119,7 @@ function find(filename, dir) {
 
     dir = dir || process.cwd();
     walk(filename, dir);
-
+    files.reverse();
     return files;
 }
 

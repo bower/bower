@@ -16,7 +16,7 @@ describe('rc', function() {
             key2: 'value2'
         },
         'child2/.bowerrc': {
-            key: 'valueShouldBeOverwrittenByParent'
+            key: 'valueShouldBeOverwriteParent'
         }
     });
 
@@ -37,7 +37,7 @@ describe('rc', function() {
     it('correctly reads .bowerrc files from child2', function() {
         var config = rc('bower', defaults, tempDir.path + '/child2/');
 
-        expect(config.key).to.eql('value');
+        expect(config.key).to.eql('valueShouldBeOverwriteParent');
         expect(config.key2).to.eql(undefined);
     });
 });
