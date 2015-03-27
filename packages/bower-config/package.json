@@ -19,25 +19,25 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
-    "glob": "^4.5.3",
     "graceful-fs": "~2.0.0",
-    "mkdirp": "^0.5.0",
     "mout": "~0.9.0",
     "optimist": "~0.6.0",
-    "osenv": "0.0.3",
-    "q": "^1.2.0",
-    "rimraf": "^2.3.2"
+    "osenv": "0.0.3"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
+    "glob": "^4.5.3",
     "grunt": "^0.4.5",
     "grunt-cli": "^0.1.13",
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-simple-mocha": "^0.4.0",
     "load-grunt-tasks": "^2.0.0",
+    "mkdirp": "^0.5.0",
     "mocha": "~1.12.0",
-    "node-uuid": "^1.4.3"
+    "node-uuid": "^1.4.3",
+    "q": "^1.2.0",
+    "rimraf": "^2.3.2"
   },
   "scripts": {
     "test": "grunt test"

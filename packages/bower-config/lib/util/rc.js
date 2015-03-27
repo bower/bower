@@ -5,7 +5,6 @@ var osenv = require('osenv');
 var object = require('mout/object');
 var string = require('mout/string');
 var paths = require('./paths');
-//var glob = require('glob');
 
 var win = process.platform === 'win32';
 var home = osenv.home();
