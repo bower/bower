@@ -53,6 +53,14 @@ describe('bower list', function () {
         });
     });
 
+    it('returns the new version', function() {
+        package.prepare();
+
+        return helpers.run(version, ['major', {}, { cwd: package.path }]).then(function(results) {
+            expect(results[0]).to.be('1.0.0');
+        });
+    });
+
     it('bumps patch version, create commit, and tag', function() {
         return gitPackage.prepareGit().then(function() {
 
