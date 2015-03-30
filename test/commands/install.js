@@ -482,4 +482,20 @@ describe('bower install', function () {
             expect(tempDir.exists('bower_components/jquery/bower.json')).to.equal(false);
         });
     });
+
+    it('should install dev dependencies only from lockfile when using production flag', function () {
+        // Need a new tempDir to validate this
+        tempDir = new helpers.TempDir();
+        install = helpers.command('install', { cwd: tempDir.path });
+
+        tempDir.prepare({
+            'bower.json': bowerJson,
+            'bower.lock': lockFile
+        });
+
+        return helpers.run(install, [[], {production: true}]).then(function() {
+            expect(tempDir.exists('bower_components/angular/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/jquery/bower.json')).to.equal(false);
+        });
+    });
 });
