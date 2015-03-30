@@ -17,7 +17,7 @@ var fakeRepositoryFactory = function () {
 
 var unregister = helpers.command('unregister');
 
-var unregisterFactory = function (canonicalDir, pkgMeta) {
+var unregisterFactory = function () {
     return helpers.command('unregister', {
         '../core/PackageRepository': fakeRepositoryFactory()
     });
