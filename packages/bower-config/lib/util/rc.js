@@ -60,15 +60,25 @@ function parse(content, file) {
 }
 
 function json(file) {
-    var content;
+    var content = {};
+    if (!Array.isArray(file)) {
+        try {
+            content = fs.readFileSync(file).toString();
+        } catch (err) {
+            return null;
+        }
 
-    try {
-        content = fs.readFileSync(file).toString();
-    } catch (err) {
-        return null;
+        return parse(content, file);
+    } else {
+        // This is multiple json files
+        file.forEach(function(filename) {
+            var json = fs.readFileSync(filename).toString();
+            json = parse(json, filename);
+            content = object.merge(content, json);
+        });
+
+        return content;
     }
-
-    return parse(content, file);
 }
 
 function env(prefix) {
@@ -93,25 +103,24 @@ function env(prefix) {
 }
 
 function find(filename, dir) {
+    var files = [];
+
     var walk = function (filename, dir) {
         var file = path.join(dir, filename);
         var parent = path.dirname(dir);
 
-        try {
-            fs.statSync(file);
-            return file;
-        } catch (err) {
-            // Check if we hit the root
-            if (parent === dir) {
-                return null;
+        if (fs.existsSync(file)) {
+            files.push(file);
+            if (parent !== dir) {
+                walk(filename, parent);
             }
-
-            return walk(filename, parent);
         }
     };
 
     dir = dir || process.cwd();
-    return walk(filename, dir);
+    walk(filename, dir);
+    files.reverse();
+    return files;
 }
 
 module.exports = rc;

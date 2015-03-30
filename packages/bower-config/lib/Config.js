@@ -14,7 +14,7 @@ Config.prototype.load = function () {
     this._config = rc('bower', defaults, this._cwd);
     return this;
 };
-
+/* jshint ignore:start */
 Config.prototype.get = function (key) {
     // TODO
 };
@@ -32,7 +32,7 @@ Config.prototype.del = function (key, value) {
 Config.prototype.save = function (where, callback) {
     // TODO
 };
-
+/* jshint ignore:end */
 Config.prototype.toObject = function () {
     var config = lang.deepClone(this._config);
 

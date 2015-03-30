@@ -16,3 +16,5 @@ describe('NPM Config on package.json', function () {
         });
     });
 });
+
+require('./util/index');
