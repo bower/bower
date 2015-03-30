@@ -4,20 +4,24 @@ var helpers = require('../helpers');
 var fakeGitHub = function (authenticate) {
     function FakeGitHub() { }
 
-    var _authenticated = false;
+    var _creds;
 
     FakeGitHub.prototype.authenticate = function (creds) {
-        if (creds.password === 'validpassword') {
-            _authenticated = true;
-        }
+        _creds = creds;
     };
 
     FakeGitHub.prototype.authorization = {
         create: function (options, cb) {
-            if (_authenticated) {
+            if (_creds.password === 'validpassword') {
                 cb(null, { token: 'faketoken' });
+            } else if (_creds.password === 'withtwofactor') {
+                if (options.headers && options.headers['X-GitHub-OTP'] === '123456') {
+                    cb(null, { token: 'faketwoauthtoken' });
+                } else {
+                    cb({ code: 401, message: '{ "message": "Must specify two-factor authentication OTP code." }' });
+                }
             } else {
-                cb('Not authenticated');
+                cb({ code: 401, message: 'Bad credentials' });
             }
         }
     };
@@ -82,6 +86,30 @@ describe('bower login', function () {
         });
     });
 
+    it('supports two-factor authorization', function () {
+        var login = loginFactory({});
+
+        var logger = login({}, { interactive: true });
+
+        logger.once('prompt', function (prompt, answer) {
+            logger.once('prompt', function (prompt, answer) {
+                answer({
+                    otpcode: '123456'
+                });
+            });
+
+            answer({
+                username: 'user',
+                password: 'withtwofactor'
+            });
+        });
+
+        return helpers.expectEvent(logger, 'end')
+        .spread(function(options) {
+            expect(options.token).to.be('faketwoauthtoken');
+        });
+    });
+
     it('fails if provided password is invalid', function () {
         var login = loginFactory({});
 
@@ -94,10 +122,9 @@ describe('bower login', function () {
             });
         });
 
-        return helpers.expectEvent(logger, 'log').spread(function (log) {
-            expect(log.level).to.be('error');
-            expect(log.id).to.be('login error');
-            expect(log.message).to.be('Could not authenticate');
+        return helpers.expectEvent(logger, 'error').spread(function (error) {
+            expect(error.code).to.be('EAUTH');
+            expect(error.message).to.be('Authorization failed');
         });
     });
 
