@@ -1,6 +1,6 @@
 var util = require('util');
 var mout = require('mout');
-var Resolver = require('../../../../lib/core/resolvers/resolver');
+var Resolver = require('../../../../lib/core/resolvers/Resolver');
 
 function TestResolver(decEndpoint, config, logger) {
     Resolver.call(this, decEndpoint, config, logger);
