@@ -305,4 +305,32 @@ describe('bower update', function () {
             });
         });
     });
+
+    it('update should update package when package is specified', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'updateTest',
+                dependencies: {
+                    bootstrap: '3.3.1'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/bootstrap/.bower.json')).to.contain('3.3.1');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'updateTest',
+                    dependencies: {
+                        bootstrap: '3.3.2'
+                    }
+                }
+            }, true);
+
+            return update(['bootstrap']).then(function() {
+                expect(tempDir.read('bower_components/bootstrap/.bower.json')).to.contain('3.3.2');
+            });
+        });
+    });
 });
