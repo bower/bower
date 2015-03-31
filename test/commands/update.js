@@ -49,7 +49,7 @@ describe('bower update', function () {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
-console.log('update install');
+
         var logger = commands.install(
             packages, options, config
         );
@@ -271,6 +271,37 @@ console.log('update install');
             expect(tempDir.exists('postinstall.txt')).to.be(false);
             return update().then(function() {
                 expect(tempDir.read('postinstall.txt')).to.be('package');
+            });
+        });
+    });
+
+    it('update should error when no package is specified', function (next) {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.0',
+                        test: '0.0.1'
+                    }
+                }
+            }, true);
+
+            return update().then(function() {
+                next(new Error('Error not thrown as expected'));
+            }, function() {
+                next();
             });
         });
     });
