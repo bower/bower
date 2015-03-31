@@ -49,7 +49,7 @@ describe('bower update', function () {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
-
+console.log('update install');
         var logger = commands.install(
             packages, options, config
         );
@@ -142,7 +142,9 @@ describe('bower update', function () {
         });
 
         return install().then(function() {
-            tempDir.prepare();
+            tempDir
+                .prepare(undefined, true)
+                .delete('postinstall.txt');
 
             return update().then(function() {
                 expect(tempDir.exists('postinstall.txt')).to.be(false);
@@ -150,7 +152,7 @@ describe('bower update', function () {
         });
     });
 
-    it('updates a package', function () {
+    it('update without all should fail', function (next) {
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
@@ -170,9 +172,39 @@ describe('bower update', function () {
                         package: gitPackage.path + '#1.0.1'
                     }
                 }
-            });
+            }, true);
 
             return update().then(function() {
+                next(new Error('Error not thrown as expected'));
+            }, function() {
+                next();
+            });
+        });
+    });
+
+    it('update with all should update packages', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.1'
+                    }
+                }
+            }, true);
+
+            return update([], {all: true}).then(function() {
                 expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.1');
             });
         });
