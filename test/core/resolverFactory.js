@@ -559,6 +559,30 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should recognize the pluggable resolver', function(next){
+        var registryPrefix = 'test';
+        var sourceWithPrefix = registryPrefix +'://foo/foo';
+        var pluggableTestResolver = helpers.require('test/assets/bower-' + registryPrefix + '-resolver');
+
+        var resolverFactoryStub = function () {
+            return helpers.require('lib/core/resolverFactory', {
+                'bower-test-resolver': pluggableTestResolver
+            });
+        };
+
+        var resolverFactoryConstructor = resolverFactoryStub(function (){
+        }).getConstructor(sourceWithPrefix);
+
+        resolverFactoryConstructor
+            .spread(function (ConcreteResolver){
+                expect(new ConcreteResolver({ source: sourceWithPrefix })).to.be.a(pluggableTestResolver);
+            })
+            .then(function(){
+                next();
+            })
+            .done();
+    });
+
     it('should error out if the package was not found in the registry', function (next) {
         callFactory({ source: 'some-package-that-will-never-exist' })
         .then(function () {

@@ -1,0 +1,13 @@
+{
+  "name": "bower-test-resolver",
+  "version": "0.9.0",
+  "description": "Test resolver for pluggable resolvers feature",
+  "main": "./lib/index.js",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "util":"*",
+    "mout":"*"
+  }
+}
