@@ -146,7 +146,7 @@ exports.TempDir = (function() {
     TempDir.prototype.git = function () {
         var args = Array.prototype.slice.call(arguments);
 
-        return exec('git ' + args.join(' '), { cwd: this.path, env: env }).stdout;
+        return exec('cd ' + this.path + ' && git ' + args.join(' ')).stdout;
     };
 
     TempDir.prototype.exists = function (name) {
