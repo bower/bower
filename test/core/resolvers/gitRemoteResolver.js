@@ -336,6 +336,50 @@ describe('GitRemoteResolver', function () {
             });
         });
 
+        it('should evaluate to false when the smart content type is returned, but not in the first content type entry - text/plain', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                 < Date: Wed, 01 Apr 2015 17:15:56 GMT
+                 < Content-Type: text/plain
+                 < foo: bar
+                 < Content-Type: application/x-git-upload-pack-advertisement
+                 1234: 5678
+                 */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            });
+        });
+
+        it('should evaluate to false when the smart content type is returned, but not in the first content type entry - text/html', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                 < Date: Wed, 01 Apr 2015 17:15:56 GMT
+                 < Content-Type: text/html
+                 < foo: bar
+                 < Content-Type: application/x-git-upload-pack-advertisement
+                 1234: 5678
+                 */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            });
+        });
+
         it('should evaluate to true when the smart content type is returned', function (next) {
             var testSource = 'https://foo/bar.git';
 
