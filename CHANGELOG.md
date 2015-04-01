@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.4.1 - 2015-04-01
+
+- [fix] Reading .bowerrc upwards directory tree ([#1763](https://github.com/bower/bower/issues/1763))
+- [fix] Update bower-registry-client so it uses the same bower-config as bower
+
 ## 1.4.0 - 2015-03-30
 
 - Add login and unregister commands ([#1719](https://github.com/bower/bower/issues/1719))
