@@ -111,9 +111,10 @@ function find(filename, dir) {
 
         if (fs.existsSync(file)) {
             files.push(file);
-            if (parent !== dir) {
-                walk(filename, parent);
-            }
+        }
+
+        if (parent !== dir) {
+            walk(filename, parent);
         }
     };
 

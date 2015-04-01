@@ -17,6 +17,9 @@ describe('rc', function() {
         },
         'child2/.bowerrc': {
             key: 'valueShouldBeOverwriteParent'
+        },
+        'child3/bower.json': {
+            name: 'without-bowerrc'
         }
     });
 
@@ -38,6 +41,13 @@ describe('rc', function() {
         var config = rc('bower', defaults, tempDir.path + '/child2/');
 
         expect(config.key).to.eql('valueShouldBeOverwriteParent');
+        expect(config.key2).to.eql(undefined);
+    });
+
+    it('correctly reads .bowerrc files from child3', function() {
+        var config = rc('bower', defaults, tempDir.path + '/child3/');
+
+        expect(config.key).to.eql('value');
         expect(config.key2).to.eql(undefined);
     });
 });
