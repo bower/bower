@@ -12,7 +12,7 @@ var os = require('os');
 var which = require('which');
 var path = require('path');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-var cmd = require('../lib/util/cmd');
+var exec = require('sync-exec');
 var config = require('../lib/config');
 
 // For better promise errors
@@ -106,29 +106,22 @@ exports.TempDir = (function() {
 
         mkdirp.sync(that.path);
 
-        var promise = new Q();
+        this.git('init');
 
-        object.forOwn(revisions, function (files, tag) {
-            promise = promise.then(function () {
-                return that.git('init');
-            }).then(function () {
-                that.glob('./!(.git)').map(function (removePath) {
-                    var fullPath = path.join(that.path, removePath);
+        this.glob('./!(.git)').map(function (removePath) {
+            var fullPath = path.join(that.path, removePath);
 
-                    rimraf.sync(fullPath);
-                });
-
-                that.create(files, {});
-            }).then(function () {
-                return that.git('add', '-A');
-            }).then(function () {
-                return that.git('commit', '-m"commit"');
-            }).then(function () {
-                return that.git('tag', tag);
-            });
+            rimraf.sync(fullPath);
         });
 
-        return promise;
+        object.forOwn(revisions, function (files, tag) {
+            this.create(files, {});
+            this.git('add', '-A');
+            this.git('commit', '-m"commit"');
+            this.git('tag', tag);
+        }.bind(this));
+
+        return this;
     };
 
     TempDir.prototype.glob = function (pattern) {
@@ -153,7 +146,7 @@ exports.TempDir = (function() {
     TempDir.prototype.git = function () {
         var args = Array.prototype.slice.call(arguments);
 
-        return cmd('git', args, { cwd: this.path, env: env });
+        return exec('git ' + args.join(' '), { cwd: this.path, env: env }).stdout;
     };
 
     TempDir.prototype.exists = function (name) {

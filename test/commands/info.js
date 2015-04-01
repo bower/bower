@@ -36,7 +36,8 @@ describe('bower info', function () {
     });
 
     it('shows info about given package', function () {
-        return package.prepareGit({}).then(function() {
+        package.prepareGit({});
+
         return helpers.run(info, [package.path]).spread(function(results) {
             expect(results).to.eql({
                 'latest': meta2,
@@ -46,7 +47,6 @@ describe('bower info', function () {
                     '0.1.2'
                 ]
             });
-        });
         });
     });
 });
