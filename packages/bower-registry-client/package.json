@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "bower-config": "~0.5.0",
+    "bower-config": "~0.6.1",
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.51.0",
