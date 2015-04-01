@@ -12,7 +12,7 @@ var os = require('os');
 var which = require('which');
 var path = require('path');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-var exec = require('sync-exec');
+var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
 
 // For better promise errors
@@ -145,8 +145,13 @@ exports.TempDir = (function() {
 
     TempDir.prototype.git = function () {
         var args = Array.prototype.slice.call(arguments);
+        var result = spawnSync('git', args, { cwd: this.path });
 
-        return exec('cd ' + this.path + ' && git ' + args.join(' ')).stdout;
+        if (result.status !== 0) {
+            throw new Error(result.stderr);
+        } else {
+            return result.stdout.toString();
+        }
     };
 
     TempDir.prototype.exists = function (name) {
