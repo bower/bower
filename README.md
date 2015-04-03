@@ -4,52 +4,71 @@
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
-> A package manager for the web
+> Um gerenciador de pacotes para a web
 
-Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
+Bower oferece uma solução não opinativa ao problema de **gerenciamento de pacotes front-end**, enquanto expoem o modelo de dependência do pacote através de uma API que pode ser usada por mais do que "opinionated build stack". Não há sistema de dependências amplas, as dependências não são partilhadas entre diferentes applicativos, e a estrutura da dependência é plana.
 
-Bower runs over Git, and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
+Bower é executado dentro do Git, e é um pacote agnóstico. O componente de um pacote pode ser feito até qualquer tipo de recurso, e usado em qualquer tipo de transporte. (ex., AMD, CommonJS, etc.).
 
-**View complete docs on [bower.io](http://bower.io)**
+**Veja a documentação completa em [bower.io](http://bower.io)**
 
-[View all packages available through Bower's registry](http://bower.io/search/).
+[Veja todos os pacotes disponíveis através do registro Bower](http://bower.io/search/).
 
-## Install
+## Instalação
+
+Bower é um utilitário de linha de comandos. Instale-o com [npm](http://npmjs.org/).
 
 ```sh
 $ npm install -g bower
 ```
 
-Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). Also make sure that [git](http://git-scm.com/) is installed as some bower
-packages require it to be fetched and installed.
+Bower depende de [Node.js](http://nodejs.org/) e [npm](http://npmjs.org/). Certefique-se também que tem o [git](http://git-scm.com/) está instalado pois alguns pacotes presentes no Bower precisam que este esteja instalado.
 
 
-## Usage
+## Uso
 
-See complete command line reference at [bower.io/docs/api/](http://bower.io/docs/api/)
+Veja um referência completa  da linha de comando em [bower.io/docs/api/](http://bower.io/docs/api/)
 
-### Installing packages and dependencies
+### Instalação de pacotes e dependências
 
 ```sh
-# install dependencies listed in bower.json
+# Instala as dependências presentes no bower.json
 $ bower install
 
-# install a package and add it to bower.json
+# Instala um pacote e adiciona-o ao bower.json
 $ bower install <package> --save
 
-# install specific version of a package and add it to bower.json
+# Instala uma versão especifica de um pacote e adiciona-o ao bower.json
 $ bower install <package>#<version> --save
 ```
 
-### Using packages
+O pacote pode ser um atalho do GitHub, um endpoint do Git, um URL, e mais. Lei-a mais sobre [bower install](http://bower.io/docs/api/#install)
 
-We discourage using bower components statically for performance and security reasons (if component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
+```sh
+# Pacote registado
+$ bower install jquery
 
-The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using module loader (like [RequireJS](http://requirejs.org/)).
+# Atalho do GitHub
+$ bower install desandro/masonry
 
-### Uninstalling packages
+# Endpoint do Git
+$ bower install git://github.com/user/package.git
 
-To uninstall a locally installed package:
+# URL
+$ bower install http://example.com/script.js
+```
+
+Salve os seus pacotes no [bower.json com o bower init](http://bower.io/docs/creating-packages/#bowerjson).
+
+### Uso de pacotes
+
+Nós desencorajamos o uso de componentes Bower estáticos por razões de performance e segurança (se o componente tem um arquivo `upload.php` que não é ignorado, este pode ser facilmente explorado para más intenções).
+
+A melhor abordagem para processar componentes instalados pelo Bower é usando a ferramenta de construção (como [Grunt] (http://gruntjs.com/) ou [gulp] (http://gulpjs.com/)), e servi-los associados ou usando carregador de módulo (como [RequireJS] (http://requirejs.org/)).
+
+### Desinstalar pacotes
+
+Para desinstalar um pacote instalado localmente:
 
 ```sh
 $ bower uninstall <package-name>
@@ -57,74 +76,69 @@ $ bower uninstall <package-name>
 
 ### prezto and oh-my-zsh users
 
-On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
+No `prezto` ou `oh-my-zsh`, não se esqueça de fazer `alias bower='noglob bower'` ou `bower install jquery\#1.9.1`
 
-### Running commands with sudo
+### Executar comandos com sudo
 
-Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
+Bowqer é um comando de usuário, não é preciso executá-lo com a permissão de um super usúario (Administrador.).
+No entanto, se você ainda deseja executar comandos com sudo, use a opção `--allow-root`.
 
-### Windows users
+### Usuários de Windows
 
-To use Bower on Windows, you must install
-[msysgit](http://msysgit.github.io/) correctly. Be sure to check the
-option shown below:
+Para usar Bower no Windows, você deve instalar
+[msysgit](http://msysgit.github.io/) corretamente. Certefique-se que tem as opções abaixo marcadas:
 
 ![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
 
-Note that if you use TortoiseGit and if Bower keeps asking for your SSH
-password, you should add the following environment variable: `GIT_SSH -
-C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
-path if needed.
+Note que, se você usa TortoiseGit e o Bower estiver a pedir a sua password SSH, você deve adicionar a seguinte variável de ambiente: `GIT_SSH -
+C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Modifique a diretória de `TortoisePlink`
+se precisar.
 
-## Configuration
+## Configuração
 
-Bower can be configured using JSON in a `.bowerrc` file. Read over available options at [bower.io/docs/config](http://bower.io/docs/config).
+Bower pode ser configurado usando JSON no arquivo `.bowerrc`. Leia todas as opções válidas em [bower.io/docs/config](http://bower.io/docs/config).
 
 ## Completion (experimental)
 
-_NOTE_: Completion is still not implemented for the 1.0.0 release
+_NOTA_: Ainda não está finalizado para a implementação da versão 1.0.0
 
-Bower now has an experimental `completion` command that is based on, and works
-similarly to the [npm completion](https://npmjs.org/doc/cli/completion.html). It is
-not available for Windows users.
+Bower tem um comando experimental `completion` que se baseia, e funciona de forma similar ao [npm completion](https://npmjs.org/doc/cli/completion.html). Não está disponível para usuários Windows.
 
-This command will output a Bash / ZSH script to put into your `~/.bashrc`,
-`~/.bash_profile`, or `~/.zshrc` file.
+Este comando irá dar resultado a um script Bash / ZSH para colocar dentro do arquivo `~/.bashrc`, `~/.bash_profile`, ou `~/.zshrc`.
 
 ```sh
 $ bower completion >> ~/.bash_profile
 ```
 
 
-## Support
+## Suporte
 
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
-* [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
+* [\#bower](http://webchat.freenode.net/?channels=bower) em Freenode
 
 
-## Contributing
+## Contribuições
 
-We welcome contributions of all kinds from anyone. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md).
+Acolhemos todas as contribuições de todo o tipo de alguém. Por favor, dedique um momento para
+rever as diretrizes para [contribuição](CONTRIBUTING.md).
 
-* [Bug reports](CONTRIBUTING.md#bugs)
-* [Feature requests](CONTRIBUTING.md#features)
-* [Pull requests](CONTRIBUTING.md#pull-requests)
+* [Report de Bugs](CONTRIBUTING.md#bugs)
+* [Requesito de Recurso/Feature Requests](CONTRIBUTING.md#features)
+* [Requesito de Puxar/Pull Requests](CONTRIBUTING.md#pull-requests)
 
 
-Note that on Windows for tests to pass you need to configure Git before cloning:
+Note que no Windows, para efetuar testes, você precisa de configurar o Git antes de clonar:
 
 ```
 git config --global core.autocrlf input
 ```
 
-## Bower Team
+## Equipa Bower
 
-Bower is made by lots of people across the globe, contributions large and small. Our thanks to everyone who has played a part.
+Bower é composto por muitas pessoas em todo o mundo, contribuindo muito ou pouco. O nosso obrigado a todos os que fazem parte dela.
 
-### Core team
+### Equipa Core
 
 * [@satazor](https://github.com/satazor)
 * [@wibblymat](https://github.com/wibblymat)
@@ -139,7 +153,7 @@ Bower is made by lots of people across the globe, contributions large and small.
 * [@maccman](https://github.com/maccman)
 
 
-## License
+## Licença
 
 Copyright (c) 2015 Twitter and other contributors
 
