@@ -245,7 +245,7 @@ describe('bower install', function () {
     });
 
     it('works for git repositories', function () {
-        return gitPackage.prepareGit({
+        gitPackage.prepareGit({
             '1.0.0': {
                 'bower.json': {
                     name: 'package'
@@ -258,19 +258,19 @@ describe('bower install', function () {
                 },
                 'version.txt': '1.0.1'
             }
-        }).then(function() {
-            tempDir.prepare({
-                'bower.json': {
-                    name: 'test',
-                    dependencies: {
-                        package: gitPackage.path + '#1.0.0'
-                    }
-                }
-            });
+        });
 
-            return helpers.run(install).then(function() {
-                expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
-            });
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return helpers.run(install).then(function() {
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
         });
     });
 });
