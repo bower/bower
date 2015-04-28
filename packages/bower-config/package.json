@@ -38,5 +38,8 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "files": [
+    "lib"  
+  ]
 }
