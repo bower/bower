@@ -36,5 +36,9 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "files": [
+    "lib",
+    "Client.js"
+  ]
 }
