@@ -86,5 +86,10 @@
   "bin": {
     "bower": "bin/bower"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "files": [
+    "bin",
+    "lib",
+    "templates"
+  ]
 }
