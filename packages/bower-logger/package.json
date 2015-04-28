@@ -10,7 +10,6 @@
     }
   ],
   "repository": "bower/logger",
-  },
   "main": "lib/Logger",
   "engines": {
     "node": ">=0.10.0"
