@@ -2,6 +2,10 @@ var expect = require('expect.js');
 var path = require('path');
 var fs = require('graceful-fs');
 var Logger = require('bower-logger');
+var helpers = require('../../helpers');
+var Q = require('q');
+var mout = require('mout');
+var multiline = require('multiline').stripIndent;
 var GitRemoteResolver = require('../../../lib/core/resolvers/GitRemoteResolver');
 var defaultConfig = require('../../../lib/config');
 
@@ -106,6 +110,92 @@ describe('GitRemoteResolver', function () {
             .done();
         });
 
+        describe('shallow cloning', function () {
+            var gitRemoteResolverFactory;
+
+            beforeEach(function () {
+                gitRemoteResolverFactory = function (handler) {
+                    return helpers.require('lib/core/resolvers/GitRemoteResolver', {
+                        '../../util/cmd': handler
+                    });
+                };
+            });
+
+            it('should add --depth=1 when shallow cloning is supported', function (next) {
+                var testSource = 'http://foo/bar.git';
+
+                var MyGitRemoteResolver = gitRemoteResolverFactory(function (cmd, args) {
+                    // The first git call fetches the tags for the provided source
+                    if (mout.array.equals(args, ['ls-remote', '--tags', '--heads', testSource])) {
+                        // Return list of commits, including one tag.
+                        // The tag will be used for the clone call.
+                        return Q.all([multiline(function () {/*
+                         e4655d250f2a3f64ef2d712f25dafa60652bb93e refs/heads/some-branch
+                         0a7daf646d4fd743b6ef701d63bdbe20eee422de refs/tags/0.0.1
+                         */
+                        })]);
+                    }
+                    else if (args[0] === 'clone') {
+                        // Verify parameters of the clone call.
+                        // In this case, the arguments need to contain "--depth 1".
+                        expect(args).to.eql(['clone', 'http://foo/bar.git', '-b', '0.0.1', '--progress', '.', '--depth', 1]);
+
+                        // In this case, only the stderr content is evaluated. Everything's fine as long as it
+                        // does not contain any error description.
+                        return Q.all(['stdout', 'stderr']);
+                    }
+                });
+
+                // Mock the call, return true for this test.
+                MyGitRemoteResolver.prototype._supportsShallowCloning = function () {
+                    return Q.resolve(true);
+                };
+
+                var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+                resolver.resolve().then(function () {
+                    next();
+                });
+            });
+
+            it('should not add --depth=1 when shallow cloning is not supported', function (next) {
+                var testSource = 'http://foo/bar.git';
+
+                var MyGitRemoteResolver = gitRemoteResolverFactory(function (cmd, args) {
+                    // The first git call fetches the tags for the provided source
+                    if (mout.array.equals(args, ['ls-remote', '--tags', '--heads', testSource])) {
+                        // Return list of commits, including one tag.
+                        // The tag will be used for the clone call.
+                        return Q.all([multiline(function () {/*
+                         e4655d250f2a3f64ef2d712f25dafa60652bb93e refs/heads/some-branch
+                         0a7daf646d4fd743b6ef701d63bdbe20eee422de refs/tags/0.0.1
+                         */
+                        })]);
+                    }
+                    else if (args[0] === 'clone') {
+                        // Verify parameters of the clone call.
+                        // In this case, the arguments should not contain "--depth 1".
+                        expect(args).to.eql(['clone', 'http://foo/bar.git', '-b', '0.0.1', '--progress', '.']);
+
+                        // In this case, only the stderr content is evaluated. Everything's fine as long as it
+                        // does not contain any error description.
+                        return Q.all(['stdout', 'stderr']);
+                    }
+                });
+
+                // Mock the call, return false for this test.
+                MyGitRemoteResolver.prototype._supportsShallowCloning = function () {
+                    return Q.resolve(false);
+                };
+
+                var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+                resolver.resolve().then(function () {
+                    next();
+                });
+            });
+        });
+
         it.skip('should handle gracefully servers that do not support --depth=1');
         it.skip('should report progress when it takes too long to clone');
     });
@@ -160,6 +250,253 @@ describe('GitRemoteResolver', function () {
                 next();
             })
             .done();
+        });
+    });
+
+    describe('#_supportsShallowCloning', function () {
+        var gitRemoteResolverFactory;
+
+        beforeEach(function () {
+            gitRemoteResolverFactory = function (handler) {
+                return helpers.require('lib/core/resolvers/GitRemoteResolver', {
+                    '../../util/cmd': handler
+                });
+            };
+        });
+
+        function createCmdHandlerFn (testSource, stderr) {
+            return function (cmd, args, options) {
+                expect(cmd).to.be('git');
+                expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
+                expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                return Q.all(['stdout', stderr]);
+            };
+        }
+
+        it('should call ls-remote when using http protocol', function (next) {
+            var testSource = 'http://foo/bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: none
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            });
+        });
+
+        it('should call ls-remote when using https protocol', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: none
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            });
+        });
+
+        it('should evaluate to false when the URL can not be parsed', function (next) {
+            var testSource = 'grmblfjx///:::.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: none
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(false);
+
+                next();
+            }, function (err) {
+                next(err);
+            });
+        });
+
+        it('should evaluate to true when the smart content type is returned', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: application/x-git-upload-pack-advertisement
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                next();
+            });
+        });
+
+        it('should cache hosts that support shallow cloning', function (next) {
+            var testSource = 'https://foo/bar.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        return Q.reject(new Error('More calls than expected'));
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    next(err);
+                });
+            });
+        });
+
+        it('should cache hosts that support shallow cloning across multiple repos', function (next) {
+            var testSource1 = 'https://foo/bar.git';
+            var testSource2 = 'https://foo/barbaz.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        return Q.reject(new Error('More calls than expected'));
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    next(err);
+                });
+            });
+        });
+
+        it('should run separate checks for separate hosts ', function (next) {
+            var testSource1 = 'https://foo/bar.git';
+            var testSource2 = 'https://foo.bar.baz/barbaz.git';
+
+            var counter = 0;
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                function (cmd, args, options) {
+                    counter++;
+
+                    if (counter === 1) {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: bar
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                    else {
+                        expect(cmd).to.be('git');
+                        expect(args).to.eql([ 'ls-remote', '--heads', testSource2 ]);
+                        expect(options.env.GIT_CURL_VERBOSE).to.be(2);
+
+                        return Q.all(['stdout', multiline(function () {/*
+                         foo: barbaz
+                         Content-Type: application/x-git-upload-pack-advertisement
+                         1234: 5678
+                         */
+                        })]);
+                    }
+                }
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+
+                resolver2._shallowClone().then(function (shallowCloningSupported) {
+                    expect(shallowCloningSupported).to.be(true);
+
+                    next();
+                }, function(err) {
+                    next(err);
+                });
+            });
         });
     });
 });

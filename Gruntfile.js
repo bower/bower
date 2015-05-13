@@ -20,7 +20,7 @@ module.exports = function (grunt) {
         simplemocha: {
             options: {
                 reporter: 'spec',
-                timeout: '5000'
+                timeout: '15000'
             },
             full: {
                 src: ['test/test.js']
@@ -40,7 +40,7 @@ module.exports = function (grunt) {
                 command: 'node test/packages.js --force && node test/packages-svn.js --force'
             },
             cover: {
-                command: 'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- -R dot test/test.js'
+                command: 'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
             coveralls: {
                 command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'

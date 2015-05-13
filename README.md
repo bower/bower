@@ -1,6 +1,6 @@
 # Bower
 
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Coverage Status](https://coveralls.io/repos/bower/bower/badge.png?branch=master)](https://coveralls.io/r/bower/bower?branch=master)
+[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master) 
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
@@ -86,7 +86,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 _NOTE_: Completion is still not implemented for the 1.0.0 release
 
 Bower now has an experimental `completion` command that is based on, and works
-similarly to the [npm completion](https://npmjs.org/doc/completion.html). It is
+similarly to the [npm completion](https://npmjs.org/doc/cli/completion.html). It is
 not available for Windows users.
 
 This command will output a Bash / ZSH script to put into your `~/.bashrc`,
@@ -114,6 +114,12 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
 
+Note that on Windows for tests to pass you need to configure Git before cloning:
+
+```
+git config --global core.autocrlf input
+```
+
 ## Bower Team
 
 Bower is made by lots of people across the globe, contributions large and small. Our thanks to everyone who has played a part.
@@ -124,7 +130,6 @@ Bower is made by lots of people across the globe, contributions large and small.
 * [@wibblymat](https://github.com/wibblymat)
 * [@paulirish](https://github.com/paulirish)
 * [@benschwarz](https://github.com/benschwarz)
-* [@sindresorhus](https://github.com/sindresorhus)
 * [@svnlto](https://github.com/svnlto)
 * [@sheerun](https://github.com/sheerun)
 
@@ -136,6 +141,6 @@ Bower is made by lots of people across the globe, contributions large and small.
 
 ## License
 
-Copyright (c) 2014 Twitter and other contributors
+Copyright (c) 2015 Twitter and other contributors
 
 Licensed under the MIT License

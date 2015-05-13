@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.4.1 - 2015-04-01
+
+- [fix] Reading .bowerrc upwards directory tree ([#1763](https://github.com/bower/bower/issues/1763))
+- [fix] Update bower-registry-client so it uses the same bower-config as bower
+
+## 1.4.0 - 2015-03-30
+
+- Add login and unregister commands ([#1719](https://github.com/bower/bower/issues/1719))
+- Automatically detecting smart Git hosts ([#1628](https://github.com/bower/bower/issues/1628))
+- [bower/config#23] Allow npm config variables ([#1711](https://github.com/bower/bower/issues/1711))
+- [bower/config#24] Merge .bowerrc files upwards directory tree ([#1689](https://github.com/bower/bower/issues/1689))
+- Better homedir detection (514eb8f)
+- Add --save-exact flag ([#1654](https://github.com/bower/bower/issues/1654))
+- Ensure extracted files are readable (tar-fs) ([#1548](https://github.com/bower/bower/issues/1548))
+- The version command in the programmatic API now returns the new version ([#1755](https://github.com/bower/bower/issues/1755))
+- Some minor fixes: #1639, #1620, #1576, #1557, 962a565, a464f5a
+- Improved Windows support (AppVeyor CI, tests actually passing on Windows)
+- OSX testing enabled on TravisCI
+
+It also includes improved test coverage (~60% -> ~85%) and many refactors.
+
 ## 1.3.12 - 2014-09-28
 
 - [stability] Fix versions for unstable dependencies ([#1532](https://github.com/bower/bower/pull/1532))

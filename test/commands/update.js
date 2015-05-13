@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var object = require('mout').object;
 
 var helpers = require('../helpers');
+var updateCmd = helpers.command('update');
 var commands = helpers.require('lib/index').commands;
 
 describe('bower update', function () {
@@ -9,6 +10,7 @@ describe('bower update', function () {
     var tempDir = new helpers.TempDir();
 
     var gitPackage = new helpers.TempDir();
+
     gitPackage.prepareGit({
         '1.0.0': {
             'bower.json': {
@@ -56,6 +58,11 @@ describe('bower update', function () {
         return helpers.expectEvent(logger, 'end');
     };
 
+    it('correctly reads arguments', function() {
+        expect(updateCmd.readOptions(['jquery', '-F', '-p']))
+        .to.eql([['jquery'], { forceLatest: true, production: true }]);
+    });
+
     it('install missing packages', function () {
         package.prepare();
 
@@ -86,7 +93,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    preinstall: 'bash -c "echo -n % > preinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\''
                 }
             }
         });
@@ -108,7 +115,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
@@ -130,7 +137,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
@@ -183,7 +190,7 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    preinstall: 'bash -c "echo -n % > preinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\''
                 }
             }
         });
@@ -215,7 +222,8 @@ describe('bower update', function () {
             },
             '.bowerrc': {
                 scripts: {
-                    postinstall: 'bash -c "echo -n % > postinstall.txt"'
+                    preinstall: 'node -e \'require("fs").writeFileSync("preinstall.txt", "%")\'',
+                    postinstall: 'node -e \'require("fs").writeFileSync("postinstall.txt", "%")\''
                 }
             }
         });
