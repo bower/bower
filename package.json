@@ -3,12 +3,7 @@
   "version": "1.4.1",
   "description": "The browser package manager",
   "author": "Twitter",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/bower/bower/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "repository": "bower/bower",
   "main": "lib",
   "homepage": "http://bower.io",
