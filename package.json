@@ -78,9 +78,7 @@
   "scripts": {
     "test": "grunt test"
   },
-  "bin": {
-    "bower": "bin/bower"
-  },
+  "bin": "bin/bower",
   "preferGlobal": true,
   "files": [
     "bin",
