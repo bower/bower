@@ -3,31 +3,26 @@
   "version": "0.4.0",
   "description": "Read bower.json files with semantics, normalisation, defaults and validation",
   "author": "Twitter",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/bower/json/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "repository": "bower/json",
   "main": "lib/json",
   "engines": {
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "deep-extend": "^0.3.2",
+    "deep-extend": "^0.4.0",
     "graceful-fs": "^3.0.0",
-    "intersect": "^0.1.0"
+    "intersect": "^1.0.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
     "grunt": "^0.4.4",
     "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "^0.10.0",
+    "grunt-contrib-jshint": "^0.11.2",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-simple-mocha": "^0.4.0",
     "mocha": "*",
-    "underscore.string": "^2.3.3"
+    "underscore.string": "^3.0.3"
   },
   "scripts": {
     "test": "grunt test"
