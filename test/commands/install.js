@@ -347,6 +347,34 @@ describe('bower install', function () {
         });
     });
 
+    it('error when commit changed behind tag', function (next) {
+        // Re-Prepare the git package so that the commit hash changes
+        gitPackage.prepareGit({
+            '1.0.1': {
+                'bower.json': {
+                    name: 'package'
+                },
+                'version.txt': '1.0.1'
+            }
+        }).then(function() {
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        packageGit: gitPackage.path + '!1.0.1'
+                    }
+                },
+                'bower.lock': lockFile
+            });
+
+            return helpers.run(install).then(function () {
+                next(new Error('Error not thrown as expected'));
+            }, function () {
+                next();
+            });
+        });
+    });
+
     it('new dependencies added in bower.json are installed', function () {
         package.prepare();
 
@@ -354,7 +382,6 @@ describe('bower install', function () {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    packageGit: gitPackage.path + '#1.0.0',
                     package: '0.1.1'
                 }
             },
@@ -383,7 +410,6 @@ describe('bower install', function () {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    packageGit: gitPackage.path + '#1.0.0',
                     package: '~0.1.0'
                 }
             },
@@ -402,7 +428,6 @@ describe('bower install', function () {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    packageGit: gitPackage.path + '#1.0.0',
                     package: '~0.1.0'
                 }
             },
@@ -422,7 +447,6 @@ describe('bower install', function () {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    packageGit: gitPackage.path + '#1.0.0',
                     package: '~0.1.0'
                 }
             },
