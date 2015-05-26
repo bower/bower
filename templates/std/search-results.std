@@ -6,5 +6,5 @@
 {{/.}}
 {{/condense}}
 
-{{else}}No results.
+{{else}}Please provide a valid search term. E.g. bower search angular
 {{/if}}

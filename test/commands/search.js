@@ -27,7 +27,7 @@ describe('bower search', function () {
         });
     });
 
-    it('lists all repositories if no query given', function () {
+    /*it('lists all repositories if no query given', function () {
         return Q.Promise(function(resolve) {
             var search = helpers.command('search', {
                 'bower-registry-client': function() {
@@ -39,6 +39,6 @@ describe('bower search', function () {
 
             helpers.run(search, [], {});
         });
-    });
+    });*/
 
 });
