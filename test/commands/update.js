@@ -10,6 +10,7 @@ describe('bower update', function () {
     var tempDir = new helpers.TempDir();
 
     var gitPackage = new helpers.TempDir();
+
     gitPackage.prepareGit({
         '1.0.0': {
             'bower.json': {
