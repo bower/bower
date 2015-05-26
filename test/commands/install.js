@@ -356,22 +356,21 @@ describe('bower install', function () {
                 },
                 'version.txt': '1.0.1'
             }
-        }).then(function() {
-            tempDir.prepare({
-                'bower.json': {
-                    name: 'test',
-                    dependencies: {
-                        packageGit: gitPackage.path + '!1.0.1'
-                    }
-                },
-                'bower.lock': lockFile
-            });
+        });
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    packageGit: gitPackage.path + '!1.0.1'
+                }
+            },
+            'bower.lock': lockFile
+        });
 
-            return helpers.run(install).then(function () {
-                next(new Error('Error not thrown as expected'));
-            }, function () {
-                next();
-            });
+        return helpers.run(install).then(function () {
+            next(new Error('Error not thrown as expected'));
+        }, function () {
+            next();
         });
     });
 
