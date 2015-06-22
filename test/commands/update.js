@@ -9,6 +9,12 @@ describe('bower update', function () {
 
     var tempDir = new helpers.TempDir();
 
+    var subPackage = new helpers.TempDir({
+      'bower.json': {
+        name: 'subPackage'
+      }
+    }).prepare();
+
     var gitPackage = new helpers.TempDir();
 
     gitPackage.prepareGit({
@@ -20,7 +26,10 @@ describe('bower update', function () {
         },
         '1.0.1': {
             'bower.json': {
-                name: 'package'
+                name: 'package',
+                dependencies: {
+                  subPackage: subPackage.path
+                }
             },
             'version.txt': '1.0.1'
         }
@@ -79,6 +88,33 @@ describe('bower update', function () {
             expect(tempDir.exists('bower_components/package/bower.json')).to.equal(true);
             expect(tempDir.read('bower_components/package/bower.json')).to.contain('"name": "package"');
         });
+    });
+
+    it('does not install ignored dependencies', function() {
+      var package2 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package2',
+              dependencies: {
+                package: package.path
+              }
+          }
+      }).prepare();
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test',
+              dependencies: {
+                  package2: package2.path
+              },
+              ignoredDependencies: ['package']
+          }
+      });
+
+      return update().then(function() {
+          expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
+          expect(tempDir.exists('bower_components/package')).to.equal(false);
+      });
+
     });
 
     it('runs preinstall hook when installing missing package', function () {
@@ -180,6 +216,38 @@ describe('bower update', function () {
         });
     });
 
+    it('does not install ignored dependencies when updating a package', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return install().then(function() {
+
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+            expect(tempDir.exists('bower_components/subPackage')).to.equal(false);
+
+             tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.1'
+                    },
+                    ignoredDependencies: ['subPackage']
+                }
+            });
+
+            return update().then(function() {
+                expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.1');
+                expect(tempDir.exists('bower_components/subPackage')).to.equal(false);
+            });
+        });
+    });
+
     it('runs preinstall hook when updating a package', function () {
         tempDir.prepare({
             'bower.json': {
@@ -207,7 +275,7 @@ describe('bower update', function () {
 
             expect(tempDir.exists('preinstall.txt')).to.be(false);
             return update().then(function() {
-                expect(tempDir.read('preinstall.txt')).to.be('package');
+                expect(tempDir.read('preinstall.txt')).to.be('subPackage package');
             });
         });
     });
@@ -240,7 +308,7 @@ describe('bower update', function () {
 
             expect(tempDir.exists('postinstall.txt')).to.be(false);
             return update().then(function() {
-                expect(tempDir.read('postinstall.txt')).to.be('package');
+                expect(tempDir.read('postinstall.txt')).to.be('subPackage package');
             });
         });
     });
