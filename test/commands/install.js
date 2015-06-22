@@ -255,4 +255,39 @@ describe('bower install', function () {
             expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
         });
     });
+
+    it('does not install ignored dependencies', function() {
+      package.prepare();
+      var package2 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package2',
+          }
+      }).prepare();
+
+      var package3 = new helpers.TempDir({
+        'bower.json': {
+            name: 'package3',
+            dependencies: {
+              package2: package2.path,
+              package: package.path,
+            }
+        }
+      }).prepare();
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test_tw',
+              dependencies: {
+                package3: package3.path
+              },
+              ignoredDependencies: ['package']
+          },
+      });
+
+      return helpers.run(install).then(function() {
+          expect(tempDir.exists('bower_components/package')).to.be(false);
+          expect(tempDir.exists('bower_components/package2')).to.be(true);
+      });
+
+    });
 });
