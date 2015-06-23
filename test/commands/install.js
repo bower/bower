@@ -1,6 +1,7 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
 var nock = require('nock');
+var fs = require('fs');
 
 describe('bower install', function () {
 
@@ -214,7 +215,6 @@ describe('bower install', function () {
         }
       }
     });
-
     var lastAction = null;
 
     helpers.run(install).logger.intercept(function (log) {
@@ -225,6 +225,28 @@ describe('bower install', function () {
       expect(lastAction.message).to.be('foobar');
       next();
     });
+  });
+
+  it('skips components not installed by bower', function () {
+      package.prepare({
+          '.git': {} //Make a dummy file instead of using slower gitPrepare()
+      });
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test',
+              dependencies: {
+                  package: package.path
+              }
+          }
+      });
+
+      return helpers.run(install).then(function() {
+          var packageFiles = fs.readdirSync(package.path);
+          //presence of .git file implies folder was not overwritten
+          expect(packageFiles).to.contain('.git'); 
+      });
+
   });
 
   it('works for git repositories', function () {
