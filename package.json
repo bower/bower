@@ -10,6 +10,9 @@
   "engines": {
     "node": ">=0.10.0"
   },
+  "keywords": [
+    "bower"
+  ],
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "1.0.0",
