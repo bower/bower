@@ -1,6 +1,7 @@
 var fs = require('graceful-fs');
 var path = require('path');
 var deepExtend = require('deep-extend');
+var isAsset = require('./util/isAsset');
 var isComponent = require('./util/isComponent');
 var createError = require('./util/createError');
 
@@ -106,6 +107,45 @@ function validate(json) {
     
     if (json.description && json.description.length > 140) {
         throw createError('The description is too long. 140 characters should be more than enough', 'EINVALID');
+    }
+
+    if (json.main !== undefined) {
+        var main = json.main;
+        if (typeof main === 'string') {
+            main = [main];
+        }
+        if (!(main instanceof Array)) {
+            throw createError('The "main" field has to be either an Array or a String', 'EINVALID');
+        }
+        var ext2files = {};
+        main.forEach(function (filename) {
+            if (typeof filename !== 'string') {
+                throw createError('The "main" Array has to contain only Strings', 'EINVALID');
+            }
+            if (/[*]/.test(filename)) {
+                throw createError('The "main" field cannot contain globs (example: "*.js")', 'EINVALID');
+            }
+            if (/[.]min[.][^/]+$/.test(filename)) {
+                throw createError('The "main" field cannot contain minified files', 'EINVALID');
+            }
+            if (isAsset(filename)) {
+                throw createError('The "main" field cannot contain font, image, audio, or video files', 'EINVALID');
+            }
+            var ext = path.extname(filename);
+            if (ext.length >= 2) {
+                var files = ext2files[ext];
+                if (!files) {
+                    files = ext2files[ext] = [];
+                }
+                files.push(filename);
+            }
+        });
+        Object.keys(ext2files).forEach(function (ext) {
+            var files = ext2files[ext];
+            if (files.length > 1) {
+                throw createError('The "main" field has to contain only 1 file per filetype; found multiple ' + ext + ' files: ' + JSON.stringify(files), 'EINVALID');
+            }
+        });
     }
 
     // TODO https://github.com/bower/bower.json-spec

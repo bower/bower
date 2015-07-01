@@ -243,6 +243,69 @@ describe('.validate', function () {
             bowerJson.validate(json);
         }).to.not.throwException();
     });
+    it('should validate the type of main', function () {
+        var json = {
+            name: 'foo',
+            main: {}
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate the type of items of an Array main', function () {
+        var json = {
+            name: 'foo',
+            main: [{}]
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate that main does not contain globs', function () {
+        var json = {
+            name: 'foo',
+            main: ['js/*.js']
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate that main does not contain minified files', function () {
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+        var json = {
+            name: 'foo',
+            main: ['foo.min.css']
+        };
+    });
+    it('should validate that main does not contain fonts', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.woff']
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate that main does not contain images', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.png']
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
+    it('should validate that main does not contain multiple files of the same filetype', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.js', 'bar.js']
+        };
+        expect(function () {
+            bowerJson.validate(json);
+        }).to.throwException();
+    });
 });
 
 describe('.normalize', function () {
