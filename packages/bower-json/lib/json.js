@@ -115,7 +115,7 @@ function validate(json) {
 
 function normalize(json) {
     if (typeof json.main === 'string') {
-        json.main = json.main.split(',');
+        json.main = [json.main];
     }
 
     // TODO
