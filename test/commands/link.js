@@ -28,12 +28,14 @@ describe('bower link', function () {
     });
 
     it('correctly reads arguments', function() {
-        expect(link.readOptions(['jquery', 'angular']))
-        .to.eql(['jquery', 'angular']);
+        expect(link.readOptions(['jquery', 'jquery-link-name', '-F']))
+        .to.eql(['jquery', 'jquery-link-name', {
+            forceLatest: true
+        }]);
     });
 
     it('creates self link', function () {
-        return helpers.run(link, [undefined, undefined,
+        return helpers.run(link, [undefined, undefined, {},
             {
                 cwd: package.path,
                 storage: {
@@ -47,7 +49,7 @@ describe('bower link', function () {
     });
 
     it('creates inter-link', function () {
-        return helpers.run(link, [undefined, undefined,
+        return helpers.run(link, [undefined, undefined, {},
             {
                 cwd: package.path,
                 storage: {
@@ -55,7 +57,7 @@ describe('bower link', function () {
                 }
             }
         ]).then(function () {
-            return helpers.run(link, ['package', undefined,
+            return helpers.run(link, ['package', undefined, {},
                 {
                     cwd: otherPackage.path,
                     storage: {
@@ -70,7 +72,7 @@ describe('bower link', function () {
     });
 
     it('creates inter-link with custom local name', function () {
-        return helpers.run(link, [undefined, undefined,
+        return helpers.run(link, [undefined, undefined, {},
             {
                 cwd: package.path,
                 storage: {
@@ -78,7 +80,7 @@ describe('bower link', function () {
                 }
             }
         ]).then(function () {
-            return helpers.run(link, ['package', 'local',
+            return helpers.run(link, ['package', 'local', {},
                 {
                     cwd: otherPackage.path,
                     storage: {
@@ -93,7 +95,7 @@ describe('bower link', function () {
     });
 
     it('errors on unexising package', function () {
-        return helpers.run(link, ['package', 'local',
+        return helpers.run(link, ['package', 'local', {},
             {
                 cwd: otherPackage.path,
                 storage: {
