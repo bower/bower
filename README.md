@@ -77,6 +77,14 @@ password, you should add the following environment variable: `GIT_SSH -
 C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
 path if needed.
 
+### Ubuntu users
+
+To use Bower on Ubuntu, you might need to link `nodejs` executable to `node`:
+
+```
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+```
+
 ## Configuration
 
 Bower can be configured using JSON in a `.bowerrc` file. Read over available options at [bower.io/docs/config](http://bower.io/docs/config).
