@@ -513,7 +513,7 @@ describe('ResolveCache', function () {
             fs.mkdirSync(path.join(sourceDir, '0.1.0-rc.2'));
             fs.writeFileSync(path.join(sourceDir, '0.1.0-rc.2', '.bower.json'), JSON.stringify(json, null, '  '));
 
-            resolveCache.retrieve(source, '~0.1.0')
+            resolveCache.retrieve(source, '~0.1.0 || ~0.1.0-rc.0')
             .spread(function (canonicalDir, pkgMeta) {
                 expect(pkgMeta).to.be.an('object');
                 expect(pkgMeta.version).to.equal('0.1.0-rc.2');
@@ -522,6 +522,36 @@ describe('ResolveCache', function () {
                 next();
             })
             .done();
+        });
+
+        it('should resolve to the highest package that matches an x-range target, ignoring pre-releases versions', function (next) {
+            var source = String(Math.random());
+            var sourceId = md5(source);
+            var sourceDir = path.join(cacheDir, sourceId);
+            var json = { name: 'foo' };
+
+            // Create some versions
+            fs.mkdirSync(sourceDir);
+
+            // fix #1817 : >=1.2.x <=1.4.x which resolved to 1.3.16
+
+            json.version = '1.3.16-rc.1';
+            fs.mkdirSync(path.join(sourceDir, json.version));
+            fs.writeFileSync(path.join(sourceDir, json.version, '.bower.json'), JSON.stringify(json, null, '  '));
+
+            json.version = '1.3.16';
+            fs.mkdirSync(path.join(sourceDir, json.version));
+            fs.writeFileSync(path.join(sourceDir, json.version, '.bower.json'), JSON.stringify(json, null, '  '));
+
+            resolveCache.retrieve(source, '>=1.2.x <=1.4.x')
+                .spread(function (canonicalDir, pkgMeta) {
+                    expect(pkgMeta).to.be.an('object');
+                    expect(pkgMeta.version).to.equal('1.3.16');
+                    expect(canonicalDir).to.equal(path.join(sourceDir, '1.3.16'));
+
+                    next();
+                })
+                .done();
         });
 
         it('should resolve to exact match (including build metadata) if available', function (next) {

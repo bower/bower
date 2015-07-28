@@ -47,7 +47,7 @@
     "request-progress": "0.3.1",
     "retry": "0.6.1",
     "rimraf": "^2.2.8",
-    "semver": "^2.3.0",
+    "semver": "^5.0.1",
     "shell-quote": "^1.4.2",
     "stringify-object": "^1.0.0",
     "tar-fs": "^1.4.1",
