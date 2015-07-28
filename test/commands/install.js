@@ -133,6 +133,25 @@ describe('bower install', function () {
         });
     });
 
+    it.only('works if bower is run in child directory', function () {
+        package.prepare({ foo: 'bar' });
+
+        tempDir.prepare({
+            '.bowerrc': { directory: 'assets' },
+            'foo/bar/baz.txt': 'Hello world',
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: package.path
+                }
+            }
+        });
+
+        return helpers.run(install, [undefined, undefined, { cwd: tempDir.path + '/foo/bar' }]).then(function() {
+            expect(tempDir.read('assets/package/foo')).to.be('bar');
+        });
+    });
+
     it('runs preinstall hook', function () {
         package.prepare();
 
