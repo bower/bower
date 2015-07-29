@@ -559,6 +559,30 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should recognize the pluggable resolver', function(next){
+        var registryPrefix = 'test';
+        var sourceWithPrefix = registryPrefix +'://foo/foo';
+        var pluggableTestResolver = helpers.require('test/assets/bower-' + registryPrefix + '-resolver');
+
+        var resolverFactoryStub = function () {
+            return helpers.require('lib/core/resolverFactory', {
+                'bower-test-resolver': pluggableTestResolver
+            });
+        };
+
+        var resolverFactoryConstructor = resolverFactoryStub(function (){
+        }).getConstructor(sourceWithPrefix);
+
+        resolverFactoryConstructor
+            .spread(function (ConcreteResolver){
+                expect(new ConcreteResolver({ source: sourceWithPrefix })).to.be.a(pluggableTestResolver);
+            })
+            .then(function(){
+                next();
+            })
+            .done();
+    });
+
     it('should error out if the package was not found in the registry', function (next) {
         callFactory({ source: 'some-package-that-will-never-exist' })
         .then(function () {
@@ -688,6 +712,24 @@ describe('resolverFactory', function () {
             }
 
             expect(called.sort()).to.eql(Object.keys(resolvers).sort());
+        });
+    });
+
+    describe('.extractRegistryPrefix', function (){
+        it('Should know how to extract the registry prefix for resolver plugin', function (){
+            var resolverFactory = require('../../lib/core/resolverFactory');
+            var endpoints = {
+                'git': 'git://github.com/user/project/bleh.git',
+                'bitbucket': 'bitbucket:jquery/jquery'
+            };
+
+            mout.object.forOwn(endpoints, function (value, key) {
+                var prefix = resolverFactory.extractRegistryPrefix(value);
+                expect(prefix).to.eql(key);
+            });
+
+            var prefix = resolverFactory.extractRegistryPrefix('jquery');
+            expect(prefix).to.be(null);
         });
     });
 });
