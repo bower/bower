@@ -419,17 +419,17 @@ describe('UrlResolver', function () {
                 'Content-Type': 'application/zip'
             })
 
-            .get('/package-zip2')
+            .get('/package-zip2b')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
                 'Content-Type': 'application/zip; charset=UTF-8'
             })
 
-            .get('/package-zip3')
+            .get('/package-zip3c')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
                 'Content-Type': ' application/zip ; charset=UTF-8'
             })
 
-            .get('/package-zip4')
+            .get('/package-zip4d')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-zip.zip'), {
                 'Content-Type': '"application/x-zip"'  // Test with quotes
             })
@@ -444,7 +444,7 @@ describe('UrlResolver', function () {
                 'Content-Type': ' application/x-tgz ; charset=UTF-8'
             })
 
-            .get('/package-tar2.tar.gz')
+            .get('/package-tar2b.tar.gz')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'), {
                 'Content-Type': ' application/octet-stream ; charset=UTF-8'
             });
@@ -458,7 +458,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-zip.zip'))).to.be(false);
 
-                resolver = create('http://bower.io/package-zip2');
+                resolver = create('http://bower.io/package-zip2b');
 
                 return resolver.resolve();
             })
@@ -466,9 +466,9 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
-                expect(fs.existsSync(path.join(dir, 'package-zip3.zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip3c.zip'))).to.be(false);
 
-                resolver = create('http://bower.io/package-zip3');
+                resolver = create('http://bower.io/package-zip3c');
 
                 return resolver.resolve();
             })
@@ -476,9 +476,9 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'foo.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'bar.js'))).to.be(true);
                 expect(fs.existsSync(path.join(dir, 'package-zip'))).to.be(false);
-                expect(fs.existsSync(path.join(dir, 'package-zip4.zip'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'package-zip4d.zip'))).to.be(false);
 
-                resolver = create('http://bower.io/package-zip4');
+                resolver = create('http://bower.io/package-zip4d');
 
                 return resolver.resolve();
             })
@@ -507,7 +507,7 @@ describe('UrlResolver', function () {
                 expect(fs.existsSync(path.join(dir, 'package-tar'))).to.be(false);
                 expect(fs.existsSync(path.join(dir, 'package-tar.tar.gz'))).to.be(false);
 
-                resolver = create('http://bower.io/package-tar2.tar.gz');
+                resolver = create('http://bower.io/package-tar2b.tar.gz');
 
                 return resolver.resolve();
             })

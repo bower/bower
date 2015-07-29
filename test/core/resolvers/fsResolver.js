@@ -145,12 +145,12 @@ describe('FsResolver', function () {
             })
             .then(function () {
                 // Test with extension
-                var resolver = create(path.join(testPackage, 'README.md'));
+                var resolver = create(path.join(testPackage, 'readme.md'));
                 return resolver.resolve();
             })
             .then(function (dir) {
                 expect(fs.existsSync(path.join(dir, 'index.md'))).to.be(true);
-                expect(fs.existsSync(path.join(dir, 'README.md'))).to.be(false);
+                expect(fs.existsSync(path.join(dir, 'readme.md'))).to.be(false);
 
                 return assertMain(dir, 'index.md')
                 .then(next.bind(next, null));
