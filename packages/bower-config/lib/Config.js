@@ -4,6 +4,7 @@ var rc = require('./util/rc');
 var defaults = require('./util/defaults');
 var expand = require('./util/expand');
 var path = require('path');
+var fs = require('fs');
 
 function Config(cwd) {
     this._cwd = cwd || process.cwd();
@@ -33,10 +34,42 @@ Config.prototype.save = function (where, callback) {
     // TODO
 };
 /* jshint ignore:end */
+
+function readCertFile(path) {
+    var sep = '-----END CERTIFICATE-----';
+
+    return fs.readFileSync(path, { encoding: 'utf8' })
+        .split(sep)
+        .filter(function(s) { return !s.match(/^\s*$/); })
+        .map(function(s) { return s + sep; });
+}
+
+function loadCAs(caConfig) {
+    // If a ca file path has been specified, expand that here to the file's
+    // contents. As a user can specify these individually, we must load them
+    // one by one.
+    if (caConfig.search) {
+        caConfig.search = caConfig.search.map(function(s) {
+            return readCertFile(s);
+        });
+    }
+    ['register', 'publish'].forEach(function(p) {
+        if (caConfig[p]) {
+            caConfig[p] = readCertFile(caConfig[p]);
+        }
+    });
+}
+
 Config.prototype.toObject = function () {
     var config = lang.deepClone(this._config);
 
     config = Config.normalise(config);
+
+    // Load CA files and replace their paths with their contents.
+    // Do that here so that we have a normalised config object,
+    // and so that it is done only once.
+    loadCAs(config.ca);
+
     return config;
 };
 
