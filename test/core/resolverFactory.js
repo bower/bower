@@ -561,16 +561,6 @@ describe('resolverFactory', function () {
         .done();
     });
 
-    it('should recognize URL endpoints correctly', function () {
-        var source = 'custom://hello-world';
-
-        return callFactory({ source: source })
-        .then(function (resolver) {
-
-        })
-        .done();
-    });
-
     it('should recognize registry endpoints correctly', function (next) {
         // Create a 'pure' file at the root to prevent regressions of #666
         fs.writeFileSync('pure', 'foo');
