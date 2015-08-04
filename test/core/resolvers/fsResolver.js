@@ -82,13 +82,11 @@ describe('FsResolver', function () {
         it('should resolve always to true (for now..)', function (next) {
             var resolver = create(testPackage);
 
-            tempSource = path.resolve(__dirname, '../../tmp/tmp');
-            mkdirp.sync(tempSource);
-            fs.writeFileSync(path.join(tempSource, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'test'
-            }));
+            };
 
-            resolver.hasNew(tempSource)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();

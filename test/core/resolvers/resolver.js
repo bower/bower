@@ -115,7 +115,7 @@ describe('Resolver', function () {
             })
             .done();
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({})
             .then(function () {
                 succeeded = true;
             }, function (err) {
@@ -129,17 +129,17 @@ describe('Resolver', function () {
             var resolver = create('foo');
             var succeeded;
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({})
             .then(function () {
                 // Test if hasNew can be called again when done
-                resolver.hasNew(tempDir)
+                resolver.hasNew({})
                 .then(function () {
                     next(succeeded ? new Error('Should have failed') : null);
                 });
             })
             .done();
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({})
             .then(function () {
                 succeeded = true;
             }, function (err) {
@@ -152,7 +152,7 @@ describe('Resolver', function () {
         it('should resolve to true by default', function (next) {
             var resolver = create('foo');
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({})
             .then(function (hasNew) {
                 expect(hasNew).to.equal(true);
                 next();
@@ -160,32 +160,17 @@ describe('Resolver', function () {
             .done();
         });
 
-        it('should resolve to true if the there\'s an error reading the package meta', function (next) {
+        it('should call _hasNew with the package meta', function (next) {
             var resolver = create('foo');
-
-            rimraf.sync(path.join(tempDir, '.bower.json'));
-            resolver.hasNew(tempDir)
-            .then(function (hasNew) {
-                expect(hasNew).to.equal(true);
-                next();
-            })
-            .done();
-        });
-
-        it('should call _hasNew with the canonical dir and the package meta', function (next) {
-            var resolver = create('foo');
-            var canonical;
             var meta;
 
-            resolver._hasNew = function (canonicalDir, pkgMeta) {
-                canonical = canonicalDir;
+            resolver._hasNew = function (pkgMeta) {
                 meta = pkgMeta;
                 return Q.resolve(true);
             };
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({ name: 'test' })
             .then(function () {
-                expect(canonical).to.equal(tempDir);
                 expect(meta).to.be.an('object');
                 expect(meta.name).to.equal('test');
                 next();
@@ -197,12 +182,12 @@ describe('Resolver', function () {
             var resolver = create('foo');
             var meta;
 
-            resolver._hasNew = function (canonicalDir, pkgMeta) {
+            resolver._hasNew = function (pkgMeta) {
                 meta = pkgMeta;
                 return Q.resolve(true);
             };
 
-            resolver.hasNew(tempDir, {
+            resolver.hasNew({
                 name: 'foo'
             })
             .then(function () {
@@ -261,10 +246,10 @@ describe('Resolver', function () {
 
             resolver._resolve = function () {};
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew({})
             .then(function () {
                 // Test if hasNew can be called again when done
-                resolver.hasNew(tempDir)
+                resolver.hasNew({})
                 .then(function () {
                     next(succeeded ? new Error('Should have failed') : null);
                 });
