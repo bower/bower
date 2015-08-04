@@ -62,6 +62,7 @@
             "description": "Allows running commands as root"
         },
         {
+            "shorthand":   "-v",
             "flag":        "--version",
             "description": "Output Bower version"
         },
