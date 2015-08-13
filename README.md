@@ -99,7 +99,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 
 ## Contributing
 
-We welcome contributions of all kinds from anyone. Please take a moment to
+We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
 * [Bug reports](CONTRIBUTING.md#bugs)
@@ -113,27 +113,8 @@ Note that on Windows for tests to pass you need to configure Git before cloning:
 git config --global core.autocrlf input
 ```
 
-## Bower Team
-
-Bower is made by lots of people across the globe, contributions large and small. Our thanks to everyone who has played a part.
-
-### Core team
-
-* [@satazor](https://github.com/satazor)
-* [@wibblymat](https://github.com/wibblymat)
-* [@paulirish](https://github.com/paulirish)
-* [@benschwarz](https://github.com/benschwarz)
-* [@svnlto](https://github.com/svnlto)
-* [@sheerun](https://github.com/sheerun)
-
-### Bower Alumni
-
-* [@fat](https://github.com/fat)
-* [@maccman](https://github.com/maccman)
-
-
 ## License
 
-Copyright (c) 2015 Twitter and other contributors
+Copyright (c) 2015 Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
 
 Licensed under the MIT License
