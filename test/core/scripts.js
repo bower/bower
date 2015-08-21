@@ -39,6 +39,20 @@ describe('scripts', function () {
         rimraf(tempDir,  next);
     });
 
+    it('should obey --disable-hooks flag and not run preinstall and postinstall hooks.', function (next) {
+
+        bower.commands
+        .install([packageDir], { disableHooks: true }, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName))).to.be(false);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + packageName))).to.be(false);
+
+            next();
+        });
+
+    });
+
     it('should run preinstall and postinstall hooks.', function (next) {
 
         bower.commands
@@ -53,6 +67,21 @@ describe('scripts', function () {
 
     });
 
+    it('should obey --disable-hooks flag and not run preuninstall hook.', function (next) {
+
+        config.disableHooks = true;
+
+        bower.commands
+        .uninstall([packageName], { disableHooks: true }, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName))).to.be(false);
+
+            next();
+        });
+
+    });    
+    
     it('should run preuninstall hook.', function (next) {
 
         bower.commands
