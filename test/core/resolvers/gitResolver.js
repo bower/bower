@@ -61,7 +61,7 @@ describe('GitResolver', function () {
         it('should be true when the resolution type is different', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0',
                 _resolution: {
@@ -69,7 +69,8 @@ describe('GitResolver', function () {
                     tag: '0.0.0',
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'  // same commit hash on purpose
@@ -77,7 +78,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -88,7 +89,7 @@ describe('GitResolver', function () {
         it('should be true when a higher version for a range is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '1.0.0',
                 _resolution: {
@@ -96,7 +97,8 @@ describe('GitResolver', function () {
                     tag: '1.0.0',
                     commit: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
@@ -106,7 +108,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -117,7 +119,7 @@ describe('GitResolver', function () {
         it('should be true when a resolved to a lower version of a range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -125,7 +127,8 @@ describe('GitResolver', function () {
                     tag: '1.0.1',
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
@@ -134,7 +137,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -145,7 +148,7 @@ describe('GitResolver', function () {
         it('should be false when resolved to the same tag (with same commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -153,7 +156,8 @@ describe('GitResolver', function () {
                     tag: '1.0.1',
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
@@ -163,7 +167,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
                 next();
@@ -174,7 +178,7 @@ describe('GitResolver', function () {
         it('should be true when resolved to the same tag (with different commit hash) for a given range', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '1.0.1',
                 _resolution: {
@@ -182,7 +186,8 @@ describe('GitResolver', function () {
                     tag: '1.0.1',
                     commit: 'cccccccccccccccccccccccccccccccccccccccc'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
@@ -192,7 +197,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -203,14 +208,15 @@ describe('GitResolver', function () {
         it('should be true when a different commit hash for a given branch is available', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
                     branch: 'master',
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'
@@ -218,7 +224,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -229,14 +235,15 @@ describe('GitResolver', function () {
         it('should be false when resolved to the the same commit hash for a given branch', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 _resolution: {
                     type: 'branch',
                     branch: 'master',
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master'
@@ -244,7 +251,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
                 next();
@@ -255,13 +262,14 @@ describe('GitResolver', function () {
         it('should be false when targeting commit hashes', function (next) {
             var resolver;
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 _resolution: {
                     type: 'commit',
                     commit: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
                 }
-            }));
+            };
+
             GitResolver.refs = function () {
                 return Q.resolve([
                     'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/heads/master'
@@ -269,7 +277,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
