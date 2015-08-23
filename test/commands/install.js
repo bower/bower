@@ -1,3 +1,4 @@
+var path = require('path');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
@@ -147,7 +148,9 @@ describe('bower install', function () {
             }
         });
 
-        return helpers.run(install, [undefined, undefined, { cwd: tempDir.path + '/foo/bar' }]).then(function() {
+        process.chdir(path.join(tempDir.path, '/foo/bar'));
+
+        return helpers.run(install).then(function() {
             expect(tempDir.read('assets/package/foo')).to.be('bar');
         });
     });
