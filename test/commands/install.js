@@ -148,10 +148,13 @@ describe('bower install', function () {
             }
         });
 
+        var oldDir = process.cwd();
         process.chdir(path.join(tempDir.path, '/foo/bar'));
 
         return helpers.run(install).then(function() {
             expect(tempDir.read('assets/package/foo')).to.be('bar');
+        }).fin(function () {
+            process.chdir(oldDir);
         });
     });
 
