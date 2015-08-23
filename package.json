@@ -80,7 +80,6 @@
     "test": "grunt test"
   },
   "bin": "bin/bower",
-  "preferGlobal": true,
   "files": [
     "bin",
     "lib",
