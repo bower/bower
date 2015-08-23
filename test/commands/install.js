@@ -133,7 +133,7 @@ describe('bower install', function () {
         });
     });
 
-    it.only('works if bower is run in child directory', function () {
+    it('works if bower is run in child directory', function () {
         package.prepare({ foo: 'bar' });
 
         tempDir.prepare({
