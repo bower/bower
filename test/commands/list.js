@@ -142,28 +142,6 @@ describe('bower list', function () {
         });
     });
 
-    it('lists 1 dependency with 2 source relative source mapping when 1 local package installed', function () {
-
-        var package = new helpers.TempDir({
-            'bower.json': {
-                name: 'package',
-                main: ['test.txt', 'test2.txt']
-            }
-        }).prepare();
-        package.prepare();
-
-        return install([package.path]).then(function() {
-            return list({paths: true}).spread(function(results) {
-                expect(results).to.be.an(Object);
-                expect(results.package).to.be.an(Object);
-                expect(results.package).to.eql([
-                    'bower_components/package/test.txt',
-                    'bower_components/package/test2.txt'
-                ]);
-            });
-        });
-    });
-
     it('lists 1 dependency when 1 git package installed', function () {
         gitPackage.prepareGit({
             '1.0.0': {
