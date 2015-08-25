@@ -1,10 +1,16 @@
 # Changelog
 
-## 1.5.1 - 2015-08-25
+## 1.5.2 - 2015-08-25
+
+- Revert update semver version from 2.x to 5.x, fixes ([#1896](https://github.com/bower/bower/issues/1896))
+- Make bower commands work from subdirectories, fixes ([#1893](https://github.com/bower/bower/issues/1893))
+- Put auto shallow cloning for git behind a flag, fixes ([#1764](https://github.com/bower/bower/issues/1764))
+
+## 1.5.1 - 2015-08-24
 
 - If cwd provided explicitly, force using it, fixes #1866
 
-## 1.5.0 - 2015-08-25
+## 1.5.0 - 2015-08-24
 
 - Pluggable Resolvers! http://bower.io/docs/pluggable-resolvers/
 - Update semver version from 2.x to 5.x ([#1852](https://github.com/bower/bower/issues/1852))
