@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.5.1 - 2015-08-25
+
+- If cwd provided explicitly, force using it, fixes #1866
+
+## 1.5.0 - 2015-08-25
+
+- Pluggable Resolvers! http://bower.io/docs/pluggable-resolvers/
+- Update semver version from 2.x to 5.x ([#1852](https://github.com/bower/bower/issues/1852))
+- Auto-sort dependencies alphabetically ([#1381](https://github.com/bower/bower/issues/1381))
+- Make bower commands work from subdirectories ([#1866](https://github.com/bower/bower/issues/1866))
+- No longer prefer installing bower as global module ([#1865](https://github.com/bower/bower/issues/1865))
+
 ## 1.4.1 - 2015-04-01
 
 - [fix] Reading .bowerrc upwards directory tree ([#1763](https://github.com/bower/bower/issues/1763))
