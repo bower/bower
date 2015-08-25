@@ -514,7 +514,7 @@ describe('GitResolver', function () {
             .done();
         });
 
-        it('should fail to resolve "*" if a repository has valid semver tags, ignoring pre-releases if they are the only versions', function (next) {
+        it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
             var resolver;
 
             GitResolver.refs = function () {
@@ -527,31 +527,6 @@ describe('GitResolver', function () {
 
             resolver = create('foo');
             resolver._findResolution('*')
-                .then(function () {
-                    next(new Error('Should have failed'));
-                }, function (err) {
-                    expect(err).to.be.an(Error);
-                    expect(err.message).to.match(/no tag found that was able to satisfy/i);
-                    expect(err.details).to.match(/0.1.0-rc/i);
-                    expect(err.code).to.equal('ENORESTARGET');
-                    next();
-                })
-                .done();
-        });
-
-        it('should resolve "* || >=0.1.0-rc.0" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
-            var resolver;
-
-            GitResolver.refs = function () {
-                return Q.resolve([
-                    'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa refs/heads/master',
-                    'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb refs/tags/0.1.0-rc.1',
-                    'cccccccccccccccccccccccccccccccccccccccc refs/tags/0.1.0-rc.2'
-                ]);
-            };
-
-            resolver = create('foo');
-            resolver._findResolution('* || >=0.1.0-rc.0')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',
@@ -575,7 +550,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('0.1.* || >=0.1.0-rc.1')
+            resolver._findResolution('0.1.*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',
@@ -675,7 +650,7 @@ describe('GitResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('~0.2.1-rc.0')
+            resolver._findResolution('~0.2.1')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',

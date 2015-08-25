@@ -366,30 +366,6 @@ else describe('SvnResolver', function () {
             .done();
         });
 
-        it('should fail to resolve "*" if a repository has valid semver tags, ignoring pre-releases if they are the only versions', function (next) {
-            var resolver;
-
-            SvnResolver.tags = function () {
-                return Q.resolve({
-                    '0.1.0-rc.1': 1,
-                    '0.1.0-rc.2': 2
-                });
-            };
-
-            resolver = create('foo');
-            resolver._findResolution('*')
-                .then(function () {
-                    next(new Error('Should have failed'));
-                }, function (err) {
-                    expect(err).to.be.an(Error);
-                    expect(err.message).to.match(/no tag found that was able to satisfy/i);
-                    expect(err.details).to.match(/0.1.0-rc/i);
-                    expect(err.code).to.equal('ENORESTARGET');
-                    next();
-                })
-                .done();
-        });
-
         it('should resolve "*" to the latest version if a repository has valid semver tags, not ignoring pre-releases if they are the only versions', function (next) {
             var resolver;
 
@@ -401,7 +377,7 @@ else describe('SvnResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('* || >=0.1.0-rc.0')
+            resolver._findResolution('*')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',
@@ -473,7 +449,7 @@ else describe('SvnResolver', function () {
             };
 
             resolver = create('foo');
-            resolver._findResolution('~0.2.1 || ~0.2.1-rc.0')
+            resolver._findResolution('~0.2.1')
             .then(function (resolution) {
                 expect(resolution).to.eql({
                     type: 'version',
