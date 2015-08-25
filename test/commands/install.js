@@ -1,4 +1,3 @@
-var path = require('path');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
@@ -131,30 +130,6 @@ describe('bower install', function () {
 
         return helpers.run(install).then(function() {
             expect(tempDir.read('assets/package/foo')).to.be('bar');
-        });
-    });
-
-    it('works if bower is run in child directory', function () {
-        package.prepare({ foo: 'bar' });
-
-        tempDir.prepare({
-            '.bowerrc': { directory: 'assets' },
-            'foo/bar/baz.txt': 'Hello world',
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    package: package.path
-                }
-            }
-        });
-
-        var oldDir = process.cwd();
-        process.chdir(path.join(tempDir.path, '/foo/bar'));
-
-        return helpers.run(install).then(function() {
-            expect(tempDir.read('assets/package/foo')).to.be('bar');
-        }).fin(function () {
-            process.chdir(oldDir);
         });
     });
 
