@@ -285,7 +285,7 @@ describe('GitRemoteResolver', function () {
                 */}))
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(false);
@@ -305,7 +305,7 @@ describe('GitRemoteResolver', function () {
                 */}))
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(false);
@@ -347,7 +347,7 @@ describe('GitRemoteResolver', function () {
                 */}))
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(true);
@@ -383,12 +383,12 @@ describe('GitRemoteResolver', function () {
                 }
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(true);
 
-                var resolver2 = new MyGitRemoteResolver({ source: testSource }, defaultConfig(), logger);
+                var resolver2 = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
                 resolver2._shallowClone().then(function (shallowCloningSupported) {
                     expect(shallowCloningSupported).to.be(true);
@@ -428,12 +428,12 @@ describe('GitRemoteResolver', function () {
                 }
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(true);
 
-                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
 
                 resolver2._shallowClone().then(function (shallowCloningSupported) {
                     expect(shallowCloningSupported).to.be(true);
@@ -482,12 +482,12 @@ describe('GitRemoteResolver', function () {
                 }
             );
 
-            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig(), logger);
+            var resolver = new MyGitRemoteResolver({ source: testSource1 }, defaultConfig({ shallowCloneHosts: ['foo', 'foo.bar.baz'] }), logger);
 
             resolver._shallowClone().then(function (shallowCloningSupported) {
                 expect(shallowCloningSupported).to.be(true);
 
-                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig(), logger);
+                var resolver2 = new MyGitRemoteResolver({ source: testSource2 }, defaultConfig({ shallowCloneHosts: ['foo', 'foo.bar.baz'] }), logger);
 
                 resolver2._shallowClone().then(function (shallowCloningSupported) {
                     expect(shallowCloningSupported).to.be(true);
