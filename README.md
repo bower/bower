@@ -95,6 +95,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
 * [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
+* [Front-End Tooling with Gulp, Bower, and Yeoman](https://manning.com/books/front-end-tooling-with-gulp-bower-and-yeoman) by Stefan Baumgartner (Manning Publications). [Chapter 1](https://manning-content.s3.amazonaws.com/download/c/9612eac-ea92-4192-a4a5-fc3df4ecf29d/FET_MEAP_ch1.pdf)
 
 
 ## Contributing
