@@ -49,7 +49,8 @@ describe('bower init', function () {
                 description: 'test-description',
                 moduleType: 'test-moduleType',
                 keywords: [ 'test-keyword' ],
-                license: 'test-license'
+                license: 'test-license',
+                private: true
             });
         });
     });
