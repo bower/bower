@@ -2,7 +2,6 @@ var path = require('path');
 var paths = require('./paths');
 
 // Guess proxy defined in the env
-/*jshint camelcase: false*/
 var proxy = process.env.HTTP_PROXY
     || process.env.http_proxy
     || null;
@@ -10,7 +9,9 @@ var proxy = process.env.HTTP_PROXY
 var httpsProxy = process.env.HTTPS_PROXY
     || process.env.https_proxy
     || proxy;
-/*jshint camelcase: true*/
+
+var noProxy = process.env.NO_PROXY
+    || process.env.no_proxy;
 
 // Use a well known user agent (in this case, curl) when using a proxy,
 // to avoid potential filtering on many corporate proxies with blank or unknown agents
@@ -26,6 +27,7 @@ var defaults = {
     'tmp': paths.tmp,
     'proxy': proxy,
     'https-proxy': httpsProxy,
+    'no-proxy': noProxy,
     'timeout': 30000,
     'ca': { search: [] },
     'strict-ssl': true,

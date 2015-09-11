@@ -1,0 +1,5 @@
+{
+  "proxy": "http://HTTP_PROXY",
+  "https-proxy": "http://HTTPS_PROXY",
+  "no-proxy": "google.com"
+}

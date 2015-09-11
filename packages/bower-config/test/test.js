@@ -15,11 +15,10 @@ describe('NPM Config on package.json', function () {
     }
 
     describe('Setting process.env.npm_package_config', function () {
-        /*jshint camelcase:false*/
         process.env.npm_package_config_bower_directory = 'npm-path';
         process.env.npm_package_config_bower_colors = false;
 
-        var config = require('../lib/Config').create().load()._config;
+        var config = require('../lib/Config').read();
 
         it('should return "npm-path" for "bower_directory"', function () {
             assert.equal('npm-path', config.directory);
@@ -59,6 +58,49 @@ describe('NPM Config on package.json', function () {
             config.ca.search.forEach(function(c, i) {
                 assertCAContents(c, 'config.ca.search[' + i + ']');
             });
+        });
+    });
+
+    describe('setting ENV variables', function () {
+        beforeEach(function () {
+            delete process.env.no_proxy;
+            delete process.env.http_proxy;
+            delete process.env.https_proxy;
+            delete process.env.NO_PROXY;
+            delete process.env.HTTP_PROXY;
+            delete process.env.HTTPS_PROXY;
+        });
+
+        it('sets env variables', function () {
+            require('../lib/Config').read('test/assets/env-variables');
+
+            assert.equal(process.env.HTTP_PROXY, 'http://HTTP_PROXY');
+            assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
+            assert.equal(process.env.NO_PROXY, 'google.com');
+
+            assert.equal(process.env.http_proxy, undefined);
+            assert.equal(process.env.https_proxy, undefined);
+            assert.equal(process.env.no_proxy, undefined);
+        });
+
+        it('restores env variables', function () {
+            process.env.HTTP_PROXY = 'a';
+            process.env.HTTPS_PROXY = 'b';
+            process.env.NO_PROXY = 'c';
+            process.env.http_proxy = 'd';
+            process.env.https_proxy = 'e';
+            process.env.no_proxy = 'f';
+
+            var config = require('../lib/Config').create('test/assets/env-variables').load();
+            config.restore();
+
+            assert.equal(process.env.HTTP_PROXY, 'a');
+            assert.equal(process.env.HTTPS_PROXY, 'b');
+            assert.equal(process.env.NO_PROXY, 'c');
+
+            assert.equal(process.env.http_proxy, 'd');
+            assert.equal(process.env.https_proxy, 'e');
+            assert.equal(process.env.no_proxy, 'f');
         });
     });
 });

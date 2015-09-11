@@ -30,7 +30,6 @@
     "quotmark": "single",
     "strict": false,
     "trailing": true,
-    "camelcase": true,
 
     "asi": false,
     "boss": true,
