@@ -503,7 +503,7 @@ else describe('SvnResolver', function () {
             }, function (err) {
                 expect(err).to.be.an(Error);
                 expect(err.message).to.match(/was able to satisfy ~0.2.0/i);
-                expect(err.details).to.match(/available versions: 0\.1\.1, 0\.1\.0/i);
+                expect(err.details).to.match(/available versions in foo: 0\.1\.1, 0\.1\.0/i);
                 expect(err.code).to.equal('ENORESTARGET');
                 next();
             })
