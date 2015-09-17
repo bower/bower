@@ -9,7 +9,10 @@ describe('analytics', function () {
             insight: function () {
                 return object.merge(stubs || {}, {
                     askPermission: function (message, callback) {
-                        callback(undefined, promptResponse);
+                        // Never callback, if promptResponse is exactly `null`
+                        if (promptResponse !== null) {
+                            callback(undefined, promptResponse);
+                        }
                     }
                 });
             }
@@ -79,6 +82,30 @@ describe('analytics', function () {
                 .then(function (enabled) {
                     expect(enabled).to.be(false);
                 });
+        });
+
+        it('disables after 0.1s if interactive insights returns nothing from prompt', function () {
+            return mockAnalytics({ optOut: undefined }, null)
+                .setup({ interactive: true, permissionTimer: 0.1 })
+                .then(function (enabled) {
+                    expect(enabled).to.be(false);
+                });
+        });
+
+        it('keeps enabled if interactive insights already returned true from prompt', function (done) {
+            var deferred = mockAnalytics({ optOut: undefined }, true)
+                .setup({ interactive: true, permissionTimer: 0.1 });
+
+            deferred.then(function (enabled) {
+                expect(enabled).to.be(true);
+            });
+
+            setTimeout(function () {
+                deferred.then(function (enabled) {
+                    expect(enabled).to.be(true);
+                    done();
+                });
+            }, 200);
         });
     });
 
