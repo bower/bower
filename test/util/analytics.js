@@ -17,6 +17,15 @@ describe('analytics', function () {
     };
 
     describe('#setup', function () {
+        // Reset process.env.CI after tests are done
+        var oldCI;
+        beforeEach(function () {
+            oldCI = process.env.CI;
+        });
+        afterEach(function () {
+            process.env.CI = oldCI;
+        });
+
         it('leaves analytics enabled if provided', function () {
             return mockAnalytics()
                 .setup({ analytics: true })
@@ -75,6 +84,40 @@ describe('analytics', function () {
 
         it('disables if interactive insights return false from prompt', function () {
             return mockAnalytics({ optOut: undefined }, false)
+                .setup({ interactive: true })
+                .then(function (enabled) {
+                    expect(enabled).to.be(false);
+                });
+        });
+
+        it('disables if process.env.CI is true', function () {
+            process.env.CI = true;
+
+            // Clear cache set by proxyquire
+            delete require.cache[require.resolve('../../lib/util/analytics')];
+
+            var analytics = require('../../lib/util/analytics');
+            return analytics.setup({ interactive: true })
+                .then(function (enabled) {
+                    expect(enabled).to.be(false);
+                });
+        });
+
+        it('disables if prompt times out', function () {
+            // Create mock insight with very low permission timeout
+            var Insight = require('insight');
+            var mockInsight = new Insight({
+                trackingCode: 'mock',
+                pkg: require('../../package.json')
+            });
+            mockInsight._permissionTimeout = 0.1;
+            var mockAnalyticsWithInsight = proxyquire('../../lib/util/analytics', {
+                insight: function () {
+                    return mockInsight;
+                }
+            });
+
+            return mockAnalyticsWithInsight
                 .setup({ interactive: true })
                 .then(function (enabled) {
                     expect(enabled).to.be(false);
