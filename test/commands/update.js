@@ -143,7 +143,9 @@ describe('bower update', function () {
         });
 
         return install().then(function() {
-            tempDir.prepare();
+            tempDir
+                .prepare(undefined, true)
+                .delete('postinstall.txt');
 
             return update().then(function() {
                 expect(tempDir.exists('postinstall.txt')).to.be(false);
@@ -151,7 +153,7 @@ describe('bower update', function () {
         });
     });
 
-    it('updates a package', function () {
+    it('update without all should fail', function (next) {
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
@@ -162,7 +164,6 @@ describe('bower update', function () {
         });
 
         return install().then(function() {
-
             expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
 
              tempDir.prepare({
@@ -172,9 +173,39 @@ describe('bower update', function () {
                         package: gitPackage.path + '#1.0.1'
                     }
                 }
-            });
+            }, true);
 
             return update().then(function() {
+                next(new Error('Error not thrown as expected'));
+            }, function() {
+                next();
+            });
+        });
+    });
+
+    it('update with all should update packages', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.1'
+                    }
+                }
+            }, true);
+
+            return update([], {all: true}).then(function() {
                 expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.1');
             });
         });
@@ -241,6 +272,65 @@ describe('bower update', function () {
             expect(tempDir.exists('postinstall.txt')).to.be(false);
             return update().then(function() {
                 expect(tempDir.read('postinstall.txt')).to.be('package');
+            });
+        });
+    });
+
+    it('update should error when no package is specified', function (next) {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: gitPackage.path + '#1.0.0'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'test',
+                    dependencies: {
+                        package: gitPackage.path + '#1.0.0',
+                        test: '0.0.1'
+                    }
+                }
+            }, true);
+
+            return update().then(function() {
+                next(new Error('Error not thrown as expected'));
+            }, function() {
+                next();
+            });
+        });
+    });
+
+    it('update should update package when package is specified', function () {
+        tempDir.prepare({
+            'bower.json': {
+                name: 'updateTest',
+                dependencies: {
+                    bootstrap: '3.3.1'
+                }
+            }
+        });
+
+        return install().then(function() {
+            expect(tempDir.read('bower_components/bootstrap/.bower.json')).to.contain('3.3.1');
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'updateTest',
+                    dependencies: {
+                        bootstrap: '3.3.2'
+                    }
+                }
+            }, true);
+
+            return update(['bootstrap']).then(function() {
+                expect(tempDir.read('bower_components/bootstrap/.bower.json')).to.contain('3.3.2');
             });
         });
     });
