@@ -279,9 +279,11 @@ describe('bower install', function () {
               name: 'test_tw',
               dependencies: {
                 package3: package3.path
-              },
-              ignoredDependencies: ['package']
+              }
           },
+          '.bowerrc': {
+            ignoredDependencies: ['package']
+          }
       });
 
       return helpers.run(install).then(function() {
