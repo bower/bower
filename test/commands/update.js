@@ -105,7 +105,9 @@ describe('bower update', function () {
               name: 'test',
               dependencies: {
                   package2: package2.path
-              },
+              }
+          },
+          '.bowerrc': {
               ignoredDependencies: ['package']
           }
       });
@@ -223,6 +225,9 @@ describe('bower update', function () {
                 dependencies: {
                     package: gitPackage.path + '#1.0.0'
                 }
+            },
+            '.bowerrc': {
+                ignoredDependencies: ['subPackage']
             }
         });
 
@@ -236,8 +241,7 @@ describe('bower update', function () {
                     name: 'test',
                     dependencies: {
                         package: gitPackage.path + '#1.0.1'
-                    },
-                    ignoredDependencies: ['subPackage']
+                    }
                 }
             });
 
