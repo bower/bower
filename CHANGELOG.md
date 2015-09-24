@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.5.3 - 2015-09-24
+
+- Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
+- Fix --save-exact feature for github endpoints, fixes ([#1925](https://github.com/bower/bower/issues/1925))
+- Fix `bower init` to support private flag again ([#1819](https://github.com/bower/bower/pull/1819))
+- Bump insight dependency to support prompt timeout ([#1102](https://github.com/bower/bower/issues/1102)) 
+
 ## 1.5.2 - 2015-08-25
 
 - Revert update semver version from 2.x to 5.x, fixes ([#1896](https://github.com/bower/bower/issues/1896))
