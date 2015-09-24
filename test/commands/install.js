@@ -56,6 +56,7 @@ describe('bower install', function () {
     it('writes an exact version number to dependencies in bower.json if --save --save-exact flags are used', function () {
         package.prepare({
             'bower.json': {
+                name: 'package',
                 version: '1.2.3'
             }
         });
@@ -70,13 +71,14 @@ describe('bower install', function () {
             [package.path],
             { saveExact: true, save: true }
         ]).then(function() {
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal('1.2.3');
+            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(package.path + '#1.2.3');
         });
     });
 
     it('writes an exact version number to devDependencies in bower.json if --save-dev --save-exact flags are used', function () {
         package.prepare({
             'bower.json': {
+                name: 'package',
                 version: '0.1.0'
             }
         });
@@ -91,27 +93,7 @@ describe('bower install', function () {
             [package.path],
             { saveExact: true, saveDev: true }
         ]).then(function() {
-            expect(tempDir.readJson('bower.json').devDependencies.package).to.equal('0.1.0');
-        });
-    });
-
-    
-    it('does not write to bower.json if only --save-exact flag is used', function() {
-        package.prepare({
-            'bower.json': {
-                version: '1.2.3'
-            }
-        });
-
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test'
-            }
-        });
-
-        return helpers.run(install, [[package.path], { saveExact: true }]).then(function() {
-            expect(tempDir.read('bower.json')).to.not.contain('dependencies');
-            expect(tempDir.read('bower.json')).to.not.contain('devDependencies');
+            expect(tempDir.readJson('bower.json').devDependencies.package).to.equal(package.path + '#0.1.0');
         });
     });
 
