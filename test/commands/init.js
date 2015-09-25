@@ -146,6 +146,7 @@ describe('bower init', function () {
                 ],
                 'authors': ['JD Isaacks'],
                 'license': 'ISC',
+                'private': true,
                 'homepage': 'test-homepage'
             });
         });
