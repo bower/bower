@@ -73,7 +73,7 @@ describe('NPM Config on package.json', function () {
         });
 
         it('sets env variables', function () {
-            require('../lib/config').read('test/assets/env-variables');
+            require('../lib/Config').read('test/assets/env-variables');
 
             assert.equal(process.env.HTTP_PROXY, 'http://HTTP_PROXY');
             assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
