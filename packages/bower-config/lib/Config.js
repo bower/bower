@@ -15,7 +15,13 @@ function Config(cwd) {
 
 Config.prototype.load = function () {
     this._config = rc('bower', defaults, this._cwd);
+
+    this._config = Config.normalise(this._config);
+
+    loadCAs(this._config.ca);
+
     this._proxy.set(this._config);
+
     return this;
 };
 
@@ -59,16 +65,7 @@ function loadCAs(caConfig) {
 }
 
 Config.prototype.toObject = function () {
-    var config = lang.deepClone(this._config);
-
-    config = Config.normalise(config);
-
-    // Load CA files and replace their paths with their contents.
-    // Do that here so that we have a normalised config object,
-    // and so that it is done only once.
-    loadCAs(config.ca);
-
-    return config;
+    return lang.deepClone(this._config);
 };
 
 Config.create = function (cwd) {

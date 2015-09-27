@@ -10,10 +10,10 @@ EnvProxy.prototype.set = function (config) {
 
   // Override environment defaults if proxy config options are set
   // This will make requests.js follow the proxies in config
-  if (Object.prototype.hasOwnProperty.call(config, 'no-proxy')) {
+  if (Object.prototype.hasOwnProperty.call(config, 'noProxy')) {
     this.restoreFrom.NO_PROXY = process.env.NO_PROXY;
     this.restoreFrom.no_proxy = process.env.no_proxy;
-    process.env.NO_PROXY = config['no-proxy'];
+    process.env.NO_PROXY = config.noProxy;
     delete process.env.no_proxy;
   }
 
@@ -24,16 +24,16 @@ EnvProxy.prototype.set = function (config) {
     delete process.env.http_proxy;
   }
 
-  if (Object.prototype.hasOwnProperty.call(config, 'https-proxy')) {
+  if (Object.prototype.hasOwnProperty.call(config, 'httpsProxy')) {
     this.restoreFrom.HTTPS_PROXY = process.env.HTTPS_PROXY;
     this.restoreFrom.https_proxy = process.env.https_proxy;
-    process.env.HTTPS_PROXY = config['https-proxy'];
+    process.env.HTTPS_PROXY = config.httpsProxy;
     delete process.env.https_proxy;
   }
 };
 
 EnvProxy.prototype.restore = function () {
-  if (Object.prototype.hasOwnProperty.call(this.config, 'no-proxy')) {
+  if (Object.prototype.hasOwnProperty.call(this.config, 'noProxy')) {
     process.env.NO_PROXY = this.restoreFrom.NO_PROXY;
     process.env.no_proxy = this.restoreFrom.no_proxy;
   }
@@ -43,7 +43,7 @@ EnvProxy.prototype.restore = function () {
     process.env.http_proxy = this.restoreFrom.http_proxy;
   }
 
-  if (Object.prototype.hasOwnProperty.call(this.config, 'https-proxy')) {
+  if (Object.prototype.hasOwnProperty.call(this.config, 'httpsProxy')) {
     process.env.HTTPS_PROXY = this.restoreFrom.HTTPS_PROXY;
     process.env.https_proxy = this.restoreFrom.https_proxy;
   }
