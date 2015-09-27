@@ -105,7 +105,7 @@ describe('NPM Config on package.json', function () {
         });
 
         it('allows for overriding options', function () {
-            require('../lib/config').read('test/assets/env-variables', {
+            require('../lib/Config').read('test/assets/env-variables', {
                 httpsProxy: 'http://other-proxy.local'
             });
 
