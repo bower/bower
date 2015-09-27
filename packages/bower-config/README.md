@@ -28,7 +28,7 @@ It also clears `http_proxy`, `https_proxy`, and `no_proxy` environment variables
 
 To restore those variables you can use `restore` method.
 
-#### restore(cwd)
+#### restore()
 
 Restores environment variables overwritten by `.load` method.
 
