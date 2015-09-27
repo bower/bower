@@ -1,6 +1,6 @@
 {
   "name": "bower-config",
-  "version": "0.6.1",
+  "version": "1.0.0",
   "description": "The Bower config reader and writer.",
   "author": "Twitter",
   "license": "MIT",
@@ -35,6 +35,6 @@
     "test": "grunt test"
   },
   "files": [
-    "lib"  
+    "lib"
   ]
 }
