@@ -36,9 +36,19 @@ Config.prototype.save = function (where, callback) {
 /* jshint ignore:end */
 
 function readCertFile(path) {
+    path = path || '';
+
     var sep = '-----END CERTIFICATE-----';
 
-    return fs.readFileSync(path, { encoding: 'utf8' })
+    var certificates;
+
+    if (path.indexOf(sep) === -1) {
+        certificates = fs.readFileSync(path, { encoding: 'utf8' });
+    } else {
+        certificates = path;
+    }
+
+    return certificates
         .split(sep)
         .filter(function(s) { return !s.match(/^\s*$/); })
         .map(function(s) { return s + sep; });
