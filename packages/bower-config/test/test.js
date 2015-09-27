@@ -40,6 +40,7 @@ describe('NPM Config on package.json', function () {
 
             assert(Array.isArray(config.ca.search),
                     'ca property search should be an array');
+
             config.ca.search.forEach(function(c, i) {
                 assertCAContents(c, 'config.ca.search[' + i + ']');
             });

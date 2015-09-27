@@ -16,11 +16,13 @@ function Config(cwd) {
 Config.prototype.load = function (overwrites) {
     this._config = rc('bower', defaults, this._cwd);
 
+    this._config = object.merge(
+      expand(defaults || {}),
+      expand(this._config || {}),
+      expand(overwrites || {})
+    );
+
     this._config = Config.normalise(this._config);
-
-    this._config = object.merge(this._config, overwrites || {});
-
-    loadCAs(this._config.ca);
 
     this._proxy.set(this._config);
 
@@ -44,10 +46,10 @@ function readCertFile(path) {
         certificates = path;
     }
 
-    return certificates
-        .split(sep)
-        .filter(function(s) { return !s.match(/^\s*$/); })
-        .map(function(s) { return s + sep; });
+    return certificates.
+      split(sep).
+      filter(function(s) { return !s.match(/^\s*$/); }).
+      map(function(s) { return s + sep; });
 }
 
 function loadCAs(caConfig) {
@@ -79,11 +81,8 @@ Config.read = function (cwd, overrides) {
     return config.load(overrides).toObject();
 };
 
-Config.normalise = function (rawConfig) {
-    var config = {};
-
-    // Mix in defaults and raw config
-    object.deepMixIn(config, expand(defaults), expand(rawConfig));
+Config.normalise = function (config) {
+    config = expand(config);
 
     // Some backwards compatible things..
     config.shorthandResolver = config.shorthandResolver
@@ -97,6 +96,8 @@ Config.normalise = function (rawConfig) {
     config.registry.register = config.registry.register.replace(/\/+$/, '');
     config.registry.publish = config.registry.publish.replace(/\/+$/, '');
     config.tmp = path.resolve(config.tmp);
+
+    loadCAs(config.ca);
 
     return config;
 };
