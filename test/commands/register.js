@@ -42,24 +42,24 @@ describe('bower register', function () {
         }
     });
 
+    var packageEmpty = new helpers.TempDir({
+        'bower.json': {
+        }
+    });
+
+    var packageWithNameAndUrl = new helpers.TempDir({
+        'bower.json': {
+            name: 'some-name',
+            repository: {
+                type: 'git',
+                url: 'git://fake-url.git'
+            }
+        }
+    });
+
     it('correctly reads arguments', function() {
         expect(register.readOptions(['jquery', 'url']))
         .to.eql(['jquery', 'url']);
-    });
-
-    it('errors if name is not provided', function () {
-        return helpers.run(register).fail(function(reason) {
-            expect(reason.message).to.be('Usage: bower register <name> <url>');
-            expect(reason.code).to.be('EINVFORMAT');
-        });
-    });
-
-    it('errors if url is not provided', function () {
-        return helpers.run(register, ['some-name'])
-        .fail(function(reason) {
-            expect(reason.message).to.be('Usage: bower register <name> <url>');
-            expect(reason.code).to.be('EINVFORMAT');
-        });
     });
 
     it('errors if url is not correct', function () {
@@ -79,6 +79,36 @@ describe('bower register', function () {
             expect(reason.message).to.be('The package you are trying to register is marked as private');
             expect(reason.code).to.be('EPRIV');
         });
+    });
+
+    it('errors if name is not provided as arg nor in package', function () {
+        packageEmpty.prepare();
+
+        var register = registerFactory(packageEmpty.path, packageEmpty.meta());
+        return helpers.run(register, [null, null, {
+            cwd: packageEmpty.path
+        }])
+            .then(function() {
+                expect().fail('should not succeed');
+            }, function(reason) {
+                expect(reason.message).to.be('Usage: bower register <name> <url>');
+                expect(reason.code).to.be('EINVFORMAT');
+            });
+    });
+
+    it('should call registry client with name and url from package', function () {
+        packageWithNameAndUrl.prepare();
+
+        var register = registerFactory(packageWithNameAndUrl.path, packageWithNameAndUrl.meta());
+        return helpers.run(register, [null, null, {
+            cwd: packageWithNameAndUrl.path
+        }])
+            .spread(function(result) {
+                expect(result).to.eql({
+                    // Result from register action on stub
+                    name: 'some-name', url: 'git://fake-url.git'
+                });
+            });
     });
 
     it('should call registry client with name and url', function () {
