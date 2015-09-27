@@ -10,6 +10,9 @@ describe('analytics', function () {
                 return object.merge(stubs || {}, {
                     askPermission: function (message, callback) {
                         callback(undefined, promptResponse);
+                    },
+                    config: {
+                        clear: function () {}
                     }
                 });
             }

@@ -26,6 +26,7 @@ var env = {
     'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
     'GIT_COMMITTER_NAME': 'André Cruz',
     'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com',
+    'NODE_ENV': 'test'
 };
 
 object.mixIn(process.env, env);
