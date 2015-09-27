@@ -18,38 +18,24 @@ $ npm install --save bower-config
 
 Loads the bower configuration from the configuration files.
 
+This method overwrites following environment variables:
 
-#### .get(key) - NOT YET IMPLEMENTED
+- `HTTP_PROXY` with `proxy` configuration variable
+- `HTTPS_PROXY` with `https-proxy` configuration variable
+- `NO_PROXY` with `no-proxy` configuration variable
 
-Returns a configuration value by `key`.   
-Keys with dots are supported to access deep values.
+It also clears `http_proxy`, `https_proxy`, and `no_proxy` environment variables.
 
+To restore those variables you can use `restore` method.
 
-#### .set(key, value) - NOT YET IMPLEMENTED
+### restore(cwd)
 
-Sets a configuration value for `key`.   
-Keys with dots are supported to set deep values.
-
-
-#### .del(key) - NOT YET IMPLEMENTED
-
-Removes configuration named `key`.   
-Keys with dots are supported to delete deep keys.
-
-
-#### .save(where, callback) - NOT YET IMPLEMENTED
-
-Saves changes to `where`.   
-The `where` argument can be a path to a configuration file or:
-
-- `local` to save it in the configured current working directory (defaulting to `process.cwd`)
-- `user` to save it in the configuration file located in the home directory
-
+Restores environment variables overwritten by `.load` method.
 
 #### .toObject()
 
-Returns a deep copy of the underlying configuration object.   
-The returned configuration is normalised.   
+Returns a deep copy of the underlying configuration object.
+The returned configuration is normalised.
 The object keys will be camelCase.
 
 
@@ -63,7 +49,6 @@ var config = require('bower-config').create();
 var config2 = require('bower-config').create('./some/path');
 ```
 
-
 #### #read(cwd)
 
 Alias for:
@@ -75,8 +60,7 @@ var configObject = (new Config(cwd)).load().toJson();
 
 #### #normalise(config)
 
-Returns a new normalised config object based on `config`.   
-Object keys will be converted to camelCase.
+Returns a new normalised config object based on `config`. Object keys will be converted to camelCase.
 
 
 ## License

@@ -23,26 +23,6 @@ Config.prototype.restore = function () {
   this._proxy.restore();
 };
 
-/* jshint ignore:start */
-Config.prototype.get = function (key) {
-    // TODO
-};
-
-Config.prototype.set = function (key, value) {
-    // TODO
-    return this;
-};
-
-Config.prototype.del = function (key, value) {
-    // TODO
-    return this;
-};
-
-Config.prototype.save = function (where, callback) {
-    // TODO
-};
-/* jshint ignore:end */
-
 function readCertFile(path) {
     path = path || '';
 
