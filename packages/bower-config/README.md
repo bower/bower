@@ -18,7 +18,7 @@ $ npm install --save bower-config
 
 Loads the bower configuration from the configuration files.
 
-Configuration is overwritten (before normalisation) with `overwrites` argument.
+Configuration is overwritten (after camelcase normalisation) with `overwrites` argument.
 
 This method overwrites following environment variables:
 

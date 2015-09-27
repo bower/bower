@@ -105,11 +105,11 @@ describe('NPM Config on package.json', function () {
 
         it('allows for overriding options', function () {
             require('../lib/config').read('test/assets/env-variables', {
-                proxy: 'http://other-proxy.local'
+                httpsProxy: 'http://other-proxy.local'
             });
 
-            assert.equal(process.env.HTTP_PROXY, 'http://other-proxy.local');
-            assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
+            assert.equal(process.env.HTTP_PROXY, 'http://HTTP_PROXY');
+            assert.equal(process.env.HTTPS_PROXY, 'http://other-proxy.local');
         });
     });
 

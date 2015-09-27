@@ -16,9 +16,9 @@ function Config(cwd) {
 Config.prototype.load = function (overwrites) {
     this._config = rc('bower', defaults, this._cwd);
 
-    this._config = object.merge(this._config, overwrites || {});
-
     this._config = Config.normalise(this._config);
+
+    this._config = object.merge(this._config, overwrites || {});
 
     loadCAs(this._config.ca);
 
