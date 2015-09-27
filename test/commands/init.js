@@ -83,4 +83,71 @@ describe('bower init', function () {
             );
         });
     });
+
+    it('gets defaults from package.json', function () {
+        package.prepare({
+            'package.json': {
+                'name': 'name from npm',
+                'version': '0.2.0',
+                'description': 'description from npm',
+                'main': 'index.js',
+                'keywords': [
+                    'foo',
+                    'bar'
+                ],
+                'author': 'JD Isaacks',
+                'license': 'ISC'
+            }
+        });
+
+        var logger = init({
+            cwd: package.path,
+            interactive: true
+        });
+
+        return helpers.expectEvent(logger, 'prompt')
+        .spread(function (prompt, answer) {
+
+            // Get defaults from prompt
+            var defaults = prompt.reduce(function(memo, obj){
+                memo[obj.name] = obj['default'];
+                return memo;
+            }, {});
+
+            // Answer with defaults
+            answer({
+                name: defaults.name,
+                version: defaults.version,
+                description: defaults.description,
+                main: defaults.main,
+                moduleType: defaults.moduleType,
+                keywords: defaults.keywords,
+                authors: defaults.authors,
+                license: defaults.license,
+                homepage: 'test-homepage',
+                private: true
+            });
+
+            return helpers.expectEvent(logger, 'prompt');
+        })
+        .spread(function (prompt, answer) {
+            answer({ prompt: true });
+            return helpers.expectEvent(logger, 'end');
+        })
+        .then(function () {
+            expect(package.readJson('bower.json')).to.eql({
+                'name': 'name from npm',
+                'version': '0.2.0',
+                'description': 'description from npm',
+                'main': 'index.js',
+                'keywords': [
+                    'foo',
+                    'bar'
+                ],
+                'authors': ['JD Isaacks'],
+                'license': 'ISC',
+                'homepage': 'test-homepage'
+            });
+        });
+    });
 });
