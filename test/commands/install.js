@@ -1,5 +1,6 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
+var fs = require('fs');
 
 describe('bower install', function () {
 
@@ -51,6 +52,27 @@ describe('bower install', function () {
         return helpers.run(install, [[package.path], { save: true }]).then(function() {
             expect(tempDir.read('bower.json')).to.contain('dependencies');
         });
+    });
+
+    it('skips components not installed by bower', function () {
+        package.prepare({
+            '.git': {} //Make a dummy file instead of using slower gitPrepare()
+        });
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: package.path
+                }
+            }
+        });
+
+        return helpers.run(install).then(function() {
+            var packageFiles = fs.readdirSync(package.path);
+            //presence of .git file implies folder was not overwritten
+            expect(packageFiles).to.contain('.git'); 
+        });
+
     });
 
     it('writes an exact version number to dependencies in bower.json if --save --save-exact flags are used', function () {
