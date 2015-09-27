@@ -72,7 +72,7 @@ describe('NPM Config on package.json', function () {
         });
 
         it('sets env variables', function () {
-            require('../lib/Config').read('test/assets/env-variables');
+            require('../lib/config').read('test/assets/env-variables');
 
             assert.equal(process.env.HTTP_PROXY, 'http://HTTP_PROXY');
             assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
@@ -102,7 +102,17 @@ describe('NPM Config on package.json', function () {
             assert.equal(process.env.https_proxy, 'e');
             assert.equal(process.env.no_proxy, 'f');
         });
+
+        it('allows for overriding options', function () {
+            require('../lib/config').read('test/assets/env-variables', {
+                proxy: 'http://other-proxy.local'
+            });
+
+            assert.equal(process.env.HTTP_PROXY, 'http://other-proxy.local');
+            assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
+        });
     });
+
 });
 
 require('./util/index');

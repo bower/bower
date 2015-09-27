@@ -14,9 +14,11 @@ $ npm install --save bower-config
 
 ## Usage
 
-#### .load()
+#### .load(overwrites)
 
 Loads the bower configuration from the configuration files.
+
+Configuration is overwritten (before normalisation) with `overwrites` argument.
 
 This method overwrites following environment variables:
 
@@ -49,12 +51,12 @@ var config = require('bower-config').create();
 var config2 = require('bower-config').create('./some/path');
 ```
 
-#### #read(cwd)
+#### #read(cwd, overrides)
 
 Alias for:
 
 ```js
-var configObject = (new Config(cwd)).load().toJson();
+var configObject = (new Config(cwd)).load(overrides).toJson();
 ```
 
 

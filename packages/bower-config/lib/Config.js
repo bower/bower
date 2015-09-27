@@ -13,8 +13,10 @@ function Config(cwd) {
     this._config = {};
 }
 
-Config.prototype.load = function () {
+Config.prototype.load = function (overwrites) {
     this._config = rc('bower', defaults, this._cwd);
+
+    this._config = object.merge(this._config, overwrites || {});
 
     this._config = Config.normalise(this._config);
 
@@ -72,9 +74,9 @@ Config.create = function (cwd) {
     return new Config(cwd);
 };
 
-Config.read = function (cwd) {
+Config.read = function (cwd, overrides) {
     var config = new Config(cwd);
-    return config.load().toObject();
+    return config.load(overrides).toObject();
 };
 
 Config.normalise = function (rawConfig) {
