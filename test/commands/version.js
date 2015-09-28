@@ -86,4 +86,22 @@ describe('bower list', function () {
             expect(message).to.be('Bumping 0.0.1, because what');
         });
     });
+
+    it('bumps without committing or tagging', function() {
+        return gitPackage.prepareGit().then(function() {
+
+            return helpers.run(version, ['patch', { gitTagVersion: false}, { cwd: gitPackage.path }]).then(function() {
+                expect(gitPackage.readJson('bower.json').version).to.be('0.0.1');
+
+                return gitPackage.git('tag').spread(function(result) {
+                    expect(result).to.be('v0.0.0\n');
+
+                    return gitPackage.git('status', '-s').spread(function(result) {
+                        expect(result).to.be(' M bower.json\n');
+                    });
+                });
+            });
+
+        });
+    });
 });
