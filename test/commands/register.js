@@ -62,14 +62,6 @@ describe('bower register', function () {
         });
     });
 
-    it('errors if url is not correct', function () {
-        return helpers.run(register, ['some-name', 'url'])
-        .fail(function(reason) {
-            expect(reason.message).to.be('The registry only accepts URLs starting with git://');
-            expect(reason.code).to.be('EINVFORMAT');
-        });
-    });
-
     it('errors if trying to register private package', function () {
         package.prepare({ 'bower.json': { private: true } });
 
