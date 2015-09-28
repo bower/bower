@@ -3,12 +3,7 @@
   "version": "0.3.0",
   "description": "Provides easy interaction with the Bower registry",
   "author": "Twitter",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/bower/registry-client/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "repository": "bower/registry-client",
   "main": "Client",
   "engines": {
@@ -16,7 +11,7 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "bower-config": "~0.6.1",
+    "bower-config": "^1.1.2",
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.51.0",
