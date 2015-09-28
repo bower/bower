@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "async": "~0.2.8",
-    "bower-config": "^1.1.2",
     "graceful-fs": "~2.0.0",
     "lru-cache": "~2.3.0",
     "request": "~2.51.0",
@@ -20,6 +19,7 @@
     "mkdirp": "~0.3.5"
   },
   "devDependencies": {
+    "bower-config": "^1.1.2",
     "expect.js": "~0.2.0",
     "grunt": "~0.4.1",
     "grunt-cli": "^0.1.13",

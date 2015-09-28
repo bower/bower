@@ -4,16 +4,19 @@ var expect = require('expect.js');
 var md5 = require('../lib/util/md5');
 var nock = require('nock');
 var http = require('http');
+var Config = require('bower-config');
 
 describe('RegistryClient', function () {
     beforeEach(function () {
         this.uri = 'https://bower.herokuapp.com';
         this.timeoutVal = 5000;
-        this.registry = new RegistryClient({
+        this.registry = new RegistryClient(Config.read(process.cwd(), {
             strictSsl: false,
             timeout: this.timeoutVal
-        });
+        }));
+
         this.conf = {
+            default: this.uri,
             search: [this.uri],
             register: this.uri,
             publish: this.uri
@@ -105,10 +108,10 @@ describe('RegistryClient', function () {
                   .get('/packages/search/jquery')
                   .replyWithFile(200, __dirname + '/fixtures/search.json');
 
-                this.client = new RegistryClient({
+                this.client = new RegistryClient(Config.read(process.cwd(), {
                     cache: __dirname + '/cache',
                     strictSsl: false
-                });
+                }));
 
                 this.cacheDir = this.client._config.cache;
                 this.host = 'bower.herokuapp.com';
@@ -224,7 +227,7 @@ describe('RegistryClient', function () {
                 url: 'git://github.com/foo/baz'
             });
 
-            this.registry = new RegistryClient({
+            this.registry = new RegistryClient(Config.read(process.cwd(), {
                 strictSsl: false,
                 force: true,
                 registry: {
@@ -233,7 +236,7 @@ describe('RegistryClient', function () {
                         'http://custom-registry2.com'
                     ]
                 }
-            });
+            }));
         });
 
         it('should return entry type', function (next) {
@@ -275,7 +278,7 @@ describe('RegistryClient', function () {
                 url: 'git://github.com/foo/baz'
             });
 
-            this.registry = new RegistryClient({
+            this.registry = new RegistryClient(Config.read(process.cwd(), {
                 strictSsl: false,
                 force: true,
                 registry: {
@@ -285,7 +288,7 @@ describe('RegistryClient', function () {
                         'http://custom-registry2.com'
                     ]
                 }
-            });
+            }));
         });
 
         it('should return entry type', function (next) {
@@ -518,7 +521,7 @@ describe('RegistryClient', function () {
             this.pkg = 'jquery';
             this.pkgUrl = 'git://github.com/bar/foo.git';
 
-            this.registry = new RegistryClient({
+            this.registry = new RegistryClient(Config.read(process.cwd(), {
                 strictSsl: false,
                 force: true,
                 registry: {
@@ -527,7 +530,7 @@ describe('RegistryClient', function () {
                         'http://custom-registry.com'
                     ]
                 }
-            });
+            }));
         });
 
         it('should return entry name', function (next) {
@@ -620,7 +623,7 @@ describe('RegistryClient', function () {
                 }
             ]);
 
-            this.registry = new RegistryClient({
+            this.registry = new RegistryClient(Config.read(process.cwd(), {
                 strictSsl: false,
                 force: true,
                 registry: {
@@ -629,7 +632,7 @@ describe('RegistryClient', function () {
                         'http://custom-registry.com'
                     ]
                 }
-            });
+            }));
         });
 
         it('should return entry name', function (next) {
@@ -721,10 +724,10 @@ describe('RegistryClient', function () {
                 self.server.close();
             });
             this.server.listen('7777', '127.0.0.1');
-            this.registry = new RegistryClient({
+            this.registry = new RegistryClient(Config.read(process.cwd(), {
                 userAgent: 'test agent',
                 registry: 'http://127.0.0.1:7777'
-            });
+            }));
             this.registry.search('jquery', function (err, result) {
                 expect(self.ua).to.be('test agent');
                 next();

@@ -1,11 +1,14 @@
 var async = require('async');
-var Config = require('bower-config');
 var methods = require('./lib');
 var Cache = require('./lib/util/Cache');
 
 function RegistryClient(config, logger) {
     this._logger = logger;
-    this._config = Config.normalise(config);
+    this._config = config;
+
+    if (!this._config.registry) {
+        throw new Error("You need to pass config as read by bower-config module. Registry field is missing.");
+    }
 
     // Cache defaults to storage registry
     if (!Object.prototype.hasOwnProperty.call(this._config, 'cache')) {

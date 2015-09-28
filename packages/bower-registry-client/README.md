@@ -14,7 +14,9 @@ $ npm install --save bower-registry-client
 
 ```js
 var RegistryClient = require('bower-registry-client');
-var registry = new RegistryClient(options, logger);
+var Config = require('bower-config');
+var config = Config.read(process.cwd(), options);
+var registry = new RegistryClient(config, logger);
 ```
 
 The `logger` is optional and is expected to be an instance of the bower [logger](https://github.com/bower/logger).   
