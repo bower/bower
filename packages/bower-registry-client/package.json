@@ -10,13 +10,13 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "async": "~0.2.8",
-    "graceful-fs": "~2.0.0",
-    "lru-cache": "~2.3.0",
-    "request": "~2.51.0",
-    "request-replay": "~0.2.0",
-    "rimraf": "~2.2.0",
-    "mkdirp": "~0.3.5"
+    "async": "^0.2.8",
+    "graceful-fs": "^4.0.0",
+    "lru-cache": "^2.3.0",
+    "request": "^2.51.0",
+    "request-replay": "^0.2.0",
+    "rimraf": "^2.2.0",
+    "mkdirp": "^0.3.5"
   },
   "devDependencies": {
     "bower-config": "^1.1.2",
