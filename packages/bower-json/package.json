@@ -28,6 +28,7 @@
     "istanbul": "^0.3.5",
     "load-grunt-tasks": "^3.3.0",
     "mocha": "*",
+    "request": "^2.64.0",
     "underscore.string": "^3.0.3"
   },
   "scripts": {

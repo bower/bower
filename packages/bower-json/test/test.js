@@ -2,6 +2,7 @@ var path = require('path');
 var expect = require('expect.js');
 var _s = require('underscore.string');
 var bowerJson = require('../lib/json');
+var request = require('request');
 
 describe('.find', function () {
     it('should find the bower.json file', function (done) {
@@ -436,3 +437,59 @@ describe('.normalize', function () {
         expect(json.main).to.eql(['foo.js']);
     });
 });
+
+describe('packages from bower registry', function () {
+
+    var packageList,
+        packageListUrl = 'https://bower-component-list.herokuapp.com/';
+        
+    this.timeout(60000);
+
+    it('can be downloaded from online source ' + packageListUrl, function(done) {
+        request({
+            url: packageListUrl,
+            json: true
+        }, function(error, response, body) {
+            
+            if(error) {
+                throw error;
+            }
+
+            expect(body).to.be.an('array');
+            expect(body).to.not.be.empty;
+            packageList = body;
+
+            done();
+
+        });
+    });
+
+    it('should validate each listed package', function (done) {
+
+        expect(packageList).to.be.an('array');
+
+        var invalidPackageCount = 0;
+
+        packageList.forEach(function(package) {
+
+            if(package.name.indexOf('10digit')===0) {
+                return;
+            }
+
+            try {
+                bowerJson.validate(package);
+            } catch(e) {
+                invalidPackageCount++;
+                console.error('validation of "' + package.name + '" failed: ' + e.message);
+            }
+
+        });
+
+        if(invalidPackageCount) {
+            throw new Error(invalidPackageCount + '/' + packageList.length + ' package names do not validate');
+        }
+        done();
+
+    });
+});
+
