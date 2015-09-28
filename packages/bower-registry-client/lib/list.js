@@ -94,7 +94,6 @@ function doRequest(index, callback) {
     }
 
     req = replay(request.get(requestUrl, {
-        proxy: remote.protocol === 'https:' ? this._config.httpsProxy : this._config.proxy,
         ca: this._config.ca.search[index],
         headers: headers,
         strictSSL: this._config.strictSsl,
