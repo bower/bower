@@ -20,7 +20,6 @@ var userAgent = !proxy && !httpsProxy
     : 'curl/7.21.4 (universal-apple-darwin11.0) libcurl/7.21.4 OpenSSL/0.9.8r zlib/1.2.5';
 
 var defaults = {
-    'cwd': process.cwd(),
     'directory': 'bower_components',
     'registry': 'https://bower.herokuapp.com',
     'shorthand-resolver': 'git://github.com/{{owner}}/{{package}}.git',

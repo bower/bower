@@ -59,12 +59,6 @@ Alias for:
 var configObject = (new Config(cwd)).load(overrides).toJson();
 ```
 
-
-#### #normalise(config)
-
-Returns a new normalised config object based on `config`. Object keys will be converted to camelCase.
-
-
 ## License
 
 Released under the [MIT License](http://www.opensource.org/licenses/mit-license.php).

@@ -2,6 +2,42 @@ var assert = require('assert');
 var path = require('path');
 
 describe('NPM Config on package.json', function () {
+    beforeEach(function () {
+        delete process.env.npm_package_config_bower_directory;
+        delete process.env.npm_package_config_bower_colors;
+    });
+
+    it('allows for not providing cwd', function () {
+        var config = require('../lib/Config').read();
+
+        console.log(JSON.stringify(config, undefined, '  '));
+
+        config.tmp = '/foo/bar';
+        config.userAgent = 'firefox';
+        delete config.storage;
+
+        assert.deepEqual(config, {
+          'directory': 'bower_components',
+          'registry': {
+            'default': 'https://bower.herokuapp.com',
+            'search': [
+              'https://bower.herokuapp.com'
+            ],
+            'register': 'https://bower.herokuapp.com',
+            'publish': 'https://bower.herokuapp.com'
+          },
+          'shorthandResolver': 'git://github.com/{{owner}}/{{package}}.git',
+          'tmp': '/foo/bar',
+          'timeout': 30000,
+          'ca': {
+            'search': []
+          },
+          'strictSsl': true,
+          'userAgent': 'firefox',
+          'color': true
+        });
+    });
+
     function assertCAContents(caData, name) {
         var r = /-----BEGIN CERTIFICATE-----[a-zA-Z0-9+\/=\n\r]+-----END CERTIFICATE-----/;
 
