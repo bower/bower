@@ -24,7 +24,6 @@ describe('bower init', function () {
         .spread(function (prompt, answer) {
             answer({
                 name: 'test-name',
-                version: 'test-version',
                 description: 'test-description',
                 moduleType: 'test-moduleType',
                 keywords: 'test-keyword',
@@ -43,7 +42,6 @@ describe('bower init', function () {
         .then(function () {
             expect(package.readJson('bower.json')).to.eql({
                 name: 'test-name',
-                version: 'test-version',
                 homepage: 'test-homepage',
                 authors: [ 'test-author' ],
                 description: 'test-description',
@@ -88,7 +86,6 @@ describe('bower init', function () {
         package.prepare({
             'package.json': {
                 'name': 'name from npm',
-                'version': '0.2.0',
                 'description': 'description from npm',
                 'main': 'index.js',
                 'keywords': [
@@ -117,7 +114,6 @@ describe('bower init', function () {
             // Answer with defaults
             answer({
                 name: defaults.name,
-                version: defaults.version,
                 description: defaults.description,
                 main: defaults.main,
                 moduleType: defaults.moduleType,
@@ -137,7 +133,6 @@ describe('bower init', function () {
         .then(function () {
             expect(package.readJson('bower.json')).to.eql({
                 'name': 'name from npm',
-                'version': '0.2.0',
                 'description': 'description from npm',
                 'main': 'index.js',
                 'keywords': [
