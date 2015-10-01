@@ -663,6 +663,25 @@ describe('resolverFactory', function () {
         .done();
     });
 
+    it('should use https:// instead of git:// if the httpsInsteadOfGit config is set to true', function (next) {
+        callFactory({ source: 'bower/bower' })
+        .then(function (resolver) {
+            var config = {
+                httpsInsteadOfGit: true
+            };
+
+            expect(resolver.getSource()).to.equal('git://github.com/bower/bower.git');
+
+            return callFactory({ source: 'IndigoUnited/promptly' }, config);
+        })
+        .then(function (resolver) {
+            expect(resolver.getSource()).to.equal('https://github.com/IndigoUnited/promptly.git');
+            next();
+        })
+        .done();
+    });
+
+
     it.skip('should use config.cwd when resolving relative paths');
 
     it('should not swallow constructor errors when instantiating resolvers', function (next) {
