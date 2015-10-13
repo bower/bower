@@ -244,7 +244,7 @@ describe('bower install', function () {
       return helpers.run(install).then(function() {
           var packageFiles = fs.readdirSync(package.path);
           //presence of .git file implies folder was not overwritten
-          expect(packageFiles).to.contain('.git'); 
+          expect(packageFiles).to.contain('.git');
       });
 
   });
