@@ -52,10 +52,10 @@ describe('GitHub', function () {
             var resolver;
 
             nock('https://github.com')
-            .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
+            .get('/IndigoUnited/js-events-emitter/archive/0.1.0.tar.gz')
             .replyWithFile(200, path.resolve(__dirname, '../../assets/package-tar.tar.gz'));
 
-            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
+            resolver = create({ source: 'git://github.com/IndigoUnited/js-events-emitter.git', target: '0.1.0' });
 
             resolver.resolve()
             .then(function (dir) {
@@ -76,7 +76,7 @@ describe('GitHub', function () {
             var retried;
 
             nock('https://github.com')
-            .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
+            .get('/IndigoUnited/js-events-emitter/archive/0.1.0.tar.gz')
             .reply(200, 'this is not a valid tar');
 
             logger.on('log', function (entry) {
@@ -85,7 +85,7 @@ describe('GitHub', function () {
                 }
             });
 
-            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
+            resolver = create({ source: 'git://github.com/IndigoUnited/js-events-emitter.git', target: '0.1.0' });
 
             // Monkey patch source to file://
             resolver._source = 'file://' + testPackage;
@@ -108,7 +108,7 @@ describe('GitHub', function () {
             var retried;
 
             nock('https://github.com')
-            .get('/IndigoUnited/events-emitter/archive/0.1.0.tar.gz')
+            .get('/IndigoUnited/js-events-emitter/archive/0.1.0.tar.gz')
             .reply(500);
 
             logger.on('log', function (entry) {
@@ -117,7 +117,7 @@ describe('GitHub', function () {
                 }
             });
 
-            resolver = create({ source: 'git://github.com/IndigoUnited/events-emitter.git', target: '0.1.0' });
+            resolver = create({ source: 'git://github.com/IndigoUnited/js-events-emitter.git', target: '0.1.0' });
 
             // Monkey patch source to file://
             resolver._source = 'file://' + testPackage;
