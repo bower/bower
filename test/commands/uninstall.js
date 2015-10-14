@@ -1,6 +1,6 @@
 var path = require('path');
 var expect = require('expect.js');
-var fs = require('fs');
+var fs = require('graceful-fs');
 
 var helpers = require('../helpers');
 var uninstall = helpers.command('uninstall');
