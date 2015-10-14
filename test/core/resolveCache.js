@@ -1,6 +1,6 @@
 var path = require('path');
 var mout = require('mout');
-var rimraf = require('rimraf');
+var rimraf = require('../../lib/util/rimraf');
 var fs = require('graceful-fs');
 var Q = require('q');
 var expect = require('expect.js');
