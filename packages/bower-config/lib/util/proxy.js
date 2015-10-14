@@ -13,22 +13,22 @@ EnvProxy.prototype.set = function (config) {
   if (Object.prototype.hasOwnProperty.call(config, 'noProxy')) {
     this.restoreFrom.NO_PROXY = process.env.NO_PROXY;
     this.restoreFrom.no_proxy = process.env.no_proxy;
-    process.env.NO_PROXY = config.noProxy;
     delete process.env.no_proxy;
+    process.env.NO_PROXY = config.noProxy;
   }
 
   if (Object.prototype.hasOwnProperty.call(config, 'proxy')) {
     this.restoreFrom.HTTP_PROXY = process.env.HTTP_PROXY;
     this.restoreFrom.http_proxy = process.env.http_proxy;
-    process.env.HTTP_PROXY = config.proxy;
     delete process.env.http_proxy;
+    process.env.HTTP_PROXY = config.proxy;
   }
 
   if (Object.prototype.hasOwnProperty.call(config, 'httpsProxy')) {
     this.restoreFrom.HTTPS_PROXY = process.env.HTTPS_PROXY;
     this.restoreFrom.https_proxy = process.env.https_proxy;
-    process.env.HTTPS_PROXY = config.httpsProxy;
     delete process.env.https_proxy;
+    process.env.HTTPS_PROXY = config.httpsProxy;
   }
 };
 
