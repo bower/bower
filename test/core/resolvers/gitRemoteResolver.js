@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var Logger = require('bower-logger');
 var helpers = require('../../helpers');
 var Q = require('q');

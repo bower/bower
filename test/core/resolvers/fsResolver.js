@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var path = require('path');
 var rimraf = require('../../../lib/util/rimraf');
 var mkdirp = require('mkdirp');

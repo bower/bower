@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var fs = require('graceful-fs');
+var fs = require('../../lib/util/fs');
 var path = require('path');
 var mkdirp = require('mkdirp');
 var mout = require('mout');

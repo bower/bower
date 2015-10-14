@@ -1,4 +1,4 @@
-var fs = require('graceful-fs');
+var fs = require('../lib/util/fs');
 var path = require('path');
 var Q = require('q');
 var semver = require('semver');

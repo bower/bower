@@ -1,6 +1,6 @@
 var path = require('path');
 var nock = require('nock');
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var expect = require('expect.js');
 var Logger = require('bower-logger');
 var GitRemoteResolver  = require('../../../lib/core/resolvers/GitRemoteResolver');

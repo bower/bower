@@ -1,7 +1,7 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
 var nock = require('nock');
-var fs = require('graceful-fs');
+var fs = require('../../lib/util/fs');
 
 describe('bower install', function () {
 

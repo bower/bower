@@ -2,7 +2,7 @@ var path = require('path');
 var bower = require('../../lib/index.js');
 var mkdirp = require('mkdirp');
 var rimraf = require('../../lib/util/rimraf');
-var fs = require('graceful-fs');
+var fs = require('../../lib/util/fs');
 var expect = require('expect.js');
 var scripts = require('../../lib/core/scripts.js');
 

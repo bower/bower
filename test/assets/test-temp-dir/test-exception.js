@@ -1,4 +1,4 @@
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var path = require('path');
 var Logger = require('bower-logger');
 var Resolver = require('../../../lib/core/resolvers/Resolver');
