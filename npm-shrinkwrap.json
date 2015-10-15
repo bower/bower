@@ -1,6 +1,6 @@
 {
   "name": "bower",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "npm-shrinkwrap-version": "5.4.1",
   "dependencies": {
     "abbrev": {
@@ -844,10 +844,6 @@
               "resolved": "https://registry.npmjs.org/mime-db/-/mime-db-1.12.0.tgz"
             }
           }
-        },
-        "node-uuid": {
-          "version": "1.4.3",
-          "resolved": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.3.tgz"
         },
         "oauth-sign": {
           "version": "0.6.0",
