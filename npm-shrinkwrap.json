@@ -164,8 +164,8 @@
       "resolved": "https://registry.npmjs.org/configstore/-/configstore-0.3.2.tgz",
       "dependencies": {
         "js-yaml": {
-          "version": "3.4.2",
-          "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.4.2.tgz",
+          "version": "3.4.3",
+          "resolved": "https://registry.npmjs.org/js-yaml/-/js-yaml-3.4.3.tgz",
           "dependencies": {
             "argparse": {
               "version": "1.0.2",
@@ -182,8 +182,8 @@
               }
             },
             "esprima": {
-              "version": "2.2.0",
-              "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.2.0.tgz"
+              "version": "2.6.0",
+              "resolved": "https://registry.npmjs.org/esprima/-/esprima-2.6.0.tgz"
             }
           }
         },
@@ -640,8 +640,8 @@
           }
         },
         "tough-cookie": {
-          "version": "2.0.0",
-          "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.0.0.tgz"
+          "version": "2.2.0",
+          "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.2.0.tgz"
         }
       }
     },
@@ -845,6 +845,10 @@
             }
           }
         },
+        "node-uuid": {
+          "version": "1.4.3",
+          "resolved": "https://registry.npmjs.org/node-uuid/-/node-uuid-1.4.3.tgz"
+        },
         "oauth-sign": {
           "version": "0.6.0",
           "resolved": "https://registry.npmjs.org/oauth-sign/-/oauth-sign-0.6.0.tgz"
@@ -858,8 +862,8 @@
           "resolved": "https://registry.npmjs.org/stringstream/-/stringstream-0.0.4.tgz"
         },
         "tough-cookie": {
-          "version": "2.0.0",
-          "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.0.0.tgz"
+          "version": "2.2.0",
+          "resolved": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-2.2.0.tgz"
         },
         "tunnel-agent": {
           "version": "0.4.1",
@@ -1044,8 +1048,8 @@
                   "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
                 },
                 "util-deprecate": {
-                  "version": "1.0.1",
-                  "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.1.tgz"
+                  "version": "1.0.2",
+                  "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
                 }
               }
             },
@@ -1126,8 +1130,8 @@
                               "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
                             },
                             "util-deprecate": {
-                              "version": "1.0.1",
-                              "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.1.tgz"
+                              "version": "1.0.2",
+                              "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
                             }
                           }
                         }
@@ -1206,8 +1210,8 @@
                               "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
                             },
                             "util-deprecate": {
-                              "version": "1.0.1",
-                              "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.1.tgz"
+                              "version": "1.0.2",
+                              "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
                             }
                           }
                         }
@@ -1224,8 +1228,8 @@
                   "resolved": "https://registry.npmjs.org/registry-url/-/registry-url-3.0.3.tgz",
                   "dependencies": {
                     "rc": {
-                      "version": "1.1.1",
-                      "resolved": "https://registry.npmjs.org/rc/-/rc-1.1.1.tgz",
+                      "version": "1.1.2",
+                      "resolved": "https://registry.npmjs.org/rc/-/rc-1.1.2.tgz",
                       "dependencies": {
                         "deep-extend": {
                           "version": "0.2.11",
@@ -1284,8 +1288,8 @@
       "resolved": "https://registry.npmjs.org/user-home/-/user-home-1.1.1.tgz"
     },
     "which": {
-      "version": "1.1.2",
-      "resolved": "https://registry.npmjs.org/which/-/which-1.1.2.tgz",
+      "version": "1.2.0",
+      "resolved": "https://registry.npmjs.org/which/-/which-1.2.0.tgz",
       "dependencies": {
         "is-absolute": {
           "version": "0.1.7",
