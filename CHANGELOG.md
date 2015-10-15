@@ -1,11 +1,24 @@
 # Changelog
 
+## 1.6.0 - 2015-10-15
+
+- Shrinkwrap all dependencies and add them to bundledDependencies ([#1948](https://github.com/bower/bower/pull/1948))
+- Allow for ignoring of child dependencies ([#1394](https://github.com/bower/bower/pull/1394))
+- Allow passing `--config.resolvers` through CLI ([#1922](https://github.com/bower/bower/pull/1922))
+- Use defaults values from package.json if it exists (bower init) ([#1731](https://github.com/bower/bower/issues/1731))
+- Properly use cerificates set in .bowerrc ([#1869](https://github.com/bower/bower/pull/1869))
+- Include package name when version conflict occurs ([#1917](https://github.com/bower/bower/pull/1917))
+- Add timeout for permission check ([yeoman/insight#35](https://github.com/yeoman/insight/pull/35))
+- Close file-handles when possible. Prevents all sorts of permission issues on Windows ([0bb1536](https://github.com/bower/bower/commit/0bb1536c9972e13f3be06bea9a8619632966c664))
+- Prevent ENOENT error on Windows when in VM environment ([isaacs/chmodr#8](https://github.com/isaacs/chmodr/pull/8))
+
+
 ## 1.5.3 - 2015-09-24
 
 - Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
 - Fix --save-exact feature for github endpoints, fixes ([#1925](https://github.com/bower/bower/issues/1925))
 - Fix `bower init` to support private flag again ([#1819](https://github.com/bower/bower/pull/1819))
-- Bump insight dependency to support prompt timeout ([#1102](https://github.com/bower/bower/issues/1102)) 
+- Bump insight dependency to support prompt timeout ([#1102](https://github.com/bower/bower/issues/1102))
 
 ## 1.5.2 - 2015-08-25
 
