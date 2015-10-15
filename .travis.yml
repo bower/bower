@@ -1,3 +1,5 @@
+sudo: false
+
 env:
   - NODE_VERSION=0.10
   - NODE_VERSION=0.11
