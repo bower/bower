@@ -1,7 +1,6 @@
 {
   "name": "bower",
-  "version": "1.6.0",
-  "npm-shrinkwrap-version": "5.4.1",
+  "version": "1.6.2",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
