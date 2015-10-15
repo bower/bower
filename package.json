@@ -23,7 +23,7 @@
     "bower-registry-client": "^1.0.0",
     "cardinal": "0.4.4",
     "chalk": "^1.0.0",
-    "chmodr": "0.1.0",
+    "chmodr": "^1.0.2",
     "configstore": "^0.3.2",
     "decompress-zip": "^0.1.0",
     "destroy": "^1.0.3",
