@@ -1,6 +1,6 @@
 {
   "name": "bower",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
