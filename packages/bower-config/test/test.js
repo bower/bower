@@ -7,10 +7,60 @@ describe('NPM Config on package.json', function () {
         delete process.env.npm_package_config_bower_colors;
     });
 
+    it('defaults registry entries to default registry', function () {
+        var config = require('../lib/Config').read(null, {});
+
+        assert.deepEqual(config.registry, {
+          'default': 'https://bower.herokuapp.com',
+          'search': [
+            'https://bower.herokuapp.com'
+          ],
+          'register': 'https://bower.herokuapp.com',
+          'publish': 'https://bower.herokuapp.com'
+        });
+    });
+
+    it('can change default registry', function () {
+        var config = require('../lib/Config').read(null, { registry: 'https://foobar' });
+
+        assert.deepEqual(config.registry, {
+          'default': 'https://foobar',
+          'search': [
+            'https://foobar',
+          ],
+          'register': 'https://foobar',
+          'publish': 'https://foobar'
+        });
+    });
+
+    it('can override single entries in registry configuration', function () {
+        var config = require('../lib/Config').read(null, { registry: { search: 'https://foobar' } });
+
+        assert.deepEqual(config.registry, {
+          'default': 'https://bower.herokuapp.com',
+          'search': [
+            'https://foobar',
+          ],
+          'register': 'https://bower.herokuapp.com',
+          'publish': 'https://bower.herokuapp.com'
+        });
+    });
+
+    it('can override single entries in registry configuration and defaults', function () {
+        var config = require('../lib/Config').read(null, { registry: { default: 'https://fizfuz', search: 'https://foobar' } });
+
+        assert.deepEqual(config.registry, {
+          'default': 'https://fizfuz',
+          'search': [
+            'https://foobar',
+          ],
+          'register': 'https://fizfuz',
+          'publish': 'https://fizfuz'
+        });
+    });
+
     it('allows for not providing cwd', function () {
         var config = require('../lib/Config').read();
-
-        console.log(JSON.stringify(config, undefined, '  '));
 
         config.tmp = '/foo/bar';
         config.userAgent = 'firefox';

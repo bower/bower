@@ -22,8 +22,6 @@ function camelCase(config) {
 function expand(config) {
     config = camelCase(config);
 
-    // Expand some properties
-    // Registry
     if (typeof config.registry === 'string') {
         config.registry = {
             default: config.registry,
@@ -32,14 +30,17 @@ function expand(config) {
             publish: config.registry
         };
     } else if (typeof config.registry === 'object') {
+        config.registry.default = config.registry.default || 'https://bower.herokuapp.com';
+
+        config.registry = {
+            default: config.registry.default,
+            search: config.registry.search || config.registry.default,
+            register: config.registry.register || config.registry.default,
+            publish: config.registry.publish || config.registry.default
+        };
+
         if (config.registry.search && !Array.isArray(config.registry.search)) {
             config.registry.search = [config.registry.search];
-        }
-
-        if (config.registry.default) {
-            config.registry.search = config.registry.search || config.registry.default;
-            config.registry.register = config.registry.register || config.registry.default;
-            config.registry.publish = config.registry.publish || config.registry.default;
         }
     }
 
