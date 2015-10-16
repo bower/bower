@@ -67,10 +67,12 @@ However, if you still want to run commands with sudo, use `--allow-root` option.
 ### Windows users
 
 To use Bower on Windows, you must install
-[msysgit](http://msysgit.github.io/) correctly. Be sure to check the
-option shown below:
+[Git for Windows](http://git-for-windows.github.io/) correctly. Be sure to check the
+options shown below:
 
-![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532690/d2e8991a-7386-11e5-9a57-613c7f92e84e.png" width="534" height="418" alt="Git for Windows" />
+
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532694/dbe8857a-7386-11e5-9bd0-367e97644403.png" width="534" height="418" alt="Git for Windows" />
 
 Note that if you use TortoiseGit and if Bower keeps asking for your SSH
 password, you should add the following environment variable: `GIT_SSH -
