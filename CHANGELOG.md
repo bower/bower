@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.6.3 - 2015-10-16
+
+Fixes regression issues introduced with 1.6.2, specifically:
+
+- Allow for bower_components to be a symlink
+- Allow setting custom registry in .bowerrc
+
+## 1.6.2 - 2015-10-15
+
+Fix dependency issues of 1.6.1. First published release of 1.6.x.
+
+## 1.6.1 - 2015-10-15
+
+Fix dependency issues of 1.6.0. Reverted release.
+
 ## 1.6.0 - 2015-10-15
 
 - Shrinkwrap all dependencies and add them to bundledDependencies ([#1948](https://github.com/bower/bower/pull/1948))
@@ -12,6 +27,7 @@
 - Close file-handles when possible. Prevents all sorts of permission issues on Windows ([0bb1536](https://github.com/bower/bower/commit/0bb1536c9972e13f3be06bea9a8619632966c664))
 - Prevent ENOENT error on Windows when in VM environment ([isaacs/chmodr#8](https://github.com/isaacs/chmodr/pull/8))
 
+Reverted release.
 
 ## 1.5.3 - 2015-09-24
 
