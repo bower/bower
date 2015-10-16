@@ -11,8 +11,8 @@
       "resolved": "https://registry.npmjs.org/archy/-/archy-1.0.0.tgz"
     },
     "bower-config": {
-      "version": "1.2.1",
-      "resolved": "https://registry.npmjs.org/bower-config/-/bower-config-1.2.1.tgz",
+      "version": "1.2.2",
+      "resolved": "https://registry.npmjs.org/bower-config/-/bower-config-1.2.2.tgz",
       "dependencies": {
         "graceful-fs": {
           "version": "4.1.2",
