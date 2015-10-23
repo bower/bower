@@ -125,6 +125,43 @@ describe('bower update', function () {
 
     });
 
+    it('does not install ignored dependencies if run multiple times', function() {
+      var package3 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package3'
+          }
+      }).prepare();
+
+      var package2 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package2',
+              dependencies: {
+                package3: package3.path
+              }
+          }
+      }).prepare();
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test',
+              dependencies: {
+                  package2: package2.path
+              }
+          },
+          '.bowerrc': {
+              ignoredDependencies: ['package3']
+          }
+      });
+
+      return update().then(function() {
+          return update().then(function() {
+            expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/package3')).to.equal(false);
+          });
+      });
+
+    });
+
     it('runs preinstall hook when installing missing package', function () {
         package.prepare();
 
