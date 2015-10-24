@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.6.4 - 2015-10-24
+
+- Fix ignoring dependencies on multiple install run ([#1970](https://github.com/bower/bower/pull/1970))
+- Use --non-interactive when running svn client ([#1969](https://github.com/bower/bower/pull/1969))
+- Fix downloading of URLs ending with slash ([#1956](https://github.com/bower/bower/pull/1956))
+- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960)) 
+
 ## 1.6.3 - 2015-10-16
 
 Fixes regression issues introduced with 1.6.2, specifically:
