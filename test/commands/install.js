@@ -316,6 +316,44 @@ describe('bower install', function () {
 
   });
 
+  it('does not install ignored dependencies if run multiple times', function() {
+    package.prepare();
+    var package2 = new helpers.TempDir({
+      'bower.json': {
+        name: 'package2',
+      }
+    }).prepare();
+
+    var package3 = new helpers.TempDir({
+      'bower.json': {
+        name: 'package3',
+        dependencies: {
+          package2: package2.path,
+          package: package.path,
+        }
+      }
+    }).prepare();
+
+    tempDir.prepare({
+      'bower.json': {
+        name: 'test_tw',
+        dependencies: {
+          package3: package3.path
+        }
+      },
+      '.bowerrc': {
+        ignoredDependencies: ['package']
+      }
+    });
+    return helpers.run(install).then(function() {
+      return helpers.run(install).then(function() {
+        expect(tempDir.exists('bower_components/package')).to.be(false);
+        expect(tempDir.exists('bower_components/package2')).to.be(true);
+      });
+    });
+
+  });
+
   it('recognizes proxy option in config', function () {
     this.timeout(10000);
 
