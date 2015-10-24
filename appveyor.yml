@@ -21,6 +21,8 @@ matrix:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Install-Product node $env:nodejs_version
+  # Install stable version of npm
+  - npm install -g npm@^2.0.0
   # Install subversion
   - choco install svn -y
   # Install bower
