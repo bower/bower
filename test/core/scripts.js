@@ -45,10 +45,10 @@ describe('scripts', function () {
         rimraf(tempDir,  next);
     });
 
-    it('should obey --disable-hooks flag and not run preinstall and postinstall hooks.', function (next) {
+    it('should obey --ignore-scripts flag and not run preinstall and postinstall hooks.', function (next) {
 
         bower.commands
-        .install([packageDir], { disableHooks: true }, config)
+        .install([packageDir], { ignoreScripts: true }, config)
         .on('end', function (installed) {
 
             expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName))).to.be(false);
@@ -73,10 +73,10 @@ describe('scripts', function () {
 
     });
 
-    it('should obey --disable-hooks flag and not run preuninstall hook.', function (next) {
+    it('should obey --ignore-scripts flag and not run preuninstall hook.', function (next) {
 
         bower.commands
-        .uninstall([packageName], { disableHooks: true }, config)
+        .uninstall([packageName], { ignoreScripts: true }, config)
         .on('end', function (installed) {
 
             expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName))).to.be(false);
