@@ -63,10 +63,9 @@ $ bower uninstall <package-name>
 
 On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
 
-### Running commands with sudo
+### Never run Bower with sudo
 
 Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
 
 ### Windows users
 
