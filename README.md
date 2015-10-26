@@ -65,6 +65,10 @@ On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bo
 
 Bower is a user command, there is no need to execute it with superuser permissions.
 
+### Disabling hook scripts
+
+When running Bower on automated build systems or installing dependencies from untrusted sources you might want to disable script hooks by using the `--ignore-scripts` option.
+
 ### Windows users
 
 To use Bower on Windows, you must install
