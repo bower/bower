@@ -1,35 +1,23 @@
 # Contributing to Bower
 
-Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now.  (Jan 2014)
+Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now. If you're interested in becoming Bower maintainer or supporting in in any way, please full the following form: http://goo.gl/forms/P1ndzCNoiG
 
 ## Casual Involvement
+
 * Improve the bower.io site ([tickets](https://github.com/bower/bower.github.io/issues))
-* Move forward [bower.io redesign](https://github.com/bower/bower.github.io/issues/7)
-* Attend team meetings
 * Comment on issues and drive to resolution
 
 ## High-impact Involvement
 
 * Maintaining the bower client. 
-  * [Authoring client tests](https://github.com/bower/bower/issues/801)
   * Read [Architecture doc](https://github.com/bower/bower/wiki/Rewrite-architecture)
   * Triage, close, fix and resolve [issues](https://github.com/bower/bower/issues)
-* Developing the [new registry server](https://github.com/bower/registry/tree/node_rewrite)
-  * Hooking in to Elastic Search rather than the in-memory search
-  * Getting bower/registry-client to talk to the new server without breaking backwards compatibility
-  * DevOps for the server
 
 ## Team Meetings
 
-We meet on Monday at 1:00pm PST, 9:00pm UTC in #bower on Freenode. [The meeting notes](http://goo.gl/NJZ1o2).
+We communicate through a channel on slack: https://gitter.im/bower
 
-<hr>
-
-Following these guidelines helps to communicate that you respect the time of
-the developers managing and developing this open source project. In return,
-they should reciprocate that respect in addressing your issue, assessing
-changes, and helping you finalize your pull requests.
-
+If you'd like to attend the meetings, please fill the [support form](http://goo.gl/forms/P1ndzCNoiG), and you'll get an invite.
 
 ## Using the issue tracker
 
@@ -38,14 +26,14 @@ The issue tracker is the preferred channel for [bug reports](#bugs),
 requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests. Use
-  [Stack Overflow](http://stackoverflow.com/questions/tagged/bower), our
+  [Stack Overflow](http://stackoverflow.com/questions/tagged/bower)
+  [Gitter Channel](https://gitter.im/bower/bower)
   [Mailing List](http://groups.google.com/group/twitter-bower)
   (twitter-bower@googlegroups.com), or
   [#bower](http://webchat.freenode.net/?channels=bower) on Freenode.
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
-
 
 <a name="bugs"></a>
 ## Bug reports
