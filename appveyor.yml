@@ -21,10 +21,6 @@ matrix:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Install-Product node $env:nodejs_version
-  # Install stable version of npm
-  - npm install -g npm@^3.0.0
-  # Install subversion
-  - choco install svn -y
   # Install bower
   - npm install
 
@@ -33,6 +29,8 @@ test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
+  - git --version
+  - svn --version
   - cmd: npm test
 
 # Don't actually build.
