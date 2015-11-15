@@ -54,6 +54,7 @@
     "rimraf": "^2.2.8",
     "semver": "^2.3.0",
     "shell-quote": "^1.4.2",
+    "spawn-sync": "^1.0.14",
     "stringify-object": "^1.0.0",
     "tar-fs": "^1.4.1",
     "tmp": "0.0.24",
