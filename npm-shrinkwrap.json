@@ -972,56 +972,6 @@
         }
       }
     },
-    "spawn-sync": {
-      "version": "1.0.13",
-      "resolved": "https://registry.npmjs.org/spawn-sync/-/spawn-sync-1.0.13.tgz",
-      "dependencies": {
-        "concat-stream": {
-          "version": "1.5.1",
-          "resolved": "https://registry.npmjs.org/concat-stream/-/concat-stream-1.5.1.tgz",
-          "dependencies": {
-            "inherits": {
-              "version": "2.0.1",
-              "resolved": "https://registry.npmjs.org/inherits/-/inherits-2.0.1.tgz"
-            },
-            "readable-stream": {
-              "version": "2.0.4",
-              "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.0.4.tgz",
-              "dependencies": {
-                "core-util-is": {
-                  "version": "1.0.1",
-                  "resolved": "https://registry.npmjs.org/core-util-is/-/core-util-is-1.0.1.tgz"
-                },
-                "isarray": {
-                  "version": "0.0.1",
-                  "resolved": "https://registry.npmjs.org/isarray/-/isarray-0.0.1.tgz"
-                },
-                "process-nextick-args": {
-                  "version": "1.0.3",
-                  "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.3.tgz"
-                },
-                "string_decoder": {
-                  "version": "0.10.31",
-                  "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-0.10.31.tgz"
-                },
-                "util-deprecate": {
-                  "version": "1.0.2",
-                  "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
-                }
-              }
-            },
-            "typedarray": {
-              "version": "0.0.6",
-              "resolved": "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
-            }
-          }
-        },
-        "os-shim": {
-          "version": "0.1.3",
-          "resolved": "https://registry.npmjs.org/os-shim/-/os-shim-0.1.3.tgz"
-        }
-      }
-    },
     "stringify-object": {
       "version": "1.0.1",
       "resolved": "https://registry.npmjs.org/stringify-object/-/stringify-object-1.0.1.tgz"
