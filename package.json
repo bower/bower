@@ -77,7 +77,6 @@
     "multiline": "^1.0.2",
     "nock": "^2.13.0",
     "node-uuid": "^1.4.2",
-    "npm-shrinkwrap": "^5.4.1",
     "proxyquire": "^1.3.0",
     "spawn-sync": "^1.0.5"
   },
