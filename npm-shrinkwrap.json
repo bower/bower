@@ -973,8 +973,8 @@
       }
     },
     "spawn-sync": {
-      "version": "1.0.14",
-      "resolved": "https://registry.npmjs.org/spawn-sync/-/spawn-sync-1.0.14.tgz",
+      "version": "1.0.13",
+      "resolved": "https://registry.npmjs.org/spawn-sync/-/spawn-sync-1.0.13.tgz",
       "dependencies": {
         "concat-stream": {
           "version": "1.5.1",
