@@ -21,16 +21,16 @@ matrix:
 install:
   # Get the latest stable version of Node 0.STABLE.latest
   - ps: Install-Product node $env:nodejs_version
-  # Install bower
-  - npm install
-
-# Post-install test scripts.
-test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
   - git --version
   - svn --version
+  # Install all dependencies
+  - npm install
+
+# Post-install test scripts.
+test_script:
   - cmd: npm test
 
 # Don't actually build.
