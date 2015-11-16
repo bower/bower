@@ -24,13 +24,28 @@ describe('download', function () {
 
         download('https://bower.io/package.tar.gz', destination, opts.downloadOpts)
             .then(function () {
-                opts.expect();
-                deferred.resolve();
-            }, function () {
-                opts.expectError();
-                deferred.resolve();
-            })
-            .done();
+                try {
+                    if (opts.expect) {
+                        opts.expect();
+                        deferred.resolve();
+                    } else {
+                        deferred.reject('Expected command to error, it succeeded.');
+                    }
+                } catch (e) {
+                    deferred.reject(e);
+                }
+            }, function (reason) {
+                try {
+                    if (opts.expectError) {
+                        opts.expectError();
+                        deferred.resolve();
+                    } else {
+                        deferred.reject(reason);
+                    }
+                } catch (e) {
+                    deferred.reject(e);
+                }
+            });
 
         return deferred.promise;
     }
