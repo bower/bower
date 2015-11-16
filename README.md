@@ -1,4 +1,4 @@
-# Bower
+# Bower - A package manager for the web
 
 > Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
 
@@ -7,8 +7,6 @@
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
 ---
-
-> A package manager for the web
 
 Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
