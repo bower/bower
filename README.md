@@ -105,7 +105,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
-* [Bug reports](wiki/Report-a-Bug)
+* [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 * [Feature requests](CONTRIBUTING.md#features)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
