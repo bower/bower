@@ -54,16 +54,18 @@ function loadCAs(caConfig) {
     // If a ca file path has been specified, expand that here to the file's
     // contents. As a user can specify these individually, we must load them
     // one by one.
-    if (caConfig.search) {
-        caConfig.search = caConfig.search.map(function(s) {
-            return readCertFile(s);
-        });
-    }
-    ['register', 'publish'].forEach(function(p) {
-        if (caConfig[p]) {
-            caConfig[p] = readCertFile(caConfig[p]);
+    for (var p in caConfig) {
+        if (caConfig.hasOwnProperty(p)) {
+            var prop = caConfig[p];
+            if (Array.isArray(prop)) {
+                caConfig[p] = prop.map(function(s) {
+                    return readCertFile(s);
+                });
+            } else if (prop) {
+                caConfig[p] = readCertFile(prop);
+            }
         }
-    });
+    }
 }
 
 Config.prototype.toObject = function () {
