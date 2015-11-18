@@ -283,9 +283,9 @@
       "resolved": "https://registry.npmjs.org/destroy/-/destroy-1.0.3.tgz"
     },
     "fs-write-stream-atomic": {
-      "version": "1.0.4-fixed",
-      "from": "fs-write-stream-atomic@git://github.com/sheerun/fs-write-stream-atomic#d7450afc0cfd71162952b7527e6882a9702fba10",
-      "resolved": "git://github.com/sheerun/fs-write-stream-atomic#d7450afc0cfd71162952b7527e6882a9702fba10",
+      "version": "1.0.4-fix",
+      "from": "fs-write-stream-atomic@git://github.com/sheerun/fs-write-stream-atomic#ac0f001d165564b3763da3252d5bff327c26aea9",
+      "resolved": "git://github.com/sheerun/fs-write-stream-atomic#ac0f001d165564b3763da3252d5bff327c26aea9",
       "dependencies": {
         "graceful-fs": {
           "version": "4.1.2",
