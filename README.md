@@ -1,14 +1,12 @@
-# Bower
+# Bower - A package manager for the web
 
-Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
+> Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
 
 [![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
 ---
-
-> A package manager for the web
 
 Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
@@ -107,7 +105,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
-* [Bug reports](CONTRIBUTING.md#bugs)
+* [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 * [Feature requests](CONTRIBUTING.md#features)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
