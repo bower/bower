@@ -84,6 +84,12 @@ function json(file) {
     } else {
         // This is multiple json files
         file.forEach(function(filename) {
+            if (fs.statSync(filename).isDirectory()) {
+                var error;
+                error = new Error(filename + ' should not be a directory');
+                error.code = 'EFILEISDIR';
+                throw error;
+            }
             var json = fs.readFileSync(filename).toString();
             json = parse(json, filename);
             content = object.merge(content, json);

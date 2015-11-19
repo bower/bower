@@ -3,6 +3,7 @@ var helpers = require('../helpers');
 
 describe('rc', function() {
     var tempDir = new helpers.TempDir();
+    var tempDirBowerrc = new helpers.TempDir();
 
     var rc = require('../../lib/util/rc');
 
@@ -18,7 +19,14 @@ describe('rc', function() {
         },
         'child3/bower.json': {
             name: 'without-bowerrc'
+        },
+    });
+
+    tempDirBowerrc.prepare({
+        '.bowerrc/foo': {
+            key: 'bar'
         }
+    
     });
 
     it('correctly reads .bowerrc files', function() {
@@ -47,5 +55,14 @@ describe('rc', function() {
 
         expect(config.key).to.eql('value');
         expect(config.key2).to.eql(undefined);
+    });
+
+    it('throws an easy to understand error if .bowerrc is a dir', function() {
+        // Gotta wrap this to catch the error
+        var config = function () {
+            rc('bower', tempDirBowerrc.path);
+        };
+
+        expect(config).to.throwError(/should not be a directory/);
     });
 });
