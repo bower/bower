@@ -13,7 +13,7 @@ env:
 install:
   - test $TRAVIS_OS_NAME = "osx" && brew install nvm && source $(brew --prefix nvm)/nvm.sh || test $TRAVIS_OS_NAME = "linux"
   - nvm install $NODE_VERSION
-  - npm install -g npm@^2.0.0
+  - npm install -g npm
   - node --version
   - npm --version
   - git --version
