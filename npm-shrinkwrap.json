@@ -1067,6 +1067,16 @@
       "version": "0.0.24",
       "resolved": "https://registry.npmjs.org/tmp/-/tmp-0.0.24.tgz"
     },
+    "untildify": {
+      "version": "2.1.0",
+      "resolved": "http://registry.npmjs.org/untildify/-/untildify-2.1.0.tgz",
+      "dependencies": {
+        "os-homedir": {
+          "version": "1.0.1",
+          "resolved": "https://registry.npmjs.org/os-homedir/-/os-homedir-1.0.1.tgz"
+        }
+      }
+    },
     "update-notifier": {
       "version": "0.3.2",
       "resolved": "https://registry.npmjs.org/update-notifier/-/update-notifier-0.3.2.tgz",
