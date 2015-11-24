@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.4 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
 ## 1.5.3 - 2015-09-24
 
 - Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
