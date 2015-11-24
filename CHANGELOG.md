@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.4 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
 ## 1.4.1 - 2015-04-01
 
 - [fix] Reading .bowerrc upwards directory tree ([#1763](https://github.com/bower/bower/issues/1763))

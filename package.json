@@ -1,6 +1,6 @@
 {
   "name": "bower",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "The browser package manager",
   "author": "Twitter",
   "licenses": [
@@ -39,7 +39,7 @@
     "is-root": "^1.0.0",
     "junk": "^1.0.0",
     "lockfile": "^1.0.0",
-    "lru-cache": "^2.5.0",
+    "lru-cache": "2.7.0",
     "mkdirp": "0.5.0",
     "mout": "^0.11.0",
     "nopt": "^3.0.1",
