@@ -31,8 +31,6 @@ function rc(name, cwd, argv) {
             json(find('.' + name + 'rc', cwd)),
             env('npm_package_config_' + name + '_'),
             env(name + '_'),
-            // If we have specified a cwd then the bowerrc from there takes precedence
-            !argvConfig.cwd ? {} : json(path.join(argvConfig.cwd, '.' + name + 'rc')),
             argvConfig
         ]);
     } else {
@@ -44,8 +42,6 @@ function rc(name, cwd, argv) {
             json(path.join(paths.config, name + 'rc')),
             env('npm_package_config_' + name + '_'),
             env(name + '_'),
-            // If we have specified a cwd then the bowerrc from there takes precedence
-            !argvConfig.cwd ? {} : json(path.join(argvConfig.cwd, '.' + name + 'rc')),
             argvConfig
         ]);
     }
