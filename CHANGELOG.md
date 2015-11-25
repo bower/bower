@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.6 - 2015-11-25
+
+- Fixes regression with the published npm version
+
+## 1.6.5 - 2015-10-24
+
+- Updates to tests and documentation
+- Fixes passing options when requesting downloads
+
 ## 1.6.4 - 2015-10-24
 
 - Fix ignoring dependencies on multiple install run ([#1970](https://github.com/bower/bower/pull/1970))
