@@ -34,7 +34,7 @@ object.mixIn(process.env, env);
 var tmpLocation = path.join(
     os.tmpdir ? os.tmpdir() : os.tmpDir(),
     'bower-tests',
-    uuid.v4().slice(0, 8)
+    sanitizePackageName(uuid.v4().slice(0, 8))
 );
 
 exports.require = function (name, stubs) {
@@ -56,7 +56,7 @@ after(function () {
 
 exports.TempDir = (function() {
     function TempDir (defaults) {
-        this.path = path.join(tmpLocation, uuid.v4());
+        this.path = path.join(tmpLocation, sanitizePackageName(uuid.v4()));
         this.defaults = defaults;
     }
 
@@ -298,3 +298,8 @@ exports.localUrl = function (localPath) {
 
     return localPath;
 };
+
+function sanitizePackageName(unsanitizedName) {
+    // enforce uuid begin with a lowercase character
+    return 'a' + unsanitizedName.toLowerCase().slice(1,unsanitizedName.length);
+}

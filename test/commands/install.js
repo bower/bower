@@ -141,7 +141,7 @@ describe('bower install', function () {
     });
   });
 
-  it('runs preinstall hook', function () {
+  it('runs postinstall hook', function () {
     package.prepare();
 
     tempDir.prepare({

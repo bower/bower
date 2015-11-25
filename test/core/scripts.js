@@ -8,9 +8,12 @@ var scripts = require('../../lib/core/scripts.js');
 
 describe('scripts', function () {
 
-    var tempDir = path.join(__dirname, '../tmp/temp-scripts');
-    var packageName = 'package-zip';
-    var packageDir = path.join(__dirname, '../assets/' + packageName + '.zip');
+    var config, packageDir, tempDir, randomPackageName,
+        packageName = 'package-zip';
+        
+    var getRandomPackageName = function() {
+        return packageName + Math.random().toString(36).substring(7);
+    };
 
     // We cannot use pure touch, because Windows
     var touch = function (file) {
@@ -22,21 +25,38 @@ describe('scripts', function () {
        return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
     };
 
-    var config = {
-        cwd: tempDir,
-        scripts: {
-            preinstall: touch('preinstall_%'),
-            postinstall: touch('postinstall_%'),
-            preuninstall: touch('preuninstall_%')
-        }
-    };
-
-    before(function (next) {
+    beforeEach(function (next) {
+        randomPackageName = getRandomPackageName(packageName);
+        tempDir = path.join(__dirname, '../tmp/temp-scripts', randomPackageName);
+        packageDir = path.join(__dirname, '../assets/' + packageName + '.zip');
+        config = {
+            //name: randomPackageName,
+            cwd: tempDir,
+            scripts: {
+                preinstall: touch('preinstall_' + randomPackageName),
+                postinstall: touch('postinstall_' + randomPackageName),
+                preuninstall: touch('preuninstall_' + randomPackageName)
+            }
+        };
         mkdirp(tempDir, next);
     });
 
-    after(function (next) {
+    afterEach(function (next) {
         rimraf(tempDir,  next);
+    });
+
+    it('should obey --ignore-scripts flag and not run preinstall and postinstall hooks.', function (next) {
+
+        bower.commands
+        .install([packageDir], { ignoreScripts: true }, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName))).to.be(false);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + packageName))).to.be(false);
+
+            next();
+        });
+
     });
 
     it('should run preinstall and postinstall hooks.', function (next) {
@@ -45,21 +65,34 @@ describe('scripts', function () {
         .install([packageDir], undefined, config)
         .on('end', function (installed) {
 
-            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + randomPackageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + randomPackageName))).to.be(true);
 
             next();
         });
 
     });
 
+    it('should obey --ignore-scripts flag and not run preuninstall hook.', function (next) {
+
+        bower.commands
+        .uninstall([packageName], { ignoreScripts: true }, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName))).to.be(false);
+
+            next();
+        });
+
+    });    
+    
     it('should run preuninstall hook.', function (next) {
 
         bower.commands
         .uninstall([packageName], undefined, config)
         .on('end', function (installed) {
 
-            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + randomPackageName))).to.be(true);
 
             next();
         });
@@ -122,13 +155,14 @@ describe('scripts', function () {
 
     it('should process scripts with quotes and vars in the cmd properly.', function (next) {
 
-        config.scripts.preinstall = touchWithPid(' %');
+        config.scripts.preinstall = touchWithPid('-' + randomPackageName);
+        //config.scripts.preinstall = touchWithPid('foo');
+        config.name = getRandomPackageName();
 
         bower.commands
         .install([packageDir], undefined, config)
         .on('end', function (installed) {
-
-            expect(fs.existsSync(path.join(tempDir, process.pid + ' ' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, process.pid + '-' + randomPackageName))).to.be(true);
 
             next();
         });

@@ -268,7 +268,7 @@ describe('GitRemoteResolver', function () {
             return function (cmd, args, options) {
                 expect(cmd).to.be('git');
                 expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
-                expect(options.env.GIT_CURL_VERBOSE).to.be('2');
+                expect(parseInt(options.env.GIT_CURL_VERBOSE, 10)).to.be(2);
 
                 return Q.all(['stdout', stderr]);
             };
@@ -368,7 +368,7 @@ describe('GitRemoteResolver', function () {
                     if (counter === 1) {
                         expect(cmd).to.be('git');
                         expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
-                        expect(options.env.GIT_CURL_VERBOSE).to.be('2');
+                        expect(parseInt(options.env.GIT_CURL_VERBOSE, 10)).to.be(2);
 
                         return Q.all(['stdout', multiline(function () {/*
                          foo: bar
@@ -413,7 +413,7 @@ describe('GitRemoteResolver', function () {
                     if (counter === 1) {
                         expect(cmd).to.be('git');
                         expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
-                        expect(options.env.GIT_CURL_VERBOSE).to.be('2');
+                        expect(parseInt(options.env.GIT_CURL_VERBOSE, 10)).to.be(2);
 
                         return Q.all(['stdout', multiline(function () {/*
                          foo: bar
@@ -458,7 +458,7 @@ describe('GitRemoteResolver', function () {
                     if (counter === 1) {
                         expect(cmd).to.be('git');
                         expect(args).to.eql([ 'ls-remote', '--heads', testSource1 ]);
-                        expect(options.env.GIT_CURL_VERBOSE).to.be('2');
+                        expect(parseInt(options.env.GIT_CURL_VERBOSE, 10)).to.be(2);
 
                         return Q.all(['stdout', multiline(function () {/*
                          foo: bar
@@ -470,7 +470,7 @@ describe('GitRemoteResolver', function () {
                     else {
                         expect(cmd).to.be('git');
                         expect(args).to.eql([ 'ls-remote', '--heads', testSource2 ]);
-                        expect(options.env.GIT_CURL_VERBOSE).to.be('2');
+                        expect(parseInt(options.env.GIT_CURL_VERBOSE, 10)).to.be(2);
 
                         return Q.all(['stdout', multiline(function () {/*
                          foo: barbaz
