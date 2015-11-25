@@ -120,7 +120,7 @@ describe('NPM Config on package.json', function () {
             var config = require('../lib/Config')
                 .read(path.resolve('test/assets/custom-ca'));
 
-            ['register', 'publish'].forEach(function (p) {
+            ['register', 'publish', 'default'].forEach(function (p) {
                 assertCAContents(config.ca[p], 'config.ca.' + p);
             });
 
@@ -136,7 +136,7 @@ describe('NPM Config on package.json', function () {
             var config = require('../lib/Config')
                 .read(path.resolve('test/assets/custom-ca-embed'));
 
-            ['register', 'publish'].forEach(function (p) {
+            ['register', 'publish', 'default'].forEach(function (p) {
                 assertCAContents(config.ca[p], 'config.ca.' + p);
             });
 
