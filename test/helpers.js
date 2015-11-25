@@ -10,7 +10,6 @@ var fs = require('../lib/util/fs');
 var glob = require('glob');
 var os = require('os');
 var which = require('which');
-var path = require('path');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
@@ -297,4 +296,14 @@ exports.localUrl = function (localPath) {
     }
 
     return localPath;
+};
+
+// Returns the result of executing the bower binary + args
+// example: runBin('install') --> $ bower install
+exports.runBin = function (args) {
+    args = args || [];
+
+    var name = path.resolve(__dirname, '../bin/bower');
+
+    return spawnSync(name, args);
 };
