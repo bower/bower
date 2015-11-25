@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/bower/bower.png?label=ready&title=Ready)](https://waffle.io/bower/bower)
 # Bower - A package manager for the web
 
 > Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
