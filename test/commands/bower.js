@@ -15,10 +15,9 @@ describe('bower', function () {
 
 describe('abbreviations', function () {
     it('Returns same value than the full command', function() {
-        var abbr = runBin(['ls']);
-        var full = runBin(['list']);
+        var abbr = runBin(['install']);
+        var full = runBin(['i']);
 
-        expect(abbr.status).to.be(0);
         expect(abbr.stdout.toString()).to.be.equal(full.stdout.toString());
     });
 });

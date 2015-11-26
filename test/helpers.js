@@ -302,8 +302,6 @@ exports.localUrl = function (localPath) {
 // example: runBin('install') --> $ bower install
 exports.runBin = function (args) {
     args = args || [];
-
-    var name = path.resolve(__dirname, '../bin/bower');
-
-    return spawnSync(name, args);
+    args.unshift(path.resolve(__dirname, '../bin/bower'));
+    return spawnSync('node', args);
 };
