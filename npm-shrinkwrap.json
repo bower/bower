@@ -1,8 +1,8 @@
 {
   "name": "bower",
-  "version": "1.6.5",
+  "version": "1.6.7",
   "npm-shrinkwrap-version": "5.4.1",
-  "node-version": "v0.10.40",
+  "node-version": "v4.1.1",
   "dependencies": {
     "abbrev": {
       "version": "1.0.7",
@@ -284,8 +284,7 @@
     },
     "fs-write-stream-atomic": {
       "version": "1.0.4-fix",
-      "from": "fs-write-stream-atomic@git://github.com/sheerun/fs-write-stream-atomic#ac0f001d165564b3763da3252d5bff327c26aea9",
-      "resolved": "git://github.com/sheerun/fs-write-stream-atomic#ac0f001d165564b3763da3252d5bff327c26aea9",
+      "resolved": "git://github.com/sheerun/fs-write-stream-atomic.git#ac0f001d165564b3763da3252d5bff327c26aea9",
       "dependencies": {
         "graceful-fs": {
           "version": "4.1.2",
