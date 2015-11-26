@@ -1,10 +1,14 @@
-# Bower
+# Bower - A package manager for the web
 
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master) 
+[![Join the chat at https://gitter.im/bower/bower](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bower/bower?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+> Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
+
+[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
-> A package manager for the web
+---
 
 Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
@@ -59,18 +63,19 @@ $ bower uninstall <package-name>
 
 On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
 
-### Running commands with sudo
+### Never run Bower with sudo
 
 Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
 
 ### Windows users
 
 To use Bower on Windows, you must install
-[msysgit](http://msysgit.github.io/) correctly. Be sure to check the
-option shown below:
+[Git for Windows](http://git-for-windows.github.io/) correctly. Be sure to check the
+options shown below:
 
-![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532690/d2e8991a-7386-11e5-9a57-613c7f92e84e.png" width="534" height="418" alt="Git for Windows" />
+
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532694/dbe8857a-7386-11e5-9bd0-367e97644403.png" width="534" height="418" alt="Git for Windows" />
 
 Note that if you use TortoiseGit and if Bower keeps asking for your SSH
 password, you should add the following environment variable: `GIT_SSH -
@@ -102,7 +107,7 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to
 review the [guidelines for contributing](CONTRIBUTING.md).
 
-* [Bug reports](CONTRIBUTING.md#bugs)
+* [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 * [Feature requests](CONTRIBUTING.md#features)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
