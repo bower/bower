@@ -23,12 +23,20 @@ describe('download', function () {
                 .get('/package.tar.gz'));
 
         download('https://bower.io/package.tar.gz', destination, opts.downloadOpts)
-            .then(function () {
-                opts.expect();
-                deferred.resolve();
-            }, function () {
-                opts.expectError();
-                deferred.resolve();
+            .then(function (result) {
+                if (opts.expect) {
+                    opts.expect(result);
+                    deferred.resolve();
+                } else {
+                    deferred.reject(result);
+                }    
+            }, function (error) {
+                if (opts.expectError) {
+                    opts.expectError();
+                    deferred.resolve();
+                } else {
+                    deferred.reject(error);
+                }    
             })
             .done();
 
