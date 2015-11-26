@@ -2,8 +2,6 @@ var expect = require('expect.js');
 var helpers = require('../helpers');
 var nock = require('nock');
 var fs = require('../../lib/util/fs');
-var untildify = require('untildify');
-var path = require('path');
 
 describe('bower install', function () {
 
@@ -384,33 +382,6 @@ describe('bower install', function () {
     ]).fail(function(error) {
       expect(error.message).to.equal('Status code of 500');
       nock.enableNetConnect();
-    });
-  });
-
-  it('Use tilde as home directly in cwd', function () {
-    package.prepare();
-
-    // Build a same path with the tempDir including a tilde
-    var cwd = '~';
-    for (var i = 1; untildify('~').split(path.sep).length > i; i++) {
-      cwd += path.sep + '..';
-    }
-    cwd += tempDir.getPath('.');
-
-    tempDir.prepare({
-      'bower.json': {
-        name: 'test',
-        dependencies: {
-          package: package.path
-        }
-      },
-      '.bowerrc': {
-        cwd: cwd
-      }
-    });
-
-    return helpers.run(install).then(function() {
-      expect(tempDir.exists('bower_components/package')).to.be(true);
     });
   });
 });

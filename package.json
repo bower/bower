@@ -57,7 +57,6 @@
     "stringify-object": "^1.0.0",
     "tar-fs": "^1.4.1",
     "tmp": "0.0.24",
-    "untildify": "http://registry.npmjs.org/untildify/-/untildify-2.1.0.tgz",
     "update-notifier": "^0.3.0",
     "user-home": "^1.1.0",
     "which": "^1.0.8"
