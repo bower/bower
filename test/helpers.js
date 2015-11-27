@@ -13,6 +13,7 @@ var which = require('which');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
+var nock = require('nock');
 
 // For better promise errors
 Q.longStackSupport = true;
@@ -305,3 +306,8 @@ exports.runBin = function (args) {
     args.unshift(path.resolve(__dirname, '../bin/bower'));
     return spawnSync('node', args);
 };
+
+
+afterEach(function () {
+    nock.cleanAll();
+});

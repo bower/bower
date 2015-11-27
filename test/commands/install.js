@@ -354,7 +354,7 @@ describe('bower install', function () {
 
   });
 
-  it('recognizes proxy option in config', function () {
+  it('recognizes proxy option in config', function (done) {
     this.timeout(10000);
 
     tempDir.prepare({
@@ -370,7 +370,6 @@ describe('bower install', function () {
       cwd: tempDir.path
     });
 
-    nock.disableNetConnect();
     nock('http://dummy.local')
       .get('http://github.com/yahoo/pure/archive/v0.6.0.tar.gz')
       .reply(500);
@@ -379,9 +378,10 @@ describe('bower install', function () {
       undefined,
       undefined,
       { proxy: 'http://dummy.local/' }
-    ]).fail(function(error) {
+    ])
+    .fail(function(error) {
       expect(error.message).to.equal('Status code of 500');
-      nock.enableNetConnect();
+      done();
     });
   });
 });

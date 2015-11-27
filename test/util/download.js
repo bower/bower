@@ -19,16 +19,24 @@ describe('download', function () {
         tempDir.prepare();
 
         opts.response(
-            nock('https://bower.io', opts.nockOpts)
-                .get('/package.tar.gz'));
+            nock('http://bower.io', opts.nockOpts)
+        );
 
-        download('https://bower.io/package.tar.gz', destination, opts.downloadOpts)
-            .then(function () {
-                opts.expect();
-                deferred.resolve();
-            }, function () {
-                opts.expectError();
-                deferred.resolve();
+        download('http://bower.io/package.tar.gz', destination, opts.downloadOpts)
+            .then(function (result) {
+                if (opts.expect) {
+                    opts.expect(result);
+                    deferred.resolve();
+                } else {
+                    deferred.reject(new Error('Error expected. Got successful response.'));
+                }    
+            }, function (error) {
+                if (opts.expectError) {
+                    opts.expectError(error);
+                    deferred.resolve();
+                } else {
+                    deferred.reject(error);
+                }    
             })
             .done();
 
@@ -38,7 +46,7 @@ describe('download', function () {
     it('download file to directory', function () {
         return downloadTest({
             response: function (nock) {
-                nock.replyWithFile(200, source);
+                nock.get('/package.tar.gz').replyWithFile(200, source);
             },
             expect: function () {
                 expect(fs.existsSync(destination)).to.be(true);
@@ -61,7 +69,7 @@ describe('download', function () {
                 }
             },
             response: function (nock) {
-                nock.replyWithFile(200, source);
+                nock.get('/package.tar.gz').replyWithFile(200, source);
             },
             expect: function () {
                 expect(fs.existsSync(destination)).to.be(true);
@@ -73,7 +81,7 @@ describe('download', function () {
     it('handle server response 404', function () {
         return downloadTest({
             response: function (nock) {
-                nock.reply(404);
+                nock.get('/package.tar.gz').reply(404);
             },
             expectError: function () {
                 expect(fs.readdirSync(tempDir.path)).to.be.empty();
@@ -84,7 +92,7 @@ describe('download', function () {
     it('handle network error', function () {
         return downloadTest({
             response: function (nock) {
-                nock.replyWithError('network error');
+                nock.get('/package.tar.gz').replyWithError('network error');
             },
             expectError: function () {
                 expect(fs.readdirSync(tempDir.path)).to.be.empty();
@@ -92,4 +100,78 @@ describe('download', function () {
         });
     });
 
+
+    it('handles connection timeout', function () {
+        return downloadTest({
+            response: function (nock) {
+                // First connection + 5 retries
+                nock.get('/package.tar.gz').times(6).delayConnection(1000).replyWithFile(200, source);
+            },
+            expectError: function (e) {
+                expect(e.code).to.be('ETIMEDOUT');
+                expect(fs.readdirSync(tempDir.path)).to.be.empty();
+            },
+            downloadOpts: {
+                timeout: 10,
+                maxTimeout: 0,
+                minTimeout: 0
+            }
+        });
+    });
+
+    it('handles socket timeout', function () {
+        return downloadTest({
+            response: function (nock) {
+                // First connection + 5 retries
+                nock.get('/package.tar.gz').times(6).socketDelay(1000).replyWithFile(200, source);
+            },
+            expectError: function (e) {
+                expect(e.code).to.be('ESOCKETTIMEDOUT');
+                expect(fs.readdirSync(tempDir.path)).to.be.empty();
+            },
+            downloadOpts: {
+                timeout: 10,
+                maxTimeout: 0,
+                minTimeout: 0
+            }
+        });
+    });
+
+    it('handles retries correctly', function () {
+        return downloadTest({
+            response: function (nock) {
+                // First connection + 5 retries
+                nock.get('/package.tar.gz').times(5).delayConnection(1000).replyWithFile(200, source);
+                // Success last time
+                nock.get('/package.tar.gz').replyWithFile(200, source);
+            },
+            expect: function () {
+                expect(fs.existsSync(destination)).to.be(true);
+                expect(fs.readdirSync(tempDir.path)).to.have.length(1);
+            },
+            downloadOpts: {
+                timeout: 10,
+                maxTimeout: 0,
+                minTimeout: 0
+            }
+        });
+    });
+
+    it('fails on incorrect Content-Length match', function () {
+        return downloadTest({
+            response: function (nock) {
+                // First connection + 5 retries
+                nock.get('/package.tar.gz').replyWithFile(200, source, { 'Content-Length': 5000 });
+            },
+            expectError: function (e) {
+                expect(e.code).to.be('EINCOMPLETE');
+                expect(e.message).to.be('Transfer closed with 4636 bytes remaining to read');
+            },
+            downloadOpts: {
+                timeout: 10,
+                maxTimeout: 0,
+                minTimeout: 0
+            }
+        });
+    });
 });
