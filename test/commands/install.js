@@ -384,4 +384,17 @@ describe('bower install', function () {
       done();
     });
   });
+
+  
+  it('errors if the components directory is not a directory', function () {
+    tempDir.prepare({
+      '.bowerrc': {
+        directory: '.bowerrc'
+      }     
+    });
+    
+    return helpers.run(install).fail(function(error) {
+      expect(error.code).to.equal('ENOTDIR');
+    });
+  });
 });
