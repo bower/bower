@@ -20,13 +20,16 @@ describe('rc', function() {
         'child3/bower.json': {
             name: 'without-bowerrc'
         },
+        'other_dir/.bowerrc': {
+            key: 'othervalue'
+        }
     });
 
     tempDirBowerrc.prepare({
         '.bowerrc/foo': {
             key: 'bar'
         }
-    
+
     });
 
     it('correctly reads .bowerrc files', function() {
@@ -55,6 +58,19 @@ describe('rc', function() {
 
         expect(config.key).to.eql('value');
         expect(config.key2).to.eql(undefined);
+    });
+
+    it('loads the .bowerrc file from the cwd specified on the command line', function(){
+        var argv = {
+            'config': {
+                'cwd': tempDir.path + '/other_dir/'
+            }
+        };
+
+        var config = rc('bower', tempDir.path, argv);
+
+        expect(config.key).to.eql('othervalue');
+
     });
 
     it('throws an easy to understand error if .bowerrc is a dir', function() {
