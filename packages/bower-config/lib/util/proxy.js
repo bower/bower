@@ -34,18 +34,45 @@ EnvProxy.prototype.set = function (config) {
 
 EnvProxy.prototype.restore = function () {
   if (Object.prototype.hasOwnProperty.call(this.config, 'noProxy')) {
-    process.env.NO_PROXY = this.restoreFrom.NO_PROXY;
-    process.env.no_proxy = this.restoreFrom.no_proxy;
+    if (this.restoreFrom.NO_PROXY !== undefined) {
+      process.env.NO_PROXY = this.restoreFrom.NO_PROXY;
+    } else {
+      delete process.env.NO_PROXY;
+    }
+
+    if (this.restoreFrom.no_proxy !== undefined) {
+      process.env.no_proxy = this.restoreFrom.no_proxy;
+    } else {
+      delete process.env.no_proxy;
+    }
   }
 
   if (Object.prototype.hasOwnProperty.call(this.config, 'proxy')) {
-    process.env.HTTP_PROXY = this.restoreFrom.HTTP_PROXY;
-    process.env.http_proxy = this.restoreFrom.http_proxy;
+    if (this.restoreFrom.HTTP_PROXY !== undefined) {
+      process.env.HTTP_PROXY = this.restoreFrom.HTTP_PROXY;
+    } else {
+      delete process.env.HTTP_PROXY;
+    }
+
+    if (this.restoreFrom.http_proxy !== undefined) {
+      process.env.http_proxy = this.restoreFrom.http_proxy;
+    } else {
+      delete process.env.http_proxy;
+    }
   }
 
   if (Object.prototype.hasOwnProperty.call(this.config, 'httpsProxy')) {
-    process.env.HTTPS_PROXY = this.restoreFrom.HTTPS_PROXY;
-    process.env.https_proxy = this.restoreFrom.https_proxy;
+    if (this.restoreFrom.HTTPS_PROXY !== undefined) {
+      process.env.HTTPS_PROXY = this.restoreFrom.HTTPS_PROXY;
+    } else {
+      delete process.env.HTTPS_PROXY;
+    }
+
+    if (this.restoreFrom.https_proxy !== undefined) {
+      process.env.https_proxy = this.restoreFrom.https_proxy;
+    } else {
+      delete process.env.https_proxy;
+    }
   }
 };
 

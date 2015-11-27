@@ -190,6 +190,19 @@ describe('NPM Config on package.json', function () {
             assert.equal(process.env.no_proxy, 'f');
         });
 
+        it('restores env variables if they are undefined', function () {
+            var config = require('../lib/Config').create('test/assets/env-variables').load();
+            config.restore();
+
+            assert.equal(process.env.HTTP_PROXY, undefined);
+            assert.equal(process.env.HTTPS_PROXY, undefined);
+            assert.equal(process.env.NO_PROXY, undefined);
+
+            assert.equal(process.env.http_proxy, undefined);
+            assert.equal(process.env.https_proxy, undefined);
+            assert.equal(process.env.no_proxy, undefined);
+        });
+
         it('allows for overriding options', function () {
             require('../lib/Config').read('test/assets/env-variables', {
                 httpsProxy: 'http://other-proxy.local'
