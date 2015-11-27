@@ -16,7 +16,7 @@
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "1.0.0",
-    "bower-config": "^1.2.2",
+    "bower-config": "^1.2.3",
     "bower-endpoint-parser": "^0.2.2",
     "bower-json": "^0.4.0",
     "bower-logger": "^0.2.2",
