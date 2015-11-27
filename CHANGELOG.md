@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.6.8 - 2015-11-27
+
+- Use fs-write-stream-atomic for downloads
+- Improved downloader that properly cleans after itself
+- Fix shallow host detection ([#2040](https://github.com/bower/bower/pull/2040))
+- Upgrade to ([bower-config#1.2.3](https://github.com/bower/config/releases/tag/1.2.3))
+  - Properly restore env variables if they are undefined at the beginning
+  - Properly handle `default` setting for config.ca
+  - Display proper error if .bowerrc is a directory instead of file
+
 ## 1.6.7 - 2015-11-26
 
 - Bundless all the dependencies again
