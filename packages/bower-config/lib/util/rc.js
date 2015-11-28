@@ -20,6 +20,9 @@ function rc(name, cwd, argv) {
         return value === 'false' ? false : value;
     });
 
+    // If we have specified a cwd then use this as the base for getting config.
+    cwd = argvConfig.cwd ? argvConfig.cwd : cwd;
+
     if (cwd) {
         return object.deepMixIn.apply(null, [
             {},
