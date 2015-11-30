@@ -5,7 +5,7 @@ var link = helpers.command('link');
 
 describe('bower link', function () {
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package',
         },
@@ -22,7 +22,7 @@ describe('bower link', function () {
     var linksDir = new helpers.TempDir();
 
     beforeEach(function() {
-        package.prepare();
+        mainPackage.prepare();
         otherPackage.prepare();
         linksDir.prepare();
     });
@@ -35,7 +35,7 @@ describe('bower link', function () {
     it('creates self link', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }
@@ -49,7 +49,7 @@ describe('bower link', function () {
     it('creates inter-link', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }
@@ -72,7 +72,7 @@ describe('bower link', function () {
     it('creates inter-link with custom local name', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }

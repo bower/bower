@@ -29,14 +29,14 @@ describe('download', function () {
                     deferred.resolve();
                 } else {
                     deferred.reject(new Error('Error expected. Got successful response.'));
-                }    
+                }
             }, function (error) {
                 if (opts.expectError) {
                     opts.expectError(error);
                     deferred.resolve();
                 } else {
                     deferred.reject(error);
-                }    
+                }
             })
             .done();
 

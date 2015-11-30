@@ -17,6 +17,21 @@ module.exports = function (grunt) {
                 '!test/tmp/**/*'
             ]
         },
+        jscs: {
+            options: {
+                config: '.jscsrc',
+                fix: true
+            },
+            files: [
+                'Gruntfile.js',
+                'bin/*',
+                'lib/**/*.js',
+                'test/**/*.js',
+                '!test/assets/**/*',
+                '!test/reports/**/*',
+                '!test/tmp/**/*'
+            ]
+        },
         simplemocha: {
             options: {
                 reporter: 'spec',
@@ -53,7 +68,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('assets', ['exec:assets-force']);
-    grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);
+    grunt.registerTask('test', ['jshint', 'jscs', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
     grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');

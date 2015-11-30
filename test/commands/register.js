@@ -36,7 +36,7 @@ var registerFactory = function (canonicalDir, pkgMeta) {
 
 describe('bower register', function () {
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package'
         }
@@ -63,9 +63,9 @@ describe('bower register', function () {
     });
 
     it('errors if trying to register private package', function () {
-        package.prepare({ 'bower.json': { private: true } });
+        mainPackage.prepare({ 'bower.json': { private: true } });
 
-        var register = registerFactory(package.path, package.meta());
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
         return helpers.run(register, ['some-name', 'git://fake-url.git'])
         .fail(function(reason) {
             expect(reason.message).to.be('The package you are trying to register is marked as private');
@@ -74,9 +74,9 @@ describe('bower register', function () {
     });
 
     it('should call registry client with name and url', function () {
-        package.prepare();
+        mainPackage.prepare();
 
-        var register = registerFactory(package.path, package.meta());
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
         return helpers.run(register, ['some-name', 'git://fake-url.git'])
         .spread(function(result) {
             expect(result).to.eql({
@@ -87,9 +87,9 @@ describe('bower register', function () {
     });
 
     it('should confirm in interactive mode', function () {
-        package.prepare();
+        mainPackage.prepare();
 
-        var register = registerFactory(package.path, package.meta());
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
 
         var promise = helpers.run(register,
             ['some-name', 'git://fake-url.git', { interactive: true }]
@@ -104,9 +104,9 @@ describe('bower register', function () {
     });
 
     it('should skip confirming when forcing', function () {
-        package.prepare();
+        mainPackage.prepare();
 
-        var register = registerFactory(package.path, package.meta());
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
 
         return helpers.run(register,
             ['some-name', 'git://fake-url.git',
