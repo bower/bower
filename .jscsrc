@@ -11,5 +11,17 @@
  'requireDotNotation': true,
  'disallowTabs': true,
  'disallowNewlineBeforeBlockStatements': true,
- 'disallowTrailingWhitespace': true
+ 'disallowTrailingWhitespace': true,
+ 'disallowMixedSpacesAndTabs': true,
+ 'requireSpaceBeforeBinaryOperators': true,
+ 'requireSpaceBeforeBlockStatements': true,
+ 'requireSpaceBeforeObjectValues': true,
+ 'requireSpaceBetweenArguments': true,
+ 'requireSpacesInFunctionDeclaration': {
+   'beforeOpeningCurlyBrace': true
+ },
+ 'requireSpacesInNamedFunctionExpression': {
+   'beforeOpeningCurlyBrace': true,
+   'beforeOpeningRoundBrace': true
+ }
 }

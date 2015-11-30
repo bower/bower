@@ -162,7 +162,7 @@ exports.TempDir = (function() {
     return TempDir;
 })();
 
-exports.expectEvent = function expectEvent(emitter, eventName) {
+exports.expectEvent = function expectEvent (emitter, eventName) {
     var deferred = Q.defer();
 
     emitter.once(eventName, function () {

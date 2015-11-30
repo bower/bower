@@ -106,7 +106,7 @@ describe('bower init', function () {
         .spread(function (prompt, answer) {
 
             // Get defaults from prompt
-            var defaults = prompt.reduce(function(memo, obj){
+            var defaults = prompt.reduce(function(memo, obj) {
                 memo[obj.name] = obj['default'];
                 return memo;
             }, {});
