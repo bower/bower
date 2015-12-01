@@ -41,6 +41,21 @@ describe('bower install', function () {
 
     var gitPackage = new helpers.TempDir();
 
+    gitPackage.prepareGit({
+        '1.0.0': {
+            'bower.json': {
+                name: 'package'
+            },
+            'version.txt': '1.0.0'
+        },
+        '1.0.1': {
+            'bower.json': {
+                name: 'package'
+            },
+            'version.txt': '1.0.1'
+        }
+    });
+
     it('writes to bower.json if --save flag is used', function () {
         mainPackage.prepare();
 
@@ -250,20 +265,6 @@ describe('bower install', function () {
   });
 
     it('works for git repositories', function () {
-        gitPackage.prepareGit({
-            '1.0.0': {
-                'bower.json': {
-                    name: 'package'
-                },
-                'version.txt': '1.0.0'
-            },
-            '1.0.1': {
-                'bower.json': {
-                    name: 'package'
-                },
-                'version.txt': '1.0.1'
-            }
-        });
 
         tempDir.prepare({
             'bower.json': {
@@ -379,10 +380,10 @@ describe('bower install', function () {
           undefined,
           { proxy: 'http://dummy.local/' }
         ])
-    .fail(function(error) {
-        expect(error.message).to.equal('Status code of 500');
-        done();
-    });
+        .fail(function(error) {
+            expect(error.message).to.equal('Status code of 500');
+            done();
+        });
     });
 
 
@@ -397,4 +398,147 @@ describe('bower install', function () {
             expect(error.code).to.equal('ENOTDIR');
         });
     });
+
+    it('installs only the specified dependencies', function() {
+        var package4 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3'
+            }
+        }).prepare();
+
+        var package3 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3'
+            }
+        }).prepare();
+
+        var package2 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package2'
+            }
+        }).prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package2: package2.path,
+                    package3: package3.path,
+                    package4: package4.path
+                }
+            }
+        });
+
+        return helpers.run(install, [[package2.path, package3.path]]).then(function() {
+            expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/package3/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/package4')).to.equal(false);
+        });
+
+    });
+
+    it('installs sub deps of only the specified packages', function() {
+      var package3 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package3',
+              dependencies: {
+                  package: gitPackage.path + '#~1.0.1'
+              }
+          }
+      }).prepare();
+
+      var package2 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package2',
+              dependencies: {
+                  package: gitPackage.path + '#1.0.0'
+              }
+          }
+      }).prepare();
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test',
+              dependencies: {
+                  package2: package2.path,
+                  package3: package3.path
+              }
+          }
+      });
+
+      return helpers.run(install, [
+          [package2.path]
+      ]).then(function() {
+          expect(tempDir.readJson('bower_components/package/.bower.json').version).to.equal('1.0.0');
+      });
+
+  });
+
+    it('doesn\'t update other deps when installing a specified dep', function() {
+      var package2 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package2',
+              version: '1.2.3'
+          }
+      }).prepare();
+
+      var package3 = new helpers.TempDir({
+          'bower.json': {
+              name: 'package3',
+              version: '4.5.6'
+          }
+      }).prepare();
+
+      tempDir.prepare({
+          'bower.json': {
+              name: 'test',
+              dependencies: {
+                  package2: package2.path,
+                  package3: package3.path
+              }
+          }
+      });
+
+      // Install both dependencies, they should equal the latest release matching
+      // the ranges above.
+      return helpers.run(install).then(function() {
+          expect(tempDir.readJson('bower_components/package2/.bower.json').version).to.equal('1.2.3');
+          expect(tempDir.readJson('bower_components/package3/.bower.json').version).to.equal('4.5.6');
+          // Override first dep with older version
+          package2 = new helpers.TempDir({
+              'bower.json': {
+                  name: 'package2',
+                  version: '1.0.0'
+              }
+          }).prepare();
+          return helpers.run(install, [
+              [package2.path]
+          ]).then(function() {
+              expect(tempDir.readJson('bower_components/package2/.bower.json').version).to.equal('1.0.0');
+              expect(tempDir.readJson('bower_components/package3/.bower.json').version).to.equal('4.5.6');
+              // Override second dep with older version, the first dep should remain old
+              // and *not* get updated.
+              package2 = new helpers.TempDir({
+                  'bower.json': {
+                      name: 'package2',
+                      version: '1.2.3'
+                  }
+              }).prepare();
+              package3 = new helpers.TempDir({
+                  'bower.json': {
+                      name: 'package3',
+                      version: '4.0.0'
+                  }
+              }).prepare();
+              return helpers.run(install, [
+                  [package3.path]
+              ]).then(function() {
+                  expect(tempDir.readJson('bower_components/package2/.bower.json').version).to.equal('1.0.0');
+                  expect(tempDir.readJson('bower_components/package3/.bower.json').version).to.equal('4.0.0');
+              });
+          });
+      });
+
+  });
+
 });
