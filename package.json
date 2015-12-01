@@ -1,6 +1,6 @@
 {
   "name": "bower",
-  "version": "1.6.5",
+  "version": "1.6.8",
   "description": "The browser package manager",
   "author": "Twitter",
   "license": "MIT",
@@ -16,7 +16,7 @@
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "1.0.0",
-    "bower-config": "^1.2.2",
+    "bower-config": "^1.2.3",
     "bower-endpoint-parser": "^0.2.2",
     "bower-json": "^0.4.0",
     "bower-logger": "^0.2.2",
@@ -27,7 +27,7 @@
     "configstore": "^0.3.2",
     "decompress-zip": "^0.1.0",
     "destroy": "^1.0.3",
-    "fs-write-stream-atomic": "git://github.com/sheerun/fs-write-stream-atomic#v1.0.4-fix",
+    "fs-write-stream-atomic": "^1.0.4",
     "fstream": "^1.0.3",
     "fstream-ignore": "^1.0.2",
     "github": "^0.2.3",
@@ -70,6 +70,7 @@
     "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-exec": "^0.4.6",
+    "grunt-jscs": "^2.3.0",
     "grunt-simple-mocha": "^0.4.0",
     "istanbul": "^0.3.5",
     "load-grunt-tasks": "^2.0.0",

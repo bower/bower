@@ -16,9 +16,6 @@ describe('GitHub', function () {
     });
 
     afterEach(function () {
-        // Clean nocks
-        nock.cleanAll();
-
         logger.removeAllListeners();
     });
 

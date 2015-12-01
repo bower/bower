@@ -27,7 +27,7 @@ describe('JsonRenderer', function () {
 
             renderer.end();
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function(){/*
+            expect(stderr).to.eq(normalize(multiline(function() {/*
                 [{
                   "id": "foobar",
                   "message": "hello world"
@@ -52,7 +52,7 @@ describe('JsonRenderer', function () {
                 ]
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function(){/*
+            expect(stderr).to.eq(normalize(multiline(function() {/*
                 [{
                   "id": "error",
                   "data": {
@@ -89,7 +89,7 @@ describe('JsonRenderer', function () {
                 renderer.end();
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function(){/*
+            expect(stderr).to.eq(normalize(multiline(function() {/*
                 [{
                   "type": "input",
                   "name": "field",
