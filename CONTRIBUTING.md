@@ -160,6 +160,8 @@ included in the project:
    force push to your remote feature branch. You may also be asked to squash
    commits.
 
+10. If you are asked to squash your commits, then please use `git rebase -i master`. It will ask you to pick your commits - pick the major commits and squash the rest.
+
 **IMPORTANT**: By submitting a patch, you agree to license your work under the
 same license as that used by the project.
 
