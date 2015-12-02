@@ -1,31 +1,23 @@
 var expect = require('expect.js');
-var helpers = require('../helpers');
+var runBin = require('../helpers').runBin;
 
 describe('bower', function () {
+    process.env.CI = '1';
 
-    var oldStdout;
-    var text;
+    it('runs bower installation', function () {
+        var result = runBin();
+        var text = result.stdout.toString();
 
-    before(function() {
-        oldStdout = process.stdout.write;
-        text = '';
-
-        process.stdout.write = function(args) {
-            text += args;
-        };
-    });
-
-    it('runs bower installation', function (done) {
-        helpers.require('bin/bower');
-
-        setTimeout(function() {
-            done();
-        }, 250);
-    });
-
-    after(function() {
-        process.stdout.write = oldStdout;
         expect(text).to.contain('Usage:');
         expect(text).to.contain('Commands:');
+    });
+});
+
+describe('abbreviations', function () {
+    it('Returns same value than the full command', function() {
+        var abbr = runBin(['install']);
+        var full = runBin(['i']);
+
+        expect(abbr.stdout.toString()).to.be.equal(full.stdout.toString());
     });
 });

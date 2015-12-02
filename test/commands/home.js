@@ -10,7 +10,7 @@ describe('bower home', function () {
         expect(home.readOptions(['foo'])).to.eql(['foo']);
     });
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package',
             homepage: 'http://bower.io'
@@ -24,22 +24,22 @@ describe('bower home', function () {
     });
 
     it('opens repository home page in web browser', function () {
-        package.prepare();
+        mainPackage.prepare();
 
         return Q.Promise(function(resolve) {
             var home = helpers.command('home', { opn: resolve });
-            helpers.run(home, [package.path]);
+            helpers.run(home, [mainPackage.path]);
         }).then(function(url) {
             expect(url).to.be('http://bower.io');
         });
     });
 
     it('opens home page of current repository', function () {
-        package.prepare();
+        mainPackage.prepare();
 
         return Q.Promise(function(resolve) {
             var home = helpers.command('home', { opn: resolve });
-            helpers.run(home, [undefined, { cwd: package.path }]);
+            helpers.run(home, [undefined, { cwd: mainPackage.path }]);
         }).then(function(url) {
             expect(url).to.be('http://bower.io');
         });

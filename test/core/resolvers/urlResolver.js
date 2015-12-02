@@ -25,9 +25,6 @@ describe('UrlResolver', function () {
 
     afterEach(function () {
         logger.removeAllListeners();
-
-        // Clean nocks
-        nock.cleanAll();
     });
 
     function create(decEndpoint) {

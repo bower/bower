@@ -515,6 +515,18 @@ describe('Resolver', function () {
             })
             .done();
         });
+
+        it('should remove @ from directory names', function (next) {
+            var resolver = create('foo@bar');
+
+            resolver._createTempDir()
+            .then(function (dir) {
+                expect(resolver._tempDir).to.be.ok();
+                expect(resolver._tempDir.indexOf('@')).to.equal(-1);
+                next();
+            })
+            .done();
+        });
     });
 
     describe('._cleanTempDir', function () {

@@ -5,7 +5,7 @@ var version = helpers.require('lib/commands').version;
 
 describe('bower list', function () {
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'foobar',
             version: '0.0.0'
@@ -22,41 +22,41 @@ describe('bower list', function () {
     });
 
     it('bumps patch version', function() {
-        package.prepare();
+        mainPackage.prepare();
 
-        return helpers.run(version, ['patch', {}, { cwd: package.path }]).then(function() {
-            expect(package.readJson('bower.json').version).to.be('0.0.1');
+        return helpers.run(version, ['patch', {}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.readJson('bower.json').version).to.be('0.0.1');
         });
     });
 
     it('bumps minor version', function() {
-        package.prepare();
+        mainPackage.prepare();
 
-        return helpers.run(version, ['minor', {}, { cwd: package.path }]).then(function() {
-            expect(package.readJson('bower.json').version).to.be('0.1.0');
+        return helpers.run(version, ['minor', {}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.readJson('bower.json').version).to.be('0.1.0');
         });
     });
 
     it('bumps major version', function() {
-        package.prepare();
+        mainPackage.prepare();
 
-        return helpers.run(version, ['major', {}, { cwd: package.path }]).then(function() {
-            expect(package.readJson('bower.json').version).to.be('1.0.0');
+        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.readJson('bower.json').version).to.be('1.0.0');
         });
     });
 
     it('changes version', function() {
-        package.prepare();
+        mainPackage.prepare();
 
-        return helpers.run(version, ['1.2.3', {}, { cwd: package.path }]).then(function() {
-            expect(package.readJson('bower.json').version).to.be('1.2.3');
+        return helpers.run(version, ['1.2.3', {}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.readJson('bower.json').version).to.be('1.2.3');
         });
     });
 
     it('returns the new version', function() {
-        package.prepare();
+        mainPackage.prepare();
 
-        return helpers.run(version, ['major', {}, { cwd: package.path }]).then(function(results) {
+        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function(results) {
             expect(results[0]).to.be('1.0.0');
         });
     });

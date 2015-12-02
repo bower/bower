@@ -1,11 +1,34 @@
 # Changelog
 
+## 1.6.8 - 2015-11-27
+
+- Use fs-write-stream-atomic for downloads
+- Improved downloader that properly cleans after itself
+- Fix shallow host detection ([#2040](https://github.com/bower/bower/pull/2040))
+- Upgrade to ([bower-config#1.2.3](https://github.com/bower/config/releases/tag/1.2.3))
+  - Properly restore env variables if they are undefined at the beginning
+  - Properly handle `default` setting for config.ca
+  - Display proper error if .bowerrc is a directory instead of file
+
+## 1.6.7 - 2015-11-26
+
+- Bundless all the dependencies again
+
+## 1.6.6 - 2015-11-25
+
+- Fixes regression with the published npm version
+
+## 1.6.5 - 2015-10-24
+
+- Updates to tests and documentation
+- Fixes passing options when requesting downloads
+
 ## 1.6.4 - 2015-10-24
 
 - Fix ignoring dependencies on multiple install run ([#1970](https://github.com/bower/bower/pull/1970))
 - Use --non-interactive when running svn client ([#1969](https://github.com/bower/bower/pull/1969))
 - Fix downloading of URLs ending with slash ([#1956](https://github.com/bower/bower/pull/1956))
-- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960)) 
+- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960))
 
 ## 1.6.3 - 2015-10-16
 
@@ -36,6 +59,10 @@ Fix dependency issues of 1.6.0. Reverted release.
 
 Reverted release.
 
+## 1.5.4 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
 ## 1.5.3 - 2015-09-24
 
 - Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
@@ -60,6 +87,10 @@ Reverted release.
 - Auto-sort dependencies alphabetically ([#1381](https://github.com/bower/bower/issues/1381))
 - Make bower commands work from subdirectories ([#1866](https://github.com/bower/bower/issues/1866))
 - No longer prefer installing bower as global module ([#1865](https://github.com/bower/bower/issues/1865))
+
+## 1.4.2 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
 
 ## 1.4.1 - 2015-04-01
 
