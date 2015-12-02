@@ -14,12 +14,12 @@ describe('scripts', function () {
 
     // We cannot use pure touch, because Windows
     var touch = function (file) {
-       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(\'' + file + '\', \'w\'));"';
+        return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(\'' + file + '\', \'w\'));"';
     };
 
     // We cannot use pure touch, because Windows
     var touchWithPid = function (file) {
-       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
+        return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
     };
 
     var config = {

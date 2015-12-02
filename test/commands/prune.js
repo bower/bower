@@ -5,7 +5,7 @@ var prune = helpers.command('prune');
 
 describe('bower home', function () {
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package',
             dependencies: {
@@ -26,30 +26,30 @@ describe('bower home', function () {
     });
 
     it('removes extraneous packages', function () {
-        package.prepare({
+        mainPackage.prepare({
             'bower_components/angular/angular.js': 'angular source',
             'bower_components/angular/.bower.json': { name: 'angular' }
         });
 
-        return helpers.run(prune, [{}, { cwd: package.path }]).then(function() {
-            expect(package.exists('bower_components/angular/angular.js'))
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.exists('bower_components/angular/angular.js'))
             .to.be(false);
         });
     });
 
     it('leaves non-bower packages', function () {
-        package.prepare({
+        mainPackage.prepare({
             'bower_components/angular/angular.js': 'angular source'
         });
 
-        return helpers.run(prune, [{}, { cwd: package.path }]).then(function() {
-            expect(package.exists('bower_components/angular/angular.js'))
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.exists('bower_components/angular/angular.js'))
             .to.be(true);
         });
     });
 
     it('deals with custom directory', function () {
-        package.prepare({
+        mainPackage.prepare({
             '.bowerrc': { directory: 'components' },
             'bower_components/angular/.bower.json': { name: 'angular' },
             'bower_components/angular/angular.js': 'angular source',
@@ -57,9 +57,9 @@ describe('bower home', function () {
             'components/angular/angular.js': 'angular source'
         });
 
-        return helpers.run(prune, [{}, { cwd: package.path }]).then(function() {
-            expect(package.exists('components/angular/angular.js')).to.be(false);
-            expect(package.exists('bower_components/angular/angular.js')).to.be(true);
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+            expect(mainPackage.exists('components/angular/angular.js')).to.be(false);
+            expect(mainPackage.exists('bower_components/angular/angular.js')).to.be(true);
         });
     });
 });

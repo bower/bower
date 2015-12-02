@@ -17,7 +17,7 @@ describe('StandardRenderer', function () {
                 message: 'hello world'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.eq(multiline(function(){/*
+            expect(stdout).to.eq(multiline(function() {/*
                 bower foobar        hello world
 
             */}));
@@ -32,7 +32,7 @@ describe('StandardRenderer', function () {
                 message: 'Hello error'
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(multiline(function(){/*
+            expect(stderr).to.eq(multiline(function() {/*
                 bower EFOOBAR       Hello error
 
             */}));
@@ -48,7 +48,7 @@ describe('StandardRenderer', function () {
                 details: '  Some awesome details\nMultiline!    '
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(multiline(function(){/*
+            expect(stderr).to.eq(multiline(function() {/*
                 bower EFOOBAR       Hello error
 
                 Additional error details:
@@ -68,7 +68,7 @@ describe('StandardRenderer', function () {
                 details: '  Some awesome details\nMultiline!    '
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.match(new RegExp(multiline(function(){/*
+            expect(stderr).to.match(new RegExp(multiline(function() {/*
                 System info:
                 Bower version: [^\r\n]+
                 Node version: [^\r\n]+
@@ -91,7 +91,7 @@ describe('StandardRenderer', function () {
                 ]
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.string(multiline(function(){/*
+            expect(stderr).to.string(multiline(function() {/*
                 Stack trace:
                 ./one.js:1
                 ./two.js:2
@@ -109,7 +109,7 @@ describe('StandardRenderer', function () {
                 details: '  Some awesome details\nMultiline!    '
             });
         }).spread(function(stdout, stderr) {
-            expect(stderr).to.match(new RegExp(multiline(function(){/*
+            expect(stderr).to.match(new RegExp(multiline(function() {/*
                 Console trace:
                 Error
                     at StandardRenderer.error \(.+?\)
@@ -127,7 +127,7 @@ describe('StandardRenderer', function () {
                 message: 'foobar'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower checkout      jquery#foobar
 
             */}));
@@ -143,7 +143,7 @@ describe('StandardRenderer', function () {
                 message: 'foobar'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower jquery#master           progress foobar
 
             */}));
@@ -159,7 +159,7 @@ describe('StandardRenderer', function () {
                 message: 'foobar'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower progress      jquery#master foobar
 
             */}));
@@ -175,7 +175,7 @@ describe('StandardRenderer', function () {
                 message: 'foobar'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower jquery#master            extract foobar
 
             */}));
@@ -244,7 +244,7 @@ describe('StandardRenderer', function () {
                 }
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 Please note that,
                     dependant1#release1, dependant2#release2 depends on fizfuz#~0.0.0 which resolved to fizfuz#0.0.0
@@ -311,7 +311,7 @@ describe('StandardRenderer', function () {
                 }
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 Unable to find a suitable version for , please choose one:
                     1) fizfuz#~0.0.0 which resolved to 0.0.0 and is required by dependant1#release1, dependant2#release2
@@ -339,7 +339,7 @@ describe('StandardRenderer', function () {
                 }
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 {
                   foo: 'bar',
@@ -362,7 +362,7 @@ describe('StandardRenderer', function () {
                 message: 'message'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower origin                    cached message
 
             */}));
@@ -390,7 +390,7 @@ describe('StandardRenderer', function () {
                 message: 'message'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower short-origin             generic message
                 bower very-very-long-origin-string          generic message
                 bower short-origin                          generic message
@@ -534,7 +534,7 @@ describe('StandardRenderer', function () {
             ]);
         }).spread(function(stdout, stderr) {
             if (helpers.isWin()) {
-                expect(stdout).to.equal(multiline(function(){/*
+                expect(stdout).to.equal(multiline(function() {/*
 
                     jquery#0.1.2 components\jquery
 
@@ -558,7 +558,7 @@ describe('StandardRenderer', function () {
 
                 */}));
             } else {
-                expect(stdout).to.equal(multiline(function(){/*
+                expect(stdout).to.equal(multiline(function() {/*
 
                     jquery#0.1.2 components/jquery
 
@@ -592,7 +592,7 @@ describe('StandardRenderer', function () {
                 version: '1.2.3'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 {
                   version: '1.2.3'
@@ -617,7 +617,7 @@ describe('StandardRenderer', function () {
                 ]
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 {
                   version: '1.2.3'
@@ -644,7 +644,7 @@ describe('StandardRenderer', function () {
                 name: 'bower'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 bower http://bower.io
                 Package not found.
 
@@ -670,14 +670,14 @@ describe('StandardRenderer', function () {
             });
         }).spread(function(stdout, stderr) {
             if (helpers.isWin()) {
-                expect(stdout).to.equal(multiline(function(){/*
+                expect(stdout).to.equal(multiline(function() {/*
                     bower                    link ./bar > ./foo
 
                     jquery#0.1.2 components\jquery
 
                 */}));
             } else {
-                expect(stdout).to.equal(multiline(function(){/*
+                expect(stdout).to.equal(multiline(function() {/*
                     bower                    link ./bar > ./foo
 
                     jquery#0.1.2 components/jquery
@@ -701,7 +701,7 @@ describe('StandardRenderer', function () {
                 }
             ]);
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 Search results:
 
                     jquery http://jquery.io
@@ -719,7 +719,7 @@ describe('StandardRenderer', function () {
                 url: 'http://jquery.io'
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 Package jquery registered successfully!
                 All valid semver tags on http://jquery.io will be available as versions.
@@ -744,7 +744,7 @@ describe('StandardRenderer', function () {
                 }
             ]);
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
                 awesome-jquery=jquery#0.1.1
 
             */}));
@@ -779,7 +779,7 @@ describe('StandardRenderer', function () {
                 ]
             });
         }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function(){/*
+            expect(stdout).to.equal(multiline(function() {/*
 
                 Usage:
 
