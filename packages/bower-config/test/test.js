@@ -212,7 +212,28 @@ describe('NPM Config on package.json', function () {
             assert.equal(process.env.HTTPS_PROXY, 'http://other-proxy.local');
         });
     });
+});
 
+describe('Allow ${ENV} variables in .bowerrc', function() {
+
+    it('sets values from process.env', function() {
+        process.env._BOWERRC_MY_PACKAGES = 'a';
+        process.env._BOWERRC_MY_TMP = '/tmp/b';
+
+        var config = require('../lib/Config').read('test/assets/env-variables-values');
+        assert.equal('a', config.storage.packages);
+        assert.equal('/tmp/b', config.tmp);
+    });
+});
+
+describe('untildify paths in .bowerrc', function() {
+
+    it('resolve ~/ in .bowerrc', function() {
+        var config = require('../lib/Config').read('test/assets/env-variables-values');
+        var untildify = require('untildify');
+
+        assert.equal(untildify('~/.bower-test/registry') , config.storage.registry);
+    });
 });
 
 require('./util/index');
