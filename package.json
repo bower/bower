@@ -27,7 +27,7 @@
     "configstore": "^0.3.2",
     "decompress-zip": "^0.1.0",
     "destroy": "^1.0.3",
-    "fs-write-stream-atomic": "sheerun/fs-write-stream-atomic#v1.0.4-fix",
+    "fs-write-stream-atomic": "^1.0.5",
     "fstream": "^1.0.3",
     "fstream-ignore": "^1.0.2",
     "github": "^0.2.3",
