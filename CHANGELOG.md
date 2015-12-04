@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.9 - 2015-12-04
+
+- Change git version of fs-write-stream-atomic back to npm version ([#2079](https://github.com/bower/bower/issues/2079))
+
 ## 1.6.8 - 2015-11-27
 
 - Use fs-write-stream-atomic for downloads
