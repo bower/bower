@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.7.0 - 2015-12-05
+- Bower search shows a help display when no package name is specified. Fixes [#2066](https://github.com/bower/bower/issues/2066)
+- Updates only those packages that are explicitly requested by the user
+  Related Issues
+  - [#256](https://github.com/bower/bower/issues/256)
+  - [#924](https://github.com/bower/bower/issues/924)
+  - [#1770](https://github.com/bower/bower/issues/1770)
+- Adds `bower --save` functionality ([#2035](https://github.com/bower/bower/issues/2035))
+- Allow for @ in username for SVN on windows ([#1650](https://github.com/bower/bower/issues/1650))
+- Update bower config
+  - Loads the .bowerrc file from the cwd specified on the command line
+  - Allow the use of environment variables in .bowerrc. Issue [#41](https://github.com/bower/config/issues/41)
+
 ## 1.6.9 - 2015-12-04
 
 - Change git version of fs-write-stream-atomic back to npm version ([#2079](https://github.com/bower/bower/issues/2079))
