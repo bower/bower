@@ -2,6 +2,9 @@
 
 Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now. If you're interested in becoming Bower maintainer or supporting in in any way, please full the following form: http://goo.gl/forms/P1ndzCNoiG. There is more information about [contributing](https://github.com/bower/bower/wiki/Contributor-Guidelines) in the Wiki.
 
+<a name="bugs"></a>
+## 🐛 [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
+
 ## Casual Involvement
 
 * Improve the bower.io site ([tickets](https://github.com/bower/bower.github.io/issues))
@@ -34,9 +37,6 @@ requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
-
-<a name="bugs"></a>
-## 🐛 [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 
 <a name="features"></a>
 ## Feature requests
