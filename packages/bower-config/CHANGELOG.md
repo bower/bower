@@ -1,10 +1,12 @@
 # Changelog
 
-## 1.2.4 - 2015-12-05
+## 1.3.0 - 2015-12-07
+
 - Allow the use of environment variables in .bowerrc. Fixes [#41](https://github.com/bower/config/issues/41)
 - Loads the .bowerrc file from the cwd specified on the command line. Fixes [bower/bower#1993](https://github.com/bower/bower/issues/1993)
 
 ## 1.2.3 - 2015-11-27
+
 - Restores env variables if they are undefined at the beginning
 - Handles default setting for config.ca. Together with [bower/bower PR #1972](https://github.com/bower/bower/pull/1972), fixes downloading with `strict-ssl` using custom CA
 - Displays an error message if .bowerrc is a directory instead of file. Fixes [bower/bower#2022](https://github.com/bower/bower/issues/2022)
