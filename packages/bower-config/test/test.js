@@ -5,6 +5,7 @@ describe('NPM Config on package.json', function () {
     beforeEach(function () {
         delete process.env.npm_package_config_bower_directory;
         delete process.env.npm_package_config_bower_colors;
+        delete process.env.npm_package_config_bower_resolvers;
     });
 
     it('defaults registry entries to default registry', function () {
@@ -102,7 +103,8 @@ describe('NPM Config on package.json', function () {
 
     describe('Setting process.env.npm_package_config', function () {
         process.env.npm_package_config_bower_directory = 'npm-path';
-        process.env.npm_package_config_bower_colors = false;
+        process.env.npm_package_config_bower_colors = 'false';
+        process.env.npm_package_config_bower_resolvers = '[foo,bar,baz]';
 
         var config = require('../lib/Config').read();
 
@@ -111,6 +113,9 @@ describe('NPM Config on package.json', function () {
         });
         it('should return "false" for "bower_colors"', function () {
             assert.equal('false', config.colors);
+        });
+        it('should expand array "false" for "bower_resolvers"', function () {
+            assert.deepEqual(['foo', 'bar', 'baz'], config.resolvers);
         });
     });
 

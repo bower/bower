@@ -126,7 +126,7 @@ function env(prefix) {
             } else {
                 targetValue = match[1].split(',')
                     .map(function(m) {
-                        return m.trim().slice(1, m.length - 1);
+                        return m.trim();
                     });
             }
             object.set(obj, parsedKey, targetValue);
