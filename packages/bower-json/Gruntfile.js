@@ -1,11 +1,7 @@
+'use strict';
+
 module.exports = function (grunt) {
-
-    'use strict';
-
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-simple-mocha');
-
+    require('load-grunt-tasks')(grunt);
     // Project configuration.
     grunt.initConfig({
 
@@ -13,7 +9,8 @@ module.exports = function (grunt) {
             files: [
                 'Gruntfile.js',
                 'lib/**/*.js',
-                'test/**/*.js'
+                'test/**/*.js',
+                '!test/reports/**/*'
             ],
             options: {
                 jshintrc: '.jshintrc'
@@ -39,6 +36,15 @@ module.exports = function (grunt) {
             }
         },
 
+        exec: {
+            cover: {
+                command: 'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
+            },
+            coveralls: {
+                command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'
+            }
+        },
+
 
         watch: {
             files: ['<%= jshint.files %>'],
@@ -50,4 +56,5 @@ module.exports = function (grunt) {
     // Default task.
     grunt.registerTask('test', ['simplemocha:full']);
     grunt.registerTask('default', ['jshint', 'test']);
+    grunt.registerTask('travis', ['jshint', 'exec:cover', 'exec:coveralls']);
 };

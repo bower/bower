@@ -59,6 +59,45 @@ function read(file, options, callback) {
     });
 }
 
+function readSync(file, options) {
+    var stat;
+    var filename;
+    var contents;
+    var json;
+
+    if (!options) {
+        options = {};
+    }
+    try {
+        stat = fs.statSync(file);
+    } catch (err) {
+        return err;
+    }
+    if (stat.isDirectory()) {
+        filename = findSync(file);
+        return readSync(filename);
+    }
+
+    contents = fs.readFileSync(file);
+
+    try {
+        json = JSON.parse(contents.toString());
+    } catch (err) {
+        err.file = path.resolve(file);
+        err.code = 'EMALFORMED';
+        return err;
+    }
+
+    try {
+        json = parse(json, options);
+    } catch (err) {
+        err.file = path.resolve(file);
+        return err;
+    }
+
+    return json;
+}
+
 function parse(json, options) {
     options = deepExtend({
         normalize: false,
@@ -104,7 +143,7 @@ function validate(json) {
     if (!/[a-z]$/.test(json.name)) {
         throw createError('The name has to end with a lower case character from a to z', 'EINVALID');
     }
-    
+
     if (json.description && json.description.length > 140) {
         throw createError('The description is too long. 140 characters should be more than enough', 'EINVALID');
     }
@@ -199,9 +238,37 @@ function find(folder, files, callback) {
     });
 }
 
+function findSync(folder, files) {
+    var file;
+    var exists;
+
+    if (files === undefined) {
+        files = possibleJsons;
+    }
+
+    if (!files.length) {
+        return createError('None of ' + possibleJsons.join(', ') + ' were found in ' + folder, 'ENOENT');
+    }
+
+    file = path.resolve(path.join(folder, files[0]));
+    try{
+        exists = fs.statSync(file);
+    }
+    catch (err) {
+        exists = false;
+    }
+    if (exists && exists.isFile()) {
+        return file;
+    } else {
+        return findSync(folder, files.slice(1));
+    }
+}
+
 module.exports = read;
 module.exports.read = read;
+module.exports.readSync = readSync;
 module.exports.parse = parse;
 module.exports.validate = validate;
 module.exports.normalize = normalize;
 module.exports.find = find;
+module.exports.findSync = findSync;

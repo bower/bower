@@ -56,6 +56,41 @@ describe('.find', function () {
     });
 });
 
+describe('.findSync', function () {
+
+    it('should find the bower.json file', function (done) {
+        var file = bowerJson.findSync(__dirname + '/pkg-bower-json');
+
+        expect(file).to.equal(path.resolve(__dirname + '/pkg-bower-json/bower.json'));
+        done();
+    });
+
+    it('should fallback to the component.json file', function (done) {
+        var file = bowerJson.findSync(__dirname + '/pkg-component-json');
+
+        expect(file).to.equal(path.resolve(__dirname + '/pkg-component-json/component.json'));
+        done();
+    });
+
+    it('should fallback to the .bower.json file', function (done) {
+        var file = bowerJson.findSync(__dirname + '/pkg-dot-bower-json');
+
+        expect(file).to.equal(path.resolve(__dirname + '/pkg-dot-bower-json/.bower.json'));
+        done();
+    });
+
+    it('should error if no component.json / bower.json / .bower.json is found', function (done) {
+        var err = bowerJson.findSync(__dirname);
+        expect(err).to.be.an(Error);
+        expect(err.code).to.equal('ENOENT');
+        expect(err.message).to.equal('None of bower.json, component.json, .bower.json were found in ' + __dirname);
+        done();
+    });
+
+
+
+});
+
 describe('.read', function () {
     it('should give error if file does not exists', function (done) {
         bowerJson.read(__dirname + '/willneverexist', function (err) {
@@ -144,6 +179,65 @@ describe('.read', function () {
             });
         });
     });
+});
+
+describe('.readSync', function () {
+    it('should give error if file does not exists', function (done) {
+        var err = bowerJson.readSync(__dirname + '/willneverexist');
+        expect(err).to.be.an(Error);
+        expect(err.code).to.equal('ENOENT');
+        done();
+    });
+
+    it('should give error if when reading an invalid json', function (done) {
+        var err =  bowerJson.readSync(__dirname + '/pkg-bower-json-malformed/bower.json');
+        expect(err).to.be.an(Error);
+        expect(err.code).to.equal('EMALFORMED');
+        expect(err.file).to.equal(path.resolve(__dirname + '/pkg-bower-json-malformed/bower.json'));
+        done();
+    });
+
+    it('should read the file and give an object', function (done) {
+        var json = bowerJson.readSync(__dirname + '/pkg-bower-json/bower.json');
+
+        expect(json).to.be.an('object');
+        expect(json.name).to.equal('some-pkg');
+        expect(json.version).to.equal('0.0.0');
+
+        done();
+    });
+
+    it('should find for a json file if a directory is given', function (done) {
+        var json = bowerJson.readSync(__dirname + '/pkg-component-json');
+
+        expect(json).to.be.an('object');
+        expect(json.name).to.equal('some-pkg');
+        expect(json.version).to.equal('0.0.0');
+        done();
+    });
+
+    it('should validate the returned object unless validate is false', function (done) {
+        var err = bowerJson.readSync(__dirname + '/pkg-bower-json-invalid/bower.json');
+        expect(err).to.be.an(Error);
+        expect(err.message).to.contain('name');
+        expect(err.file).to.equal(path.resolve(__dirname + '/pkg-bower-json-invalid/bower.json'));
+
+        err = bowerJson.readSync(__dirname + '/pkg-bower-json-invalid/bower.json', { validate: false });
+        expect(err).to.not.be.an(Error);
+        done();
+    });
+
+    it('should normalize the returned object if normalize is true', function (done) {
+        var json =  bowerJson.readSync(__dirname + '/pkg-bower-json/bower.json');
+        expect(json.main).to.equal('foo.js');
+
+        json = bowerJson.readSync(__dirname + '/pkg-bower-json/bower.json', { normalize: true });
+
+        expect(json.main).to.eql(['foo.js']);
+        done();
+    });
+
+
 });
 
 describe('.parse', function () {
