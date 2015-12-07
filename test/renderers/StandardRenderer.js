@@ -784,6 +784,7 @@ describe('StandardRenderer', function () {
                 Usage:
 
                     bower uninstall <name> [<name> ..] [<options>]
+
                 Options:
 
                     -h, --help              Show this help message
