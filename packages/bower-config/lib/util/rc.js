@@ -116,7 +116,20 @@ function env(prefix) {
                            .substr(prefixLength)
                            .replace(/__/g, '.')   // __ is used for nesting
                            .replace(/_/g, '-');   // _ is used as a - separator
-            object.set(obj, parsedKey, value);
+
+            //use a convention patern to accept array from process.env
+            //e.g. export bower_registry__search='["http://abc.com","http://def.com"]'
+            var match = /\[([^\]]*)\]/g.exec(value);
+            var targetValue;
+            if (!match || match.length === 0) {
+                targetValue = value;
+            } else {
+                targetValue = match[1].split(',')
+                    .map(function(m) {
+                        return m.trim();
+                    });
+            }
+            object.set(obj, parsedKey, targetValue);
         }
     });
 
