@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.8.0
+
+- Better formatting of help messages https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e
+- Add help menu for update --save and update --save-dev https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0
+
 ## 1.7.0 - 2015-12-07
 
 - Add `bower update --save` functionality ([#2035](https://github.com/bower/bower/issues/2035))
