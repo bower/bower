@@ -4,6 +4,7 @@
 
 - Allow the use of environment variables in .bowerrc. Fixes [#41](https://github.com/bower/config/issues/41)
 - Loads the .bowerrc file from the cwd specified on the command line. Fixes [bower/bower#1993](https://github.com/bower/bower/issues/1993)
+- Allwow for array notation in ENV variables [#44](https://github.com/bower/config/issues/44)
 
 ## 1.2.3 - 2015-11-27
 
