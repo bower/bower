@@ -55,7 +55,7 @@ module.exports = function (grunt) {
                 command: 'node test/packages.js --force && node test/packages-svn.js --force'
             },
             cover: {
-                command: 'env STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
+                command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
             coveralls: {
                 command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'
