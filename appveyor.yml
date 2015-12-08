@@ -33,7 +33,7 @@ install:
 
 # Post-install test scripts.
 test_script:
-  - cmd: grunt travis
+  - cmd: npm run ci
 
 # Don't actually build.
 build: off

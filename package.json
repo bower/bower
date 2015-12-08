@@ -130,7 +130,8 @@
     "which"
   ],
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "ci": "grunt travis"
   },
   "bin": "bin/bower",
   "files": [
