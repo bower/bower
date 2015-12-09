@@ -1,4 +1,5 @@
 var expect = require('expect.js');
+var path = require('path');
 var helpers = require('../helpers');
 var nock = require('nock');
 var fs = require('../../lib/util/fs');
@@ -172,7 +173,7 @@ describe('bower install', function() {
         });
     });
 
-    it('runs preinstall hook', function() {
+    it('runs postinstall hook', function() {
         mainPackage.prepare();
 
         tempDir.prepare({
@@ -301,6 +302,22 @@ describe('bower install', function() {
         });
     });
 
+    it('works for dependencies that point to tar files', function() {
+        var packageDir = path.join(__dirname, '../assets/package-tar.tar');
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: packageDir
+                }
+            }
+        });
+
+        return helpers.run(install).then(function() {
+            expect(tempDir.read('bower_components/package/index.txt')).to.contain('1.0.0');
+        });
+    });
+
     it('does not install ignored dependencies', function() {
         mainPackage.prepare();
         var package2 = new helpers.TempDir({
@@ -405,7 +422,6 @@ describe('bower install', function() {
                 done();
             });
     });
-
 
     it('errors if the components directory is not a directory', function() {
         tempDir.prepare({
