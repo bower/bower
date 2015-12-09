@@ -1,4 +1,4 @@
-# bower-json [![Build Status](https://secure.travis-ci.org/bower/json.png?branch=master)](http://travis-ci.org/bower/json)
+# bower-json [![Build Status](https://secure.travis-ci.org/bower/json.png?branch=master)](http://travis-ci.org/bower/json) [![Coverage Status](https://coveralls.io/repos/bower/json/badge.svg?branch=master&service=github)](https://coveralls.io/github/bower/json?branch=master)
 
 Read `bower.json` files with semantics, normalisation, defaults and validation.
 
