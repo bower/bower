@@ -3,8 +3,11 @@
 ## 1.7.1 - 2015-12-11
 
 - Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
-- Better formatting of help messages https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e
-- Add help menu for update --save and update --save-dev https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0
+- Fix backward-compatibility of `bower search --json` ([#2066](https://github.com/bower/bower/issues/2066))
+- Ignore prerelease versions from `bower info` output
+- Update update-notifier to 0.6.0
+- Better formatting of help messages (https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e)
+- Add help menu for update `--save` and `update --save-dev` (https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0)
 
 ## 1.7.0 - 2015-12-07
 
