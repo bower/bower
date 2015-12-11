@@ -99,30 +99,40 @@ analytics.setup(bower.config).then(function () {
     // Get the renderer and configure it with the executed command
     renderer = cli.getRenderer(command, logger.json, bower.config);
 
-    logger
-    .on('end', function (data) {
-        if (!bower.config.silent && !bower.config.quiet) {
-            renderer.end(data);
-        }
-    })
-    .on('error', function (err)  {
-        if (levels.error >= loglevel) {
-            renderer.error(err);
-        }
+    function handleLogger(logger, renderer) {
+        logger
+        .on('end', function (data) {
+            if (!bower.config.silent && !bower.config.quiet) {
+                renderer.end(data);
+            }
+        })
+        .on('error', function (err)  {
+            if (command !== 'help' && err.code === cli.READ_OPTIONS_ERROR_CODE) {
+                logger = bower.commands.help(command);
+                renderer = cli.getRenderer('help', logger.json, bower.config);
+                handleLogger(logger, renderer);
+            } else {
+                if (levels.error >= loglevel) {
+                    renderer.error(err);
+                }
 
-        process.exit(1);
-    })
-    .on('log', function (log) {
-        if (levels[log.level] >= loglevel) {
-            renderer.log(log);
-        }
-    })
-    .on('prompt', function (prompt, callback) {
-        renderer.prompt(prompt)
-        .then(function (answer) {
-            callback(answer);
+                process.exit(1);
+            }
+        })
+        .on('log', function (log) {
+            if (levels[log.level] >= loglevel) {
+                renderer.log(log);
+            }
+        })
+        .on('prompt', function (prompt, callback) {
+            renderer.prompt(prompt)
+            .then(function (answer) {
+                callback(answer);
+            });
         });
-    });
+    }
+
+    handleLogger(logger, renderer);
 
     // Warn if HOME is not SET
     if (!userHome) {
