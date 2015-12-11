@@ -3,11 +3,11 @@ var object = require('mout').object;
 var semver = require('semver');
 
 var helpers = require('../helpers');
-var rimraf = require('../../lib/util/rimraf');
 var updateCmd = helpers.command('update');
 var commands = helpers.require('lib/index').commands;
 
-describe('bower update', function() {
+describe('bower update', function () {
+    this.timeout(10000);
 
     var tempDir = new helpers.TempDir();
 
@@ -18,16 +18,8 @@ describe('bower update', function() {
     }).prepare();
 
     var gitPackage = new helpers.TempDir();
-    var gitPackage2 = new helpers.TempDir();
-    var gitPackage3 = new helpers.TempDir();
 
     gitPackage.prepareGit({
-        '0.1.1': {
-            'bower.json': {
-                name: 'package'
-            },
-            'version.txt': '0.9.0'
-        },
         '1.0.0': {
             'bower.json': {
                 name: 'package'
@@ -42,36 +34,6 @@ describe('bower update', function() {
                 }
             },
             'version.txt': '1.0.1'
-        }
-    });
-
-    gitPackage2.prepareGit({
-        '2.0.0': {
-            'bower.json': {
-                name: 'package'
-            },
-            'version.txt': '2.0.0'
-        },
-        '2.0.1': {
-            'bower.json': {
-                name: 'package'
-            },
-            'version.txt': '2.0.1'
-        }
-    });
-
-    gitPackage3.prepareGit({
-        '3.0.0': {
-            'bower.json': {
-                name: 'package'
-            },
-            'version.txt': '3.0.0'
-        },
-        '3.0.1': {
-            'bower.json': {
-                name: 'package'
-            },
-            'version.txt': '3.0.1'
         }
     });
 
@@ -305,111 +267,19 @@ describe('bower update', function() {
         });
     });
 
-    it('updates only the specified packages', function() {
-        var package4 = new helpers.TempDir({
-            'bower.json': {
-                name: 'package4'
-            }
-        }).prepare();
-
-        var package3 = new helpers.TempDir({
-            'bower.json': {
-                name: 'package3'
-            }
-        }).prepare();
-
-        var package2 = new helpers.TempDir({
-            'bower.json': {
-                name: 'package2'
-            }
-        }).prepare();
-
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    package2: package2.path,
-                    package3: package3.path,
-                    package4: package4.path
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            rimraf.sync(tempDir.path + '/bower_components/');
-
-            return update(['package4']).then(function() {
-                expect(tempDir.exists('bower_components/package2')).to.equal(false);
-                expect(tempDir.exists('bower_components/package3')).to.equal(false);
-                expect(tempDir.exists('bower_components/package4/bower.json')).to.equal(true);
-
-                rimraf.sync(tempDir.path + '/bower_components/');
-
-                return update(['package2', 'package3']).then(function() {
-                    expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
-                    expect(tempDir.exists('bower_components/package3/bower.json')).to.equal(true);
-                    expect(tempDir.exists('bower_components/package4')).to.equal(false);
-                });
-            });
-        });
-    });
-
-    it('updates sub deps of only the specified packages', function() {
-        var package3 = new helpers.TempDir({
-            'bower.json': {
-                name: 'package3',
-                dependencies: {
-                    package: gitPackage.path + '#~1.0.0'
-                }
-            }
-        }).prepare();
-
-        var package2 = new helpers.TempDir({
-            'bower.json': {
-                name: 'package2',
-                dependencies: {
-                    package: gitPackage2.path + '#~2.0.0'
-                }
-            }
-        }).prepare();
-
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    package2: package2.path,
-                    package3: package3.path
-                }
-            }
-        });
-
-        return install([package2.path]).then(function() {
-            expect(tempDir.readJson('bower_components/package/.bower.json').version).to.equal('2.0.1');
-
-            rimraf.sync(tempDir.path + '/bower_components/');
-
-            return update(['package3']).then(function() {
-                expect(tempDir.readJson('bower_components/package/.bower.json').version).to.equal('1.0.1');
-            });
-        });
-    });
-
-    it('doesn\'t update extraneous packages', function() {
+    it('doesn\'t update extraneous packages', function () {
         tempDir.prepare({
             'bower.json': {
                 name: 'test'
             }
         });
 
-        return install(['package=' + gitPackage.path + '#1.0.0']).then(function() {
+        return install(['underscore#1.5.0']).then(function() {
 
-            expect(tempDir.readJson('bower_components/package/.bower.json').version).to.equal('1.0.0');
+            expect(tempDir.readJson('bower_components/underscore/package.json').version).to.equal('1.5.0');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                expect(tempDir.readJson('bower_components/package/.bower.json').version).to.equal('1.0.0');
+            return update(null, {save: true}).then(function() {
+                expect(tempDir.readJson('bower_components/underscore/package.json').version).to.equal('1.5.0');
                 expect(tempDir.readJson('bower.json')).to.not.have.property('dependencies');
             });
         });
@@ -420,19 +290,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#~1.0.0'
+                    underscore: '~1.5.0'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.0');
+            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.0');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.1');
+            return update(null, {save: true}).then(function() {
+                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.2');
             });
         });
     });
@@ -442,19 +310,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 devDependencies: {
-                    package: gitPackage.path + '#~1.0.0'
+                    underscore: '~1.5.0'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').devDependencies.package).to.equal(gitPackage.path + '#~1.0.0');
+            expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.0');
 
-            return update(null, {
-                saveDev: true
-            }).then(function() {
-                expect(tempDir.readJson('bower.json').devDependencies.package).to.equal(gitPackage.path + '#~1.0.1');
+            return update(null, {saveDev: true}).then(function() {
+                expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.2');
             });
         });
     });
@@ -464,20 +330,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#*'
+                    underscore: '*'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#*');
+            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('*');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                var version = tempDir.readJson('bower.json').dependencies.package.replace(gitPackage.path + '#~', '');
-                version = semver.gte(version, '1.0.1');
+            return update(null, {save: true}).then(function() {
+                var version = semver.gte(tempDir.readJson('bower.json').dependencies.underscore.replace('~', ''), '1.8.3');
                 expect(version).to.be.ok();
             });
         });
@@ -488,29 +351,29 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#~1.0.0',
-                    package2: gitPackage2.path + '#~2.0.0'
+                    underscore: '~1.5.0',
+                    lodash: '~1.0.0'
                 },
                 devDependencies: {
-                    package3: gitPackage3.path + '#~3.0.0'
+                    neat: '~1.5.0'
                 },
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.0');
-            expect(tempDir.readJson('bower.json').dependencies.package2).to.equal(gitPackage2.path + '#~2.0.0');
-            expect(tempDir.readJson('bower.json').devDependencies.package3).to.equal(gitPackage3.path + '#~3.0.0');
+            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.0');
+            expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.0.0');
+            expect(tempDir.readJson('bower.json').devDependencies.neat).to.equal('~1.5.0');
 
             return update(null, {
                 save: true
             }).then(function() {
                 // Normal deps should have changed
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.1');
-                expect(tempDir.readJson('bower.json').dependencies.package2).to.equal(gitPackage2.path + '#~2.0.1');
+                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.2');
+                expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.0.2');
                 // Dev deps should not have changed
-                expect(tempDir.readJson('bower.json').devDependencies.package3).to.equal(gitPackage3.path + '#~3.0.0');
+                expect(tempDir.readJson('bower.json').devDependencies.neat).to.equal('~1.5.0');
             });
         });
     });
@@ -520,29 +383,29 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#~1.0.0'
+                    neat: '~1.5.0'
                 },
                 devDependencies: {
-                    package2: gitPackage2.path + '#~2.0.0',
-                    package3: gitPackage3.path + '#~3.0.0'
-                },
+                    underscore: '~1.5.0',
+                    lodash: '~1.0.0'
+                }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.0');
-            expect(tempDir.readJson('bower.json').devDependencies.package2).to.equal(gitPackage2.path + '#~2.0.0');
-            expect(tempDir.readJson('bower.json').devDependencies.package3).to.equal(gitPackage3.path + '#~3.0.0');
+            expect(tempDir.readJson('bower.json').dependencies.neat).to.equal('~1.5.0');
+            expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.0');
+            expect(tempDir.readJson('bower.json').devDependencies.lodash).to.equal('~1.0.0');
 
             return update(null, {
                 saveDev: true
             }).then(function() {
                 // Normal deps should not have changed
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.0');
+                expect(tempDir.readJson('bower.json').dependencies.neat).to.equal('~1.5.0');
                 // Dev deps should have changed
-                expect(tempDir.readJson('bower.json').devDependencies.package2).to.equal(gitPackage2.path + '#~2.0.1');
-                expect(tempDir.readJson('bower.json').devDependencies.package3).to.equal(gitPackage3.path + '#~3.0.1');
+                expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.2');
+                expect(tempDir.readJson('bower.json').devDependencies.lodash).to.equal('~1.0.2');
             });
         });
     });
@@ -552,19 +415,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#^0.1.0'
+                    underscore: '^0.1.0'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#^0.1.0');
+            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('^0.1.0');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~0.1.1');
+            return update(null, {save: true}).then(function() {
+                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~0.1.1');
             });
         });
     });
@@ -574,19 +435,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#^1.0.0'
+                    lodash: '^1.0.0'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#^1.0.0');
+            expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('^1.0.0');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#~1.0.1');
+            return update(null, {save: true}).then(function() {
+                expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.3.1');
             });
         });
     });
@@ -596,19 +455,17 @@ describe('bower update', function() {
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: gitPackage.path + '#1.0.0'
+                    underscore: '1.5.0'
                 }
             }
         });
 
         return install().then(function() {
 
-            expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#1.0.0');
+            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('1.5.0');
 
-            return update(null, {
-                save: true
-            }).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.package).to.equal(gitPackage.path + '#1.0.0');
+            return update(null, {save: true}).then(function() {
+                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('1.5.0');
             });
         });
     });
