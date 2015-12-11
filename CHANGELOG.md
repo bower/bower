@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.8.0
+## 1.7.1 - 2015-12-11
 
 - Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
 - Better formatting of help messages https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e
