@@ -132,7 +132,8 @@
   ],
   "scripts": {
     "test": "grunt test",
-    "ci": "grunt travis"
+    "ci": "grunt travis",
+    "coveralls": "coveralls"
   },
   "bin": "bin/bower",
   "files": [
