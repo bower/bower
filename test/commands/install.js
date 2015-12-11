@@ -430,9 +430,10 @@ describe('bower install', function() {
           undefined,
           { proxy: 'http://dummy.local/' }
         ])
-    .fail(function(error) {
-        expect(error.message).to.equal('Status code of 500');
-        done();
+        .fail(function(error) {
+            expect(error.message).to.equal('Status code of 500');
+            done();
+        });
     });
 
     it('errors if the components directory is not a directory', function() {
