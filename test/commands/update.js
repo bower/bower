@@ -1,6 +1,5 @@
 var expect = require('expect.js');
 var object = require('mout').object;
-var semver = require('semver');
 
 var helpers = require('../helpers');
 var updateCmd = helpers.command('update');
@@ -43,14 +42,16 @@ describe('bower update', function () {
         }
     }).prepare();
 
-    var update = function(packages, options, config) {
+    var updateLogger = function(packages, options, config) {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
 
-        var logger = commands.update(
-            packages, options, config
-        );
+        return commands.update(packages, options, config);
+    };
+
+    var update = function(packages, options, config) {
+        var logger = updateLogger(packages, options, config);
 
         return helpers.expectEvent(logger, 'end');
     };
@@ -68,15 +69,8 @@ describe('bower update', function () {
     };
 
     it('correctly reads arguments', function() {
-        expect(updateCmd.readOptions(['jquery', '-F', '-p', '-S', '-D']))
-            .to.eql([
-                ['jquery'], {
-                    forceLatest: true,
-                    production: true,
-                    save: true,
-                    saveDev: true
-                }
-            ]);
+        expect(updateCmd.readOptions(['jquery', '-F', '-p']))
+        .to.eql([['jquery'], { forceLatest: true, production: true }]);
     });
 
     it('install missing packages', function() {
@@ -267,210 +261,7 @@ describe('bower update', function () {
         });
     });
 
-    it('doesn\'t update extraneous packages', function () {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test'
-            }
-        });
-
-        return install(['underscore#1.5.0']).then(function() {
-
-            expect(tempDir.readJson('bower_components/underscore/package.json').version).to.equal('1.5.0');
-
-            return update(null, {save: true}).then(function() {
-                expect(tempDir.readJson('bower_components/underscore/package.json').version).to.equal('1.5.0');
-                expect(tempDir.readJson('bower.json')).to.not.have.property('dependencies');
-            });
-        });
-    });
-
-    it('updates bower.json dep after updating with --save flag', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    underscore: '~1.5.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.0');
-
-            return update(null, {save: true}).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.2');
-            });
-        });
-    });
-
-    it('updates bower.json dev dep after updating with --save-dev flag', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                devDependencies: {
-                    underscore: '~1.5.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.0');
-
-            return update(null, {saveDev: true}).then(function() {
-                expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.2');
-            });
-        });
-    });
-
-    it('replaces "any" range with latest version', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    underscore: '*'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('*');
-
-            return update(null, {save: true}).then(function() {
-                var version = semver.gte(tempDir.readJson('bower.json').dependencies.underscore.replace('~', ''), '1.8.3');
-                expect(version).to.be.ok();
-            });
-        });
-    });
-
-    it('updates multiple components in bower.json after updating with --save flag', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    underscore: '~1.5.0',
-                    lodash: '~1.0.0'
-                },
-                devDependencies: {
-                    neat: '~1.5.0'
-                },
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.0');
-            expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.0.0');
-            expect(tempDir.readJson('bower.json').devDependencies.neat).to.equal('~1.5.0');
-
-            return update(null, {
-                save: true
-            }).then(function() {
-                // Normal deps should have changed
-                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~1.5.2');
-                expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.0.2');
-                // Dev deps should not have changed
-                expect(tempDir.readJson('bower.json').devDependencies.neat).to.equal('~1.5.0');
-            });
-        });
-    });
-
-    it('updates multiple components in bower.json after updating with --save-dev flag', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    neat: '~1.5.0'
-                },
-                devDependencies: {
-                    underscore: '~1.5.0',
-                    lodash: '~1.0.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.neat).to.equal('~1.5.0');
-            expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.0');
-            expect(tempDir.readJson('bower.json').devDependencies.lodash).to.equal('~1.0.0');
-
-            return update(null, {
-                saveDev: true
-            }).then(function() {
-                // Normal deps should not have changed
-                expect(tempDir.readJson('bower.json').dependencies.neat).to.equal('~1.5.0');
-                // Dev deps should have changed
-                expect(tempDir.readJson('bower.json').devDependencies.underscore).to.equal('~1.5.2');
-                expect(tempDir.readJson('bower.json').devDependencies.lodash).to.equal('~1.0.2');
-            });
-        });
-    });
-
-    it('correctly interprets semver range specifier pre-1.0', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    underscore: '^0.1.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('^0.1.0');
-
-            return update(null, {save: true}).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('~0.1.1');
-            });
-        });
-    });
-
-    it('correctly interprets semver range specifier post-1.0', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    lodash: '^1.0.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('^1.0.0');
-
-            return update(null, {save: true}).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.lodash).to.equal('~1.3.1');
-            });
-        });
-    });
-
-    it('doesn\'t update bower.json if versions are identical', function() {
-        tempDir.prepare({
-            'bower.json': {
-                name: 'test',
-                dependencies: {
-                    underscore: '1.5.0'
-                }
-            }
-        });
-
-        return install().then(function() {
-
-            expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('1.5.0');
-
-            return update(null, {save: true}).then(function() {
-                expect(tempDir.readJson('bower.json').dependencies.underscore).to.equal('1.5.0');
-            });
-        });
-    });
-
-    it('does not install ignored dependencies when updating a package', function() {
+    it('does not install ignored dependencies when updating a package', function () {
         var package3 = new helpers.TempDir({
             'bower.json': {
                 name: 'package3'
