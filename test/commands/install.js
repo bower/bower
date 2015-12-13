@@ -13,14 +13,15 @@ describe('bower install', function() {
     });
 
     it('correctly reads arguments', function() {
-        expect(install.readOptions(['jquery', 'angular', '-F', '-p', '-S', '-D', '-E']))
+        expect(install.readOptions(['jquery', 'angular', '-F', '-p', '-S', '-D', '-E', '-c']))
             .to.eql([
                 ['jquery', 'angular'], {
                     forceLatest: true,
                     production: true,
                     save: true,
                     saveDev: true,
-                    saveExact: true
+                    saveExact: true,
+                    clean: true
                 }
             ]);
     });
@@ -28,14 +29,15 @@ describe('bower install', function() {
     it('correctly reads long arguments', function() {
         expect(install.readOptions([
             'jquery', 'angular',
-            '--force-latest', '--production', '--save', '--save-dev', '--save-exact'
+            '--force-latest', '--production', '--save', '--save-dev', '--save-exact', '--clean'
         ])).to.eql([
             ['jquery', 'angular'], {
                 forceLatest: true,
                 production: true,
                 save: true,
                 saveDev: true,
-                saveExact: true
+                saveExact: true,
+                clean: true
             }
         ]);
     });
@@ -61,6 +63,25 @@ describe('bower install', function() {
             },
             'version.txt': '1.0.1'
         }
+    });
+
+    it('deletes components dir if --clean is used', function() {
+        mainPackage.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test'
+            },
+            'bower_components/useless.file': {}
+        });
+
+        return helpers.run(install, [
+            [mainPackage.path], {
+                clean: true
+            }
+        ]).then(function() {
+            expect(tempDir.exists('bower_components/useless.file')).to.be(false);
+        });
     });
 
     it('writes to bower.json if --save flag is used', function() {
