@@ -103,8 +103,6 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 * [Discord chat](https://discord.gg/0fFM7QF0KpZRh2cY)
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
-* [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
-
 
 ## Contributing
 
