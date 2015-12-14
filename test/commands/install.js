@@ -3,6 +3,9 @@ var path = require('path');
 var helpers = require('../helpers');
 var nock = require('nock');
 var fs = require('../../lib/util/fs');
+var tar = require('tar-fs');
+var destroy = require('destroy');
+var Q = require('q');
 
 describe('bower install', function() {
 
@@ -445,6 +448,75 @@ describe('bower install', function() {
 
         return helpers.run(install).fail(function(error) {
             expect(error.code).to.equal('ENOTDIR');
+        });
+    });
+
+    it('works if the package is a compressed single directory containing another directory with the same name', function() {
+        var mainPackageBaseName = path.basename(mainPackage.path);
+        var parentDir = path.dirname(mainPackage.path);
+
+        // Setup the main package with a directory with the same name
+        var mainPackageFiles = {};
+        mainPackageFiles[mainPackageBaseName + '/test.js'] = 'test';
+        mainPackage.prepare(mainPackageFiles);
+
+        // Create an archive containing the main package
+        var archiveDeferred = Q.defer();
+        var archivePath = path.join(parentDir, mainPackageBaseName + ".tar")
+        var stream = tar.pack(parentDir, { entries: [mainPackageBaseName] });
+        stream
+            .pipe(fs.createWriteStream(archivePath))
+            .on('finish', function(result) {
+                destroy(stream);
+                archiveDeferred.resolve(result);
+            });
+
+        //// Attempt to install the package from the archive
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test'
+            }
+        });
+
+        return archiveDeferred.promise
+        .then(function() {
+            return helpers.run(install, [[archivePath]]);
+        })
+        .then(function() {
+            expect(tempDir.read(path.join('bower_components', 'package', mainPackageBaseName, "test.js"))).to.contain('test');
+        });
+    });
+
+    it('works if the package is an archive containing a file with an identical name', function() {
+        var parentDir = path.dirname(mainPackage.path);
+
+        mainPackage.prepare({
+            'package.tar': 'test'
+        });
+
+        var archiveDeferred = Q.defer();
+        var archivePath = path.join(parentDir, "package.tar")
+        var stream = tar.pack(mainPackage.path);
+        stream
+            .pipe(fs.createWriteStream(archivePath))
+            .on('finish', function(result) {
+                destroy(stream);
+                archiveDeferred.resolve(result);
+            });
+
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test'
+            }
+        });
+
+        return archiveDeferred.promise
+        .then(function() {
+            return helpers.run(install, [[archivePath]]);
+        })
+        .then(function() {
+            expect(tempDir.read(path.join('bower_components', 'package', "package.tar"))).to.contain('test');
         });
     });
 });
