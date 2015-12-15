@@ -462,7 +462,7 @@ describe('bower install', function() {
 
         // Create an archive containing the main package
         var archiveDeferred = Q.defer();
-        var archivePath = path.join(parentDir, mainPackageBaseName + ".tar")
+        var archivePath = path.join(parentDir, mainPackageBaseName + '.tar');
         var stream = tar.pack(parentDir, { entries: [mainPackageBaseName] });
         stream
             .pipe(fs.createWriteStream(archivePath))
@@ -483,7 +483,7 @@ describe('bower install', function() {
             return helpers.run(install, [[archivePath]]);
         })
         .then(function() {
-            expect(tempDir.read(path.join('bower_components', 'package', mainPackageBaseName, "test.js"))).to.contain('test');
+            expect(tempDir.read(path.join('bower_components', 'package', mainPackageBaseName, 'test.js'))).to.contain('test');
         });
     });
 
@@ -495,7 +495,7 @@ describe('bower install', function() {
         });
 
         var archiveDeferred = Q.defer();
-        var archivePath = path.join(parentDir, "package.tar")
+        var archivePath = path.join(parentDir, 'package.tar');
         var stream = tar.pack(mainPackage.path);
         stream
             .pipe(fs.createWriteStream(archivePath))
@@ -516,7 +516,7 @@ describe('bower install', function() {
             return helpers.run(install, [[archivePath]]);
         })
         .then(function() {
-            expect(tempDir.read(path.join('bower_components', 'package', "package.tar"))).to.contain('test');
+            expect(tempDir.read(path.join('bower_components', 'package', 'package.tar'))).to.contain('test');
         });
     });
 });
