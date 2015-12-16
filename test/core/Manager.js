@@ -198,6 +198,106 @@ describe('Manager', function () {
         });
     });
 
+    describe('toData', function () {
+
+        it('summarizes dependencies', function () {
+            var data = manager.toData({
+                name: 'foo',
+                source: 'google.com',
+                target: '*',
+                dependencies: {
+                    bar: {
+                        name: 'bar',
+                        source: 'facebook.com',
+                        target: '*'
+                    }
+                }
+            });
+            expect(data).to.eql({
+                dependencies: {
+                    bar: {
+                        endpoint: {
+                            name: 'bar',
+                            source: 'facebook.com',
+                            target: '*'
+                        },
+                        nrDependants: 0
+                    }
+                },
+                endpoint: {
+                    name: 'foo',
+                    source: 'google.com',
+                    target: '*'
+                },
+                nrDependants: 0
+            });
+        });
+
+        it('summarizes dependencies on different versions of a same package', function () {
+            var data = manager.toData({
+                name: 'foo',
+                source: 'google.com',
+                target: '*',
+                dependencies: {
+                    bar: {
+                        name: 'bar',
+                        source: 'facebook.com',
+                        target: '*',
+                        dependencies: {
+                            baz: {
+                                name: 'baz',
+                                source: 'yahoo.com',
+                                target: 'something'
+                            }
+                        }
+                    },
+                    baz: {
+                        name: 'baz',
+                        source: 'yahoo.com',
+                        target: 'something else'
+                    }
+                }
+            });
+
+            expect(data).to.eql({
+                dependencies: {
+                    bar: {
+                        endpoint: {
+                            name: 'bar',
+                            source: 'facebook.com',
+                            target: '*'
+                        },
+                        dependencies: {
+                            baz: {
+                                endpoint: {
+                                    name: 'baz',
+                                    source: 'yahoo.com',
+                                    target: 'something'
+                                },
+                                nrDependants: 0
+                            }
+                        },
+                        nrDependants: 0
+                    },
+                    baz: {
+                        endpoint: {
+                            name: 'baz',
+                            source: 'yahoo.com',
+                            target: 'something else'
+                        },
+                        nrDependants: 0
+                    }
+                },
+                endpoint: {
+                    name: 'foo',
+                    source: 'google.com',
+                    target: '*'
+                },
+                nrDependants: 0
+            });
+        });
+    });
+
     describe('_uniquify', function () {
 
         it('leaves last unique element', function () {
