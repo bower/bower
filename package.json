@@ -22,7 +22,7 @@
     "bower-logger": "^0.2.2",
     "bower-registry-client": "^1.0.0",
     "cardinal": "0.4.4",
-    "chalk": "^1.0.0",
+    "chalk": "^1.1.1",
     "chmodr": "^1.0.2",
     "configstore": "^0.3.2",
     "decompress-zip": "^0.1.0",
