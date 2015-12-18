@@ -45,8 +45,17 @@ function envReplace(config) {
     var envReplaced = {};
 
     object.forOwn(config, function (value, key) {
+
         // Ignore null values
         if (value == null) {
+            return;
+        }
+
+        // Ignore 'scripts'
+        // These hooks run within the shell
+        // environment variable expansion is not required
+        if ( key === 'scripts' && lang.isPlainObject(value) ){
+            envReplaced[key] = value;
             return;
         }
 
