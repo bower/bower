@@ -228,6 +228,7 @@ describe('Allow ${ENV} variables in .bowerrc', function() {
         var config = require('../lib/Config').read('test/assets/env-variables-values');
         assert.equal('a', config.storage.packages);
         assert.equal('/tmp/b', config.tmp);
+        assert.equal('${_myshellvar}', config.scripts.postinstall);
     });
 });
 

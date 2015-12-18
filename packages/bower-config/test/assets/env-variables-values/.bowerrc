@@ -1,4 +1,7 @@
 {
+   "scripts" : {
+      "postinstall" : "${_myshellvar}"
+   },
    "storage" : {
       "packages" : "${_BOWERRC_MY_PACKAGES}",
       "registry" : "~/.bower-test/registry"
