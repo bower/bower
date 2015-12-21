@@ -17,6 +17,21 @@ module.exports = function (grunt) {
                 '!test/tmp/**/*'
             ]
         },
+        jscs: {
+            options: {
+                config: '.jscsrc',
+                fix: true
+            },
+            files: [
+                'Gruntfile.js',
+                'bin/*',
+                'lib/**/*.js',
+                'test/**/*.js',
+                '!test/assets/**/*',
+                '!test/reports/**/*',
+                '!test/tmp/**/*'
+            ]
+        },
         simplemocha: {
             options: {
                 reporter: 'spec',
@@ -40,10 +55,10 @@ module.exports = function (grunt) {
                 command: 'node test/packages.js --force && node test/packages-svn.js --force'
             },
             cover: {
-                command: 'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
+                command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
             coveralls: {
-                command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'
+                command: 'npm run coveralls < test/reports/lcov.info'
             }
         },
         watch: {
@@ -53,7 +68,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('assets', ['exec:assets-force']);
-    grunt.registerTask('test', ['jshint', 'exec:assets', 'simplemocha:full']);
+    grunt.registerTask('test', ['jscs', 'jshint', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
     grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');

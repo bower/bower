@@ -2,6 +2,9 @@
 
 Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now. If you're interested in becoming Bower maintainer or supporting in in any way, please full the following form: http://goo.gl/forms/P1ndzCNoiG. There is more information about [contributing](https://github.com/bower/bower/wiki/Contributor-Guidelines) in the Wiki.
 
+<a name="bugs"></a>
+## 🐛 [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
+
 ## Casual Involvement
 
 * Improve the bower.io site ([tickets](https://github.com/bower/bower.github.io/issues))
@@ -34,48 +37,6 @@ requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
-
-<a name="bugs"></a>
-## Bug reports
-
-A bug is a _demonstrable problem_ that is caused by the code in the repository.
-Good bug reports are extremely helpful - thank you!
-
-Guidelines for bug reports:
-
-1. **Use the GitHub issue search** &mdash; check if the issue has already been
-   reported.
-
-2. **Check if the issue has been fixed** &mdash; try to reproduce it using the
-   latest `master` or development branch in the repository.
-
-3. **Isolate the problem** &mdash; ideally create a [reduced test
-   case](http://css-tricks.com/6263-reduced-test-cases/).
-
-A good bug report shouldn't leave others needing to chase you up for more
-information. Please try to be as detailed as possible in your report. What is
-your environment? What steps will reproduce the issue? What OS experiences the
-problem? What would you expect to be the outcome? All these details will help
-people to fix any potential bugs.
-
-Example:
-
-> Short and descriptive example bug report title
->
-> A summary of the issue and the browser/OS environment in which it occurs. If
-> suitable, include the steps required to reproduce the bug.
->
-> 1. This is the first step
-> 2. This is the second step
-> 3. Further steps, etc.
->
-> `<url>` - a link to the reduced test case
->
-> Any other information you want to share that is relevant to the issue being
-> reported. This might include the lines of code that you have identified as
-> causing the bug, and potential solutions (and your opinions on their
-> merits).
-
 
 <a name="features"></a>
 ## Feature requests
@@ -159,6 +120,8 @@ included in the project:
    use `git commit --amend` (or rebasing for multi-commit Pull Requests) and
    force push to your remote feature branch. You may also be asked to squash
    commits.
+
+10. If you are asked to squash your commits, then please use `git rebase -i master`. It will ask you to pick your commits - pick the major commits and squash the rest.
 
 **IMPORTANT**: By submitting a patch, you agree to license your work under the
 same license as that used by the project.

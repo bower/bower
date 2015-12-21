@@ -1,8 +1,13 @@
 # Bower - A package manager for the web
 
-> Bower needs resources for its maintenance. Please fill [<strong>Support Declaration</strong>](http://goo.gl/forms/P1ndzCNoiG) if you think you can help.
+> Bower needs resources for its maintenance. Please fill [this form](https://docs.google.com/forms/d/1i-Opb-uPdqUBBZQSbngv3Y3bfolG1gbBvtRLfxMnzRE/viewform?c=0&w=1) if you think you can help.
 
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
+[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
+[![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history)
+[![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
+[![Discord chat](https://img.shields.io/badge/discord-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://discord.gg/0fFM7QF0KpZRh2cY)
+[![Issue Stats](http://issuestats.com/github/bower/bower/badge/pr?style=flat)](http://issuestats.com/github/bower/bower)
+[![Issue Stats](http://issuestats.com/github/bower/bower/badge/issue?style=flat)](http://issuestats.com/github/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
@@ -47,7 +52,7 @@ $ bower install <package>#<version> --save
 
 We discourage using bower components statically for performance and security reasons (if component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
 
-The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using module loader (like [RequireJS](http://requirejs.org/)).
+The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using a module loader (like [RequireJS](http://requirejs.org/)).
 
 ### Uninstalling packages
 
@@ -63,7 +68,7 @@ On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bo
 
 ### Never run Bower with sudo
 
-Bower is a user command, there is no need to execute it with superuser permissions.
+Bower is a user command; there is no need to execute it with superuser permissions.
 
 ### Windows users
 
@@ -95,15 +100,13 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 
 ## Support
 
+* [Discord chat](https://discord.gg/0fFM7QF0KpZRh2cY)
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
-* [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
-
 
 ## Contributing
 
-We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md).
+We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to review the [guidelines for contributing](CONTRIBUTING.md).
 
 * [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 * [Feature requests](CONTRIBUTING.md#features)

@@ -1,11 +1,61 @@
 # Changelog
 
+## 1.7.1 - 2015-12-11
+
+- Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
+- Fix backward-compatibility of `bower search --json` ([#2066](https://github.com/bower/bower/issues/2066))
+- Ignore prerelease versions from `bower info` output
+- Update update-notifier to 0.6.0
+- Better formatting of help messages (https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e)
+- Add help menu for update `--save` and `update --save-dev` (https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0)
+
+## 1.7.0 - 2015-12-07
+
+- Add `bower update --save` functionality ([#2035](https://github.com/bower/bower/issues/2035))
+- `bower search` shows help message when no package name is specified ([#2066](https://github.com/bower/bower/issues/2066))
+- Update only those packages that are explicitly requested by the user. Related Issues
+  - [#256](https://github.com/bower/bower/issues/256)
+  - [#924](https://github.com/bower/bower/issues/924)
+  - [#1770](https://github.com/bower/bower/issues/1770)
+- Allow for @ in username for SVN on windows ([#1650](https://github.com/bower/bower/issues/1650))
+- Update bower config
+  - Loads the .bowerrc file from the cwd specified on the command line
+  - Allow the use of environment variables in .bowerrc ([#41](https://github.com/bower/config/issues/41))
+	- Allow for array notation in ENV variables ([#44](https://github.com/bower/config/issues/44))
+
+## 1.6.9 - 2015-12-04
+
+- Change git version of fs-write-stream-atomic back to npm version ([#2079](https://github.com/bower/bower/issues/2079))
+
+## 1.6.8 - 2015-11-27
+
+- Use fs-write-stream-atomic for downloads
+- Improved downloader that properly cleans after itself
+- Fix shallow host detection ([#2040](https://github.com/bower/bower/pull/2040))
+- Upgrade to ([bower-config#1.2.3](https://github.com/bower/config/releases/tag/1.2.3))
+  - Properly restore env variables if they are undefined at the beginning
+  - Properly handle `default` setting for config.ca
+  - Display proper error if .bowerrc is a directory instead of file
+
+## 1.6.7 - 2015-11-26
+
+- Bundless all the dependencies again
+
+## 1.6.6 - 2015-11-25
+
+- Fixes regression with the published npm version
+
+## 1.6.5 - 2015-10-24
+
+- Updates to tests and documentation
+- Fixes passing options when requesting downloads
+
 ## 1.6.4 - 2015-10-24
 
 - Fix ignoring dependencies on multiple install run ([#1970](https://github.com/bower/bower/pull/1970))
 - Use --non-interactive when running svn client ([#1969](https://github.com/bower/bower/pull/1969))
 - Fix downloading of URLs ending with slash ([#1956](https://github.com/bower/bower/pull/1956))
-- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960)) 
+- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960))
 
 ## 1.6.3 - 2015-10-16
 
@@ -36,6 +86,10 @@ Fix dependency issues of 1.6.0. Reverted release.
 
 Reverted release.
 
+## 1.5.4 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
 ## 1.5.3 - 2015-09-24
 
 - Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
@@ -60,6 +114,10 @@ Reverted release.
 - Auto-sort dependencies alphabetically ([#1381](https://github.com/bower/bower/issues/1381))
 - Make bower commands work from subdirectories ([#1866](https://github.com/bower/bower/issues/1866))
 - No longer prefer installing bower as global module ([#1865](https://github.com/bower/bower/issues/1865))
+
+## 1.4.2 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
 
 ## 1.4.1 - 2015-04-01
 

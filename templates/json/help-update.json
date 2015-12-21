@@ -19,6 +19,16 @@
             "shorthand":   "-p",
             "flag":        "--production",
             "description": "Do not install project devDependencies"
+        },
+        {
+            "shorthand":   "-S",
+            "flag":        "--save",
+            "description": "Update dependencies in bower.json"
+        },
+        {
+            "shorthand":   "-D",
+            "flag":        "--save-dev",
+            "description": "Update devDependencies in bower.json"
         }
     ]
 }

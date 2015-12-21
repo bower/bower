@@ -34,7 +34,7 @@
         },
         {
             "shorthand":   "-l",
-            "flag":        "--log-level",
+            "flag":        "--loglevel",
             "description": "What level of logs to report"
         },
         {

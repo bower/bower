@@ -6,13 +6,14 @@ var updateCmd = helpers.command('update');
 var commands = helpers.require('lib/index').commands;
 
 describe('bower update', function () {
+    this.timeout(10000);
 
     var tempDir = new helpers.TempDir();
 
     var subPackage = new helpers.TempDir({
-      'bower.json': {
-        name: 'subPackage'
-      }
+        'bower.json': {
+            name: 'subPackage'
+        }
     }).prepare();
 
     var gitPackage = new helpers.TempDir();
@@ -28,14 +29,14 @@ describe('bower update', function () {
             'bower.json': {
                 name: 'package',
                 dependencies: {
-                  subPackage: subPackage.path
+                    subPackage: subPackage.path
                 }
             },
             'version.txt': '1.0.1'
         }
     });
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package'
         }
@@ -72,14 +73,14 @@ describe('bower update', function () {
         .to.eql([['jquery'], { forceLatest: true, production: true }]);
     });
 
-    it('install missing packages', function () {
-        package.prepare();
+    it('install missing packages', function() {
+        mainPackage.prepare();
 
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: package.path
+                    package: mainPackage.path
                 }
             }
         });
@@ -91,85 +92,84 @@ describe('bower update', function () {
     });
 
     it('does not install ignored dependencies', function() {
-      var package3 = new helpers.TempDir({
-          'bower.json': {
-              name: 'package3'
-          }
-      }).prepare();
+        var package3 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3'
+            }
+        }).prepare();
 
-      var package2 = new helpers.TempDir({
-          'bower.json': {
-              name: 'package2',
-              dependencies: {
-                package3: package3.path
-              }
-          }
-      }).prepare();
-
-      tempDir.prepare({
-          'bower.json': {
-              name: 'test',
-              dependencies: {
-                  package2: package2.path
-              }
-          },
-          '.bowerrc': {
-              ignoredDependencies: ['package3']
-          }
-      });
-
-      return update().then(function() {
-          expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
-          expect(tempDir.exists('bower_components/package3')).to.equal(false);
-      });
-
-    });
-
-    it('does not install ignored dependencies if run multiple times', function() {
-      var package3 = new helpers.TempDir({
-          'bower.json': {
-              name: 'package3'
-          }
-      }).prepare();
-
-      var package2 = new helpers.TempDir({
-          'bower.json': {
-              name: 'package2',
-              dependencies: {
-                package3: package3.path
-              }
-          }
-      }).prepare();
-
-      tempDir.prepare({
-          'bower.json': {
-              name: 'test',
-              dependencies: {
-                  package2: package2.path
-              }
-          },
-          '.bowerrc': {
-              ignoredDependencies: ['package3']
-          }
-      });
-
-      return update().then(function() {
-          return update().then(function() {
-            expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
-            expect(tempDir.exists('bower_components/package3')).to.equal(false);
-          });
-      });
-
-    });
-
-    it('runs preinstall hook when installing missing package', function () {
-        package.prepare();
+        var package2 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package2',
+                dependencies: {
+                    package3: package3.path
+                }
+            }
+        }).prepare();
 
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: package.path
+                    package2: package2.path
+                }
+            },
+            '.bowerrc': {
+                ignoredDependencies: ['package3']
+            }
+        });
+
+        return update().then(function() {
+            expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
+            expect(tempDir.exists('bower_components/package3')).to.equal(false);
+        });
+    });
+
+    it('does not install ignored dependencies if run multiple times', function() {
+        var package3 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3'
+            }
+        }).prepare();
+
+        var package2 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package2',
+                dependencies: {
+                    package3: package3.path
+                }
+            }
+        }).prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package2: package2.path
+                }
+            },
+            '.bowerrc': {
+                ignoredDependencies: ['package3']
+            }
+        });
+
+        return update().then(function() {
+            return update().then(function() {
+                expect(tempDir.exists('bower_components/package2/bower.json')).to.equal(true);
+                expect(tempDir.exists('bower_components/package3')).to.equal(false);
+            });
+        });
+
+    });
+
+    it('runs preinstall hook when installing missing package', function() {
+        mainPackage.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: mainPackage.path
                 }
             },
             '.bowerrc': {
@@ -184,14 +184,14 @@ describe('bower update', function () {
         });
     });
 
-    it('runs postinstall hook when installing missing package', function () {
-        package.prepare();
+    it('runs postinstall hook when installing missing package', function() {
+        mainPackage.prepare();
 
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: package.path
+                    package: mainPackage.path
                 }
             },
             '.bowerrc': {
@@ -206,14 +206,14 @@ describe('bower update', function () {
         });
     });
 
-    it('doesn\'t runs postinstall when no package is update', function () {
-        package.prepare();
+    it('doesn\'t runs postinstall when no package is update', function() {
+        mainPackage.prepare();
 
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
                 dependencies: {
-                    package: package.path
+                    package: mainPackage.path
                 }
             },
             '.bowerrc': {
@@ -232,7 +232,7 @@ describe('bower update', function () {
         });
     });
 
-    it('updates a package', function () {
+    it('updates a package', function() {
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
@@ -246,7 +246,7 @@ describe('bower update', function () {
 
             expect(tempDir.read('bower_components/package/version.txt')).to.contain('1.0.0');
 
-             tempDir.prepare({
+            tempDir.prepare({
                 'bower.json': {
                     name: 'test',
                     dependencies: {
@@ -325,7 +325,7 @@ describe('bower update', function () {
         });
     });
 
-    it('runs preinstall hook when updating a package', function () {
+    it('runs preinstall hook when updating a package', function() {
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
@@ -357,7 +357,7 @@ describe('bower update', function () {
         });
     });
 
-    it('runs postinstall hook when updating a package', function () {
+    it('runs postinstall hook when updating a package', function() {
         tempDir.prepare({
             'bower.json': {
                 name: 'test',
@@ -368,7 +368,7 @@ describe('bower update', function () {
         });
 
         return install().then(function() {
-             tempDir.prepare({
+            tempDir.prepare({
                 'bower.json': {
                     name: 'test',
                     dependencies: {
