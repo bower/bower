@@ -12,6 +12,11 @@
             "description": "Force latest version on conflict"
         },
         {
+            "shorthand":   "-f",
+            "flag":        "--force",
+            "description": "If dependencies are installed, it reinstalls all installed components. It also forces installation even when there are non-bower directories with the same name in the components directory. Also bypasses the cache and overwrites to the cache anyway."
+        },
+        {
             "shorthand":   "-h",
             "flag":        "--help",
             "description": "Show this help message"
