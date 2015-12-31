@@ -54,6 +54,16 @@ after(function () {
     rimraf.sync(tmpLocation);
 });
 
+afterEach(function () {
+    glob.sync('**/bower.lock', {
+        cwd: tmpLocation,
+        dot: true
+    }).map(function (removePath) {
+        var fullPath = path.join(tmpLocation, removePath);
+        rimraf.sync(fullPath);
+    });
+});
+
 exports.TempDir = (function() {
     function TempDir (defaults) {
         this.path = path.join(tmpLocation, uuid.v4());
@@ -89,9 +99,26 @@ exports.TempDir = (function() {
         return this;
     };
 
-    TempDir.prototype.prepare = function (files) {
-        rimraf.sync(this.path);
-        mkdirp.sync(this.path);
+    TempDir.prototype.delete = function (files) {
+        var that = this;
+
+        if (files) {
+            if (typeof files === 'string') {
+                files = [files];
+            }
+            files.forEach(function(file) {
+                var fullPath = path.join(that.path, file);
+                rimraf.sync(fullPath);
+            });
+        }
+        return this;
+    };
+
+    TempDir.prototype.prepare = function (files, keepFiles) {
+        if (!keepFiles) {
+            rimraf.sync(this.path);
+            mkdirp.sync(this.path);
+        }
         this.create(files);
 
         return this;
