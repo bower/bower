@@ -3,4 +3,6 @@ describe('util', function () {
     require('./analytics');
     require('./download');
     require('./isPathAbsolute');
+    require('./relativeToBaseDir');
+    require('./createLink');
 });
