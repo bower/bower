@@ -1,3 +1,4 @@
+var path = require('path');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
@@ -65,6 +66,55 @@ describe('bower link', function () {
             ]);
         }).then(function() {
             expect(otherPackage.read('bower_components/package/index.js'))
+            .to.be('Hello World!');
+        });
+    });
+
+    it('creates inter-link to relative config.directory', function () {
+        return helpers.run(link, [undefined, undefined,
+            {
+                cwd: mainPackage.path,
+                storage: {
+                    links: linksDir.path
+                }
+            }
+        ]).then(function () {
+            return helpers.run(link, ['package', undefined,
+                {
+                    cwd: otherPackage.path,
+                    directory: 'valid-extend',
+                    storage: {
+                        links: linksDir.path
+                    }
+                }
+            ]);
+        }).then(function() {
+            expect(otherPackage.read('valid-extend/package/index.js'))
+            .to.be('Hello World!');
+        });
+    });
+
+
+    it('creates inter-link to absolute config.directory', function () {
+        return helpers.run(link, [undefined, undefined,
+            {
+                cwd: mainPackage.path,
+                storage: {
+                    links: linksDir.path
+                }
+            }
+        ]).then(function () {
+            return helpers.run(link, ['package', undefined,
+                {
+                    cwd: path.join(otherPackage.path, 'invalid'),
+                    directory: path.join(otherPackage.path, 'valid-override'),
+                    storage: {
+                        links: linksDir.path
+                    }
+                }
+            ]);
+        }).then(function() {
+            expect(otherPackage.read('valid-override/package/index.js'))
             .to.be('Hello World!');
         });
     });

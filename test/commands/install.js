@@ -2,6 +2,7 @@ var expect = require('expect.js');
 var path = require('path');
 var helpers = require('../helpers');
 var nock = require('nock');
+var rimraf = require('rimraf');
 var fs = require('../../lib/util/fs');
 var tar = require('tar-fs');
 var destroy = require('destroy');
@@ -151,6 +152,37 @@ describe('bower install', function() {
 
         return helpers.run(install).then(function() {
             expect(tempDir.read('assets/package/foo')).to.be('bar');
+        });
+    });
+
+    it('.bowerrc directory can be an absolute path', function() {
+        mainPackage.prepare({
+            foo: 'bar'
+        });
+
+        tempDir.prepare({
+            '.bowerrc': {
+                directory: '/tmp/bower-absolute-destination-directory'
+            },
+            'bower.json': {
+                name: 'test',
+                dependencies: {
+                    package: mainPackage.path
+                }
+            }
+        });
+
+        return helpers.run(install).then(function() {
+            expect(require('fs').readFileSync('/tmp/bower-absolute-destination-directory/package/foo', 'utf8').toString()).to.be('bar');
+            var deferred = Q.defer();
+            rimraf('/tmp/bower-absolute-destination-directory', function(err) {
+                if(err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve();
+                }
+            });
+            return deferred;
         });
     });
 
