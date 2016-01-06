@@ -15,6 +15,7 @@ var defaultConfig = require('../../../lib/config');
 describe('GitResolver', function () {
     var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var originalrefs = GitResolver.refs;
+    var originalEnv = process.env;
     var logger;
 
     before(function () {
@@ -23,6 +24,7 @@ describe('GitResolver', function () {
 
     afterEach(function () {
         logger.removeAllListeners();
+        process.env = originalEnv;
     });
 
     function clearResolverRuntimeCache() {
@@ -41,6 +43,18 @@ describe('GitResolver', function () {
     describe('misc', function () {
         it.skip('should error out if git is not installed');
         it.skip('should setup git template dir to an empty folder');
+        it('should set process.env.GIT_SSL_NO_VERIFY when strictSSL is false', function () {
+            var resolver;
+            var decEndpoint = { source: 'foo'};
+
+            expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
+
+            resolver = new GitResolver(decEndpoint, defaultConfig(), logger);
+            expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
+
+            resolver = new GitResolver(decEndpoint, defaultConfig({strictSsl: false}), logger);
+            expect(process.env).to.have.property('GIT_SSL_NO_VERIFY','true');
+        });
     });
 
     describe('.hasNew', function () {
