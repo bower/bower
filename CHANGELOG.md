@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.2 - 2015-12-31
+
+- Lock "fs-write-stream-atomic" to 1.0.5
+
 ## 1.7.1 - 2015-12-11
 
 - Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
