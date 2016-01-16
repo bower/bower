@@ -63,6 +63,7 @@
     "which": "^1.0.8"
   },
   "devDependencies": {
+    "arr-diff": "^2.0.0",
     "chai": "^1.10.0",
     "coveralls": "^2.11.2",
     "expect.js": "^0.3.1",
@@ -73,6 +74,7 @@
     "grunt-exec": "^0.4.6",
     "grunt-jscs": "^2.3.0",
     "grunt-simple-mocha": "^0.4.0",
+    "in-publish": "^2.0.0",
     "istanbul": "^0.3.5",
     "load-grunt-tasks": "^2.0.0",
     "mocha": "^2.1.0",
@@ -122,6 +124,7 @@
     "retry",
     "rimraf",
     "semver",
+    "semver-utils",
     "shell-quote",
     "stringify-object",
     "tar-fs",
@@ -133,7 +136,8 @@
   "scripts": {
     "test": "grunt test",
     "ci": "grunt travis",
-    "coveralls": "coveralls"
+    "coveralls": "coveralls",
+    "prepublish": "in-publish && grunt prepublish || not-in-publish"
   },
   "bin": "bin/bower",
   "files": [
