@@ -66,7 +66,8 @@ module.exports = function (grunt) {
                 command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
             coveralls: {
-                command: 'npm run coveralls < test/reports/lcov.info'
+                command: 'npm run coveralls < test/reports/lcov.info',
+                exitCodes: [0,1,2,3] // Alow for failure for coverage report
             }
         },
         watch: {
