@@ -50,10 +50,16 @@ describe('GitResolver', function () {
             expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
 
             resolver = new GitResolver(decEndpoint, defaultConfig(), logger);
-            expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
+            expect(process.env).to.have.property('GIT_SSL_NO_VERIFY','false');
+            delete process.env.GIT_SSL_NO_VERIFY;
 
             resolver = new GitResolver(decEndpoint, defaultConfig({strictSsl: false}), logger);
             expect(process.env).to.have.property('GIT_SSL_NO_VERIFY','true');
+            delete process.env.GIT_SSL_NO_VERIFY;
+
+            resolver = new GitResolver(decEndpoint, defaultConfig({strictSsl: true}), logger);
+            expect(process.env).to.have.property('GIT_SSL_NO_VERIFY','false');
+            delete process.env.GIT_SSL_NO_VERIFY;
         });
     });
 
