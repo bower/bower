@@ -262,6 +262,8 @@ describe('bower update', function () {
     });
 
     it('does not install ignored dependencies when updating a package', function () {
+        this.timeout(15000);
+
         var package3 = new helpers.TempDir({
             'bower.json': {
                 name: 'package3'
