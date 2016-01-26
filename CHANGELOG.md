@@ -1,16 +1,27 @@
 # Changelog
 
-## 1.7.3 - 2015-01-20
+## 1.7.5 - 2015-01-26
 
-- Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150)) 
+- Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150))
 - Default to ^ operator on `bower install --save` ([#2145](https://github.com/bower/bower/pull/2145))
 - Support absolute path in .bowerrc directory option ([#2130](https://github.com/bower/bower/pull/2130))
 - Display user's name upon `bower login` command ([#2133](https://github.com/bower/bower/pull/2133))
 - Decompress gzip files ([#2092](https://github.com/bower/bower/pull/2092))
 - Prevent name clashes in package extraction ([#2102](https://github.com/bower/bower/pull/2102))
-- Update request to 2.67.0
-- Update fs-write-stream-atomic to 1.0.8
+- When strictSsl is false, set GIT_SSL_NO_VERIFY=true ([#2129](https://github.com/bower/bower/issues/2129))
+- Distribute bower with npm@3 for better Windows support ([#2146](https://github.com/bower/bower/issues/2146))
+- Update request to 2.67.0 and fs-write-stream-atomic to 1.0.8
 - Documentation improvements
+
+## 1.7.4 - 2015-01-21
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
+
+## 1.7.3 - 2015-01-20
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
 
 ## 1.7.2 - 2015-12-31
 
