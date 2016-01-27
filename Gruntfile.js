@@ -144,14 +144,16 @@ module.exports = function (grunt) {
         );
 
         var json = require('./package');
-        json.bin = 'lib/' + json.bin;
-        json.main = 'lib/' + json.main;
         delete json.dependencies;
         delete json.devDependencies;
         delete json.scripts;
         delete json.files;
 
         fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(json, null, '  '));
+        fs.writeFileSync(path.resolve(dir, 'lib/index.js'), 'module.exports = require(\'./lib\');\n');
+        fs.mkdirSync(path.resolve(dir, 'bin'));
+        fs.writeFileSync(path.resolve(dir, 'bin/bower'), '#!/usr/bin/env node\nrequire(\'../lib/bin/bower\');\n');
+        fs.chmodSync(path.resolve(dir, 'bin/bower'), '0755');
 
         // So node_modules are not ignored
         fs.unlinkSync(path.resolve(pkgDir, 'package.json'));
@@ -224,7 +226,7 @@ module.exports = function (grunt) {
             grunt.log.writeln('\nAlso, please remember to test published Bower one more time!');
             grunt.log.writeln('\nPublishing Bower...');
 
-            childProcess.execSync('npm publish', { cwd: dir, stdio: [0, 1, 2] });
+            childProcess.execSync('npm publish --tag beta', { cwd: dir, stdio: [0, 1, 2] });
 
             done();
         });

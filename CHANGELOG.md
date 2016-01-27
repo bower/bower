@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.6 - 2015-01-27
+
+- Revert location of "bin/bower" as developers are using it directly ([#2157](https://github.com/bower/bower/issues/2157))
+  Note: Correctly, you should use an alias created in `npm bin --global`.
+
 ## 1.7.5 - 2015-01-26
 
 - Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150))
