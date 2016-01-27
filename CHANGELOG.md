@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.7.7 - 2015-01-27
+
+Revert locations of all files while still packaging `node_modules`.
+
+It's because people are depending on internals of bower, like
+`bower/lib/renderers/StandardRenderer`. We want to preserve this
+implicit contract, but we discourage it. The only official way
+to use bower programmatically is through `require('bower')`.
+
 ## 1.7.6 - 2015-01-27
 
 - Revert location of "bin/bower" as developers are using it directly ([#2157](https://github.com/bower/bower/issues/2157))
