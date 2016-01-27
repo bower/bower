@@ -90,6 +90,7 @@
     "test": "grunt test",
     "ci": "grunt travis",
     "coveralls": "coveralls",
-    "prepublish": "in-publish && echo 'You need to use \"grunt publush\" to publish bower' && false || not-in-publish"
-  }
+    "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish"
+  },
+  "files": [ "bin", "lib" ]
 }

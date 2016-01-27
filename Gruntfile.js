@@ -118,52 +118,43 @@ module.exports = function (grunt) {
             process.exit(1);
         }
 
-        grunt.log.writeln('Reinstalling dependencies...');
-        childProcess.execSync('rm -rf node_modules && npm install', { stdio: [0, 1, 2] });
+        if (process.env.SKIP_TESTS !== '1') {
+            grunt.log.writeln('Reinstalling dependencies...');
+            childProcess.execSync('rm -rf node_modules && npm install', { stdio: [0, 1, 2] });
 
-        grunt.log.writeln('Running test suite...');
-        childProcess.execSync('grunt test', { stdio: [0, 1, 2] });
+            grunt.log.writeln('Running test suite...');
+            childProcess.execSync('grunt test', { stdio: [0, 1, 2] });
+        }
 
         var dir = tmp.dirSync().name;
-        var pkgDir = path.resolve(dir, 'lib');
 
-        wrench.copyDirSyncRecursive(__dirname, pkgDir, {
+        wrench.copyDirSyncRecursive(__dirname, dir, {
             forceDelete: true,
             include: function (path) {
                 return !path.match(/node_modules|\.git|test/);
             }
         });
 
-        grunt.log.writeln('Installing dependencies');
-        childProcess.execSync('npm install --production --silent', { cwd: pkgDir, stdio: [0, 1, 2] });
-
-        fs.createReadStream(
-            path.resolve(__dirname, 'README.md')
-        ).pipe(
-            fs.createWriteStream(path.resolve(dir, 'README.md'))
-        );
+        grunt.log.writeln('Installing production dependencies...');
+        childProcess.execSync('npm install --production --silent', { cwd: dir, stdio: [0, 1, 2] });
 
         var json = require('./package');
         delete json.dependencies;
         delete json.devDependencies;
         delete json.scripts;
-        delete json.files;
 
-        fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(json, null, '  '));
-        fs.writeFileSync(path.resolve(dir, 'lib/index.js'), 'module.exports = require(\'./lib\');\n');
-        fs.mkdirSync(path.resolve(dir, 'bin'));
-        fs.writeFileSync(path.resolve(dir, 'bin/bower'), '#!/usr/bin/env node\nrequire(\'../lib/bin/bower\');\n');
-        fs.chmodSync(path.resolve(dir, 'bin/bower'), '0755');
+        fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(json, null, '  ') + '\n');
 
-        // So node_modules are not ignored
-        fs.unlinkSync(path.resolve(pkgDir, 'package.json'));
 
-        childProcess.execSync('npm install --production --silent', { cwd: pkgDir, stdio: [0, 1, 2] });
+        grunt.log.writeln('Moving node_modules to lib directory...');
+
+        wrench.copyDirSyncRecursive(path.resolve(dir, 'node_modules'), path.resolve(dir, 'lib', 'node_modules'));
+        wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
 
         grunt.log.writeln('Testing bower on sample project...');
 
         childProcess.execSync(
-            'cd test/sample && rm -rf bower_components && ' + pkgDir + '/bin/bower install --force', { stdio: [0, 1, 2] }
+            'cd test/sample && rm -rf bower_components && ' + dir + '/bin/bower install --force', { stdio: [0, 1, 2] }
         );
 
         var expectedPackages = (
@@ -185,6 +176,9 @@ module.exports = function (grunt) {
 
             process.exit(1);
         }
+
+        grunt.log.writeln('\nBower production bundle installed in:');
+        grunt.log.writeln(dir + '\n');
 
         var questions = [
             {
