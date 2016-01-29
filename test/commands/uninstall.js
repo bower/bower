@@ -54,6 +54,17 @@ describe('bower uninstall', function () {
         });
     });
 
+    it('removes dependency from bower.json if save config setting is true', function () {
+        var configWithSave = {
+            cwd: tempDir.path,
+            interactive: true,
+            save: true
+        };
+        return helpers.run(uninstall, [['underscore'], {}, configWithSave]).then(function () {
+            expect(bowerJson().dependencies).to.eql({});
+        });
+    });
+
     it('removes dependency from relative config.directory', function () {
         var targetPath = path.resolve(tempDir.path, 'other_directory/underscore');
         mkdirp.sync(targetPath);
