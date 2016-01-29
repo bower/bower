@@ -143,7 +143,10 @@ describe('FsResolver', function () {
             })
             .then(function () {
                 // Test with extension
-                var resolver = create(path.join(testPackage, 'README.md'));
+                var resolver = create({
+                    source: path.join(testPackage, 'README.md'),
+                    name: 'dummy'
+                });
                 return resolver.resolve();
             })
             .then(function (dir) {

@@ -15,7 +15,7 @@ describe('bower link', function () {
 
     var otherPackage = new helpers.TempDir({
         'bower.json': {
-            name: 'package2',
+            name: 'package2z',
         },
         'index.js': 'Welcome World!'
     });

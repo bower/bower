@@ -56,7 +56,11 @@ after(function () {
 
 exports.TempDir = (function() {
     function TempDir (defaults) {
-        this.path = path.join(tmpLocation, uuid.v4());
+        // Add "z"s because the directory name may be used as
+        // a Bower package name, and Bower package names are not allowed
+        // to start or end with digits.
+        var directory = 'z' + uuid.v4() + 'z';
+        this.path = path.join(tmpLocation, directory);
         this.defaults = defaults;
     }
 

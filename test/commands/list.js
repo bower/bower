@@ -147,7 +147,7 @@ describe('bower list', function () {
         var mainPackage = new helpers.TempDir({
             'bower.json': {
                 name: 'package',
-                main: ['test.txt', 'test2.txt']
+                main: ['test.txt', 'test2.md']
             }
         }).prepare();
         mainPackage.prepare();
@@ -158,7 +158,7 @@ describe('bower list', function () {
                 expect(results.package).to.be.an(Object);
                 expect(results.package).to.eql([
                     'bower_components/package/test.txt',
-                    'bower_components/package/test2.txt'
+                    'bower_components/package/test2.md'
                 ]);
             });
         });
