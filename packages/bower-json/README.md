@@ -8,12 +8,12 @@ Install via [npm](https://www.npmjs.org/package/bower-json): `npm install --save
 
 #### .read(file, options, callback)
 
-Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.   
-If the passed `file` does not exist, the callback is called with `error.code` equal to `ENOENT`.   
-If the passed `file` contents are not valid JSON, the callback is called with `error.code` equal to `EMALFORMED`.   
+Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.
+If the passed `file` does not exist, the callback is called with `error.code` equal to `ENOENT`.
+If the passed `file` contents are not valid JSON, the callback is called with `error.code` equal to `EMALFORMED`.
 If the `json` does not comply with the `bower.json` spec, the callback is called with `error.code` equal to `EINVALID`.
 
-If `file` is a directory, `find()` will be used to search for the json file.   
+If `file` is a directory, `find()` will be used to search for the json file.
 The `options` argument is optional and can be omitted. These options will be passed to `parse` method.
 
 
@@ -35,7 +35,7 @@ bowerJson.read('/path/to/bower.json', function (err, json) {
 
 #### .parse(json, options)
 
-Parses an object. Useful when you want to apply normalisation and validation directly to an object.   
+Parses an object. Useful when you want to apply normalisation and validation directly to an object.
 If the `json` does not comply with the `bower.json` spec, an error is thrown with `error.code` equal to `EINVALID`.
 
 The `options` arguments is optional and can be omitted. Available options:
@@ -61,18 +61,39 @@ try {
 }
 ```
 
+#### .getIssues(json) - DEPRECATED
 
-#### .validate(json)
+Validates the passed `json` object.
 
-Validates the passed `json` object.   
-Throws an error with `error.code` equal to `EINVALID` if it does not comply with the spec.
-
+Returns an object with errors and warnings of this bower.json contents.
 
 ```js
 var bowerJson = require('bower-json');
 
 var json = {
-    name: 'my-package',
+    name: 'myPackage',
+    version: '0.0.1',
+    main: {}
+};
+
+var issues = bowerJson.getIssues(json);
+
+expect(issues).toEqual({
+  errors: ['The "main" field has to be either an Array or a String'],
+  warnings: ['The "name" must be lowercase']
+});
+
+#### .validate(json)
+
+Validates the passed `json` object.
+
+Throws an error with `error.code` equal to `EINVALID` if it does not comply with the spec.
+
+```js
+var bowerJson = require('bower-json');
+
+var json = {
+    name: 'myPackage',
     version: '0.0.1'
 };
 
@@ -83,7 +104,6 @@ try {
     console.error(err.message);
 }
 ```
-
 
 #### .normalize(json)
 
@@ -103,8 +123,8 @@ json.main // ['foo.js', 'bar.js']
 
 #### .find(folder, callback)
 
-Finds the `json` filename inside a folder.   
-Checks if a `bower.json` exists, falling back to `component.json` (deprecated) and `.bower.json`.   
+Finds the `json` filename inside a folder.
+Checks if a `bower.json` exists, falling back to `component.json` (deprecated) and `.bower.json`.
 If no file was found, the callback is called with a `error.code` of `ENOENT`.
 
 ```js

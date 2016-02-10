@@ -123,29 +123,38 @@ function parse(json, options) {
     return json;
 }
 
-function validate(json) {
+// This function implements:
+//
+// https://github.com/bower/bower.json-spec
+function getIssues(json) {
+    // For things that shouldn't happen
+    var errors = [];
+
+    // For things that happen but they shoudn't
+    var warnings = [];
+
     if (!json.name) {
-        throw createError('No name property set', 'EINVALID');
-    }
+        errors.push('No "name" property set');
+    } else {
+        if (json.name.length > 50) {
+            warnings.push('The "name" is too long, the limit is 50 characters');
+        }
 
-    if (json.name.length > 50) {
-        throw createError('The name is too long. 50 characters should be more than enough', 'EINVALID');
-    }
+        if (/[A-Z]/.test(json.name)) {
+            warnings.push('The "name" must be lowercase');
+        }
 
-    if (/[A-Z]/.test(json.name)) {
-        throw createError('The name contains upper case letters', 'EINVALID');
-    }
+        if (/^[\.-]/.test(json.name)) {
+            warnings.push('The "name" cannot start with dot or dash');
+        }
 
-    if (!/^[a-z]/.test(json.name)) {
-        throw createError('The name has to start with a lower case character from a to z', 'EINVALID');
-    }
-
-    if (!/[a-z]$/.test(json.name)) {
-        throw createError('The name has to end with a lower case character from a to z', 'EINVALID');
+        if (/[\.-]$/.test(json.name)) {
+            warnings.push('The "name" cannot end with dot or dash');
+        }
     }
 
     if (json.description && json.description.length > 140) {
-        throw createError('The description is too long. 140 characters should be more than enough', 'EINVALID');
+        warnings.push('The "description" is too long, the limit is 140 characters');
     }
 
     if (json.main !== undefined) {
@@ -154,50 +163,59 @@ function validate(json) {
             main = [main];
         }
         if (!(main instanceof Array)) {
-            throw createError('The "main" field has to be either an Array or a String', 'EINVALID');
-        }
-        var ext2files = {};
-        main.forEach(function (filename) {
-            if (typeof filename !== 'string') {
-                throw createError('The "main" Array has to contain only Strings', 'EINVALID');
-            }
-            if (/[*]/.test(filename)) {
-                throw createError('The "main" field cannot contain globs (example: "*.js")', 'EINVALID');
-            }
-            if (/[.]min[.][^/]+$/.test(filename)) {
-                throw createError('The "main" field cannot contain minified files', 'EINVALID');
-            }
-            if (isAsset(filename)) {
-                throw createError('The "main" field cannot contain font, image, audio, or video files', 'EINVALID');
-            }
-            var ext = path.extname(filename);
-            if (ext.length >= 2) {
-                var files = ext2files[ext];
-                if (!files) {
-                    files = ext2files[ext] = [];
+            errors.push('The "main" field has to be either an Array or a String');
+        } else {
+            var ext2files = {};
+            main.forEach(function (filename) {
+                if (typeof filename !== 'string') {
+                    errors.push('The "main" Array has to contain only Strings');
                 }
-                files.push(filename);
-            }
-        });
-        Object.keys(ext2files).forEach(function (ext) {
-            var files = ext2files[ext];
-            if (files.length > 1) {
-                throw createError('The "main" field has to contain only 1 file per filetype; found multiple ' + ext + ' files: ' + JSON.stringify(files), 'EINVALID');
-            }
-        });
+                if (/[*]/.test(filename)) {
+                    warnings.push('The "main" field cannot contain globs (example: "*.js")');
+                }
+                if (/[.]min[.][^/]+$/.test(filename)) {
+                    warnings.push('The "main" field cannot contain minified files');
+                }
+                if (isAsset(filename)) {
+                    warnings.push('The "main" field cannot contain font, image, audio, or video files');
+                }
+                var ext = path.extname(filename);
+                if (ext.length >= 2) {
+                    var files = ext2files[ext];
+                    if (!files) {
+                        files = ext2files[ext] = [];
+                    }
+                    files.push(filename);
+                }
+            });
+            Object.keys(ext2files).forEach(function (ext) {
+                var files = ext2files[ext];
+                if (files.length > 1) {
+                    warnings.push('The "main" field has to contain only 1 file per filetype; found multiple ' + ext + ' files: ' + JSON.stringify(files));
+                }
+            });
+        }
     }
 
-    // TODO https://github.com/bower/bower.json-spec
+    return {
+        errors: errors,
+        warnings: warnings
+    };
+}
 
-    return json;
+// For backward compatibility, it throws first error
+function validate(json) {
+    var issues = getIssues(json);
+
+    if (issues.errors && issues.errors.length > 0) {
+        throw createError(issues.errors[0], 'EINVALID');
+    }
 }
 
 function normalize(json) {
     if (typeof json.main === 'string') {
         json.main = [json.main];
     }
-
-    // TODO
 
     return json;
 }
@@ -268,6 +286,7 @@ module.exports = read;
 module.exports.read = read;
 module.exports.readSync = readSync;
 module.exports.parse = parse;
+module.exports.getIssues = getIssues;
 module.exports.validate = validate;
 module.exports.normalize = normalize;
 module.exports.find = find;

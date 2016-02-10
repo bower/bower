@@ -270,6 +270,137 @@ describe('.parse', function () {
     });
 });
 
+describe('.getIssues', function () {
+    it('should validate the name length', function () {
+        var json = { name: 'a_123456789_123456789_123456789_123456789_123456789_z' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" is too long, the limit is 50 characters'
+        );
+    });
+
+    it('should validate the name is lowercase', function () {
+        var json = { name: 'gruNt' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" must be lowercase'
+        );
+    });
+
+    it('should validate the name starts with lowercase', function () {
+        var json = { name: '-runt' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" cannot start with dot or dash'
+        );
+    });
+
+    it('should validate the name starts with lowercase', function () {
+        var json = { name: '.grunt' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" cannot start with dot or dash'
+        );
+    });
+
+    it('should validate the name ends with lowercase', function () {
+        var json = { name: 'grun-' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" cannot end with dot or dash'
+        );
+    });
+
+    it('should validate the name ends with lowercase', function () {
+        var json = { name: 'grun.' };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "name" cannot end with dot or dash'
+        );
+    });
+
+    it('should validate the name is valid', function () {
+        var json = { name: 'gru.n-t' };
+
+        expect(bowerJson.getIssues(json).warnings).to.eql([]);
+    });
+
+    it('should validate the description length', function () {
+        var json = {
+            name: 'foo',
+            description: _s.repeat('æ', 141)
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "description" is too long, the limit is 140 characters'
+        );
+    });
+
+    it('should validate the description is valid', function () {
+        var json = {
+            name: 'foo',
+            description: _s.repeat('æ', 140)
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.eql([]);
+    });
+
+    it('should validate that main does not contain globs', function () {
+        var json = {
+            name: 'foo',
+            main: ['js/*.js']
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "main" field cannot contain globs (example: "*.js")'
+        );
+    });
+
+    it('should validate that main does not contain minified files', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.min.css']
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "main" field cannot contain minified files'
+        );
+    });
+
+    it('should validate that main does not contain fonts', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.woff']
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "main" field cannot contain font, image, audio, or video files'
+        );
+    });
+
+    it('should validate that main does not contain images', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.png']
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "main" field cannot contain font, image, audio, or video files'
+        );
+    });
+
+    it('should validate that main does not contain multiple files of the same filetype', function () {
+        var json = {
+            name: 'foo',
+            main: ['foo.js', 'bar.js']
+        };
+
+        expect(bowerJson.getIssues(json).warnings).to.contain(
+            'The "main" field has to contain only 1 file per filetype; found multiple .js files: ["foo.js","bar.js"]'
+        );
+    });
+});
+
 describe('.validate', function () {
     it('should validate the name property', function () {
         expect(function () {
@@ -277,66 +408,6 @@ describe('.validate', function () {
         }).to.throwException(/name/);
     });
 
-    it('should validate the name length', function () {
-        var json = { name: 'a_123456789_123456789_123456789_123456789_123456789_z' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name is lowercase', function () {
-        var json = { name: 'gruNt' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name starts with lowercase', function () {
-        var json = { name: 'Grunt' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name starts with lowercase', function () {
-        var json = { name: '.grunt' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name ends with lowercase', function () {
-        var json = { name: 'grunT' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name ends with lowercase', function () {
-        var json = { name: 'grun.' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the name is valid', function () {
-        var json = { name: 'gru.n-t' };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.not.throwException();
-    });
-    it('should validate the description length', function () {
-        var json = {
-            name: 'foo',
-            description: _s.repeat('æ', 141)
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate the description is valid', function () {
-        var json = {
-            name: 'foo',
-            description: _s.repeat('æ', 140)
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.not.throwException();
-    });
     it('should validate the type of main', function () {
         var json = {
             name: 'foo',
@@ -350,51 +421,6 @@ describe('.validate', function () {
         var json = {
             name: 'foo',
             main: [{}]
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate that main does not contain globs', function () {
-        var json = {
-            name: 'foo',
-            main: ['js/*.js']
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate that main does not contain minified files', function () {
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-        var json = {
-            name: 'foo',
-            main: ['foo.min.css']
-        };
-    });
-    it('should validate that main does not contain fonts', function () {
-        var json = {
-            name: 'foo',
-            main: ['foo.woff']
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate that main does not contain images', function () {
-        var json = {
-            name: 'foo',
-            main: ['foo.png']
-        };
-        expect(function () {
-            bowerJson.validate(json);
-        }).to.throwException();
-    });
-    it('should validate that main does not contain multiple files of the same filetype', function () {
-        var json = {
-            name: 'foo',
-            main: ['foo.js', 'bar.js']
         };
         expect(function () {
             bowerJson.validate(json);
