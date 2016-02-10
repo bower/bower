@@ -456,7 +456,7 @@ describe('packages from bower registry', function () {
             }
 
             expect(body).to.be.an('array');
-            expect(body).to.not.be.empty;
+            expect(body).to.not.be.empty();
             packageList = body;
 
             done();
