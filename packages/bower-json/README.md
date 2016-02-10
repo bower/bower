@@ -7,6 +7,7 @@ Install via [npm](https://www.npmjs.org/package/bower-json): `npm install --save
 ## Usage
 
 #### .read(file, options, callback)
+#### .readSync(file, options)
 
 Reads `file` and applies normalisation, defaults and validation according to the `bower.json` spec.
 If the passed `file` does not exist, the callback is called with `error.code` equal to `ENOENT`.
@@ -122,6 +123,7 @@ json.main // ['foo.js', 'bar.js']
 
 
 #### .find(folder, callback)
+#### .findSync(folder)
 
 Finds the `json` filename inside a folder.
 Checks if a `bower.json` exists, falling back to `component.json` (deprecated) and `.bower.json`.
