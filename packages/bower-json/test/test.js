@@ -442,7 +442,7 @@ describe('packages from bower registry', function () {
 
     var packageList,
         packageListUrl = 'https://bower-component-list.herokuapp.com/';
-        
+
     this.timeout(60000);
 
     it('can be downloaded from online source ' + packageListUrl, function(done) {
@@ -450,7 +450,7 @@ describe('packages from bower registry', function () {
             url: packageListUrl,
             json: true
         }, function(error, response, body) {
-            
+
             if(error) {
                 throw error;
             }
@@ -471,11 +471,6 @@ describe('packages from bower registry', function () {
         var invalidPackageCount = 0;
 
         packageList.forEach(function(package) {
-
-            if(package.name.indexOf('10digit')===0) {
-                return;
-            }
-
             try {
                 bowerJson.validate(package);
             } catch(e) {
@@ -488,6 +483,7 @@ describe('packages from bower registry', function () {
         if(invalidPackageCount) {
             throw new Error(invalidPackageCount + '/' + packageList.length + ' package names do not validate');
         }
+
         done();
 
     });
