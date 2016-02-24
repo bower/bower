@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.7 - 2015-01-27
+## 1.7.7 - 2016-01-27
 
 Revert locations of all files while still packaging `node_modules`.
 
@@ -9,12 +9,12 @@ It's because people are depending on internals of bower, like
 implicit contract, but we discourage it. The only official way
 to use bower programmatically is through `require('bower')`.
 
-## 1.7.6 - 2015-01-27
+## 1.7.6 - 2016-01-27
 
 - Revert location of "bin/bower" as developers are using it directly ([#2157](https://github.com/bower/bower/issues/2157))
   Note: Correctly, you should use an alias created in `npm bin --global`.
 
-## 1.7.5 - 2015-01-26
+## 1.7.5 - 2016-01-26
 
 - Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150))
 - Default to ^ operator on `bower install --save` ([#2145](https://github.com/bower/bower/pull/2145))
@@ -27,12 +27,12 @@ to use bower programmatically is through `require('bower')`.
 - Update request to 2.67.0 and fs-write-stream-atomic to 1.0.8
 - Documentation improvements
 
-## 1.7.4 - 2015-01-21
+## 1.7.4 - 2016-01-21
 
 Unpublished because of issue with npm distribution:
 https://github.com/npm/npm/issues/11227
 
-## 1.7.3 - 2015-01-20
+## 1.7.3 - 2016-01-20
 
 Unpublished because of issue with npm distribution:
 https://github.com/npm/npm/issues/11227
