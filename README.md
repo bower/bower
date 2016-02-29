@@ -121,6 +121,6 @@ git config --global core.autocrlf input
 
 ## License
 
-Copyright (c) 2015 Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
+Copyright (c) 2016 Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
 
 Licensed under the MIT License
