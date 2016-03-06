@@ -12,7 +12,7 @@ Options:
 
 {{#condense}}
 {{#each options}}
-    {{#yellow}}{{#rpad length="23"}}{{#if shorthand}}{{shorthand}}, {{/if}}{{flag}}{{/rpad}}{{/yellow}} {{description}}
+    {{#yellow}}{{#rpad minLength="23"}}{{#if shorthand}}{{shorthand}}, {{/if}}{{flag}}{{/rpad}}{{/yellow}} {{description}}
 {{/each}}
 {{/condense}}
 
@@ -21,4 +21,3 @@ Options:
 Description:
 
     {{#indent level="4"}}{{description}}{{/indent}}
-

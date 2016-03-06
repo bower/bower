@@ -842,7 +842,6 @@ describe('StandardRenderer', function () {
 
                     Uninstalls a package locally from your bower_components directory
 
-
             */}));
         });
     });
