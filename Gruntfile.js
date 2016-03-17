@@ -89,6 +89,7 @@ module.exports = function (grunt) {
         var npmVersion = JSON.parse(childProcess.execSync('npm version --json').toString()).npm.split('.');
         var npmMajor = parseInt(npmVersion[0], 10);
         var npmMinor = parseInt(npmVersion[1], 10);
+        var jsonPackage = require("./package");
 
         if (npmMajor !== 3 || npmMinor < 5) {
             grunt.log.writeln('You need to use at least npm@3.5 to publish bower.');
@@ -97,7 +98,7 @@ module.exports = function (grunt) {
             process.exit(1);
         }
 
-        var version = require('./package').version;
+        var version = jsonPackage.version;
         var changelog = fs.readFileSync('./CHANGELOG.md');
 
         if (changelog.indexOf('## ' + version) === -1) {
@@ -138,10 +139,9 @@ module.exports = function (grunt) {
         grunt.log.writeln('Installing production dependencies...');
         childProcess.execSync('npm install --production --silent', { cwd: dir, stdio: [0, 1, 2] });
 
-        var json = require('./package');
-        delete json.dependencies;
-        delete json.devDependencies;
-        delete json.scripts;
+        delete jsonPackage.dependencies;
+        delete jsonPackage.devDependencies;
+        delete jsonPackage.scripts;
 
         fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(json, null, '  ') + '\n');
 
@@ -202,7 +202,7 @@ module.exports = function (grunt) {
             {
                 type: 'confirm',
                 name: 'publish',
-                message: 'Are you SURE you want to publish ' + require('./package').name + '@' + require('./package').version + '?',
+                message: 'Are you SURE you want to publish ' + jsonPackage.name + '@' + jsonPackage.version + '?',
                 default: false
             }
         ];
