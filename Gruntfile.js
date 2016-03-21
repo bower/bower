@@ -144,7 +144,7 @@ module.exports = function (grunt) {
         delete jsonPackage.devDependencies;
         delete jsonPackage.scripts;
 
-        fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(json, null, '  ') + '\n');
+        fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(jsonPackage, null, '  ') + '\n');
 
 
         grunt.log.writeln('Moving node_modules to lib directory...');
