@@ -1,5 +1,73 @@
 # Changelog
 
+## 1.7.7 - 2016-01-27
+
+Revert locations of all files while still packaging `node_modules`.
+
+It's because people are depending on internals of bower, like
+`bower/lib/renderers/StandardRenderer`. We want to preserve this
+implicit contract, but we discourage it. The only official way
+to use bower programmatically is through `require('bower')`.
+
+## 1.7.6 - 2016-01-27
+
+- Revert location of "bin/bower" as developers are using it directly ([#2157](https://github.com/bower/bower/issues/2157))
+  Note: Correctly, you should use an alias created in `npm bin --global`.
+
+## 1.7.5 - 2016-01-26
+
+- Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150))
+- Default to ^ operator on `bower install --save` ([#2145](https://github.com/bower/bower/pull/2145))
+- Support absolute path in .bowerrc directory option ([#2130](https://github.com/bower/bower/pull/2130))
+- Display user's name upon `bower login` command ([#2133](https://github.com/bower/bower/pull/2133))
+- Decompress gzip files ([#2092](https://github.com/bower/bower/pull/2092))
+- Prevent name clashes in package extraction ([#2102](https://github.com/bower/bower/pull/2102))
+- When strictSsl is false, set GIT_SSL_NO_VERIFY=true ([#2129](https://github.com/bower/bower/issues/2129))
+- Distribute bower with npm@3 for better Windows support ([#2146](https://github.com/bower/bower/issues/2146))
+- Update request to 2.67.0 and fs-write-stream-atomic to 1.0.8
+- Documentation improvements
+
+## 1.7.4 - 2016-01-21
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
+
+## 1.7.3 - 2016-01-20
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
+
+## 1.7.2 - 2015-12-31
+
+- Lock "fs-write-stream-atomic" to 1.0.5
+
+## 1.7.1 - 2015-12-11
+
+- Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
+- Fix backward-compatibility of `bower search --json` ([#2066](https://github.com/bower/bower/issues/2066))
+- Ignore prerelease versions from `bower info` output
+- Update update-notifier to 0.6.0
+- Better formatting of help messages (https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e)
+- Add help menu for update `--save` and `update --save-dev` (https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0)
+
+## 1.7.0 - 2015-12-07
+
+- Add `bower update --save` functionality ([#2035](https://github.com/bower/bower/issues/2035))
+- `bower search` shows help message when no package name is specified ([#2066](https://github.com/bower/bower/issues/2066))
+- Update only those packages that are explicitly requested by the user. Related Issues
+  - [#256](https://github.com/bower/bower/issues/256)
+  - [#924](https://github.com/bower/bower/issues/924)
+  - [#1770](https://github.com/bower/bower/issues/1770)
+- Allow for @ in username for SVN on windows ([#1650](https://github.com/bower/bower/issues/1650))
+- Update bower config
+  - Loads the .bowerrc file from the cwd specified on the command line
+  - Allow the use of environment variables in .bowerrc ([#41](https://github.com/bower/config/issues/41))
+	- Allow for array notation in ENV variables ([#44](https://github.com/bower/config/issues/44))
+
+## 1.6.9 - 2015-12-04
+
+- Change git version of fs-write-stream-atomic back to npm version ([#2079](https://github.com/bower/bower/issues/2079))
+
 ## 1.6.8 - 2015-11-27
 
 - Use fs-write-stream-atomic for downloads

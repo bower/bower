@@ -613,7 +613,11 @@ describe('StandardRenderer', function () {
                 versions: [
                     '1.2.0',
                     '1.2.1',
-                    '1.2.2'
+                    '1.2.2',
+                    '1.2.3+build-1234',
+                    '1.2.8-build.2098+sha.cb9c0f2',
+                    '1.3.0-rc.5',
+                    '1.3.0-beta.18'
                 ]
             });
         }).spread(function(stdout, stderr) {
@@ -627,6 +631,48 @@ describe('StandardRenderer', function () {
                   - 1.2.0
                   - 1.2.1
                   - 1.2.2
+
+                Show 4 additional prereleases with ‘bower info foo --verbose’
+                You can request info for a specific version with 'bower info foo#<version>'
+
+            */}));
+        });
+    });
+
+    it('outputs full info command log with prereleases', function() {
+        return helpers.capture(function() {
+            var renderer = new StandardRenderer('info', { verbose: true });
+            renderer.end({
+                name: 'foo',
+                latest: {
+                    version: '1.2.3'
+                },
+                versions: [
+                    '1.2.0',
+                    '1.2.1',
+                    '1.2.2',
+                    '1.2.3+build-1234',
+                    '1.2.8-build.2098+sha.cb9c0f2',
+                    '1.3.0-rc.5',
+                    '1.3.0-beta.18'
+                ]
+            });
+        }).spread(function(stdout, stderr) {
+            expect(stdout).to.equal(multiline(function() {/*
+
+                {
+                  version: '1.2.3'
+                }
+
+                Available versions:
+                  - 1.2.0
+                  - 1.2.1
+                  - 1.2.2
+                  - 1.2.3+build-1234
+                  - 1.2.8-build.2098+sha.cb9c0f2
+                  - 1.3.0-rc.5
+                  - 1.3.0-beta.18
+
                 You can request info for a specific version with 'bower info foo#<version>'
 
             */}));
@@ -784,6 +830,7 @@ describe('StandardRenderer', function () {
                 Usage:
 
                     bower uninstall <name> [<name> ..] [<options>]
+
                 Options:
 
                     -h, --help              Show this help message

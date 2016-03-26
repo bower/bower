@@ -220,7 +220,7 @@ exports.command = function (command, stubs) {
 };
 
 exports.run = function (command, args) {
-    var logger = command.apply(command, args || []);
+    var logger = command.apply(null, args || []);
 
     // Hack so we can intercept prompring for data
     logger.prompt = function(data) {

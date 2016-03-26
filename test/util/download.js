@@ -22,7 +22,7 @@ describe('download', function () {
             nock('http://bower.io', opts.nockOpts)
         );
 
-        download('http://bower.io/package.tar.gz', destination, opts.downloadOpts)
+        download(opts.sourceUrl || 'http://bower.io/package.tar.gz', opts.destinationPath || destination, opts.downloadOpts)
             .then(function (result) {
                 if (opts.expect) {
                     opts.expect(result);
@@ -172,6 +172,38 @@ describe('download', function () {
                 maxTimeout: 0,
                 minTimeout: 0
             }
+        });
+    });
+
+    describe('gzipped files', function () {
+
+        function testGzip(sourceFilename) {
+            var sourceFile = path.resolve(__dirname, '../assets/' + sourceFilename);
+            var destinationPath = tempDir.getPath(sourceFilename);
+
+            return downloadTest({
+                response: function(nock) {
+                    nock
+                    .get('/' + sourceFilename)
+                    .replyWithFile(200, sourceFile, {
+                        'Content-Encoding' : 'gzip'
+                    });
+                },
+                expect: function() {
+                    expect(fs.readFileSync(destinationPath, 'ascii'))
+                    .to.be('Hello World!\n');
+                },
+                sourceUrl: 'http://bower.io/' + sourceFilename,
+                destinationPath: destinationPath
+            });
+        }
+
+        it('correctly decodes gzipped files without gz extension', function () {
+            return testGzip('test-gz.txt');
+        });
+
+        it('correctly decodes gzipped files with gz extension', function () {
+            return testGzip('test-gz.txt.gz');
         });
     });
 });

@@ -1,0 +1,49 @@
+{
+  "name": "platform",
+  "version": "0.0.1",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "components"
+  ],
+  "dependencies": {
+    "angular": "~1.2.14",
+    "bootstrap": "~3.1.1",
+    "ace-builds": "~1.1.3",
+    "font-awesome": "~4.2.0",
+    "slimScroll": "~1.3.1",
+    "slimScrollHorizontal": "https://github.com/rochal/jQuery-slimScroll.git",
+    "requirejs": "~2.1.11",
+    "lodash": "~2.4.1",
+    "angular-sanitize": "~1.2.14",
+    "asEvented": "https://github.com/mkuklis/asEvented.git#0.4.3",
+    "restangular": "~1.3.1",
+    "angular-animate": "~1.2.16",
+    "angular-ui-sortable": "~0.12.6",
+    "howler": "~1.1.20",
+    "es6-shim": "~0.10.1",
+    "venturocket-angular-slider": "~0.3.2",
+    "almond": "~0.2.9",
+    "peerjs": "~0.3.8",
+    "angular-gravatar": "~0.1.5",
+    "angular-deckgrid": "~0.4.4",
+    "angular-ui-router": "~0.2.10",
+    "angular-moment": "~0.7.1",
+    "lz-string": "https://github.com/pieroxy/lz-string.git#4cc031b68e3a6db202c467396a01429629666122",
+    "angular-local-storage": "~0.0.5",
+    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.0",
+    "coffee-script": "~1.7.1",
+    "jquery-ui": "~1.11.0",
+    "angular-contenteditable": "~0.3.7",
+    "angulartics": "~0.16.4",
+    "angular-marked": "Hypercubed/angular-marked#~0.0.12",
+    "angular-bootstrap": "~0.11.0",
+    "angular-charts": "~0.2.6",
+    "ng-file-upload": "~1.6.12",
+    "js-beautify": "~1.5.4",
+    "angular-fullscreen": "~1.0.0"
+  },
+  "resolutions": {
+    "angular": ">= 1.3.0"
+  }
+}
