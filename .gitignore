@@ -11,3 +11,4 @@
 /bower_components
 /test/sample
 !/test/sample/bower.json
+/npm-shrinkwrap.json

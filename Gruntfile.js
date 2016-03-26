@@ -1,9 +1,12 @@
 'use strict';
 
+var tmp = require('tmp');
 var childProcess = require('child_process');
 var arraydiff = require('arr-diff');
 var fs = require('fs');
+var wrench = require('wrench');
 var inquirer = require('inquirer');
+var path = require('path');
 
 module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
@@ -82,10 +85,12 @@ module.exports = function (grunt) {
     grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 
-    grunt.task.registerTask('prepublish', 'Prepublish checks', function () {
+    grunt.task.registerTask('publish', 'Perform final checks and publish Bower', function () {
         var npmVersion = JSON.parse(childProcess.execSync('npm version --json').toString()).npm.split('.');
         var npmMajor = parseInt(npmVersion[0], 10);
         var npmMinor = parseInt(npmVersion[1], 10);
+
+        var jsonPackage = require('./package');
 
         if (npmMajor !== 3 || npmMinor < 5) {
             grunt.log.writeln('You need to use at least npm@3.5 to publish bower.');
@@ -94,23 +99,7 @@ module.exports = function (grunt) {
             process.exit(1);
         }
 
-        var bundledDependencies = require('./package').bundledDependencies;
-        var dependencies = Object.keys(require('./package').dependencies);
-        var missing = arraydiff(dependencies, bundledDependencies);
-
-        if (missing.length > 0) {
-            grunt.log.writeln('You need to add all bower\'s dependencies to bundledDependencies in package.json');
-            grunt.log.writeln('It is to freeze all dependencies so bower does not randomly break');
-            grunt.log.writeln('Following dependencies need to be added to bundledDependencies:');
-
-            for(var i = 0; i < missing.length; i++) {
-                grunt.log.writeln('    "' + missing[i] + '",\n');
-            }
-
-            process.exit(1);
-        }
-
-        var version = require('./package').version;
+        var version = jsonPackage.version;
         var changelog = fs.readFileSync('./CHANGELOG.md');
 
         if (changelog.indexOf('## ' + version) === -1) {
@@ -131,11 +120,66 @@ module.exports = function (grunt) {
             process.exit(1);
         }
 
-        grunt.log.writeln('Reinstalling dependencies...');
-        childProcess.execSync('rm -rf node_modules && npm install', { stdio: [0, 1, 2] });
+        if (process.env.SKIP_TESTS !== '1') {
+            grunt.log.writeln('Reinstalling dependencies...');
+            childProcess.execSync('rm -rf node_modules && npm install', { stdio: [0, 1, 2] });
 
-        grunt.log.writeln('Running test suite...');
-        childProcess.execSync('grunt test', { stdio: [0, 1, 2] });
+            grunt.log.writeln('Running test suite...');
+            childProcess.execSync('grunt test', { stdio: [0, 1, 2] });
+        }
+
+        var dir = tmp.dirSync().name;
+
+        wrench.copyDirSyncRecursive(__dirname, dir, {
+            forceDelete: true,
+            include: function (path) {
+                return !path.match(/node_modules|\.git|test/);
+            }
+        });
+
+        grunt.log.writeln('Installing production dependencies...');
+        childProcess.execSync('npm install --production --silent', { cwd: dir, stdio: [0, 1, 2] });
+
+        delete jsonPackage.dependencies;
+        delete jsonPackage.devDependencies;
+        delete jsonPackage.scripts;
+
+        fs.writeFileSync(path.resolve(dir, 'package.json'), JSON.stringify(jsonPackage, null, '  ') + '\n');
+
+
+        grunt.log.writeln('Moving node_modules to lib directory...');
+
+        wrench.copyDirSyncRecursive(path.resolve(dir, 'node_modules'), path.resolve(dir, 'lib', 'node_modules'));
+        wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
+
+        grunt.log.writeln('Testing bower on sample project...');
+
+        childProcess.execSync(
+            'cd test/sample && rm -rf bower_components && ' + dir + '/bin/bower install --force', { stdio: [0, 1, 2] }
+        );
+
+        var expectedPackages = (
+            'SHA-1 ace-builds almond angular angular-animate angular-bootstrap angular-charts angular-contenteditable ' +
+            'angular-deckgrid angular-fullscreen angular-gravatar angular-hotkeys angular-local-storage angular-marked ' +
+            'angular-moment angular-sanitize angular-touch angular-ui-router angular-ui-sortable ' +
+            'angulartics asEvented bootstrap coffee-script d3 es6-shim font-awesome howler jquery ' +
+            'jquery-ui jquery-waypoints js-beautify lodash lz-string marked moment ng-file-upload peerjs ' +
+            'requirejs restangular slimScroll slimScrollHorizontal venturocket-angular-slider'
+        ).split(' ');
+
+        var installedPackages = fs.readdirSync('./test/sample/bower_components');
+
+        var installedDiff = arraydiff(expectedPackages, installedPackages);
+
+        if (installedDiff.length > 0) {
+            grunt.log.writeln('ERROR. Some packages were not installed by bower: ');
+            grunt.log.writeln(installedDiff.join(', '));
+
+            process.exit(1);
+        }
+
+        grunt.log.writeln('\nBower production bundle installed in:');
+        grunt.log.writeln(dir + '\n');
 
         var questions = [
             {
@@ -155,82 +199,31 @@ module.exports = function (grunt) {
                 name: 'tests',
                 message: 'Are you sure all tests are passing on Travis and Appveyor?',
                 default: false
+            },
+            {
+                type: 'confirm',
+                name: 'publish',
+                message: 'Are you SURE you want to publish ' + jsonPackage.name + '@' + jsonPackage.version + '?',
+                default: false
             }
         ];
 
         var done = this.async();
 
         inquirer.prompt(questions, function (answers) {
-            if (!answers.review || !answers.changelog || !answers.tests) {
+            if (!answers.review || !answers.changelog || !answers.tests || !answers.publish) {
                 grunt.log.writeln('Please publish bower after you fix this issue');
 
                 process.exit(1);
             }
 
-            try {
-                grunt.log.writeln('Reinstalling dependencies in production mode...');
+            grunt.log.writeln('\nPlease remember to tag this relese, and add a release on Github!');
+            grunt.log.writeln('\nAlso, please remember to test published Bower one more time!');
+            grunt.log.writeln('\nPublishing Bower...');
 
-                childProcess.execSync('rm -rf node_modules && npm install --production', { stdio: [0, 1, 2] });
+            childProcess.execSync('npm publish --tag beta', { cwd: dir, stdio: [0, 1, 2] });
 
-                grunt.log.writeln('Testing bower on sample project...');
-
-                childProcess.execSync(
-                    'cd test/sample && rm -rf bower_components && ../../bin/bower install --force', { stdio: [0, 1, 2] }
-                );
-
-                var expectedPackages = (
-                    'SHA-1 ace-builds almond angular angular-animate angular-bootstrap angular-charts angular-contenteditable ' +
-                    'angular-deckgrid angular-fullscreen angular-gravatar angular-hotkeys angular-local-storage angular-marked ' +
-                    'angular-moment angular-sanitize angular-touch angular-ui-router angular-ui-sortable ' +
-                    'angulartics asEvented bootstrap coffee-script d3 es6-shim font-awesome howler jquery ' +
-                    'jquery-ui jquery-waypoints js-beautify lodash lz-string marked moment ng-file-upload peerjs ' +
-                    'requirejs restangular slimScroll slimScrollHorizontal venturocket-angular-slider'
-                ).split(' ');
-
-                var installedPackages = fs.readdirSync('./test/sample/bower_components');
-
-                var installedDiff = arraydiff(expectedPackages, installedPackages);
-
-                if (installedDiff.length > 0) {
-                    grunt.log.writeln('ERROR. Some packages were not installed by bower: ');
-                    grunt.log.writeln(installedDiff.join(', '));
-
-                    process.exit(1);
-                }
-            } catch (e) {
-                grunt.log.writeln('There was an error. Reverting development dependencies...');
-
-                childProcess.execSync('npm install', { stdio: [0, 1, 2] });
-
-                process.exit(1);
-            }
-
-            grunt.log.writeln('Everything seems OK! You are likely good to publish bower.');
-
-            var questions = [
-                {
-                    type: 'confirm',
-                    name: 'publish',
-                    message: 'Are you SURE you want to publish bower@' + require('./package').version + '?',
-                    default: false
-                }
-            ];
-
-            inquirer.prompt(questions, function (answers) {
-                if (!answers.publish) {
-                    grunt.log.writeln('Bower publishing cancelled..');
-
-                    childProcess.execSync('npm install', { stdio: [0, 1, 2] });
-
-                    process.exit(1);
-                }
-
-                grunt.log.writeln('\nPlease remember to tag this relese, and add a release on Github!');
-                grunt.log.writeln('\nAlso, please remember to test published Bower one more time!');
-                grunt.log.writeln('\nPublishing Bower...');
-
-                done();
-            });
+            done();
         });
     });
 };

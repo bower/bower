@@ -25,7 +25,7 @@ rules:
   valid-typeof: 2
   no-fallthrough: 2
   quotes: [2, "single", "avoid-escape"]
-  indent: [2, 2]
+  indent: [2, 4]
   comma-spacing: 2
   semi: 2
   space-infix-ops: 2
