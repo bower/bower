@@ -3,17 +3,17 @@ require('chalk').enabled = false;
 var Q = require('q');
 var path = require('path');
 var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
+var rimraf = require('../lib/util/rimraf');
 var uuid = require('node-uuid');
 var object = require('mout/object');
-var fs = require('fs');
+var fs = require('../lib/util/fs');
 var glob = require('glob');
 var os = require('os');
 var which = require('which');
-var path = require('path');
 var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-var cmd = require('../lib/util/cmd');
+var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
+var nock = require('nock');
 
 // For better promise errors
 Q.longStackSupport = true;
@@ -26,6 +26,7 @@ var env = {
     'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
     'GIT_COMMITTER_NAME': 'André Cruz',
     'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com',
+    'NODE_ENV': 'test'
 };
 
 object.mixIn(process.env, env);
@@ -106,29 +107,22 @@ exports.TempDir = (function() {
 
         mkdirp.sync(that.path);
 
-        var promise = new Q();
+        this.git('init');
 
-        object.forOwn(revisions, function (files, tag) {
-            promise = promise.then(function () {
-                return that.git('init');
-            }).then(function () {
-                that.glob('./!(.git)').map(function (removePath) {
-                    var fullPath = path.join(that.path, removePath);
+        this.glob('./!(.git)').map(function (removePath) {
+            var fullPath = path.join(that.path, removePath);
 
-                    rimraf.sync(fullPath);
-                });
-
-                that.create(files, {});
-            }).then(function () {
-                return that.git('add', '-A');
-            }).then(function () {
-                return that.git('commit', '-m"commit"');
-            }).then(function () {
-                return that.git('tag', tag);
-            });
+            rimraf.sync(fullPath);
         });
 
-        return promise;
+        object.forOwn(revisions, function (files, tag) {
+            this.create(files, {});
+            this.git('add', '-A');
+            this.git('commit', '-m"commit"');
+            this.git('tag', tag);
+        }.bind(this));
+
+        return this;
     };
 
     TempDir.prototype.glob = function (pattern) {
@@ -152,8 +146,13 @@ exports.TempDir = (function() {
 
     TempDir.prototype.git = function () {
         var args = Array.prototype.slice.call(arguments);
+        var result = spawnSync('git', args, { cwd: this.path });
 
-        return cmd('git', args, { cwd: this.path, env: env });
+        if (result.status !== 0) {
+            throw new Error(result.stderr);
+        } else {
+            return result.stdout.toString();
+        }
     };
 
     TempDir.prototype.exists = function (name) {
@@ -163,7 +162,7 @@ exports.TempDir = (function() {
     return TempDir;
 })();
 
-exports.expectEvent = function expectEvent(emitter, eventName) {
+exports.expectEvent = function expectEvent (emitter, eventName) {
     var deferred = Q.defer();
 
     emitter.once(eventName, function () {
@@ -221,7 +220,7 @@ exports.command = function (command, stubs) {
 };
 
 exports.run = function (command, args) {
-    var logger = command.apply(command, args || []);
+    var logger = command.apply(null, args || []);
 
     // Hack so we can intercept prompring for data
     logger.prompt = function(data) {
@@ -299,3 +298,16 @@ exports.localUrl = function (localPath) {
 
     return localPath;
 };
+
+// Returns the result of executing the bower binary + args
+// example: runBin('install') --> $ bower install
+exports.runBin = function (args) {
+    args = args || [];
+    args.unshift(path.resolve(__dirname, '../bin/bower'));
+    return spawnSync('node', args);
+};
+
+
+afterEach(function () {
+    nock.cleanAll();
+});

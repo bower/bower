@@ -24,7 +24,7 @@ describe('bower info', function () {
         description: 'Hello world! Hello!'
     };
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         '0.1.2': { 'bower.json': meta },
         '0.1.3': { 'bower.json': meta2 }
     });
@@ -36,17 +36,17 @@ describe('bower info', function () {
     });
 
     it('shows info about given package', function () {
-        return package.prepareGit({}).then(function() {
-        return helpers.run(info, [package.path]).spread(function(results) {
+        mainPackage.prepareGit({});
+
+        return helpers.run(info, [mainPackage.path]).spread(function(results) {
             expect(results).to.eql({
                 'latest': meta2,
-                'name': package.path,
+                'name': mainPackage.path,
                 'versions': [
                     '0.1.3',
                     '0.1.2'
                 ]
             });
-        });
         });
     });
 });

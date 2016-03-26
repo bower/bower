@@ -2,8 +2,8 @@ var expect = require('expect.js');
 var Q = require('q');
 var path = require('path');
 var mout = require('mout');
-var fs = require('graceful-fs');
-var rimraf = require('rimraf');
+var fs = require('../../lib/util/fs');
+var rimraf = require('../../lib/util/rimraf');
 var RegistryClient = require('bower-registry-client');
 var Logger = require('bower-logger');
 var proxyquire = require('proxyquire');
@@ -45,7 +45,10 @@ describe('PackageRepository', function () {
         });
 
         // Mock the resolver factory to always return a resolver for the test package
-        function resolverFactory(decEndpoint, _config, _logger, _registryClient) {
+        function resolverFactory(decEndpoint, options, _registryClient) {
+            var _config = options.config;
+            var _logger = options.logger;
+
             expect(_config).to.eql(config);
             expect(_logger).to.be.an(Logger);
             expect(_registryClient).to.be.an(RegistryClient);
@@ -67,7 +70,9 @@ describe('PackageRepository', function () {
             return Q.resolve(resolver);
         }
         resolverFactory.getConstructor = function () {
-            return Q.resolve([resolvers.GitRemote, helpers.localSource(testPackage), false]);
+            return Q.resolve([resolvers.GitRemote, {
+                source: helpers.localSource(testPackage)
+            }]);
         };
         resolverFactory.clearRuntimeCache = function () {
             resolverFactoryClearHook();
@@ -239,8 +244,7 @@ describe('PackageRepository', function () {
             resolverFactoryHook = function (resolver) {
                 var originalHasNew = resolver.hasNew;
 
-                resolver.hasNew = function (canonicalDir, pkgMeta) {
-                    expect(canonicalDir).to.equal(tempPackage);
+                resolver.hasNew = function (pkgMeta) {
                     expect(pkgMeta).to.eql(json);
                     called = true;
                     return originalHasNew.apply(this, arguments);
@@ -283,8 +287,7 @@ describe('PackageRepository', function () {
                     return originalResolve.apply(this, arguments);
                 };
 
-                resolver.hasNew = function (canonicalDir, pkgMeta) {
-                    expect(canonicalDir).to.equal(tempPackage);
+                resolver.hasNew = function (pkgMeta) {
                     expect(pkgMeta).to.eql(json);
                     called.push('hasNew');
                     return Q.resolve(true);
@@ -327,8 +330,7 @@ describe('PackageRepository', function () {
                     return originalResolve.apply(this, arguments);
                 };
 
-                resolver.hasNew = function (canonicalDir, pkgMeta) {
-                    expect(canonicalDir).to.equal(tempPackage);
+                resolver.hasNew = function (pkgMeta) {
                     expect(pkgMeta).to.eql(json);
                     called.push('hasNew');
                     return Q.resolve(false);
@@ -364,8 +366,7 @@ describe('PackageRepository', function () {
             resolverFactoryHook = function (resolver) {
                 var originalResolve = resolver.resolve;
 
-                resolver.hasNew = function (canonicalDir, pkgMeta) {
-                    expect(canonicalDir).to.equal(tempPackage);
+                resolver.hasNew = function (pkgMeta) {
                     expect(pkgMeta).to.eql(json);
                     called.push('resolve');
                     return originalResolve.apply(this, arguments);

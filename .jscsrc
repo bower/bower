@@ -1,0 +1,27 @@
+{
+ 'validateIndentation': 4,
+ 'requireCamelCaseOrUpperCaseIdentifiers': true,
+ 'requireParenthesesAroundIIFE': true,
+ 'requireCapitalizedConstructors': true,
+ 'disallowEmptyBlocks': false,
+ 'validateQuoteMarks': "'",
+ 'requireOperatorBeforeLineBreak': false,
+ 'requireCommaBeforeLineBreak': true,
+ 'disallowMultipleLineStrings': true,
+ 'requireDotNotation': true,
+ 'disallowTabs': true,
+ 'disallowNewlineBeforeBlockStatements': true,
+ 'disallowTrailingWhitespace': true,
+ 'disallowMixedSpacesAndTabs': true,
+ 'requireSpaceBeforeBinaryOperators': true,
+ 'requireSpaceBeforeBlockStatements': true,
+ 'requireSpaceBeforeObjectValues': true,
+ 'requireSpaceBetweenArguments': true,
+ 'requireSpacesInFunctionDeclaration': {
+   'beforeOpeningCurlyBrace': true
+ },
+ 'requireSpacesInNamedFunctionExpression': {
+   'beforeOpeningCurlyBrace': true,
+   'beforeOpeningRoundBrace': true
+ }
+}

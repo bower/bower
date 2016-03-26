@@ -11,12 +11,14 @@
         "install":         "Install a package locally",
         "link":            "Symlink a package folder",
         "list":            "List local packages - and possible updates",
+        "login":           "Authenticate with GitHub and store credentials",
         "lookup":          "Look up a package URL by name",
         "prune":           "Removes local extraneous packages",
         "register":        "Register a package",
         "search":          "Search for a package by name",
         "update":          "Update a local package",
         "uninstall":       "Remove a local package",
+        "unregister":      "Remove a package from the registry",
         "version":         "Bump a package version"
     },
     "options": [
@@ -32,7 +34,7 @@
         },
         {
             "shorthand":   "-l",
-            "flag":        "--log-level",
+            "flag":        "--loglevel",
             "description": "What level of logs to report"
         },
         {
@@ -60,6 +62,7 @@
             "description": "Allows running commands as root"
         },
         {
+            "shorthand":   "-v",
             "flag":        "--version",
             "description": "Output Bower version"
         },

@@ -1,10 +1,17 @@
-# Bower
+# Bower - A package manager for the web
 
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower) [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history) [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master) 
+> Bower needs resources for its maintenance. Please fill [this form](https://docs.google.com/forms/d/1i-Opb-uPdqUBBZQSbngv3Y3bfolG1gbBvtRLfxMnzRE/viewform?c=0&w=1) if you think you can help.
+
+[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
+[![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history)
+[![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
+[![Discord chat](https://img.shields.io/badge/discord-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://discord.gg/0fFM7QF0KpZRh2cY)
+[![Issue Stats](http://issuestats.com/github/bower/bower/badge/pr?style=flat)](http://issuestats.com/github/bower/bower)
+[![Issue Stats](http://issuestats.com/github/bower/bower/badge/issue?style=flat)](http://issuestats.com/github/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
-> A package manager for the web
+---
 
 Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
@@ -45,7 +52,7 @@ $ bower install <package>#<version> --save
 
 We discourage using bower components statically for performance and security reasons (if component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
 
-The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using module loader (like [RequireJS](http://requirejs.org/)).
+The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using a module loader (like [RequireJS](http://requirejs.org/)).
 
 ### Uninstalling packages
 
@@ -59,57 +66,49 @@ $ bower uninstall <package-name>
 
 On `prezto` or `oh-my-zsh`, do not forget to `alias bower='noglob bower'` or `bower install jquery\#1.9.1`
 
-### Running commands with sudo
+### Never run Bower with sudo
 
-Bower is a user command, there is no need to execute it with superuser permissions.
-However, if you still want to run commands with sudo, use `--allow-root` option.
+Bower is a user command; there is no need to execute it with superuser permissions.
 
 ### Windows users
 
 To use Bower on Windows, you must install
-[msysgit](http://msysgit.github.io/) correctly. Be sure to check the
-option shown below:
+[Git for Windows](http://git-for-windows.github.io/) correctly. Be sure to check the
+options shown below:
 
-![msysgit](http://f.cl.ly/items/2V2O3i1p3R2F1r2v0a12/mysgit.png)
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532690/d2e8991a-7386-11e5-9a57-613c7f92e84e.png" width="534" height="418" alt="Git for Windows" />
+
+<img src="https://cloud.githubusercontent.com/assets/10702007/10532694/dbe8857a-7386-11e5-9bd0-367e97644403.png" width="534" height="418" alt="Git for Windows" />
 
 Note that if you use TortoiseGit and if Bower keeps asking for your SSH
 password, you should add the following environment variable: `GIT_SSH -
 C:\Program Files\TortoiseGit\bin\TortoisePlink.exe`. Adjust the `TortoisePlink`
 path if needed.
 
+### Ubuntu users
+
+To use Bower on Ubuntu, you might need to link `nodejs` executable to `node`:
+
+```
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+```
+
 ## Configuration
 
 Bower can be configured using JSON in a `.bowerrc` file. Read over available options at [bower.io/docs/config](http://bower.io/docs/config).
 
-## Completion (experimental)
-
-_NOTE_: Completion is still not implemented for the 1.0.0 release
-
-Bower now has an experimental `completion` command that is based on, and works
-similarly to the [npm completion](https://npmjs.org/doc/completion.html). It is
-not available for Windows users.
-
-This command will output a Bash / ZSH script to put into your `~/.bashrc`,
-`~/.bash_profile`, or `~/.zshrc` file.
-
-```sh
-$ bower completion >> ~/.bash_profile
-```
-
 
 ## Support
 
+* [Discord chat](https://discord.gg/0fFM7QF0KpZRh2cY)
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
 * [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
-* [\#bower](http://webchat.freenode.net/?channels=bower) on Freenode
-
 
 ## Contributing
 
-We welcome contributions of all kinds from anyone. Please take a moment to
-review the [guidelines for contributing](CONTRIBUTING.md).
+We welcome [contributions](https://github.com/bower/bower/graphs/contributors) of all kinds from anyone. Please take a moment to review the [guidelines for contributing](CONTRIBUTING.md).
 
-* [Bug reports](CONTRIBUTING.md#bugs)
+* [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
 * [Feature requests](CONTRIBUTING.md#features)
 * [Pull requests](CONTRIBUTING.md#pull-requests)
 
@@ -120,27 +119,8 @@ Note that on Windows for tests to pass you need to configure Git before cloning:
 git config --global core.autocrlf input
 ```
 
-## Bower Team
-
-Bower is made by lots of people across the globe, contributions large and small. Our thanks to everyone who has played a part.
-
-### Core team
-
-* [@satazor](https://github.com/satazor)
-* [@wibblymat](https://github.com/wibblymat)
-* [@paulirish](https://github.com/paulirish)
-* [@benschwarz](https://github.com/benschwarz)
-* [@svnlto](https://github.com/svnlto)
-* [@sheerun](https://github.com/sheerun)
-
-### Bower Alumni
-
-* [@fat](https://github.com/fat)
-* [@maccman](https://github.com/maccman)
-
-
 ## License
 
-Copyright (c) 2015 Twitter and other contributors
+Copyright (c) 2016 Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
 
 Licensed under the MIT License

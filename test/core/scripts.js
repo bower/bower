@@ -1,8 +1,8 @@
 var path = require('path');
 var bower = require('../../lib/index.js');
 var mkdirp = require('mkdirp');
-var rimraf = require('rimraf');
-var fs = require('fs');
+var rimraf = require('../../lib/util/rimraf');
+var fs = require('../../lib/util/fs');
 var expect = require('expect.js');
 var scripts = require('../../lib/core/scripts.js');
 
@@ -14,20 +14,20 @@ describe('scripts', function () {
 
     // We cannot use pure touch, because Windows
     var touch = function (file) {
-       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(\'' + file + '\', \'w\'));"';
+        return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(\'' + file + '\', \'w\'));"';
     };
 
     // We cannot use pure touch, because Windows
     var touchWithPid = function (file) {
-       return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
+        return 'node -e "var fs = require(\'fs\'); fs.closeSync(fs.openSync(process.env.BOWER_PID + \'' + file + '\', \'w\'));"';
     };
 
     var config = {
         cwd: tempDir,
         scripts: {
-            preinstall: touch('preinstall_%'),
-            postinstall: touch('postinstall_%'),
-            preuninstall: touch('preuninstall_%')
+            preinstall: touch('preinstall_%_%'),
+            postinstall: touch('postinstall_%_%'),
+            preuninstall: touch('preuninstall_%_%')
         }
     };
 
@@ -45,8 +45,8 @@ describe('scripts', function () {
         .install([packageDir], undefined, config)
         .on('end', function (installed) {
 
-            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_' + packageName + '_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_' + packageName + '_' + packageName))).to.be(true);
 
             next();
         });
@@ -59,7 +59,7 @@ describe('scripts', function () {
         .uninstall([packageName], undefined, config)
         .on('end', function (installed) {
 
-            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName + '_' + packageName))).to.be(true);
 
             next();
         });
@@ -129,6 +129,41 @@ describe('scripts', function () {
         .on('end', function (installed) {
 
             expect(fs.existsSync(path.join(tempDir, process.pid + ' ' + packageName))).to.be(true);
+
+            next();
+        });
+
+    });
+
+    it('should process preuninstall hooks with shell operators properly.', function (next) {
+
+        config.scripts.preuninstall = touch('preuninstall_test_ping_%') + ' && ' + touch('preuninstall_test_pong');
+
+        bower.commands
+        .uninstall([packageName], undefined, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_test_ping_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preuninstall_test_pong'))).to.be(true);
+
+            next();
+        });
+
+    });
+
+    it('should process preinstall and postinstall hooks with shell operators properly.', function (next) {
+
+        config.scripts.preinstall = touch('preinstall_test_ping_%') + ' && ' + touch('preinstall_test_pong');
+        config.scripts.postinstall = touch('postinstall_test_ping') + ' && ' + touch('postinstall_test_pong_%');
+
+        bower.commands
+        .install([packageDir], undefined, config)
+        .on('end', function (installed) {
+
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_test_ping_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'preinstall_test_pong'))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_test_ping'))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'postinstall_test_pong_' + packageName))).to.be(true);
 
             next();
         });

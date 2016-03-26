@@ -1,13 +1,13 @@
 var expect = require('expect.js');
+var md5 = require('md5-hex');
 var helpers = require('../../helpers');
 
 var cacheClean = helpers.command('cache/clean');
-var md5 = helpers.require('lib/util/md5');
 var object = require('mout/object');
 
 describe('bower cache clean', function () {
 
-    // Because directory names are required to be mp5 of _source
+    // Because directory names are required to be md5 of _source
     var cacheFilesFactory = function (spec) {
         var files = {};
 
@@ -20,7 +20,7 @@ describe('bower cache clean', function () {
         return files;
     };
 
-    
+
     var cacheFiles = cacheFilesFactory([
         {
             name: 'angular',

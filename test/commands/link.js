@@ -1,3 +1,4 @@
+var path = require('path');
 var expect = require('expect.js');
 var helpers = require('../helpers');
 
@@ -5,7 +6,7 @@ var link = helpers.command('link');
 
 describe('bower link', function () {
 
-    var package = new helpers.TempDir({
+    var mainPackage = new helpers.TempDir({
         'bower.json': {
             name: 'package',
         },
@@ -22,7 +23,7 @@ describe('bower link', function () {
     var linksDir = new helpers.TempDir();
 
     beforeEach(function() {
-        package.prepare();
+        mainPackage.prepare();
         otherPackage.prepare();
         linksDir.prepare();
     });
@@ -35,7 +36,7 @@ describe('bower link', function () {
     it('creates self link', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }
@@ -49,7 +50,7 @@ describe('bower link', function () {
     it('creates inter-link', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }
@@ -69,10 +70,59 @@ describe('bower link', function () {
         });
     });
 
+    it('creates inter-link to relative config.directory', function () {
+        return helpers.run(link, [undefined, undefined,
+            {
+                cwd: mainPackage.path,
+                storage: {
+                    links: linksDir.path
+                }
+            }
+        ]).then(function () {
+            return helpers.run(link, ['package', undefined,
+                {
+                    cwd: otherPackage.path,
+                    directory: 'valid-extend',
+                    storage: {
+                        links: linksDir.path
+                    }
+                }
+            ]);
+        }).then(function() {
+            expect(otherPackage.read('valid-extend/package/index.js'))
+            .to.be('Hello World!');
+        });
+    });
+
+
+    it('creates inter-link to absolute config.directory', function () {
+        return helpers.run(link, [undefined, undefined,
+            {
+                cwd: mainPackage.path,
+                storage: {
+                    links: linksDir.path
+                }
+            }
+        ]).then(function () {
+            return helpers.run(link, ['package', undefined,
+                {
+                    cwd: path.join(otherPackage.path, 'invalid'),
+                    directory: path.join(otherPackage.path, 'valid-override'),
+                    storage: {
+                        links: linksDir.path
+                    }
+                }
+            ]);
+        }).then(function() {
+            expect(otherPackage.read('valid-override/package/index.js'))
+            .to.be('Hello World!');
+        });
+    });
+
     it('creates inter-link with custom local name', function () {
         return helpers.run(link, [undefined, undefined,
             {
-                cwd: package.path,
+                cwd: mainPackage.path,
                 storage: {
                     links: linksDir.path
                 }

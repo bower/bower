@@ -1,15 +1,15 @@
 var path = require('path');
 var mout = require('mout');
-var rimraf = require('rimraf');
-var fs = require('graceful-fs');
+var rimraf = require('../../lib/util/rimraf');
+var fs = require('../../lib/util/fs');
 var Q = require('q');
 var expect = require('expect.js');
 var mkdirp = require('mkdirp');
+var md5 = require('md5-hex');
 var ResolveCache = require('../../lib/core/ResolveCache');
 var defaultConfig = require('../../lib/config');
 var cmd = require('../../lib/util/cmd');
 var copy = require('../../lib/util/copy');
-var md5 = require('../../lib/util/md5');
 
 describe('ResolveCache', function () {
     var resolveCache;
