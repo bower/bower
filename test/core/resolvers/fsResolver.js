@@ -1,8 +1,8 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var path = require('path');
-var rimraf = require('rimraf');
+var rimraf = require('../../../lib/util/rimraf');
 var mkdirp = require('mkdirp');
 var Q = require('q');
 var Logger = require('bower-logger');
@@ -35,12 +35,12 @@ describe('FsResolver', function () {
         }
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new FsResolver(decEndpoint, config || defaultConfig, logger);
+        return new FsResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {
@@ -82,13 +82,11 @@ describe('FsResolver', function () {
         it('should resolve always to true (for now..)', function (next) {
             var resolver = create(testPackage);
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
-            mkdirp.sync(tempSource);
-            fs.writeFileSync(path.join(tempSource, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'test'
-            }));
+            };
 
-            resolver.hasNew(tempSource)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -161,7 +159,7 @@ describe('FsResolver', function () {
         it('should rename to index if source is a folder with just one file in it', function (next) {
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            tempSource = path.resolve(__dirname, '../../tmp/tmp');
 
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
@@ -181,7 +179,7 @@ describe('FsResolver', function () {
         it('should not rename to index if source is a folder with just bower.json/component.json file in it', function (next) {
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/tmp');
+            tempSource = path.resolve(__dirname, '../../tmp/tmp');
 
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
@@ -235,7 +233,7 @@ describe('FsResolver', function () {
             var mode0777;
             var resolver;
 
-            tempSource = path.resolve(__dirname, '../../assets/temp');
+            tempSource = path.resolve(__dirname, '../../tmp/temp-source');
             resolver = create(tempSource);
 
             copy.copyFile(path.join(testPackage, 'foo'), tempSource)

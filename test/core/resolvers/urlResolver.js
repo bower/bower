@@ -1,10 +1,9 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('graceful-fs');
-var path = require('path');
+var fs = require('../../../lib/util/fs');
 var nock = require('nock');
 var Q = require('q');
-var rimraf = require('rimraf');
+var rimraf = require('../../../lib/util/rimraf');
 var mkdirp = require('mkdirp');
 var Logger = require('bower-logger');
 var cmd = require('../../../lib/util/cmd');
@@ -13,7 +12,7 @@ var defaultConfig = require('../../../lib/config');
 
 describe('UrlResolver', function () {
     var testPackage = path.resolve(__dirname, '../../assets/package-a');
-    var tempDir = path.resolve(__dirname, '../../assets/tmp');
+    var tempDir = path.resolve(__dirname, '../../tmp/tmp');
     var logger;
 
     before(function (next) {
@@ -26,17 +25,14 @@ describe('UrlResolver', function () {
 
     afterEach(function () {
         logger.removeAllListeners();
-
-        // Clean nocks
-        nock.cleanAll();
     });
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new UrlResolver(decEndpoint, config || defaultConfig, logger);
+        return new UrlResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {
@@ -94,12 +90,12 @@ describe('UrlResolver', function () {
             .head('/foo.js')
             .reply(500);
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0'
-            }));
+            };
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -117,16 +113,16 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
                     'ETag': 'fk3454fdmmlw20i9nf',
                     'Last-Modified': 'Tue, 16 Nov 2012 13:35:29 GMT'
                 }
-            }));
+            };
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(true);
                 next();
@@ -144,16 +140,16 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
                     'ETag': '686897696a7c876b7e',
                     'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
                 }
-            }));
+            };
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
                 next();
@@ -172,16 +168,16 @@ describe('UrlResolver', function () {
                 'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
             });
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
                     'ETag': '686897696a7c876b7e',
                     'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
                 }
-            }));
+            };
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
                 next();
@@ -206,18 +202,18 @@ describe('UrlResolver', function () {
             });
 
 
-            fs.writeFileSync(path.join(tempDir, '.bower.json'), JSON.stringify({
+            var pkgMeta = {
                 name: 'foo',
                 version: '0.0.0',
                 _cacheHeaders: {
                     'ETag': '686897696a7c876b7e',
                     'Last-Modified': 'Tue, 15 Nov 2012 12:45:26 GMT'
                 }
-            }));
+            };
 
             resolver = create(redirectingUrl + '/foo.js');
 
-            resolver.hasNew(tempDir)
+            resolver.hasNew(pkgMeta)
             .then(function (hasNew) {
                 expect(hasNew).to.be(false);
                 next();

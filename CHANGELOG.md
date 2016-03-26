@@ -1,13 +1,268 @@
 # Changelog
 
+## 1.7.7 - 2016-01-27
+
+Revert locations of all files while still packaging `node_modules`.
+
+It's because people are depending on internals of bower, like
+`bower/lib/renderers/StandardRenderer`. We want to preserve this
+implicit contract, but we discourage it. The only official way
+to use bower programmatically is through `require('bower')`.
+
+## 1.7.6 - 2016-01-27
+
+- Revert location of "bin/bower" as developers are using it directly ([#2157](https://github.com/bower/bower/issues/2157))
+  Note: Correctly, you should use an alias created in `npm bin --global`.
+
+## 1.7.5 - 2016-01-26
+
+- Remove analytics from Bower, fixes ([#2150](https://github.com/bower/bower/pull/2150))
+- Default to ^ operator on `bower install --save` ([#2145](https://github.com/bower/bower/pull/2145))
+- Support absolute path in .bowerrc directory option ([#2130](https://github.com/bower/bower/pull/2130))
+- Display user's name upon `bower login` command ([#2133](https://github.com/bower/bower/pull/2133))
+- Decompress gzip files ([#2092](https://github.com/bower/bower/pull/2092))
+- Prevent name clashes in package extraction ([#2102](https://github.com/bower/bower/pull/2102))
+- When strictSsl is false, set GIT_SSL_NO_VERIFY=true ([#2129](https://github.com/bower/bower/issues/2129))
+- Distribute bower with npm@3 for better Windows support ([#2146](https://github.com/bower/bower/issues/2146))
+- Update request to 2.67.0 and fs-write-stream-atomic to 1.0.8
+- Documentation improvements
+
+## 1.7.4 - 2016-01-21
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
+
+## 1.7.3 - 2016-01-20
+
+Unpublished because of issue with npm distribution:
+https://github.com/npm/npm/issues/11227
+
+## 1.7.2 - 2015-12-31
+
+- Lock "fs-write-stream-atomic" to 1.0.5
+
+## 1.7.1 - 2015-12-11
+
+- Rollback "Add `bower update --save` functionality", it causes issues and needs more testing
+- Fix backward-compatibility of `bower search --json` ([#2066](https://github.com/bower/bower/issues/2066))
+- Ignore prerelease versions from `bower info` output
+- Update update-notifier to 0.6.0
+- Better formatting of help messages (https://github.com/bower/bower/commit/de3e1089da80f47ea3667c5ab80d301cddfd8c3e)
+- Add help menu for update `--save` and `update --save-dev` (https://github.com/bower/bower/commit/612aaa88eb4d4b268b2d8665c338ac086af3a5b0)
+
+## 1.7.0 - 2015-12-07
+
+- Add `bower update --save` functionality ([#2035](https://github.com/bower/bower/issues/2035))
+- `bower search` shows help message when no package name is specified ([#2066](https://github.com/bower/bower/issues/2066))
+- Update only those packages that are explicitly requested by the user. Related Issues
+  - [#256](https://github.com/bower/bower/issues/256)
+  - [#924](https://github.com/bower/bower/issues/924)
+  - [#1770](https://github.com/bower/bower/issues/1770)
+- Allow for @ in username for SVN on windows ([#1650](https://github.com/bower/bower/issues/1650))
+- Update bower config
+  - Loads the .bowerrc file from the cwd specified on the command line
+  - Allow the use of environment variables in .bowerrc ([#41](https://github.com/bower/config/issues/41))
+	- Allow for array notation in ENV variables ([#44](https://github.com/bower/config/issues/44))
+
+## 1.6.9 - 2015-12-04
+
+- Change git version of fs-write-stream-atomic back to npm version ([#2079](https://github.com/bower/bower/issues/2079))
+
+## 1.6.8 - 2015-11-27
+
+- Use fs-write-stream-atomic for downloads
+- Improved downloader that properly cleans after itself
+- Fix shallow host detection ([#2040](https://github.com/bower/bower/pull/2040))
+- Upgrade to ([bower-config#1.2.3](https://github.com/bower/config/releases/tag/1.2.3))
+  - Properly restore env variables if they are undefined at the beginning
+  - Properly handle `default` setting for config.ca
+  - Display proper error if .bowerrc is a directory instead of file
+
+## 1.6.7 - 2015-11-26
+
+- Bundless all the dependencies again
+
+## 1.6.6 - 2015-11-25
+
+- Fixes regression with the published npm version
+
+## 1.6.5 - 2015-10-24
+
+- Updates to tests and documentation
+- Fixes passing options when requesting downloads
+
+## 1.6.4 - 2015-10-24
+
+- Fix ignoring dependencies on multiple install run ([#1970](https://github.com/bower/bower/pull/1970))
+- Use --non-interactive when running svn client ([#1969](https://github.com/bower/bower/pull/1969))
+- Fix downloading of URLs ending with slash ([#1956](https://github.com/bower/bower/pull/1956))
+- Add user-agent field for downloads by Bower ([#1960](https://github.com/bower/bower/pull/1960))
+
+## 1.6.3 - 2015-10-16
+
+Fixes regression issues introduced with 1.6.2, specifically:
+
+- Allow for bower_components to be a symlink
+- Allow setting custom registry in .bowerrc
+
+## 1.6.2 - 2015-10-15
+
+Fix dependency issues of 1.6.1. First published release of 1.6.x.
+
+## 1.6.1 - 2015-10-15
+
+Fix dependency issues of 1.6.0. Reverted release.
+
+## 1.6.0 - 2015-10-15
+
+- Shrinkwrap all dependencies and add them to bundledDependencies ([#1948](https://github.com/bower/bower/pull/1948))
+- Allow for ignoring of child dependencies ([#1394](https://github.com/bower/bower/pull/1394))
+- Allow passing `--config.resolvers` through CLI ([#1922](https://github.com/bower/bower/pull/1922))
+- Use defaults values from package.json if it exists (bower init) ([#1731](https://github.com/bower/bower/issues/1731))
+- Properly use cerificates set in .bowerrc ([#1869](https://github.com/bower/bower/pull/1869))
+- Include package name when version conflict occurs ([#1917](https://github.com/bower/bower/pull/1917))
+- Add timeout for permission check ([yeoman/insight#35](https://github.com/yeoman/insight/pull/35))
+- Close file-handles when possible. Prevents all sorts of permission issues on Windows ([0bb1536](https://github.com/bower/bower/commit/0bb1536c9972e13f3be06bea9a8619632966c664))
+- Prevent ENOENT error on Windows when in VM environment ([isaacs/chmodr#8](https://github.com/isaacs/chmodr/pull/8))
+
+Reverted release.
+
+## 1.5.4 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
+## 1.5.3 - 2015-09-24
+
+- Revert auto sorting of bower dependencies, fixes ([#1897](https://github.com/bower/bower/issues/1897))
+- Fix --save-exact feature for github endpoints, fixes ([#1925](https://github.com/bower/bower/issues/1925))
+- Fix `bower init` to support private flag again ([#1819](https://github.com/bower/bower/pull/1819))
+- Bump insight dependency to support prompt timeout ([#1102](https://github.com/bower/bower/issues/1102))
+
+## 1.5.2 - 2015-08-25
+
+- Revert update semver version from 2.x to 5.x, fixes ([#1896](https://github.com/bower/bower/issues/1896))
+- Make bower commands work from subdirectories, fixes ([#1893](https://github.com/bower/bower/issues/1893))
+- Put auto shallow cloning for git behind a flag, fixes ([#1764](https://github.com/bower/bower/issues/1764))
+
+## 1.5.1 - 2015-08-24
+
+- If cwd provided explicitly, force using it, fixes #1866
+
+## 1.5.0 - 2015-08-24
+
+- Pluggable Resolvers! http://bower.io/docs/pluggable-resolvers/
+- Update semver version from 2.x to 5.x ([#1852](https://github.com/bower/bower/issues/1852))
+- Auto-sort dependencies alphabetically ([#1381](https://github.com/bower/bower/issues/1381))
+- Make bower commands work from subdirectories ([#1866](https://github.com/bower/bower/issues/1866))
+- No longer prefer installing bower as global module ([#1865](https://github.com/bower/bower/issues/1865))
+
+## 1.4.2 - 2015-11-24
+
+- [fix] Lock lru-cache dependency to 2.7.0
+
+## 1.4.1 - 2015-04-01
+
+- [fix] Reading .bowerrc upwards directory tree ([#1763](https://github.com/bower/bower/issues/1763))
+- [fix] Update bower-registry-client so it uses the same bower-config as bower
+
+## 1.4.0 - 2015-03-30
+
+- Add login and unregister commands ([#1719](https://github.com/bower/bower/issues/1719))
+- Automatically detecting smart Git hosts ([#1628](https://github.com/bower/bower/issues/1628))
+- [bower/config#23] Allow npm config variables ([#1711](https://github.com/bower/bower/issues/1711))
+- [bower/config#24] Merge .bowerrc files upwards directory tree ([#1689](https://github.com/bower/bower/issues/1689))
+- Better homedir detection (514eb8f)
+- Add --save-exact flag ([#1654](https://github.com/bower/bower/issues/1654))
+- Ensure extracted files are readable (tar-fs) ([#1548](https://github.com/bower/bower/issues/1548))
+- The version command in the programmatic API now returns the new version ([#1755](https://github.com/bower/bower/issues/1755))
+- Some minor fixes: #1639, #1620, #1576, #1557, 962a565, a464f5a
+- Improved Windows support (AppVeyor CI, tests actually passing on Windows)
+- OSX testing enabled on TravisCI
+
+It also includes improved test coverage (~60% -> ~85%) and many refactors.
+
+## 1.3.12 - 2014-09-28
+
+- [stability] Fix versions for unstable dependencies ([#1532](https://github.com/bower/bower/pull/1532))
+- [fix] Update tar-fs to support old tar format ([#1537](https://github.com/bower/bower/issues/1537))
+- [fix] Make analytics work again ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Always disable analytics for non-interactive mode ([#1529](https://github.com/bower/bower/pull/1529))
+- [fix] Bower init can create private packages again ([#1522](https://github.com/bower/bower/issues/1522))
+- [fix] Show again missing newline for bower search output ([#1538](https://github.com/bower/bower/issues/1538))
+
+## 1.3.11 - 2014-09-17
+
+- [fix] Restore install missing dependencies on update ([1519](https://github.com/bower/bower/pull/1519))
+
+## 1.3.10 - 2014-09-13
+
+- [fix] Back down concurrency from 50 to 5 ([#1483](https://github.com/bower/bower/pull/1483))
+- [fix] Read .bowerrc from specified cwd ([#1301](https://github.com/bower/bower/pull/1301))
+- [fix] Disable shallow clones except those from GitHub ([#1393](https://github.com/bower/bower/pull/1393))
+- [fix] Expose bower version ([#1478](https://github.com/bower/bower/pull/1478))
+- [fix] Bump dependencies, including "request" ([#1467](https://github.com/bower/bower/pull/1467))
+- [fix] Prevent an error when piping bower output to head ([#1508](https://github.com/bower/bower/pull/1508))
+- [fix] Disable removing unnecessary resolutions ([#1061](https://github.com/bower/bower/pull/1061))
+- [fix] Display the output of hooks again ([#1484](https://github.com/bower/bower/issues/1484))
+- [fix] analytics: true in .bowerrc prevents user prompt ([#1470](https://github.com/bower/bower/pull/1470))
+- [perf] Use `tar-fs` instead of `tar` for faster TAR extraction ([#1490](https://github.com/bower/bower/pull/1490))
+
+## 1.3.9 - 2014-08-06
+
+- [fix] Handle `tmp` sometimes returning an array ([#1434](https://github.com/bower/bower/pull/1434))
+
+## 1.3.8 - 2014-7-11
+
+- [fix] Lock down `tmp` package dep ([#1403](https://github.com/bower/bower/pull/1403), [#1407](https://github.com/bower/bower/pull/1407))
+
+## 1.3.7 - 2014-07-04
+
+- [fix] callstack error when processing installed packages with circular dependencies ([#1349](https://github.com/bower/bower/issues/1349))
+- [fix] Prevent bower list --paths` failing with TypeError ([#1383](https://github.com/bower/bower/issues/1383))
+- "bower install" fails if there's no bower.json in current directory ([#922](https://github.com/bower/bower/issues/922))
+
+## 1.3.6 - 2014-07-02
+
+- [fix] Make --force always re-run installation ([#931](https://github.com/bower/bower/issues/931))
+- [fix] Disable caching for local resources ([#1356](https://github.com/bower/bower/issues/1356))
+- [fix] Emit errors instead throwing them when using bower.commands API ([#1297](https://github.com/bower/bower/issues/1297))
+- [fix] Main files and bower.json are never ignored ([#547](https://github.com/bower/bower/issues/547))
+- [fix] Check if pkgMeta is undefined during uninstall command ([#1329](https://github.com/bower/bower/issues/1329))
+- [fix] Make custom tmp dir and ignores play well with each other ([#1299](https://github.com/bower/bower/issues/1299))
+- Warn users when installing package with missing properties ([#694](https://github.com/bower/bower/issues/694))
+
+
+## 1.3.5 - 2014-06-06
+- Search compatible versions in fetching packages ([#1147](https://github.com/bower/bower/issues/1147))
+
+## 1.3.4 - 2014-06-02
+
+- Resolve a situation in which the install process gets into an infinite loop ([#1169](https://github.com/bower/bower/issues/1169))
+- Improved CLI output for conflicts ([#1284](https://github.com/bower/bower/issues/1284))
+- Changed `bower version` to mirror the tag format of `npm version` ([#1278](https://github.com/bower/bower/issues/1278))
+- Allow short commit SHAs to be used ([#990](https://github.com/bower/bower/issues/990))
+
+## 1.3.3 - 2014-04-24
+
+- Do not cache moving targets like branches ([#1242](https://github.com/bower/bower/issues/1242))
+- Suppress output if --quiet option is specified ([#1124](https://github.com/bower/bower/pull/1124))
+- Use "svn export" for efficiency ([#1224](https://github.com/bower/bower/pull/1224))
+- Prevent loading insights and analytics on CI ([#1221](https://github.com/bower/bower/issues/1221))
+- Make "bower list" respect custom components directory ([#1237](https://github.com/bower/bower/issues/1237))
+- Improve non-interactive loading performance 2x ([#1238](https://github.com/bower/bower/issues/1238))
+- Load commands only on demand, improving performance ([#1232](https://github.com/bower/bower/pull/1232))
+
 ## 1.3.2 - 2014-04-05
+
 - Added yui moduleType [PR #1129](https://github.com/bower/bower/pull/1129)
 - Fixes for concurrency issues [PR #1211](https://github.com/bower/bower/pull/1211)
 - `link` now installs package dependencies [PR #891](https://github.com/bower/bower/pull/891)
 - Improved conflict installation message [Commit](https://github.com/bower/bower/commit/bea533acf87903d4b411bfbaa7df93f852ef46a3)
 - Add --production switch to "prune" command [PR #1168](https://github.com/bower/bower/pull/1168)
 
+
 ## 1.3.1 - 2014-03-10
+
 - No longer ask for permission to gather analytics when running on in a CI environment.
 
 

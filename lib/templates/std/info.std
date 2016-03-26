@@ -1,0 +1,14 @@
+{{#if versions}}{{#cyan}}Available versions:{{/cyan}}
+{{#condense}}
+{{#versions}}
+  - {{.}}
+{{/versions}}
+{{/condense}}
+
+
+{{#if hidePreReleases}}
+Show {{numPreReleases}} additional prereleases with ‘bower info {{name}} --verbose’
+{{/if}}
+You can request info for a specific version with 'bower info {{name}}#<version>'
+{{else}}No versions available.
+{{/if}}

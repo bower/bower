@@ -1,8 +1,8 @@
 var expect = require('expect.js');
 var path = require('path');
-var fs = require('graceful-fs');
+var fs = require('../../../lib/util/fs');
 var path = require('path');
-var rimraf = require('rimraf');
+var rimraf = require('../../../lib/util/rimraf');
 var Logger = require('bower-logger');
 var cmd = require('../../../lib/util/cmd');
 var copy = require('../../../lib/util/copy');
@@ -33,12 +33,12 @@ describe('GitFsResolver', function () {
         GitFsResolver.clearRuntimeCache();
     }
 
-    function create(decEndpoint, config) {
+    function create(decEndpoint) {
         if (typeof decEndpoint === 'string') {
             decEndpoint = { source: decEndpoint };
         }
 
-        return new GitFsResolver(decEndpoint, config || defaultConfig, logger);
+        return new GitFsResolver(decEndpoint, defaultConfig(), logger);
     }
 
     describe('.constructor', function () {

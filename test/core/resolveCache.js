@@ -1,29 +1,29 @@
 var path = require('path');
 var mout = require('mout');
-var rimraf = require('rimraf');
-var fs = require('graceful-fs');
+var rimraf = require('../../lib/util/rimraf');
+var fs = require('../../lib/util/fs');
 var Q = require('q');
 var expect = require('expect.js');
 var mkdirp = require('mkdirp');
+var md5 = require('md5-hex');
 var ResolveCache = require('../../lib/core/ResolveCache');
 var defaultConfig = require('../../lib/config');
 var cmd = require('../../lib/util/cmd');
 var copy = require('../../lib/util/copy');
-var md5 = require('../../lib/util/md5');
 
 describe('ResolveCache', function () {
     var resolveCache;
     var testPackage = path.resolve(__dirname, '../assets/package-a');
-    var tempPackage = path.resolve(__dirname, '../assets/temp');
-    var tempPackage2 = path.resolve(__dirname, '../assets/temp2');
-    var cacheDir = path.join(__dirname, '../assets/temp-resolve-cache');
+    var tempPackage = path.resolve(__dirname, '../tmp/temp-package');
+    var tempPackage2 = path.resolve(__dirname, '../tmp/temp2-package');
+    var cacheDir = path.join(__dirname, '../tmp/temp-resolve-cache');
 
     before(function (next) {
         // Delete cache folder
         rimraf.sync(cacheDir);
 
         // Instantiate resolver cache
-        resolveCache = new ResolveCache(mout.object.deepMixIn(defaultConfig, {
+        resolveCache = new ResolveCache(defaultConfig({
             storage: {
                 packages: cacheDir
             }
@@ -55,7 +55,7 @@ describe('ResolveCache', function () {
         });
 
         function initialize(cacheDir) {
-            return new ResolveCache(mout.object.deepMixIn(defaultConfig, {
+            return new ResolveCache(defaultConfig({
                 storage: {
                     packages: cacheDir
                 }
@@ -908,7 +908,6 @@ describe('ResolveCache', function () {
                 expect(entries).to.be.an('array');
 
                 expectedJson = fs.readFileSync(path.join(__dirname, '../assets/resolve-cache/list-json-1.json'));
-                expectedJson = expectedJson.toString();
 
                 mout.object.forOwn(entries, function (entry) {
                     // Trim absolute bower path from json
@@ -917,8 +916,7 @@ describe('ResolveCache', function () {
                     entry.canonicalDir = entry.canonicalDir.replace(/\\/g, '/');
                 });
 
-                json = JSON.stringify(entries, null, '  ');
-                expect(json).to.equal(expectedJson);
+                expect(entries).to.eql(JSON.parse(expectedJson));
 
                 next();
             })
