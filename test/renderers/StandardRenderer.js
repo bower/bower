@@ -313,7 +313,7 @@ describe('StandardRenderer', function () {
         }).spread(function(stdout, stderr) {
             expect(stdout).to.equal(multiline(function() {/*
 
-                Unable to find a suitable version for , please choose one:
+                Unable to find a suitable version for , please choose one by typing one of the numbers below:
                     1) fizfuz#~0.0.0 which resolved to 0.0.0 and is required by dependant1#release1, dependant2#release2
                     2) fizfuz2# and is required by jquery2
 
