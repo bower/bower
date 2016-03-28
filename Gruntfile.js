@@ -32,16 +32,7 @@ module.exports = function (grunt) {
                 config: '.jscsrc',
                 fix: true
             },
-            files: [
-                'Gruntfile.js',
-                'bin/*',
-                'lib/**/*.js',
-                'test/**/*.js',
-                '!test/assets/**/*',
-                '!test/reports/**/*',
-                '!test/sample/**/*',
-                '!test/tmp/**/*'
-            ]
+            files: ['<%= jshint.files %>']
         },
         simplemocha: {
             options: {
