@@ -112,7 +112,7 @@ describe('StandardRenderer', function () {
             expect(stderr).to.match(new RegExp(multiline(function() {/*
                 Console trace:
                 Error
-                    at StandardRenderer.error \(.+?\)
+                \s+at StandardRenderer.error \(.+?\)
 
             */})));
         });
