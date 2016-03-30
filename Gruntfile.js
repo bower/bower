@@ -12,9 +12,10 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        jshint: {
+        jscs: {
             options: {
-                jshintrc: '.jshintrc'
+                config: '.jscsrc',
+                fix: true
             },
             files: [
                 'Gruntfile.js',
@@ -26,13 +27,6 @@ module.exports = function (grunt) {
                 '!test/sample/**/*',
                 '!test/tmp/**/*'
             ]
-        },
-        jscs: {
-            options: {
-                config: '.jscsrc',
-                fix: true
-            },
-            files: ['<%= jshint.files %>']
         },
         simplemocha: {
             options: {
@@ -65,15 +59,15 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'simplemocha:short']
+            files: ['<%= jscs.files %>'],
+            tasks: ['jscs', 'simplemocha:short']
         }
     });
 
     grunt.registerTask('assets', ['exec:assets-force']);
-    grunt.registerTask('test', ['jscs', 'jshint', 'exec:assets', 'simplemocha:full']);
+    grunt.registerTask('test', ['jscs', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
-    grunt.registerTask('travis', ['jshint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
+    grunt.registerTask('travis', ['jscs', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 
     grunt.task.registerTask('publish', 'Perform final checks and publish Bower', function () {
