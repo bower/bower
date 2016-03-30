@@ -135,39 +135,4 @@ describe('scripts', function () {
 
     });
 
-    it('should process preuninstall hooks with shell operators properly.', function (next) {
-
-        config.scripts.preuninstall = touch('preuninstall_test_ping_%') + ' && ' + touch('preuninstall_test_pong');
-
-        bower.commands
-        .uninstall([packageName], undefined, config)
-        .on('end', function (installed) {
-
-            expect(fs.existsSync(path.join(tempDir, 'preuninstall_test_ping_' + packageName))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'preuninstall_test_pong'))).to.be(true);
-
-            next();
-        });
-
-    });
-
-    it('should process preinstall and postinstall hooks with shell operators properly.', function (next) {
-
-        config.scripts.preinstall = touch('preinstall_test_ping_%') + ' && ' + touch('preinstall_test_pong');
-        config.scripts.postinstall = touch('postinstall_test_ping') + ' && ' + touch('postinstall_test_pong_%');
-
-        bower.commands
-        .install([packageDir], undefined, config)
-        .on('end', function (installed) {
-
-            expect(fs.existsSync(path.join(tempDir, 'preinstall_test_ping_' + packageName))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'preinstall_test_pong'))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'postinstall_test_ping'))).to.be(true);
-            expect(fs.existsSync(path.join(tempDir, 'postinstall_test_pong_' + packageName))).to.be(true);
-
-            next();
-        });
-
-    });
-
 });
