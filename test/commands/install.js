@@ -418,6 +418,208 @@ describe('bower install', function() {
         });
     });
 
+    describe('doubly referenced packages', function () {
+        it('installs doubly referenced dependencies', function () {
+            var package2 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package2'
+                }
+            }).prepare();
+
+            var package3 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package3',
+                    dependencies: {
+                        package2: package2.path
+                    }
+                }
+            }).prepare();
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'package',
+                    dependencies: {
+                        package2: package2.path,
+                        package3: package3.path
+                    }
+                }
+            });
+
+            return helpers.run(install).then(function() {
+                expect(tempDir.exists('bower_components/package2')).to.equal(true);
+                expect(tempDir.exists('bower_components/package3')).to.equal(true);
+            });
+        });
+
+        it('installs doubly referenced dependencies, directly depending on different versions', function () {
+            var package3 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package3'
+                }
+            }).prepare();
+
+            gitPackage.prepareGit({
+                '1.0.0': {
+                    'bower.json': {
+                        name: 'gitPackage',
+                        dependencies: {
+                            package3: package3.path
+                        }
+                    },
+                    'version.txt': '1.0.0'
+                },
+                '1.0.1': {
+                    'bower.json': {
+                        name: 'package'
+                    },
+                    'version.txt': '1.0.1'
+                }
+            });
+
+            var package2 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package2',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#1.0.1'
+                    }
+                }
+            }).prepare();
+
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'package',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#^1.0.0',
+                        package2: package2.path
+                    }
+                }
+            });
+
+            return helpers.run(install).then(function() {
+                expect(tempDir.exists('bower_components/package2')).to.equal(true);
+                expect(tempDir.exists('bower_components/package3')).to.equal(false);
+                expect(tempDir.exists('bower_components/gitPackage')).to.equal(true);
+                expect(tempDir.read('bower_components/gitPackage/version.txt')).to.contain('1.0.1');
+            });
+        });
+
+        it('installs doubly referenced dependencies, indirectly depending on different versions', function () {
+            var package4 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package4'
+                }
+            }).prepare();
+
+            gitPackage.prepareGit({
+                '1.0.0': {
+                    'bower.json': {
+                        name: 'gitPackage',
+                        dependencies: {
+                            package4: package4.path
+                        }
+                    },
+                    'version.txt': '1.0.0'
+                },
+                '1.0.1': {
+                    'bower.json': {
+                        name: 'package'
+                    },
+                    'version.txt': '1.0.1'
+                }
+            });
+
+            var package3 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package3',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#1.0.1'
+                    }
+                }
+            }).prepare();
+
+            var package2 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package2',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#^1.0.0',
+                        package3: package3.path
+                    }
+                }
+            }).prepare();
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'package',
+                    dependencies: {
+                        package2: package2.path
+                    }
+                }
+            });
+
+            return helpers.run(install).then(function() {
+                // Package4 is only a dependency of gitPackage#1.0.0.
+                // This one should not have been resolved.
+                // Therefore, this package should not have been created
+                expect(tempDir.exists('bower_components/package4')).to.equal(false);
+                expect(tempDir.exists('bower_components/package2')).to.equal(true);
+                expect(tempDir.exists('bower_components/package3')).to.equal(true);
+                expect(tempDir.exists('bower_components/gitPackage')).to.equal(true);
+                expect(tempDir.read('bower_components/gitPackage/version.txt')).to.contain('1.0.1');
+            });
+        });
+
+        it('fails installing doubly referenced dependencies, indirectly depending on conflicting versions', function (done) {
+            gitPackage.prepareGit({
+                '1.0.0': {
+                    'bower.json': {
+                        name: 'gitPackage'
+                    },
+                    'version.txt': '1.0.0'
+                },
+                '1.0.1': {
+                    'bower.json': {
+                        name: 'gitPackage'
+                    },
+                    'version.txt': '1.0.1'
+                }
+            });
+
+            var package3 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package3',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#1.0.0'
+                    }
+                }
+            }).prepare();
+
+            var package2 = new helpers.TempDir({
+                'bower.json': {
+                    name: 'package2',
+                    dependencies: {
+                        gitPackage: gitPackage.path + '#1.0.1',
+                        package3: package3.path
+                    }
+                }
+            }).prepare();
+
+            tempDir.prepare({
+                'bower.json': {
+                    name: 'package',
+                    dependencies: {
+                        package2: package2.path
+                    }
+                }
+            });
+
+            return helpers.run(install).fail(function (error) {
+                expect(error.code).to.contain('ECONFLICT');
+                done();
+            });
+        });
+    });
+
     it('works for dependencies that point to tar files', function() {
         var packageDir = path.join(__dirname, '../assets/package-tar.tar');
         tempDir.prepare({
