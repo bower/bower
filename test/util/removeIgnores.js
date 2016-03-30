@@ -13,13 +13,13 @@ describe('removeIgnores', function () {
         'node_modules/underscore/index.js': 'Should be ignored'
     });
 
-    var ignoreTest = function(dir, meta, leftovers) {
+    var ignoreTest = function (dir, meta, leftovers) {
         tempDir.prepare();
 
         var deferred = Q.defer();
 
-        removeIgnores(dir, meta).then(function() {
-            glob('**/*.*', { cwd: dir }, function(cb, files) {
+        removeIgnores(dir, meta).then(function () {
+            glob('**/*.*', { cwd: dir }, function (cb, files) {
                 expect(files).to.eql(leftovers);
                 deferred.resolve();
             });
@@ -49,21 +49,21 @@ describe('removeIgnores', function () {
         );
     });
 
-    it('removes all but one file', function() {
+    it('removes all but one file', function () {
         return ignoreTest(tempDir.path,
             { ignore: [ '**/*', '!bower.json' ] },
             [ 'bower.json' ]
         );
     });
 
-    it('refuses to ignore bower.json', function() {
+    it('refuses to ignore bower.json', function () {
         return ignoreTest(tempDir.path,
             { ignore: [ '**/*', '!index.js' ] },
             [ 'bower.json', 'index.js' ]
         );
     });
 
-    it('removes all but one file deep down the tree', function() {
+    it('removes all but one file deep down the tree', function () {
         return ignoreTest(tempDir.path,
             { ignore: [ '**/*', '!node_modules/underscore/index.js' ] },
             [

@@ -6,12 +6,12 @@ describe('relativeToBaseDir', function () {
 
     var joinOrReturnAbsolutePath = relativeToBaseDir('/tmp');
 
-    it('returns a partial function that joins paths of the partials first arguments', function() {
+    it('returns a partial function that joins paths of the partials first arguments', function () {
         expect(joinOrReturnAbsolutePath('foo')).to.be.equal(path.resolve('/tmp/foo'));
         expect(joinOrReturnAbsolutePath('./foo')).to.be.equal(path.resolve('/tmp/foo'));
     });
 
-    it('returns a partial function that returns it\'s first argument when it begins with /', function() {
+    it('returns a partial function that returns it\'s first argument when it begins with /', function () {
         expect(joinOrReturnAbsolutePath('/foo')).to.be.equal(path.resolve('/foo'));
         expect(joinOrReturnAbsolutePath('/foo/bar')).to.be.equal(path.resolve('/foo/bar'));
     });

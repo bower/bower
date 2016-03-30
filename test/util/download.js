@@ -182,14 +182,14 @@ describe('download', function () {
             var destinationPath = tempDir.getPath(sourceFilename);
 
             return downloadTest({
-                response: function(nock) {
+                response: function (nock) {
                     nock
                     .get('/' + sourceFilename)
                     .replyWithFile(200, sourceFile, {
                         'Content-Encoding' : 'gzip'
                     });
                 },
-                expect: function() {
+                expect: function () {
                     expect(fs.readFileSync(destinationPath, 'ascii'))
                     .to.be('Hello World!\n');
                 },

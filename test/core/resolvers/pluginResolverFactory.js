@@ -18,7 +18,7 @@ describe('pluginResolverFactory', function () {
         logger.removeAllListeners();
     });
 
-    var mockPluginResolver = function resolver (bower) {
+    var mockPluginResolver = function resolver(bower) {
 
         return {
 
@@ -159,7 +159,7 @@ describe('pluginResolverFactory', function () {
 
     describe('.resolve', function () {
         it('should throw \'Resolver did not provide releases of package.\'', function (next) {
-            var mockPluginResolverWithEmptyReleases = function resolver (bower) {
+            var mockPluginResolverWithEmptyReleases = function resolver(bower) {
                 return {
 
                     match: function (source) {
@@ -196,7 +196,7 @@ describe('pluginResolverFactory', function () {
         });
 
         it('should throw \'No version found that was able to satisfy *.\'', function (next) {
-            var mockPluginResolverWithNoMatchingTarget = function resolver (bower) {
+            var mockPluginResolverWithNoMatchingTarget = function resolver(bower) {
 
                 return {
 
@@ -238,7 +238,7 @@ describe('pluginResolverFactory', function () {
         });
 
         it('should throw \'Resolver does not accept version ranges\'', function (next) {
-            var mockPluginResolverWithInvalidTarget = function resolver (bower) {
+            var mockPluginResolverWithInvalidTarget = function resolver(bower) {
                 return {
                     match: function (source) {
                         return true;
@@ -275,7 +275,7 @@ describe('pluginResolverFactory', function () {
 
 
         it('should throw \'Resolver does not implement the "fetch" method.\'', function (next) {
-            var mockPluginResolverWithoutFetch = function resolver (bower) {
+            var mockPluginResolverWithoutFetch = function resolver(bower) {
                 return {
                     match: function (source) {
                         return true;
@@ -305,7 +305,7 @@ describe('pluginResolverFactory', function () {
 
         it('should throw \'Resolver did not provide path to extracted contents of package\'',
            function (next) {
-            var mockPluginResolverWithoutTempPath = function resolver (bower) {
+            var mockPluginResolverWithoutTempPath = function resolver(bower) {
                 return {
 
                     match: function (source) {
@@ -354,7 +354,7 @@ describe('pluginResolverFactory', function () {
             expect(PluginResolver.isTargetable()).to.be.ok();
         });
         it('should reject mockPluginResolverWithoutReleasesFn', function () {
-            var mockPluginResolverWithoutReleasesFn = function resolver (bower) {
+            var mockPluginResolverWithoutReleasesFn = function resolver(bower) {
                 return {
                     match: function (source) {
                         return true;
@@ -388,7 +388,7 @@ describe('pluginResolverFactory', function () {
 
     describe('.match', function () {
         it('should throw when plugin does not implement .match', function () {
-            var mockPluginResolverWithoutMatch = function resolver (bower) {
+            var mockPluginResolverWithoutMatch = function resolver(bower) {
 
                 return {
 
@@ -435,7 +435,7 @@ describe('pluginResolverFactory', function () {
     describe('.locate', function () {
         it('should return source when plugin does not implement .locate', function () {
 
-            var mockPluginResolverWithoutLocate = function resolver (bower) {
+            var mockPluginResolverWithoutLocate = function resolver(bower) {
 
                 return {
 

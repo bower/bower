@@ -17,7 +17,7 @@ describe('bower uninstall', function () {
         }
     });
 
-    beforeEach(function() {
+    beforeEach(function () {
         tempDir.prepare();
     });
 
@@ -32,12 +32,12 @@ describe('bower uninstall', function () {
         interactive: true
     };
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(uninstall.readOptions(['jquery', '-S', '-D']))
         .to.eql([['jquery'], { save: true, saveDev: true }]);
     });
 
-    it('correctly reads long arguments', function() {
+    it('correctly reads long arguments', function () {
         expect(uninstall.readOptions(['jquery', '--save', '--save-dev']))
         .to.eql([['jquery'], { save: true, saveDev: true }]);
     });
@@ -75,8 +75,8 @@ describe('bower uninstall', function () {
             directory: 'other_directory',
             interactive: true
         }])
-        .then(function() {
-            expect(function() {
+        .then(function () {
+            expect(function () {
                 fs.statSync(targetPath);
             }).to.throwException(/no such file or directory/);
         });
@@ -92,8 +92,8 @@ describe('bower uninstall', function () {
             directory: path.resolve(tempDir.path, 'other_directory'),
             interactive: true
         }])
-        .then(function() {
-            expect(function() {
+        .then(function () {
+            expect(function () {
                 fs.statSync(targetPath);
             }).to.throwException(/no such file or directory/);
         });

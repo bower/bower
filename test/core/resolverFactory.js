@@ -341,7 +341,7 @@ describe('resolverFactory', function () {
     });
 
     if (!helpers.hasSvn())
-        describe.skip('should recognize svn remote endpoints correctly', function() {});
+        describe.skip('should recognize svn remote endpoints correctly', function () {});
     else it('should recognize svn remote endpoints correctly', function (next) {
         var promise = Q.resolve();
         var endpoints;

@@ -18,7 +18,7 @@ var normalize = function (string) {
 describe('JsonRenderer', function () {
 
     it('logs simple message to stderr', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new JsonRenderer();
             renderer.log({
                 id: 'foobar',
@@ -26,8 +26,8 @@ describe('JsonRenderer', function () {
             });
 
             renderer.end();
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.eq(normalize(multiline(function () {/*
                 [{
                   "id": "foobar",
                   "message": "hello world"
@@ -38,7 +38,7 @@ describe('JsonRenderer', function () {
     });
 
     it('logs error message to stderr', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new JsonRenderer();
             renderer.error({
                 id: 'foobar',
@@ -51,8 +51,8 @@ describe('JsonRenderer', function () {
                     './bar:23'
                 ]
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.eq(normalize(multiline(function () {/*
                 [{
                   "id": "error",
                   "data": {
@@ -69,14 +69,14 @@ describe('JsonRenderer', function () {
 
     it('prompts for answer', function () {
         var JsonRenderer = jsonRendererWithPrompt({
-            prompt: function(name, opts, callback) {
+            prompt: function (name, opts, callback) {
                 callback(null, 'something2');
             }
         });
 
         var renderer = new JsonRenderer();
 
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             return renderer.prompt([
                 {
                     type: 'input',
@@ -84,12 +84,12 @@ describe('JsonRenderer', function () {
                     message: 'Please enter something',
                     default: 'something'
                 }
-            ]).then(function(response) {
+            ]).then(function (response) {
                 expect(response.field).to.eq('something2');
                 renderer.end();
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(normalize(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.eq(normalize(multiline(function () {/*
                 [{
                   "type": "input",
                   "name": "field",

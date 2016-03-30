@@ -15,12 +15,12 @@ describe('bower home', function () {
         'bower_components/jquery/jquery.js': 'jquery source'
     });
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(prune.readOptions(['-p']))
         .to.eql([{ production: true }]);
     });
 
-    it('correctly reads long arguments', function() {
+    it('correctly reads long arguments', function () {
         expect(prune.readOptions(['--production']))
         .to.eql([{ production: true }]);
     });
@@ -31,7 +31,7 @@ describe('bower home', function () {
             'bower_components/angular/.bower.json': { name: 'angular' }
         });
 
-        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.exists('bower_components/angular/angular.js'))
             .to.be(false);
         });
@@ -42,7 +42,7 @@ describe('bower home', function () {
             'bower_components/angular/angular.js': 'angular source'
         });
 
-        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.exists('bower_components/angular/angular.js'))
             .to.be(true);
         });
@@ -57,7 +57,7 @@ describe('bower home', function () {
             'components/angular/angular.js': 'angular source'
         });
 
-        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(prune, [{}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.exists('components/angular/angular.js')).to.be(false);
             expect(mainPackage.exists('bower_components/angular/angular.js')).to.be(true);
         });

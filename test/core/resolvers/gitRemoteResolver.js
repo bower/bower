@@ -264,7 +264,7 @@ describe('GitRemoteResolver', function () {
             };
         });
 
-        function createCmdHandlerFn (testSource, stderr) {
+        function createCmdHandlerFn(testSource, stderr) {
             return function (cmd, args, options) {
                 expect(cmd).to.be('git');
                 expect(args).to.eql([ 'ls-remote', '--heads', testSource ]);
@@ -394,7 +394,7 @@ describe('GitRemoteResolver', function () {
                     expect(shallowCloningSupported).to.be(true);
 
                     next();
-                }, function(err) {
+                }, function (err) {
                     next(err);
                 });
             });
@@ -439,7 +439,7 @@ describe('GitRemoteResolver', function () {
                     expect(shallowCloningSupported).to.be(true);
 
                     next();
-                }, function(err) {
+                }, function (err) {
                     next(err);
                 });
             });
@@ -493,7 +493,7 @@ describe('GitRemoteResolver', function () {
                     expect(shallowCloningSupported).to.be(true);
 
                     next();
-                }, function(err) {
+                }, function (err) {
                     next(err);
                 });
             });

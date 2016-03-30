@@ -11,7 +11,7 @@ describe('bower cache clean', function () {
     var cacheFilesFactory = function (spec) {
         var files = {};
 
-        object.map(spec, function(bowerJson) {
+        object.map(spec, function (bowerJson) {
             bowerJson._source = bowerJson.name + '/' + bowerJson.version;
             var path = md5(bowerJson._source) + '/' + bowerJson.version + '/.bower.json';
             files[path] = bowerJson;
@@ -38,7 +38,7 @@ describe('bower cache clean', function () {
 
     var cacheDir = new helpers.TempDir(cacheFiles);
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(cacheClean.readOptions(['jquery', 'angular']))
         .to.eql([['jquery', 'angular'], {}]);
     });
@@ -50,7 +50,7 @@ describe('bower cache clean', function () {
             storage: {
                 packages: cacheDir.path
             }
-        }]).spread(function(result) {
+        }]).spread(function (result) {
             object.map(cacheFiles, function (_, cacheFile) {
                 expect(cacheDir.exists(cacheFile)).to.be(false);
             });
@@ -64,7 +64,7 @@ describe('bower cache clean', function () {
             storage: {
                 packages: cacheDir.path
             }
-        }]).spread(function(result) {
+        }]).spread(function (result) {
             var paths = Object.keys(cacheFiles);
             expect(cacheDir.exists(paths[0])).to.be(false);
             expect(cacheDir.exists(paths[1])).to.be(false);
@@ -79,7 +79,7 @@ describe('bower cache clean', function () {
             storage: {
                 packages: cacheDir.path
             }
-        }]).spread(function(result) {
+        }]).spread(function (result) {
             var paths = Object.keys(cacheFiles);
             expect(cacheDir.exists(paths[0])).to.be(false);
             expect(cacheDir.exists(paths[1])).to.be(true);

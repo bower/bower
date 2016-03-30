@@ -10,14 +10,14 @@ var StandardRenderer = helpers.require('lib/renderers/StandardRenderer');
 describe('StandardRenderer', function () {
 
     it('logs generic simple message', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.log({
                 id: 'foobar',
                 message: 'hello world'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.eq(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.eq(multiline(function () {/*
                 bower foobar        hello world
 
             */}));
@@ -25,14 +25,14 @@ describe('StandardRenderer', function () {
     });
 
     it('logs simple error', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.error({
                 code: 'EFOOBAR',
                 message: 'Hello error'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.eq(multiline(function () {/*
                 bower EFOOBAR       Hello error
 
             */}));
@@ -40,15 +40,15 @@ describe('StandardRenderer', function () {
     });
 
     it('logs error with details', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.error({
                 code: 'EFOOBAR',
                 message: 'Hello error',
                 details: '  Some awesome details\nMultiline!    '
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.eq(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.eq(multiline(function () {/*
                 bower EFOOBAR       Hello error
 
                 Additional error details:
@@ -60,15 +60,15 @@ describe('StandardRenderer', function () {
     });
 
     it('logs system details in verbose mode', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer(undefined, { verbose: true });
             renderer.error({
                 code: 'EFOOBAR',
                 message: 'Hello error',
                 details: '  Some awesome details\nMultiline!    '
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.match(new RegExp(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.match(new RegExp(multiline(function () {/*
                 System info:
                 Bower version: [^\r\n]+
                 Node version: [^\r\n]+
@@ -79,7 +79,7 @@ describe('StandardRenderer', function () {
     });
 
     it('logs stack trace in verbose mode', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer(undefined, { verbose: true });
             renderer.error({
                 code: 'EFOOBAR',
@@ -90,8 +90,8 @@ describe('StandardRenderer', function () {
                     './two.js:2'
                 ]
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.string(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.string(multiline(function () {/*
                 Stack trace:
                 ./one.js:1
                 ./two.js:2
@@ -101,15 +101,15 @@ describe('StandardRenderer', function () {
     });
 
     it('logs console trace in verbose mode', function () {
-        return helpers.capture(function() {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer(undefined, { verbose: true });
             renderer.error({
                 code: 'EFOOBAR',
                 message: 'Hello error',
                 details: '  Some awesome details\nMultiline!    '
             });
-        }).spread(function(stdout, stderr) {
-            expect(stderr).to.match(new RegExp(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stderr).to.match(new RegExp(multiline(function () {/*
                 Console trace:
                 Error
                 \s+at StandardRenderer.error \(.+?\)
@@ -118,72 +118,72 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs checkout command log', function() {
-        return helpers.capture(function() {
+    it('outputs checkout command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.log({
                 id: 'checkout',
                 origin: 'jquery#master',
                 message: 'foobar'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower checkout      jquery#foobar
 
             */}));
         });
     });
 
-    it('outputs full progress for wide command', function() {
-        return helpers.capture(function() {
+    it('outputs full progress for wide command', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('install');
             renderer.log({
                 id: 'progress',
                 origin: 'jquery#master',
                 message: 'foobar'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower jquery#master           progress foobar
 
             */}));
         });
     });
 
-    it('outputs full progress for narrow command', function() {
-        return helpers.capture(function() {
+    it('outputs full progress for narrow command', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('help');
             renderer.log({
                 id: 'progress',
                 origin: 'jquery#master',
                 message: 'foobar'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower progress      jquery#master foobar
 
             */}));
         });
     });
 
-    it('outputs extract log just as progress log', function() {
-        return helpers.capture(function() {
+    it('outputs extract log just as progress log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('install');
             renderer.log({
                 id: 'extract',
                 origin: 'jquery#master',
                 message: 'foobar'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower jquery#master            extract foobar
 
             */}));
         });
     });
 
-    it('outputs incompatible log with suitable package', function() {
-        return helpers.capture(function() {
+    it('outputs incompatible log with suitable package', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.log({
                 id: 'incompatible',
@@ -243,8 +243,8 @@ describe('StandardRenderer', function () {
                     ]
                 }
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 Please note that,
                     dependant1#release1, dependant2#release2 depends on fizfuz#~0.0.0 which resolved to fizfuz#0.0.0
@@ -257,8 +257,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs solver log without suitable package', function() {
-        return helpers.capture(function() {
+    it('outputs solver log without suitable package', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.log({
                 id: 'solved',
@@ -310,8 +310,8 @@ describe('StandardRenderer', function () {
                     ]
                 }
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 Unable to find a suitable version for , please choose one by typing one of the numbers below:
                     1) fizfuz#~0.0.0 which resolved to 0.0.0 and is required by dependant1#release1, dependant2#release2
@@ -324,8 +324,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs json log', function() {
-        return helpers.capture(function() {
+    it('outputs json log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer();
             renderer.log({
                 id: 'json',
@@ -338,8 +338,8 @@ describe('StandardRenderer', function () {
                     }
                 }
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 {
                   foo: 'bar',
@@ -353,24 +353,24 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs cached entry log', function() {
-        return helpers.capture(function() {
+    it('outputs cached entry log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('install');
             renderer.log({
                 id: 'cached-entry',
                 origin: 'origin',
                 message: 'message'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower origin                    cached message
 
             */}));
         });
     });
 
-    it('adjusts whitespace when package id too long', function() {
-        return helpers.capture(function() {
+    it('adjusts whitespace when package id too long', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('install', {});
             renderer.log({
                 id: 'generic',
@@ -389,8 +389,8 @@ describe('StandardRenderer', function () {
                 origin: 'short-origin',
                 message: 'message'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower short-origin             generic message
                 bower very-very-long-origin-string          generic message
                 bower short-origin                          generic message
@@ -399,8 +399,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs install command log', function() {
-        return helpers.capture(function() {
+    it('outputs install command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('install', {
                 cwd: '/tmp'
             });
@@ -532,9 +532,9 @@ describe('StandardRenderer', function () {
                     }
                 }
             ]);
-        }).spread(function(stdout, stderr) {
+        }).spread(function (stdout, stderr) {
             if (helpers.isWin()) {
-                expect(stdout).to.equal(multiline(function() {/*
+                expect(stdout).to.equal(multiline(function () {/*
 
                     jquery#0.1.2 components\jquery
 
@@ -558,7 +558,7 @@ describe('StandardRenderer', function () {
 
                 */}));
             } else {
-                expect(stdout).to.equal(multiline(function() {/*
+                expect(stdout).to.equal(multiline(function () {/*
 
                     jquery#0.1.2 components/jquery
 
@@ -585,14 +585,14 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs short info command log', function() {
-        return helpers.capture(function() {
+    it('outputs short info command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('info', {});
             renderer.end({
                 version: '1.2.3'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 {
                   version: '1.2.3'
@@ -602,8 +602,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs full info command log', function() {
-        return helpers.capture(function() {
+    it('outputs full info command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('info', {});
             renderer.end({
                 name: 'foo',
@@ -620,8 +620,8 @@ describe('StandardRenderer', function () {
                     '1.3.0-beta.18'
                 ]
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 {
                   version: '1.2.3'
@@ -639,8 +639,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs full info command log with prereleases', function() {
-        return helpers.capture(function() {
+    it('outputs full info command log with prereleases', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('info', { verbose: true });
             renderer.end({
                 name: 'foo',
@@ -657,8 +657,8 @@ describe('StandardRenderer', function () {
                     '1.3.0-beta.18'
                 ]
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 {
                   version: '1.2.3'
@@ -679,8 +679,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs lookup command log', function() {
-        return helpers.capture(function() {
+    it('outputs lookup command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('lookup', {});
             renderer.end({
                 name: 'bower',
@@ -689,8 +689,8 @@ describe('StandardRenderer', function () {
             renderer.end({
                 name: 'bower'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 bower http://bower.io
                 Package not found.
 
@@ -698,8 +698,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs link command log', function() {
-        return helpers.capture(function() {
+    it('outputs link command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('link', { cwd: '/tmp' });
             renderer.end({
                 src: './foo',
@@ -714,16 +714,16 @@ describe('StandardRenderer', function () {
                     }
                 }]
             });
-        }).spread(function(stdout, stderr) {
+        }).spread(function (stdout, stderr) {
             if (helpers.isWin()) {
-                expect(stdout).to.equal(multiline(function() {/*
+                expect(stdout).to.equal(multiline(function () {/*
                     bower                    link ./bar > ./foo
 
                     jquery#0.1.2 components\jquery
 
                 */}));
             } else {
-                expect(stdout).to.equal(multiline(function() {/*
+                expect(stdout).to.equal(multiline(function () {/*
                     bower                    link ./bar > ./foo
 
                     jquery#0.1.2 components/jquery
@@ -733,8 +733,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs search command log', function() {
-        return helpers.capture(function() {
+    it('outputs search command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('search');
             renderer.end([
                 {
@@ -746,8 +746,8 @@ describe('StandardRenderer', function () {
                     url: 'http://bower.io'
                 }
             ]);
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 Search results:
 
                     jquery http://jquery.io
@@ -757,15 +757,15 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs register command log', function() {
-        return helpers.capture(function() {
+    it('outputs register command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('register');
             renderer.end({
                 name: 'jquery',
                 url: 'http://jquery.io'
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 Package jquery registered successfully!
                 All valid semver tags on http://jquery.io will be available as versions.
@@ -777,8 +777,8 @@ describe('StandardRenderer', function () {
         });
     });
 
-    it('outputs cache list command log', function() {
-        return helpers.capture(function() {
+    it('outputs cache list command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('cache list');
             renderer.end([
                 {
@@ -789,16 +789,16 @@ describe('StandardRenderer', function () {
                     }
                 }
             ]);
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
                 awesome-jquery=jquery#0.1.1
 
             */}));
         });
     });
 
-    it('outputs help command log', function() {
-        return helpers.capture(function() {
+    it('outputs help command log', function () {
+        return helpers.capture(function () {
             var renderer = new StandardRenderer('help');
             renderer.end({
                 'command': 'uninstall',
@@ -824,8 +824,8 @@ describe('StandardRenderer', function () {
                     }
                 ]
             });
-        }).spread(function(stdout, stderr) {
-            expect(stdout).to.equal(multiline(function() {/*
+        }).spread(function (stdout, stderr) {
+            expect(stdout).to.equal(multiline(function () {/*
 
                 Usage:
 

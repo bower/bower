@@ -21,50 +21,50 @@ describe('bower list', function () {
         }
     });
 
-    it('bumps patch version', function() {
+    it('bumps patch version', function () {
         mainPackage.prepare();
 
-        return helpers.run(version, ['patch', {}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(version, ['patch', {}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.readJson('bower.json').version).to.be('0.0.1');
         });
     });
 
-    it('bumps minor version', function() {
+    it('bumps minor version', function () {
         mainPackage.prepare();
 
-        return helpers.run(version, ['minor', {}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(version, ['minor', {}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.readJson('bower.json').version).to.be('0.1.0');
         });
     });
 
-    it('bumps major version', function() {
+    it('bumps major version', function () {
         mainPackage.prepare();
 
-        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.readJson('bower.json').version).to.be('1.0.0');
         });
     });
 
-    it('changes version', function() {
+    it('changes version', function () {
         mainPackage.prepare();
 
-        return helpers.run(version, ['1.2.3', {}, { cwd: mainPackage.path }]).then(function() {
+        return helpers.run(version, ['1.2.3', {}, { cwd: mainPackage.path }]).then(function () {
             expect(mainPackage.readJson('bower.json').version).to.be('1.2.3');
         });
     });
 
-    it('returns the new version', function() {
+    it('returns the new version', function () {
         mainPackage.prepare();
 
-        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function(results) {
+        return helpers.run(version, ['major', {}, { cwd: mainPackage.path }]).then(function (results) {
             expect(results[0]).to.be('1.0.0');
         });
     });
 
-    it('bumps patch version, create commit, and tag', function() {
+    it('bumps patch version, create commit, and tag', function () {
         gitPackage.prepareGit();
 
-        return helpers.run(version, ['patch', {}, { cwd: gitPackage.path }]).then(function() {
+        return helpers.run(version, ['patch', {}, { cwd: gitPackage.path }]).then(function () {
             expect(gitPackage.readJson('bower.json').version).to.be('0.0.1');
 
             var tags = gitPackage.git('tag');
@@ -74,10 +74,10 @@ describe('bower list', function () {
         });
     });
 
-    it('bumps with custom commit message', function() {
+    it('bumps with custom commit message', function () {
         gitPackage.prepareGit();
 
-        return helpers.run(version, ['patch', { message: 'Bumping %s, because what'}, { cwd: gitPackage.path }]).then(function() {
+        return helpers.run(version, ['patch', { message: 'Bumping %s, because what'}, { cwd: gitPackage.path }]).then(function () {
             expect(gitPackage.readJson('bower.json').version).to.be('0.0.1');
 
             var tags = gitPackage.git('tag');

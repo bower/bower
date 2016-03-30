@@ -15,7 +15,7 @@ describe('bower list', function () {
 
     var gitPackage = new helpers.TempDir();
 
-    var install = function(packages, options, config) {
+    var install = function (packages, options, config) {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
@@ -23,7 +23,7 @@ describe('bower list', function () {
         return helpers.run(commands.install, [packages, options, config]);
     };
 
-    var list = function(options, config) {
+    var list = function (options, config) {
         config = object.merge(config || {}, {
             cwd: tempDir.path
         });
@@ -31,7 +31,7 @@ describe('bower list', function () {
         return helpers.run(commands.list, [options, config]);
     };
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(commands.list.readOptions(['-p', '-r']))
         .to.eql([{
             paths: true,
@@ -39,7 +39,7 @@ describe('bower list', function () {
         }]);
     });
 
-    it('correctly reads long arguments', function() {
+    it('correctly reads long arguments', function () {
         expect(commands.list.readOptions(['--paths', '--relative']))
         .to.eql([{
             paths: true,
@@ -50,7 +50,7 @@ describe('bower list', function () {
     it('lists no packages when nothing installed', function () {
         tempDir.prepare();
 
-        return list().spread(function(results) {
+        return list().spread(function (results) {
             expect(results).to.be.an(Object);
             expect(results.canonicalDir).to.equal(tempDir.path);
             expect(results.pkgMeta.dependencies).to.eql({});
@@ -71,8 +71,8 @@ describe('bower list', function () {
         }).prepare();
         mainPackage.prepare();
 
-        return install([mainPackage.path]).then(function() {
-            return list().spread(function(results) {
+        return install([mainPackage.path]).then(function () {
+            return list().spread(function (results) {
                 expect(results).to.be.an(Object);
                 expect(results.canonicalDir).to.equal(tempDir.path);
                 expect(results.pkgMeta.dependencies).to.eql({
@@ -104,8 +104,8 @@ describe('bower list', function () {
         }).prepare();
         mainPackage.prepare();
 
-        return install([mainPackage.path]).then(function() {
-            return list({relative: true}).spread(function(results) {
+        return install([mainPackage.path]).then(function () {
+            return list({relative: true}).spread(function (results) {
                 expect(results).to.be.an(Object);
                 expect(results.canonicalDir).to.equal(tempDir.path);
                 expect(results.dependencies).to.be.an(Object);
@@ -132,8 +132,8 @@ describe('bower list', function () {
         }).prepare();
         mainPackage.prepare();
 
-        return install([mainPackage.path]).then(function() {
-            return list({paths: true}).spread(function(results) {
+        return install([mainPackage.path]).then(function () {
+            return list({paths: true}).spread(function (results) {
                 expect(results).to.be.an(Object);
                 expect(results.package).to.equal(
                     'bower_components/package/test.txt'
@@ -152,8 +152,8 @@ describe('bower list', function () {
         }).prepare();
         mainPackage.prepare();
 
-        return install([mainPackage.path]).then(function() {
-            return list({paths: true}).spread(function(results) {
+        return install([mainPackage.path]).then(function () {
+            return list({paths: true}).spread(function (results) {
                 expect(results).to.be.an(Object);
                 expect(results.package).to.be.an(Object);
                 expect(results.package).to.eql([
@@ -191,8 +191,8 @@ describe('bower list', function () {
             }
         });
 
-        return install().then(function() {
-            return list().spread(function(results) {
+        return install().then(function () {
+            return list().spread(function (results) {
                 expect(results).to.be.an(Object);
                 expect(results.canonicalDir).to.equal(tempDir.path);
                 expect(results.pkgMeta.dependencies).to.eql({
@@ -241,8 +241,8 @@ describe('bower list', function () {
             }
         });
 
-        return install().then(function() {
-            return list({relative: true}).spread(function(results) {
+        return install().then(function () {
+            return list({relative: true}).spread(function (results) {
                 expect(results.canonicalDir).to.equal(tempDir.path);
                 expect(results.pkgMeta.dependencies).to.eql({
                     package: gitPackage.path + '#1.0.0'

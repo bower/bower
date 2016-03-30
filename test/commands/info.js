@@ -5,7 +5,7 @@ var info = helpers.command('info');
 
 describe('bower info', function () {
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(info.readOptions(['pkg', 'property']))
         .to.eql(['pkg', 'property']);
     });
@@ -30,7 +30,7 @@ describe('bower info', function () {
     });
 
     it('just returns if not package is specified', function () {
-        return helpers.run(info).spread(function(results) {
+        return helpers.run(info).spread(function (results) {
             expect(results).to.be(undefined);
         });
     });
@@ -38,7 +38,7 @@ describe('bower info', function () {
     it('shows info about given package', function () {
         mainPackage.prepareGit({});
 
-        return helpers.run(info, [mainPackage.path]).spread(function(results) {
+        return helpers.run(info, [mainPackage.path]).spread(function (results) {
             expect(results).to.eql({
                 'latest': meta2,
                 'name': mainPackage.path,

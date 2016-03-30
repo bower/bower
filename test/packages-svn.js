@@ -10,7 +10,7 @@ var cmd = require('../lib/util/cmd');
 var packages = require('./packages-svn.json');
 var nopt = require('nopt');
 
-var isWin = function() {
+var isWin = function () {
     return process.platform === 'win32';
 };
 

@@ -22,13 +22,13 @@ describe('bower link', function () {
 
     var linksDir = new helpers.TempDir();
 
-    beforeEach(function() {
+    beforeEach(function () {
         mainPackage.prepare();
         otherPackage.prepare();
         linksDir.prepare();
     });
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(link.readOptions(['jquery', 'angular']))
         .to.eql(['jquery', 'angular']);
     });
@@ -41,7 +41,7 @@ describe('bower link', function () {
                     links: linksDir.path
                 }
             }
-        ]).then(function() {
+        ]).then(function () {
             expect(linksDir.read('package/index.js'))
             .to.be('Hello World!');
         });
@@ -64,7 +64,7 @@ describe('bower link', function () {
                     }
                 }
             ]);
-        }).then(function() {
+        }).then(function () {
             expect(otherPackage.read('bower_components/package/index.js'))
             .to.be('Hello World!');
         });
@@ -88,7 +88,7 @@ describe('bower link', function () {
                     }
                 }
             ]);
-        }).then(function() {
+        }).then(function () {
             expect(otherPackage.read('valid-extend/package/index.js'))
             .to.be('Hello World!');
         });
@@ -113,7 +113,7 @@ describe('bower link', function () {
                     }
                 }
             ]);
-        }).then(function() {
+        }).then(function () {
             expect(otherPackage.read('valid-override/package/index.js'))
             .to.be('Hello World!');
         });
@@ -136,7 +136,7 @@ describe('bower link', function () {
                     }
                 }
             ]);
-        }).then(function() {
+        }).then(function () {
             expect(otherPackage.read('bower_components/local/index.js'))
             .to.be('Hello World!');
         });
@@ -150,9 +150,9 @@ describe('bower link', function () {
                     links: linksDir.path
                 }
             }
-        ]).then(function() {
+        ]).then(function () {
             throw 'Should fail creating a link!';
-        }).fail(function(reason) {
+        }).fail(function (reason) {
             expect(reason.code).to.be('ENOENT');
             expect(reason.message).to.be('Failed to create link to package');
         });

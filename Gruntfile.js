@@ -12,9 +12,8 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        jscs: {
+        eslint: {
             options: {
-                config: '.jscsrc',
                 fix: true
             },
             files: [
@@ -59,15 +58,15 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: ['<%= jscs.files %>'],
-            tasks: ['jscs', 'simplemocha:short']
+            files: ['<%= eslint.files %>'],
+            tasks: ['eslint', 'simplemocha:short']
         }
     });
 
     grunt.registerTask('assets', ['exec:assets-force']);
-    grunt.registerTask('test', ['jscs', 'exec:assets', 'simplemocha:full']);
+    grunt.registerTask('test', ['eslint', 'exec:assets', 'simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
-    grunt.registerTask('travis', ['jscs', 'exec:assets', 'exec:cover', 'exec:coveralls']);
+    grunt.registerTask('travis', ['eslint', 'exec:assets', 'exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 
     grunt.task.registerTask('publish', 'Perform final checks and publish Bower', function () {

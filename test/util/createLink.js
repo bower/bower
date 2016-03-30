@@ -16,26 +16,26 @@ describe('createLink', function () {
 
     var dstDir = new helpers.TempDir();
 
-    beforeEach(function() {
+    beforeEach(function () {
         srcDir.prepare();
         dstDir.prepare();
     });
 
-    it('creates a symlink to a file', function() {
+    it('creates a symlink to a file', function () {
 
         var src = path.join(srcDir.path, 'someFile'),
             dst = path.join(dstDir.path, 'someFile');
 
         return createLink(src, dst)
-        .then(function() {
+        .then(function () {
             return Q.nfcall(fs.readlink, dst)
-            .then(function(linkString) {
+            .then(function (linkString) {
                 expect(linkString).to.be.equal(src);
             });
         });
     });
 
-    it('throws an error when destination already exists', function() {
+    it('throws an error when destination already exists', function () {
 
         var src = path.join(srcDir.path, 'someFile'),
             dst = path.join(dstDir.path);
@@ -43,11 +43,11 @@ describe('createLink', function () {
         var deferred = Q.defer();
 
         createLink(src, dst)
-        .catch(function(err) {
+        .catch(function (err) {
             expect(err.code).to.be.equal('EEXIST');
             deferred.resolve();
         })
-        .then(function() {
+        .then(function () {
             deferred.reject();
         });
 

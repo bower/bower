@@ -7,7 +7,7 @@ describe('bower init', function () {
 
     var mainPackage = new helpers.TempDir();
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(init.readOptions([]))
         .to.eql([]);
     });
@@ -74,7 +74,7 @@ describe('bower init', function () {
 
         var logger = init({ cwd: mainPackage.path, interactive: true });
 
-        return helpers.expectEvent(logger, 'log').spread(function(event) {
+        return helpers.expectEvent(logger, 'log').spread(function (event) {
             expect(event.level).to.be('warn');
             expect(event.message).to.be(
                 'The existing bower.json file will be used and filled in'
@@ -106,7 +106,7 @@ describe('bower init', function () {
         .spread(function (prompt, answer) {
 
             // Get defaults from prompt
-            var defaults = prompt.reduce(function(memo, obj) {
+            var defaults = prompt.reduce(function (memo, obj) {
                 memo[obj.name] = obj['default'];
                 return memo;
             }, {});

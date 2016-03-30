@@ -52,13 +52,13 @@ var loginFactory = function (options) {
 
 describe('bower login', function () {
 
-    it('correctly reads arguments', function() {
+    it('correctly reads arguments', function () {
         expect(login.readOptions(['--token', 'foobar']))
         .to.eql([{ token: 'foobar' }]);
     });
 
     it('fails if run in non-interactive shell without token passed', function () {
-        return helpers.run(login, []).fail(function(reason) {
+        return helpers.run(login, []).fail(function (reason) {
             expect(reason.message).to.be('Login requires an interactive shell');
             expect(reason.code).to.be('ENOINT');
         });
@@ -81,7 +81,7 @@ describe('bower login', function () {
         });
 
         return helpers.expectEvent(logger, 'end')
-        .spread(function(options) {
+        .spread(function (options) {
             expect(options.token).to.be('faketoken');
         });
     });
@@ -105,7 +105,7 @@ describe('bower login', function () {
         });
 
         return helpers.expectEvent(logger, 'end')
-        .spread(function(options) {
+        .spread(function (options) {
             expect(options.token).to.be('faketwoauthtoken');
         });
     });
