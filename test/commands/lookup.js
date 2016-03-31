@@ -7,16 +7,20 @@ describe('bower lookup', function () {
 
     var lookupWithResult = function (response) {
         return helpers.command('lookup', {
-            'bower-registry-client': function () {
+            '../core/PackageRepository': function () {
                 return {
-                    lookup: function (query, callback) {
-                        if (query in response) {
-                            callback(null, response[query]);
-                        } else {
-                            callback();
-                        }
+                    getRegistryClient: function () {
+                        return {
+                            lookup: function (query, callback) {
+                                if (query in response) {
+                                    callback(null, response[query]);
+                                } else {
+                                    callback();
+                                }
+                            }
+                        };
                     }
-                };
+                }
             }
         });
     };

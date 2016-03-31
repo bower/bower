@@ -14,10 +14,14 @@ describe('bower search', function () {
     it('searches for single repository', function () {
         return Q.Promise(function (resolve) {
             var search = helpers.command('search', {
-                'bower-registry-client': function () {
+                '../core/PackageRepository': function () {
                     return {
-                        search: resolve
-                    };
+                        getRegistryClient: function () {
+                            return {
+                                search: resolve
+                            };
+                        }
+                    }
                 }
             });
 
@@ -32,10 +36,14 @@ describe('bower search', function () {
 
         return Q.Promise(function (resolve) {
             var search = helpers.command('search', {
-                'bower-registry-client': function () {
+                '../core/PackageRepository': function () {
                     return {
-                        list: resolve
-                    };
+                        getRegistryClient: function () {
+                            return {
+                                list: resolve
+                            };
+                        }
+                    }
                 }
             });
 
@@ -47,10 +55,14 @@ describe('bower search', function () {
         var interactiveConfig = { interactive: true, json: true };
 
         var search = helpers.command('search', {
-            'bower-registry-client': function () {
+            '../core/PackageRepository': function () {
                 return {
-                    list: function (cb) { return cb(null, 'foobar'); }
-                };
+                    getRegistryClient: function () {
+                        return {
+                            list: function (cb) { return cb(null, 'foobar'); }
+                        };
+                    }
+                }
             }
         });
 
@@ -64,11 +76,15 @@ describe('bower search', function () {
         var interactiveConfig = { interactive: true };
 
         var search = helpers.command('search', {
-            'bower-registry-client': function () {
+            '../core/PackageRepository': function () {
                 return {
-                    list: function () { throw 'list called'; },
-                    search: function () { throw 'search called'; }
-                };
+                    getRegistryClient: function () {
+                        return {
+                            list: function () { throw 'list called'; },
+                            search: function () { throw 'search called'; }
+                        };
+                    }
+                }
             }
         });
 
