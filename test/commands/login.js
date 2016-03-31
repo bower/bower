@@ -148,7 +148,7 @@ describe('bower login', function () {
     it('saves username in config', function (done) {
         var login = loginFactory({
             set: function (key, value) {
-                if(key === 'username') {
+                if (key === 'username') {
                     expect(value).to.be('user');
                     done();
                 }
@@ -168,7 +168,7 @@ describe('bower login', function () {
     it('saves received token in accessToken config', function (done) {
         var login = loginFactory({
             set: function (key, value) {
-                if(key === 'accessToken') {
+                if (key === 'accessToken') {
                     expect(value).to.be('faketoken');
                     done();
                 }

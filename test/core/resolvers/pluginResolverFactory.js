@@ -305,45 +305,45 @@ describe('pluginResolverFactory', function () {
 
         it('should throw \'Resolver did not provide path to extracted contents of package\'',
            function (next) {
-            var mockPluginResolverWithoutTempPath = function resolver(bower) {
-                return {
+               var mockPluginResolverWithoutTempPath = function resolver(bower) {
+                   return {
 
-                    match: function (source) {
-                        return true;
-                    },
+                       match: function (source) {
+                           return true;
+                       },
 
-                    releases: function (source) {
-                        return [
+                       releases: function (source) {
+                           return [
                             { target: 'v1.0.0', version: '1.0.0' },
                             { target: 'v1.0.1', version: '1.0.1' }
-                        ];
-                    },
+                           ];
+                       },
 
-                    fetch: function (endpoint, cached) {
-                        if (cached && cached.version) {
-                            return;
-                        }
+                       fetch: function (endpoint, cached) {
+                           if (cached && cached.version) {
+                               return;
+                           }
 
-                        return {
-                            tempPath: null,
-                            removeIgnores: true
-                        };
-                    }
-                };
-            };
-            var PluginResolver = pluginResolverFactory(
+                           return {
+                               tempPath: null,
+                               removeIgnores: true
+                           };
+                       }
+                   };
+               };
+               var PluginResolver = pluginResolverFactory(
                 mockPluginResolverWithoutTempPath,
                 defaultConfig()
             );
-            var path = 'file://' + testPackage;
-            var resolver = new PluginResolver(path);
-            resolver.resolve()
+               var path = 'file://' + testPackage;
+               var resolver = new PluginResolver(path);
+               resolver.resolve()
             .catch(function (e) {
                 expect(e.message).to
                   .equal('Resolver did not provide path to extracted contents of package.');
                 next();
             });
-        });
+           });
 
     });
 

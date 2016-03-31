@@ -16,11 +16,19 @@
     "no-unused-vars": 0,
     "strict": 0,
     "semi": 0,
-    "no-cond-assign": [
-      2,
-      "except-parens"
-    ],
-    "no-debugger": 0,
+    "comma-spacing": 2,
+    "quote-props": [2, "consistent", { "keywords": true }],
+    "quotes": [2, "single", "avoid-escape"],
+    "indent": [2, 4],
+    "no-cond-assign": [ 2, "except-parens" ],
+    "no-debugger": 2,
+    "no-dupe-args": 2,
+    "no-dupe-keys": 2,
+    "no-duplicate-case": 2,
+    "no-unreachable": 2,
+    "valid-typeof": 2,
+    "no-fallthrough": 2,
+    "no-ex-assign": 2,
     "no-eq-null": 0,
     "no-eval": 0,
     "no-unused-expressions": 0,
@@ -32,8 +40,13 @@
     "no-new-func": 2,
     "no-new-wrappers": 2,
     "no-invalid-this": 0,
-    "space-before-blocks": 2,
+    "space-before-blocks": [2, "always"],
     "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}],
-    "space-infix-ops": 2
+    "space-infix-ops": 2,
+    "keyword-spacing": 2,
+    "new-parens": 2,
+    "no-multiple-empty-lines": [2, { max: 2}],
+    "eol-last": 2,
+    "no-trailing-spaces": 2
   }
 }

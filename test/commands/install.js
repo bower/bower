@@ -243,7 +243,7 @@ describe('bower install', function () {
             expect(require('fs').readFileSync('/tmp/bower-absolute-destination-directory/package/foo', 'utf8').toString()).to.be('bar');
             var deferred = Q.defer();
             rimraf('/tmp/bower-absolute-destination-directory', function (err) {
-                if(err) {
+                if (err) {
                     deferred.reject(err);
                 } else {
                     deferred.resolve();
@@ -528,8 +528,8 @@ describe('bower install', function () {
             .reply(500);
 
         return helpers.run(install, [
-          undefined,
-          undefined,
+            undefined,
+            undefined,
           { proxy: 'http://dummy.local/' }
         ])
         .fail(function (error) {

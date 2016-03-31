@@ -43,18 +43,18 @@ module.exports = function (grunt) {
             }
         },
         exec: {
-            assets: {
+            'assets': {
                 command: 'node test/packages.js && node test/packages-svn.js'
             },
             'assets-force': {
                 command: 'node test/packages.js --force && node test/packages-svn.js --force'
             },
-            cover: {
+            'cover': {
                 command: 'node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
-            coveralls: {
+            'coveralls': {
                 command: 'npm run coveralls < test/reports/lcov.info',
-                exitCodes: [0,1,2,3] // Alow for failure for coverage report
+                exitCodes: [0, 1, 2, 3] // Alow for failure for coverage report
             }
         },
         watch: {
