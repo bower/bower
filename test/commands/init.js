@@ -25,7 +25,6 @@ describe('bower init', function () {
             answer({
                 name: 'test-name',
                 description: 'test-description',
-                moduleType: 'test-moduleType',
                 keywords: 'test-keyword',
                 authors: 'test-author',
                 license: 'test-license',
@@ -45,7 +44,6 @@ describe('bower init', function () {
                 homepage: 'test-homepage',
                 authors: [ 'test-author' ],
                 description: 'test-description',
-                moduleType: 'test-moduleType',
                 keywords: [ 'test-keyword' ],
                 license: 'test-license',
                 private: true
@@ -116,7 +114,6 @@ describe('bower init', function () {
                 name: defaults.name,
                 description: defaults.description,
                 main: defaults.main,
-                moduleType: defaults.moduleType,
                 keywords: defaults.keywords,
                 authors: defaults.authors,
                 license: defaults.license,
