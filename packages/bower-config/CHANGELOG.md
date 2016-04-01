@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.1
+
+- Ignore hook scripts for environment variable expansion
+
 ## 1.3.0 - 2015-12-07
 
 - Allow the use of environment variables in .bowerrc. Fixes [#41](https://github.com/bower/config/issues/41)
