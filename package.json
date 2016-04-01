@@ -26,7 +26,7 @@
     "chalk": "^1.0.0",
     "chmodr": "^1.0.2",
     "configstore": "^2.0.0",
-    "decompress-zip": "^0.1.0",
+    "decompress-zip": "^0.2.1",
     "destroy": "^1.0.3",
     "findup-sync": "^0.3.0",
     "fs-write-stream-atomic": "1.0.8",
