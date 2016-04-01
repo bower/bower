@@ -52,6 +52,7 @@
     "request": "2.67.0",
     "request-progress": "0.3.1",
     "requireg": "^0.1.5",
+    "resolve": "^1.1.7",
     "retry": "0.6.1",
     "rimraf": "^2.2.8",
     "semver": "^2.3.0",
