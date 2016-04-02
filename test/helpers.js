@@ -159,7 +159,7 @@ exports.TempDir = (function () {
     TempDir.prototype.latestGitTag = function () {
         var versions = this.git('tag')
             .split(/\r?\n/)
-            .map(function(t) { return t.slice(1); })
+            .map(function (t) { return t.slice(1); })
             .filter(semver.valid)
             .sort(semver.compare);
 
