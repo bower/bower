@@ -11,6 +11,8 @@
 - Update opn package to fix issues with "bower open" command on Windows
 - Update bower-config
   - Do not interpolate environment variables in script hooks, fixes bower/config#47
+- Update bower-json
+  - Validate package name more strictly and allow only latin letters, dots, dashes and underscores 
 - Add support for "save" and "save-exact" in .bowerrc, #2161
 
 ## 1.7.7 - 2016-01-27
