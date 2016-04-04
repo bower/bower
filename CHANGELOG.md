@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.8 - 2016-01-04
+## 1.7.8 - 2016-04-04
 
 - Don't ask for git credentials in non-interactive session, fixes #956 #1009
 - Prevent swallowing exceptions with programmatic api, fixes #2187
