@@ -1,6 +1,6 @@
 {
   "name": "bower-json",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Read bower.json files with semantics, normalisation, defaults and validation",
   "author": "Twitter",
   "license": "MIT",
