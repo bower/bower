@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.7.8 - 2016-01-04
+
+- Don't ask for git credentials in non-interactive session, fixes #956 #1009
+- Prevent swallowing exceptions with programmatic api, fixes #2187
+- Update graceful-fs to 4.x in all dependences, fixes nodejs/node#5213
+- Resolve pluggable resolvers using cwd and fallback to global modules, fixes #1919
+- Upgrade handlebars to 4.0.5, closes #2195
+- Replace all % chatacters in defined scripts, instead of only first one, fixes #2174
+- Update opn package to fix issues with "bower open" command on Windows
+- Update bower-config
+  - Do not interpolate environment variables in script hooks, fixes bower/config#47
+- Add support for "save" and "save-exact" in .bowerrc, #2161
+
 ## 1.7.7 - 2016-01-27
 
 Revert locations of all files while still packaging `node_modules`.
