@@ -1,3 +1,7 @@
+# 0.7.1
+
+- Update graceful-fs to 4.x
+
 # 0.7.0
 
 - Add getIssues function to retrieve all errors and warnings
