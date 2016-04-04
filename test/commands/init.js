@@ -83,7 +83,7 @@ describe('bower init', function () {
     it('gets defaults from package.json', function () {
         mainPackage.prepare({
             'package.json': {
-                'name': 'name from npm',
+                'name': 'name-from-npm',
                 'description': 'description from npm',
                 'main': 'index.js',
                 'keywords': [
@@ -129,7 +129,7 @@ describe('bower init', function () {
         })
         .then(function () {
             expect(mainPackage.readJson('bower.json')).to.eql({
-                'name': 'name from npm',
+                'name': 'name-from-npm',
                 'description': 'description from npm',
                 'main': 'index.js',
                 'keywords': [
