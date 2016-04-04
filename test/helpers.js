@@ -14,6 +14,7 @@ var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
 var nock = require('nock');
+var semver = require('semver');
 
 // For better promise errors
 Q.longStackSupport = true;
@@ -152,6 +153,20 @@ exports.TempDir = (function () {
             throw new Error(result.stderr);
         } else {
             return result.stdout.toString();
+        }
+    };
+
+    TempDir.prototype.latestGitTag = function () {
+        var versions = this.git('tag')
+            .split(/\r?\n/)
+            .map(function (t) { return t.slice(1); })
+            .filter(semver.valid)
+            .sort(semver.compare);
+
+        if (versions.length >= 1) {
+            return versions[versions.length - 1];
+        } else {
+            throw new Error('No valid git version tags found.');
         }
     };
 
