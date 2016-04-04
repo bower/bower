@@ -272,6 +272,12 @@ describe('.parse', function () {
 });
 
 describe('.getIssues', function () {
+    it('should print no errors even for weird package names', function () {
+        var json = { name: '@gruNt/my dependency' };
+
+        expect(bowerJson.getIssues(json).errors).to.be.empty();
+    });
+
     it('should validate the name length', function () {
         var json = { name: 'a_123456789_123456789_123456789_123456789_123456789_z' };
 
@@ -284,7 +290,7 @@ describe('.getIssues', function () {
         var json = { name: 'gruNt' };
 
         expect(bowerJson.getIssues(json).warnings).to.contain(
-            'The "name" must be lowercase'
+            'The "name" is recommended to be lowercase, can contain digits, dots, dashes'
         );
     });
 

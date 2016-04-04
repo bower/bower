@@ -136,16 +136,16 @@ function getIssues(json) {
     if (!json.name) {
         errors.push('No "name" property set');
     } else {
-        if (!/^[a-zA-Z0-9_][a-zA-Z0-9\.\-_]*$/.test(json.name)) {
-            errors.push('Name must be lowercase string, with dots, dashes, or @');
+        if (!/^[a-zA-Z0-9_@][a-zA-Z0-9_@\.\- \/]*$/.test(json.name)) {
+            errors.push('Name must be lowercase, can contain digits, dots, dashes, "@" or spaces');
         }
 
         if (json.name.length > 50) {
             warnings.push('The "name" is too long, the limit is 50 characters');
         }
 
-        if (/[A-Z]/.test(json.name)) {
-            warnings.push('The "name" must be lowercase');
+        if (!/^[a-z0-9_][a-z0-9_\.\-]*$/.test(json.name)) {
+            warnings.push('The "name" is recommended to be lowercase, can contain digits, dots, dashes');
         }
 
         if (/^[\.-]/.test(json.name)) {
