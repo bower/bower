@@ -1,4 +1,4 @@
-# 0.7.1
+# 0.8.0
 
 - Update graceful-fs to 4.x
 
