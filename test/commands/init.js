@@ -143,4 +143,19 @@ describe('bower init', function () {
             });
         });
     });
+
+    it('can handle strange characters', function () {
+        mainPackage.prepare({
+            'package.json': {
+                'name': 'name/from npm'
+            }
+        });
+
+        var logger = init({
+            cwd: mainPackage.path,
+            interactive: true
+        });
+
+        return helpers.expectEvent(logger, 'prompt');
+    });
 });

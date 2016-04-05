@@ -784,32 +784,6 @@ describe('Resolver', function () {
             })
             .done();
         });
-
-        it('should warn user for missing attributes in bower.json', function (next) {
-            var resolver = create('fooooo');
-            resolver._tempDir = tempDir;
-            var notifiedCount = 0;
-            logger.on('log', function (log) {
-                notifiedCount ++;
-                expect(log).to.be.an('object');
-                expect(log.level).to.be('warn');
-                if (notifiedCount === 1) {
-                    expect(log.message).to.contain('bar is missing "main" entry in bower.json');
-                } else {
-                    expect(log.message).to.contain('bar is missing "ignore" entry in bower.json');
-                }
-            });
-            resolver._savePkgMeta({ name: 'bar' });
-            expect(notifiedCount).to.be(2);
-
-            resolver._savePkgMeta({ name: 'bar', main: 'foo' });
-            expect(notifiedCount).to.be(3);
-
-            // should not warn again
-            resolver._savePkgMeta({ name: 'bar', main: 'flart', ignore: 'blat' });
-            expect(notifiedCount).to.be(3);
-            next();
-        });
     });
 
     describe('#isTargetable', function () {
