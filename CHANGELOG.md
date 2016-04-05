@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.8 - 2016-04-05
+
+- Show warnings for invalid bower.json fields
+- Update bower-json
+  - Less strict validation on package name (allow spaces, slashes, and "@")
+
 ## 1.7.8 - 2016-04-04
 
 - Don't ask for git credentials in non-interactive session, fixes #956 #1009
@@ -12,7 +18,7 @@
 - Update bower-config
   - Do not interpolate environment variables in script hooks, fixes bower/config#47
 - Update bower-json
-  - Validate package name more strictly and allow only latin letters, dots, dashes and underscores 
+  - Validate package name more strictly and allow only latin letters, dots, dashes and underscores
 - Add support for "save" and "save-exact" in .bowerrc, #2161
 
 ## 1.7.7 - 2016-01-27
