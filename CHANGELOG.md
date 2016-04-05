@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.7.8 - 2016-04-05
+## 1.7.9 - 2016-04-05
 
 - Show warnings for invalid bower.json fields
 - Update bower-json
