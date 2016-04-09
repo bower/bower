@@ -70,8 +70,6 @@ function parse(content, file) {
         error.code = 'EMALFORMED';
         throw error;
     }
-
-    return null;
 }
 
 function json(file) {
