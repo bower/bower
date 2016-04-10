@@ -568,7 +568,7 @@ describe('resolverFactory', function () {
         callFactory({ source: 'pure' })
         .then(function (resolver) {
             expect(resolver).to.be.a(resolvers.GitRemote);
-            expect(resolver.getSource()).to.equal('git://github.com/yui/pure-release.git');
+            expect(resolver.getSource()).to.equal('https://github.com/yui/pure-release.git');
             expect(resolver.getTarget()).to.equal('*');
         })
         .then(function () {
@@ -576,7 +576,7 @@ describe('resolverFactory', function () {
             return callFactory({ source: 'pure', name: 'foo' })
             .then(function (resolver) {
                 expect(resolver).to.be.a(resolvers.GitRemote);
-                expect(resolver.getSource()).to.equal('git://github.com/yui/pure-release.git');
+                expect(resolver.getSource()).to.equal('https://github.com/yui/pure-release.git');
                 expect(resolver.getName()).to.equal('foo');
                 expect(resolver.getTarget()).to.equal('*');
             });
