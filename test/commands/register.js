@@ -86,6 +86,19 @@ describe('bower register', function () {
         });
     });
 
+    it('should call registry client with name and github source', function () {
+        mainPackage.prepare();
+
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
+        return helpers.run(register, ['some-name', 'some-repo/package'])
+        .spread(function (result) {
+            expect(result).to.eql({
+                // Result from register action on stub
+                name: 'some-name', url: 'git@github.com:some-repo/package.git'
+            });
+        });
+    });
+
     it('should confirm in interactive mode', function () {
         mainPackage.prepare();
 
