@@ -90,11 +90,24 @@ describe('bower register', function () {
         mainPackage.prepare();
 
         var register = registerFactory(mainPackage.path, mainPackage.meta());
-        return helpers.run(register, ['some-name', 'some-repo/package'])
+        return helpers.run(register, ['some-name', 'some-name/repo'])
         .spread(function (result) {
             expect(result).to.eql({
                 // Result from register action on stub
-                name: 'some-name', url: 'git@github.com:some-repo/package.git'
+                name: 'some-name', url: 'git@github.com:some-name/repo.git'
+            });
+        });
+    });
+
+    it('should support single-char github names', function () {
+        mainPackage.prepare();
+
+        var register = registerFactory(mainPackage.path, mainPackage.meta());
+        return helpers.run(register, ['some-name', 'a/b'])
+        .spread(function (result) {
+            expect(result).to.eql({
+                // Result from register action on stub
+                name: 'some-name', url: 'git@github.com:a/b.git'
             });
         });
     });
