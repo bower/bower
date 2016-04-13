@@ -27,7 +27,8 @@ describe('scripts', function () {
         scripts: {
             preinstall: touch('preinstall_%_%'),
             postinstall: touch('postinstall_%_%'),
-            preuninstall: touch('preuninstall_%_%')
+            preuninstall: touch('preuninstall_%_%'),
+            postuninstall: touch('postuninstall_%_%')
         }
     };
 
@@ -53,13 +54,14 @@ describe('scripts', function () {
 
     });
 
-    it('should run preuninstall hook.', function (next) {
+    it('should run preuninstall and postuninstall hooks.', function (next) {
 
         bower.commands
         .uninstall([packageName], undefined, config)
         .on('end', function (installed) {
 
             expect(fs.existsSync(path.join(tempDir, 'preuninstall_' + packageName + '_' + packageName))).to.be(true);
+            expect(fs.existsSync(path.join(tempDir, 'postuninstall_' + packageName + '_' + packageName))).to.be(true);
 
             next();
         });
