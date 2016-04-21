@@ -22,7 +22,7 @@ var userAgent = !proxy && !httpsProxy
 var defaults = {
     'directory': 'bower_components',
     'registry': 'https://bower.herokuapp.com',
-    'shorthand-resolver': 'git://github.com/{{owner}}/{{package}}.git',
+    'shorthand-resolver': 'https://github.com/{{owner}}/{{package}}.git',
     'tmp': paths.tmp,
     'proxy': proxy,
     'https-proxy': httpsProxy,

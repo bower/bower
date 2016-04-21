@@ -77,7 +77,7 @@ describe('NPM Config on package.json', function () {
             'register': 'https://bower.herokuapp.com',
             'publish': 'https://bower.herokuapp.com'
           },
-          'shorthandResolver': 'git://github.com/{{owner}}/{{package}}.git',
+          'shorthandResolver': 'https://github.com/{{owner}}/{{package}}.git',
           'tmp': '/foo/bar',
           'timeout': 30000,
           'ca': {

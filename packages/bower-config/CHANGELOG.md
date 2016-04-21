@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.0
+
+- Change default shorthand resolver from git:// to https://
+
 ## 1.3.1
 
 - Ignore hook scripts for environment variable expansion
