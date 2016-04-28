@@ -215,7 +215,7 @@ describe('resolverFactory', function () {
             'https://user@github.com/project/blah.git/': 'https://user@github.com/project/blah.git',
 
             // shorthand
-            'bower/bower': 'git://github.com/bower/bower.git'
+            'bower/bower': 'https://github.com/bower/bower.git'
         };
 
         nonGitHub = [
