@@ -11,7 +11,7 @@ Commands:
 
 {{#condense}}
 {{#each commands}}
-    {{#rpad length="23"}}{{@key}}{{/rpad}} {{.}}
+    {{#rpad minLength="23"}}{{@key}}{{/rpad}} {{.}}
 {{/each}}
 {{/condense}}
-
+{{#rpad minLength="23"}}{{/rpad}}
