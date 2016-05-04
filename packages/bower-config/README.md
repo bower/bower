@@ -6,7 +6,6 @@
 
     {
       "directory": "app/components/",
-      "analytics": false,
       "timeout": 120000,
       "registry": {
         "search": [
