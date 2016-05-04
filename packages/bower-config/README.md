@@ -2,8 +2,21 @@
 
 > The Bower config (`.bowerrc`) reader and writer.
 
-The config spec can be read [here](https://docs.google.com/document/d/1APq7oA9tNao1UYWyOm8dKqlRP2blVkROYLZ2fLIjtWc/).
+[Bower](http://bower.io/) can be configured using JSON in a `.bowerrc` file. For example:
 
+    {
+      "directory": "app/components/",
+      "analytics": false,
+      "timeout": 120000,
+      "registry": {
+        "search": [
+          "http://localhost:8000",
+          "https://bower.herokuapp.com"
+        ]
+      }
+    }
+
+View the complete [.bowerrc specification](http://bower.io/docs/config/#bowerrc-specification) on the website for more details. Both the `bower.json` and `.bowerrc` specifications are maintained at [github.com/bower/spec](https://github.com/bower/spec).
 
 ## Install
 
