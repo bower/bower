@@ -1,6 +1,6 @@
 {
     "command": "search",
-    "description": "Finds all packages or a specific package.",
+    "description": "Search for packages by name.",
     "usage": [
         "search <name> [<options>]"
     ],

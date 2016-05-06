@@ -1,6 +1,6 @@
 {
     "command": "lookup",
-    "description": "Looks up a package URL by name.",
+    "description": "Look up a single package URL by name.",
     "usage": [
         "lookup <name> [<options>]"
     ],
