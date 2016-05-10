@@ -622,7 +622,7 @@ describe('resolverFactory', function () {
         callFactory({ source: 'bower/bower' })
         .then(function (resolver) {
             var config = {
-                shorthandResolver: 'git://bower.io/{{owner}}/{{package}}/{{shorthand}}'
+                shorthandResolver: 'https://bower.io/{{owner}}/{{package}}/{{shorthand}}'
             };
 
             expect(resolver.getSource()).to.equal('https://github.com/bower/bower.git');
