@@ -85,6 +85,23 @@ describe('bower install', function () {
         });
     });
 
+    it('does not write to bower.json if no --save flag is used', function () {
+        mainPackage.prepare();
+
+        tempDir.prepare({
+            'bower.json': {
+                name: 'test'
+            }
+        });
+
+        return helpers.run(install, [
+            [mainPackage.path], {
+            }
+        ]).then(function () {
+            expect(tempDir.read('bower.json')).to.not.contain('dependencies');
+        });
+    });
+
     it('writes to bower.json if save config setting is set to true', function () {
         mainPackage.prepare();
 
@@ -503,6 +520,97 @@ describe('bower install', function () {
             return helpers.run(install).then(function () {
                 expect(tempDir.exists('bower_components/package')).to.be(false);
                 expect(tempDir.exists('bower_components/package2')).to.be(true);
+            });
+        });
+    });
+
+    it('works if packages reference each other locally', function () {
+        mainPackage.prepare();
+        var package2 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package2',
+                dependencies : {
+                    package: mainPackage.path
+                }
+            }
+        }).prepare();
+        var package3 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3',
+                dependencies: {
+                    package2: package2.path
+                }
+            }
+        }).prepare();
+
+        var installPackage = helpers.command('install', {
+            cwd: mainPackage.path
+        });
+        var installPackage2 = helpers.command('install', {
+            cwd: package2.path
+        });
+        var installPackage3 = helpers.command('install', {
+            cwd: package3.path
+        });
+        return helpers.run(installPackage).then(function () {
+            return helpers.run(installPackage2).then(function () {
+                return helpers.run(installPackage3).then(function() {
+                    expect(package2.exists('bower_components/package')).to.be(true);
+                    expect(package3.exists('bower_components/package2')).to.be(true);
+                    expect(package3.exists('bower_components/package')).to.be(true);
+                });
+            });
+        });
+    });
+
+    it('works if packages are nested and reference each other locally', function () {
+        // root directory for nested components
+        var rootDir = new helpers.TempDir().prepare();
+
+        var package = new helpers.TempDir({
+            'bower.json': {
+                name: 'package'
+            }
+        });
+        package.path=path.join(rootDir.path,'src/a/b');
+        package.prepare();
+        var package2 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package2',
+                dependencies : {
+                    package: package.path
+                }
+            }
+        });
+        package2.path=path.join(rootDir.path,'src/a');
+        package2.create(); // run create to avoid deleting nested directories
+        var package3 = new helpers.TempDir({
+            'bower.json': {
+                name: 'package3',
+                dependencies: {
+                    package2: package2.path
+                }
+            }
+        });
+        package3.path=rootDir.path;
+        package3.create(); // run create to avoid deleting nested directories
+
+        var installPackage = helpers.command('install', {
+            cwd: package.path
+        });
+        var installPackage2 = helpers.command('install', {
+            cwd: package2.path
+        });
+        var installPackage3 = helpers.command('install', {
+            cwd: package3.path
+        });
+        return helpers.run(installPackage).then(function () {
+            return helpers.run(installPackage2).then(function () {
+                return helpers.run(installPackage3).then(function() {
+                    expect(package2.exists('bower_components/package')).to.be(true);
+                    expect(package3.exists('bower_components/package2')).to.be(true);
+                    expect(package3.exists('bower_components/package')).to.be(true);
+                });
             });
         });
     });
