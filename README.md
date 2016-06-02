@@ -1,6 +1,6 @@
 # Bower - A package manager for the web
 
-> Bower needs your help. You you're willing to help, please say hello to team@bower.io or [donate](https://salt.bountysource.com/teams/bower)
+> Bower needs your help. If you're willing to help, please say hello to team@bower.io or [donate](https://salt.bountysource.com/teams/bower)
 
 [![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
 [![Windows Build](https://ci.appveyor.com/api/projects/status/jr6vfra8w84plh2g/branch/master?svg=true)](https://ci.appveyor.com/project/sheerun/bower/history)
