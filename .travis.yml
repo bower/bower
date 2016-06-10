@@ -4,8 +4,9 @@ env:
   - NODE_VERSION=0.10
   - NODE_VERSION=0.11
   - NODE_VERSION=0.12
-  - NODE_VERSION=4.0
-  - NODE_VERSION=5.0
+  - NODE_VERSION=4
+  - NODE_VERSION=5
+  - NODE_VERSION=6
 
 install:
   - test $TRAVIS_OS_NAME = "osx" && brew install nvm && source $(brew --prefix nvm)/nvm.sh || test $TRAVIS_OS_NAME = "linux"
