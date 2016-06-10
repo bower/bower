@@ -13,9 +13,6 @@ describe('bower version', function () {
         }
     });
 
-    var packageWithoutTags = new helpers.TempDir({});
-
-
     it('bumps patch version', function () {
         mainPackage.prepareGit();
 
@@ -109,6 +106,8 @@ describe('bower version', function () {
     });
 
     it('assumes v0.0.0 when no tags exist', function () {
+        var packageWithoutTags = new helpers.TempDir({});
+
         packageWithoutTags.prepareGit();
         packageWithoutTags.create({
             'index.js': 'console.log("hello, world");'

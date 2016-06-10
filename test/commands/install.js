@@ -554,7 +554,7 @@ describe('bower install', function () {
         });
         return helpers.run(installPackage).then(function () {
             return helpers.run(installPackage2).then(function () {
-                return helpers.run(installPackage3).then(function() {
+                return helpers.run(installPackage3).then(function () {
                     expect(package2.exists('bower_components/package')).to.be(true);
                     expect(package3.exists('bower_components/package2')).to.be(true);
                     expect(package3.exists('bower_components/package')).to.be(true);
@@ -572,7 +572,7 @@ describe('bower install', function () {
                 name: 'package'
             }
         });
-        package.path=path.join(rootDir.path,'src/a/b');
+        package.path = path.join(rootDir.path, 'src/a/b');
         package.prepare();
         var package2 = new helpers.TempDir({
             'bower.json': {
@@ -582,7 +582,7 @@ describe('bower install', function () {
                 }
             }
         });
-        package2.path=path.join(rootDir.path,'src/a');
+        package2.path = path.join(rootDir.path, 'src/a');
         package2.create(); // run create to avoid deleting nested directories
         var package3 = new helpers.TempDir({
             'bower.json': {
@@ -592,7 +592,7 @@ describe('bower install', function () {
                 }
             }
         });
-        package3.path=rootDir.path;
+        package3.path = rootDir.path;
         package3.create(); // run create to avoid deleting nested directories
 
         var installPackage = helpers.command('install', {
@@ -606,7 +606,7 @@ describe('bower install', function () {
         });
         return helpers.run(installPackage).then(function () {
             return helpers.run(installPackage2).then(function () {
-                return helpers.run(installPackage3).then(function() {
+                return helpers.run(installPackage3).then(function () {
                     expect(package2.exists('bower_components/package')).to.be(true);
                     expect(package3.exists('bower_components/package2')).to.be(true);
                     expect(package3.exists('bower_components/package')).to.be(true);
