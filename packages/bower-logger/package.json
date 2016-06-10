@@ -1,0 +1,27 @@
+{
+  "name": "bower-logger",
+  "version": "0.2.1",
+  "description": "The logger used in the various architecture components of Bower.",
+  "author": "Bower",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bower/logger/blob/master/LICENSE"
+    }
+  ],
+  "repository": "bower/logger",
+  "main": "lib/Logger",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~1.12.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "files": [
+    "lib"  
+  ]
+}
