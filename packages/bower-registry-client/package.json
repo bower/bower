@@ -1,0 +1,39 @@
+{
+  "name": "bower-registry-client",
+  "version": "1.0.0",
+  "description": "Provides easy interaction with the Bower registry",
+  "author": "Twitter",
+  "license": "MIT",
+  "repository": "bower/registry-client",
+  "main": "Client",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "async": "^0.2.8",
+    "graceful-fs": "^4.0.0",
+    "lru-cache": "^2.3.0",
+    "request": "^2.51.0",
+    "request-replay": "^0.2.0",
+    "rimraf": "^2.2.0",
+    "mkdirp": "^0.3.5"
+  },
+  "devDependencies": {
+    "bower-config": "^1.1.2",
+    "expect.js": "~0.2.0",
+    "grunt": "~0.4.1",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-watch": "~0.5.0",
+    "grunt-simple-mocha": "~0.4.0",
+    "mocha": "~1.12.0",
+    "nock": "~0.22.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "files": [
+    "lib",
+    "Client.js"
+  ]
+}
