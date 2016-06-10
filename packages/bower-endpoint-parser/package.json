@@ -1,0 +1,28 @@
+{
+  "name": "bower-endpoint-parser",
+  "version": "0.2.2",
+  "description": "Little module that helps with endpoints parsing.",
+  "author": "Twitter",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/bower/endpoint-parser/blob/master/LICENSE"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bower/endpoint-parser.git"
+  },
+  "main": "index.js",
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "devDependencies": {
+    "expect.js": "~0.2.0",
+    "mocha": "~1.12.0",
+    "mout": "~0.9.0"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  }
+}
