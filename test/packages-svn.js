@@ -113,7 +113,7 @@ function createRelease(admin, dir, release, files) {
     })
     // Attempt to delete tag, ignoring the error
     .then(function () {
-        cmd('svn', ['delete', dir + '/tags/' + release], { cwd: dir })
+        return cmd('svn', ['delete', dir + '/tags/' + release], { cwd: dir })
         .fail(function (err) {});
     })
     // Create files
