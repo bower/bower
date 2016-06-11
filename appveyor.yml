@@ -42,5 +42,6 @@ test_script:
 # Make clone much faster
 shallow_clone: true
 
-# Disable Visual Studio build
+# Disable Visual Studio build and deploy
 build: off
+deploy: off
