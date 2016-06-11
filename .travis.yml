@@ -17,7 +17,6 @@ install:
   - npm --version
   - git --version
   - svn --version | head -n 1
-  - npm install -g grunt-cli
   - npm install
 
 os:
@@ -31,4 +30,4 @@ matrix:
     - env: "NODE_VERSION=0.11"
 
 script:
-  - grunt travis
+  - npm test

@@ -31,7 +31,7 @@ install:
 
 # Post-install test scripts.
 test_script:
-  - cmd: npm run ci
+  - cmd: npm test
 
 # Make clone much faster
 shallow_clone: true
