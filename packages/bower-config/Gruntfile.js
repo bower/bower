@@ -3,20 +3,6 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
-            files: [
-                'Gruntfile.js',
-                'bin/*',
-                'lib/**/*.js',
-                'test/**/*.js',
-                '!test/assets/**/*',
-                '!test/reports/**/*',
-                '!test/tmp/**/*'
-            ]
-        },
         simplemocha: {
             options: {
                 reporter: 'spec',
@@ -41,13 +27,21 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            files: ['<%= jshint.files %>'],
-            tasks: ['jshint', 'simplemocha:short']
+            files: [
+                'Gruntfile.js',
+                'bin/*',
+                'lib/**/*.js',
+                'test/**/*.js',
+                '!test/assets/**/*',
+                '!test/reports/**/*',
+                '!test/tmp/**/*'
+            ],
+            tasks: ['simplemocha:short']
         }
     });
 
-    grunt.registerTask('test', ['jshint', 'simplemocha:full']);
+    grunt.registerTask('test', ['simplemocha:full']);
     grunt.registerTask('cover', 'exec:cover');
-    grunt.registerTask('travis', ['jshint', 'exec:cover', 'exec:coveralls']);
+    grunt.registerTask('travis', ['exec:cover', 'exec:coveralls']);
     grunt.registerTask('default', 'test');
 };
