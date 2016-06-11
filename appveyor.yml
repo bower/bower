@@ -2,6 +2,9 @@
 
 # http://www.appveyor.com/docs/appveyor-yml
 
+# Set build version format here instead of in the admin panel.
+version: "{build}"
+
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf input
@@ -36,8 +39,8 @@ install:
 test_script:
   - cmd: npm run ci
 
-# Don't actually build.
-build: off
+# Make clone much faster
+shallow_clone: true
 
-# Set build version format here instead of in the admin panel.
-version: "{build}"
+# Disable Visual Studio build
+build: off
