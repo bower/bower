@@ -2,6 +2,7 @@ var expect = require('expect.js');
 
 var helpers = require('../helpers');
 var info = helpers.command('info');
+var Q = require('q');
 
 describe('bower info', function () {
 
@@ -48,5 +49,24 @@ describe('bower info', function () {
                 ]
             });
         });
+    });
+
+    it('shows help for info when no arg given', function (done) {
+        return Q.Promise(function(resolve, reject) {
+            var info = helpers.command('info');
+
+            helpers.run(info).then(function(loggerEndData) {
+                var commandResult = loggerEndData[0];
+                resolve(commandResult);
+            });
+        })
+        .then(function(commandResult) {
+            // No work should have been done, so no value should be returned.
+            expect(commandResult).to.be(undefined);
+        })
+        .catch(function() {
+            expect().fail('should list info');
+        })
+        .done(done);
     });
 });
