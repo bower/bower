@@ -1,5 +1,3 @@
-# Thanks for Grunt for template of this file!
-
 # http://www.appveyor.com/docs/appveyor-yml
 
 # Set build version format here instead of in the admin panel.
@@ -18,21 +16,15 @@ environment:
     - nodejs_version: "4"
     - nodejs_version: "6"
 
-# Allow failing jobs for bleeding-edge Node.js versions.
+# Finish on first failed build
 matrix:
-  allow_failures:
-    - nodejs_version: "0.10"
+  fast_finish: true
 
-# Install scripts. (runs after repo cloning)
+# Install node, display versions, install dependencies
 install:
-  # Get the latest stable version of Node 0.STABLE.latest
   - ps: Install-Product node $env:nodejs_version
-  # Output useful info for debugging.
-  - node --version
-  - npm --version
-  - git --version
-  - svn --version
-  # Install all dependencies
+  - node --version && npm --version
+  - git --version && svn --version
   - npm install
 
 # Post-install test scripts.
@@ -45,3 +37,7 @@ shallow_clone: true
 # Disable Visual Studio build and deploy
 build: off
 deploy: off
+
+# Cache node modules, and refresh if package.json changes
+cache:
+  - node_modules -> package.json
