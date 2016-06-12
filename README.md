@@ -2,8 +2,8 @@
 
 > Bower needs your help. If you're willing to help, please say hello to team@bower.io or [donate](https://salt.bountysource.com/teams/bower)
 
-[![Build Status](https://travis-ci.org/bower/bower.svg?branch=master)](https://travis-ci.org/bower/bower)
-[![Windows Build](https://ci.appveyor.com/api/projects/status/8cjhgfa1d39s2qcy/branch/master?svg=true)](https://ci.appveyor.com/project/bower/bower/branch/master)
+[![Unix CI](https://img.shields.io/travis/bower/bower/master.svg?maxAge=2592000)](https://travis-ci.org/bower/bower)
+[![Windows CI](https://img.shields.io/appveyor/ci/bower/bower/master.svg)](https://ci.appveyor.com/project/bower/bower)
 [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
 [![Discord chat](https://img.shields.io/badge/discord-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://discord.gg/0fFM7QF0KpZRh2cY)
 [![Issue Stats](http://issuestats.com/github/bower/bower/badge/pr?style=flat)](http://issuestats.com/github/bower/bower)
