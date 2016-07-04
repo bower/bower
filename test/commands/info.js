@@ -49,4 +49,17 @@ describe('bower info', function () {
             });
         });
     });
+    it('should handle @ as a divider', function () {
+        return helpers.run(info, [mainPackage.path + '@0.1.3']).spread(function (results) {
+            expect(results).to.eql(
+                {
+                    name: 'package',
+                    version: '0.1.3',
+                    homepage: 'http://bower.io',
+                    description: 'Hello world! Hello!'
+                }
+            );
+        });
+
+    });
 });

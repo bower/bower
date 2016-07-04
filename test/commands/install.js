@@ -726,4 +726,13 @@ describe('bower install', function () {
             expect(tempDir.read(path.join('bower_components', 'package', 'package.tar'))).to.contain('test');
         });
     });
+    it('should handle @ as a divider', function () {
+        return helpers.run(install, [
+            ['empty@1.0.1'], {
+                save: true
+            }
+        ]).then(function () {
+            expect(tempDir.readJson('bower.json').dependencies).to.eql({empty: '1.0.1'});
+        });
+    });
 });
