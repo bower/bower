@@ -726,4 +726,21 @@ describe('bower install', function () {
             expect(tempDir.read(path.join('bower_components', 'package', 'package.tar'))).to.contain('test');
         });
     });
+    it('should handle @ as a divider', function (done) {
+        // Run `bower install package@1.0.1`
+        var binRunner = helpers.runBin(['install', gitPackage.path + '@' + gitPackage.latestGitTag()]);
+
+        // There should be no error output
+        expect(binRunner.stderr.toString()).to.be('');
+        // A checkout response should be given
+        expect(binRunner.stdout.toString()).to.contain('checkout ' + gitPackage.latestGitTag());
+
+        //clean up temp files
+        return rimraf(path.join(__dirname, '../../bower_components'), function (err) {
+            if (err) {
+                console.warn('failed to delete temporary `bower_components`');
+            }
+            done();
+        });
+    });
 });
