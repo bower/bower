@@ -727,7 +727,6 @@ describe('bower install', function () {
         });
     });
     it('should handle @ as a divider', function () {
-        this.timeout(10000);
 
         return helpers.run(install, [
             ['empty@1.0.1'], {
