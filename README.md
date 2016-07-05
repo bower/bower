@@ -6,8 +6,6 @@
 [![Windows CI](https://img.shields.io/appveyor/ci/bower/bower/master.svg)](https://ci.appveyor.com/project/bower/bower)
 [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
 [![Discord chat](https://img.shields.io/badge/discord-join%20chat%20%E2%86%92-brightgreen.svg?style=flat)](https://discord.gg/0fFM7QF0KpZRh2cY)
-[![Issue Stats](http://issuestats.com/github/bower/bower/badge/pr?style=flat)](http://issuestats.com/github/bower/bower)
-[![Issue Stats](http://issuestats.com/github/bower/bower/badge/issue?style=flat)](http://issuestats.com/github/bower/bower)
 
 <img align="right" height="300" src="http://bower.io/img/bower-logo.png">
 
