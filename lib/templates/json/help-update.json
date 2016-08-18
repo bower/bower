@@ -29,6 +29,10 @@
             "shorthand":   "-D",
             "flag":        "--save-dev",
             "description": "Update devDependencies in bower.json"
+        },
+        {
+            "flag":        "--dont-save-resolutions",
+            "description": "Causes bower to not automatically save resolutions to bower.json when force-latest is used"
         }
     ]
 }

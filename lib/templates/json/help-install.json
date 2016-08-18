@@ -40,6 +40,10 @@
             "shorthand":   "-E",
             "flag":        "--save-exact",
             "description": "Configure installed packages with an exact version rather than semver"
+        },
+        {
+            "flag":        "--dont-save-resolutions",
+            "description": "Causes bower to not automatically save resolutions to bower.json when force-latest is used"
         }
     ]
 }
