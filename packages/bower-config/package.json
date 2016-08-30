@@ -4,7 +4,7 @@
   "description": "The Bower config reader and writer.",
   "author": "Twitter",
   "license": "MIT",
-  "repository": "bower/config",
+  "repository": "https://github.com/bower/bower/tree/master/packages/bower-config",
   "main": "lib/Config",
   "homepage": "http://bower.io",
   "engines": {

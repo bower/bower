@@ -9,10 +9,7 @@
       "url": "https://github.com/bower/endpoint-parser/blob/master/LICENSE"
     }
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bower/endpoint-parser.git"
-  },
+  "repository": "https://github.com/bower/bower/tree/master/packages/bower-endpoint-parser",
   "main": "index.js",
   "engines": {
     "node": ">=0.8.0"
