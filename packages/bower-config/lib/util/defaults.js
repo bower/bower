@@ -23,6 +23,7 @@ var defaults = {
     'directory': 'bower_components',
     'registry': 'https://bower.herokuapp.com',
     'shorthand-resolver': 'https://github.com/{{owner}}/{{package}}.git',
+    'sort-dependencies': false,
     'tmp': paths.tmp,
     'proxy': proxy,
     'https-proxy': httpsProxy,
