@@ -99,4 +99,21 @@ describe('bower uninstall', function () {
         });
     });
 
+    it('removes a project with url from absolute path', function () {
+        var targetPath = path.resolve(tempDir.path, 'other_directory/underscore');
+        mkdirp.sync(targetPath);
+        fs.writeFileSync(path.join(targetPath, '.bower.json'), '{ "name": "underscore", "_source": "git://github.com/user/repo.git" }');
+
+        return helpers.run(uninstall, [['git://github.com/user/repo.git'], undefined, {
+            cwd: tempDir.path,
+            directory: path.resolve(tempDir.path, 'other_directory'),
+            interactive: true
+        }])
+            .then(function () {
+                expect(function () {
+                    fs.statSync(targetPath);
+                }).to.throwException(/no such file or directory/);
+            });
+    });
+
 });
