@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Change default shorthand resolver for github from `git://` to `https://`
 - Allow to type the entire version when conflict occured, #2243
 - Allow `owner/reponame` shorthand for registering components, #2248
 - Allow single-char repo names and package names, #2249
