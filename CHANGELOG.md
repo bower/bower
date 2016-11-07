@@ -1,5 +1,16 @@
 # Changelog
 
+## Unreleased
+
+- Change default shorthand resolver for github from `git://` to `https://`
+- Allow to type the entire version when conflict occured, #2243
+- Allow `owner/reponame` shorthand for registering components, #2248
+- Allow single-char repo names and package names, #2249
+- Make `bower version` no longer honor `version` in bower.json, #2232
+- Add `postinstall` hook, #2252
+- Allow for `@` instead of `#` for `install` and `info` commands, #2322
+- Upgrade all bundled modules
+
 ## 1.7.9 - 2016-04-05
 
 - Show warnings for invalid bower.json fields
@@ -83,7 +94,7 @@ https://github.com/npm/npm/issues/11227
 - Update bower config
   - Loads the .bowerrc file from the cwd specified on the command line
   - Allow the use of environment variables in .bowerrc ([#41](https://github.com/bower/config/issues/41))
-	- Allow for array notation in ENV variables ([#44](https://github.com/bower/config/issues/44))
+  - Allow for array notation in ENV variables ([#44](https://github.com/bower/config/issues/44))
 
 ## 1.6.9 - 2015-12-04
 
