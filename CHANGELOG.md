@@ -2,13 +2,19 @@
 
 ## Unreleased
 
-- Change default shorthand resolver for github from `git://` to `https://`
-- Allow to type the entire version when conflict occured, #2243
-- Allow `owner/reponame` shorthand for registering components, #2248
-- Allow single-char repo names and package names, #2249
-- Make `bower version` no longer honor `version` in bower.json, #2232
-- Add `postinstall` hook, #2252
-- Allow for `@` instead of `#` for `install` and `info` commands, #2322
+- Download tar archives from GitHub when possible (#2263)
+  - Change default shorthand resolver for github from `git://` to `https://`
+- Fix ssl handling by not setting GIT_SSL_NO_VERIFY=false (#2361)
+- Allow for removing components with url instead of name (#2368)
+- Show in warning message location of malformed bower.json (#2357)
+- Improve handling of non-semver versions in git resolver (#2316)
+- Fix handling of cached releases pluginResolverFactory (#2356)
+- Allow to type the entire version when conflict occured (#2243)
+- Allow `owner/reponame` shorthand for registering components (#2248)
+- Allow single-char repo names and package names (#2249)
+- Make `bower version` no longer honor `version` in bower.json (#2232)
+- Add `postinstall` hook (#2252)
+- Allow for `@` instead of `#` for `install` and `info` commands (#2322)
 - Upgrade all bundled modules
 
 ## 1.7.9 - 2016-04-05
