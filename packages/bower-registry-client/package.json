@@ -4,7 +4,7 @@
   "description": "Provides easy interaction with the Bower registry",
   "author": "Twitter",
   "license": "MIT",
-  "repository": "bower/registry-client",
+  "repository": "https://github.com/bower/bower/tree/master/packages/bower-registry-client",
   "main": "Client",
   "engines": {
     "node": ">=0.10.0"

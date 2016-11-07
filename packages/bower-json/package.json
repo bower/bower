@@ -4,7 +4,7 @@
   "description": "Read bower.json files with semantics, normalisation, defaults and validation",
   "author": "Twitter",
   "license": "MIT",
-  "repository": "bower/json",
+  "repository": "https://github.com/bower/bower/tree/master/packages/bower-json",
   "main": "lib/json",
   "engines": {
     "node": ">=0.10.0"
