@@ -50,16 +50,17 @@ describe('GitResolver', function () {
             expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
 
             resolver = new GitResolver(decEndpoint, defaultConfig(), logger);
-            expect(process.env).to.have.property('GIT_SSL_NO_VERIFY', 'false');
-            delete process.env.GIT_SSL_NO_VERIFY;
+            expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
 
             resolver = new GitResolver(decEndpoint, defaultConfig({strictSsl: false}), logger);
             expect(process.env).to.have.property('GIT_SSL_NO_VERIFY', 'true');
             delete process.env.GIT_SSL_NO_VERIFY;
 
+            // git only checks the existence of GIT_SSL_NO_VERIFY.
+            // git does NOT check whether is true of false.
+            // Hence not exporting GIT_SSL_NO_VERIFY is effectively equivalent to 'false'
             resolver = new GitResolver(decEndpoint, defaultConfig({strictSsl: true}), logger);
-            expect(process.env).to.have.property('GIT_SSL_NO_VERIFY', 'false');
-            delete process.env.GIT_SSL_NO_VERIFY;
+            expect(process.env).to.not.have.property('GIT_SSL_NO_VERIFY');
         });
     });
 
