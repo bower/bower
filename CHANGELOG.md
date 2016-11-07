@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.8.0 - 2016-11-07
 
 - Download tar archives from GitHub when possible (#2263)
   - Change default shorthand resolver for github from `git://` to `https://`
