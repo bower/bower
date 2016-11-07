@@ -9,7 +9,7 @@
       "url": "https://github.com/bower/logger/blob/master/LICENSE"
     }
   ],
-  "repository": "bower/logger",
+  "repository": "https://github.com/bower/bower/tree/master/packages/bower-logger",
   "main": "lib/Logger",
   "engines": {
     "node": ">=0.10.0"
