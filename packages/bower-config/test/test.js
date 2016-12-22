@@ -224,10 +224,13 @@ describe('Allow ${ENV} variables in .bowerrc', function() {
     it('sets values from process.env', function() {
         process.env._BOWERRC_MY_PACKAGES = 'a';
         process.env._BOWERRC_MY_TMP = '/tmp/b';
+        process.env._BOWERRC_MY_USER = 'username';
+        process.env._BOWERRC_MY_PASS = 'password';
 
         var config = require('../lib/Config').read('test/assets/env-variables-values');
         assert.equal('a', config.storage.packages);
         assert.equal('/tmp/b', config.tmp);
+        assert.equal('username:password', config.storage.registry.search[0]);
         assert.equal('${_myshellvar}', config.scripts.postinstall);
     });
 });
@@ -238,7 +241,7 @@ describe('untildify paths in .bowerrc', function() {
         var config = require('../lib/Config').read('test/assets/env-variables-values');
         var untildify = require('untildify');
 
-        assert.equal(untildify('~/.bower-test/registry') , config.storage.registry);
+        assert.equal(untildify('~/.bower-test/registry') , config.storage.registry.register);
     });
 });
 
