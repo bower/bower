@@ -34,6 +34,31 @@ describe('Manager', function () {
         next();
     });
 
+    describe('resolve', function () {
+        it('prefers exact versions over ranges', function () {
+            manager._resolved = {
+                ember: [
+                    {
+                        target: '>=1.4',
+                        pkgMeta: { version: '2.7.0' }
+                    },
+                    {
+                        target: '2.7.0',
+                        pkgMeta: { version: '2.7.0' }
+                    }
+                ]
+            };
+
+            return manager.resolve().then(function () {
+                expect(manager._dissected).to.eql({
+                    ember: {
+                        target: '2.7.0',
+                        pkgMeta: { version: '2.7.0' }
+                    }
+                });
+            });
+        });
+    });
 
     describe('_areCompatible', function () {
         describe('resolved is being fetched', function () {
