@@ -1,0 +1,6 @@
+{
+    "projectPath": "packages/{package}",
+    "deepClean": [
+        "packages/{package}/node_modules/**/*"
+    ]
+}
