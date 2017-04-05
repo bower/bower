@@ -212,7 +212,9 @@ function validate(json) {
     var issues = getIssues(json);
     // Resolve Issue: 2426 - Invisible Warnings
     for (var warning of issues.warnings) {
-        console.log(`WARNING: ${warning}`);
+        // console.log(`WARNING: ${warning}`);
+        // Alternatively
+        console.warn(`Invalid Meta - ${warning}`);
     }
 
     if (issues.errors && issues.errors.length > 0) {
