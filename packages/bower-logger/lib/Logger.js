@@ -6,6 +6,7 @@ var slice = Array.prototype.slice;
 function Logger() {
     this._interceptors = [];
     this._piped = [];
+    this._time = new Date();
 }
 
 util.inherits(Logger, EventEmitter);
@@ -56,6 +57,11 @@ Logger.prototype.log = function (level, id, message, data) {
         message: message,
         data: data || {}
     };
+    
+    // Issue 2435 - Need Timestamp
+    log.elapsedTime = new Date() - this._time;
+    this._time = new Date();
+    log.time = this._time.toLocaleTimeString();
 
     // Emit log
     this.emit('log', log);

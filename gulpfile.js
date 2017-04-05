@@ -12,7 +12,7 @@ const settings = require('./gulp.json');
 const PACKAGE_VAR = '{package}';
 
 // Gulp tasks
-gulp.task('install', function (callback) {
+gulp.task('install', (callback) => {
   const commands = [];
   commands.push({ cmd: 'npm install', cwd: undefined });
   packageNames.forEach(name => {
@@ -21,10 +21,17 @@ gulp.task('install', function (callback) {
   runCommands(commands, callback);
 });
 
-gulp.task('deepclean', function () {
+gulp.task('deepclean', () => {
   return del(expandPaths(settings.deepClean));
 });
 
+gulp.task('link', (mode) => {
+    linker(true);
+});
+
+gulp.task('unlink', (mode) => {
+    linker(false);
+});
 
 // Functions
 function runCommand(command, options, callback) {
@@ -45,6 +52,15 @@ function runCommands(commands, callback) {
     }, function () {
         callback();
     });
+}
+
+function linker (mode) {
+    const commands = [];
+    packageNames.forEach(name => {
+        commands.push({ cmd: `npm ${mode ? 'link' : 'unlink'} --no-bin-links`, cwd: `packages/${name}` });
+        commands.push({ cmd: `npm ${mode ? 'link' : 'unlink'} ${name} --no-bin-links`, cwd: `` });
+    });
+    runCommands(commands, () => {});
 }
 
 function mapPaths(globArray, project) {
