@@ -83,6 +83,7 @@
     "multiline": "^1.0.2",
     "nock": "^7.7.2",
     "node-uuid": "^1.4.7",
+    "opencollective-postinstall": "^1.0.15",
     "proxyquire": "^1.7.9",
     "spawn-sync": "1.0.15",
     "wrench": "^1.5.8"
@@ -91,10 +92,15 @@
     "test": "grunt test",
     "ci": "grunt travis",
     "coveralls": "coveralls",
-    "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish"
+    "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
+    "postinstall": "./node_modules/.bin/opencollective-postinstall || exit 0"
   },
   "files": [
     "bin",
     "lib"
-  ]
+  ],
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/bower"
+  }
 }
