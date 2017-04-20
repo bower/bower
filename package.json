@@ -83,7 +83,7 @@
     "multiline": "^1.0.2",
     "nock": "^7.7.2",
     "node-uuid": "^1.4.7",
-    "opencollective-postinstall": "^1.0.16",
+    "opencollective-postinstall": "^1.0.17",
     "proxyquire": "^1.7.9",
     "spawn-sync": "1.0.15",
     "wrench": "^1.5.8"
