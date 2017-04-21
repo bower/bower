@@ -45,7 +45,6 @@
     "mkdirp": "0.5.0",
     "mout": "^0.11.0",
     "nopt": "^3.0.1",
-    "opencollective-postinstall": "^1.1.0",
     "opn": "^4.0.0",
     "p-throttler": "0.1.1",
     "promptly": "0.2.0",
@@ -93,7 +92,7 @@
     "ci": "grunt travis",
     "coveralls": "coveralls",
     "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
-    "postinstall": "opencollective-postinstall || exit 0"
+    "postinstall": "echo -e \"\nThanks for downloading Bower.\nPlease consider donating to our open collective\n=> https://opencollective.com/bower/donate\n\""
   },
   "files": [
     "bin",
