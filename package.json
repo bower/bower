@@ -92,7 +92,8 @@
     "ci": "grunt travis",
     "coveralls": "coveralls",
     "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
-    "postinstall": "echo -e \"\nThanks for downloading Bower.\nPlease consider donating to our open collective\n=> https://opencollective.com/bower/donate\n\""
+    "postinstall": "npm run -s donate",
+    "donate": "echo \"\n   *** Thanks for downloading Bower! ***\nPlease consider donating to our open collective\n\n => https://opencollective.com/bower/donate\n\""
   },
   "files": [
     "bin",
