@@ -45,6 +45,7 @@
     "mkdirp": "0.5.0",
     "mout": "^0.11.0",
     "nopt": "^3.0.1",
+    "opencollective-postinstall": "^1.1.0",
     "opn": "^4.0.0",
     "p-throttler": "0.1.1",
     "promptly": "0.2.0",
@@ -83,7 +84,6 @@
     "multiline": "^1.0.2",
     "nock": "^7.7.2",
     "node-uuid": "^1.4.7",
-    "opencollective-postinstall": "^1.0.18",
     "proxyquire": "^1.7.9",
     "spawn-sync": "1.0.15",
     "wrench": "^1.5.8"
@@ -93,7 +93,7 @@
     "ci": "grunt travis",
     "coveralls": "coveralls",
     "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
-    "postinstall": "node node_modules/.bin/opencollective-postinstall || exit"
+    "postinstall": "opencollective-postinstall || exit 0"
   },
   "files": [
     "bin",
