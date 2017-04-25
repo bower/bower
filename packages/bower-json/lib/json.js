@@ -210,12 +210,6 @@ function getIssues(json) {
 // For backward compatibility, it throws first error
 function validate(json) {
     var issues = getIssues(json);
-    // Resolve Issue: 2426 - Invisible Warnings
-    for (var warning of issues.warnings) {
-        // console.log(`WARNING: ${warning}`);
-        // Alternatively
-        console.warn(`Invalid Meta - ${warning}`);
-    }
 
     if (issues.errors && issues.errors.length > 0) {
         throw createError(issues.errors[0], 'EINVALID');
