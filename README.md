@@ -16,6 +16,7 @@ Bower offers a generic, unopinionated solution to the problem of **front-end pac
 Bower runs over Git, and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
 
 **View complete docs on [bower.io](http://bower.io)**
+**Download the [Bower API Cheat Sheet](docs/bower-api-cheat-sheet.pdf)**
 
 [View all packages available through Bower's registry](http://bower.io/search/).
 
