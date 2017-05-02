@@ -73,6 +73,7 @@ module.exports = function (grunt) {
         var npmVersion = JSON.parse(childProcess.execSync('npm version --json').toString()).npm.split('.');
         var npmMajor = parseInt(npmVersion[0], 10);
         var npmMinor = parseInt(npmVersion[1], 10);
+        var jsonPackage = require("./package");
 
         var jsonPackage = require('./package');
 
