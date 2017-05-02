@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/bower/bower.png?label=ready&title=Ready)](https://waffle.io/bower/bower)
 # Bower - A package manager for the web
 
 > Bower needs your help. If you're willing to help, please say hello to team@bower.io or [donate](https://salt.bountysource.com/teams/bower)
