@@ -18,7 +18,6 @@
         "search":          "Search for packages by name",
         "update":          "Update a local package",
         "uninstall":       "Remove a local package",
-        "unregister":      "Remove a package from the registry",
         "version":         "Bump a package version"
     },
     "options": [
