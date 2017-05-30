@@ -21,6 +21,8 @@ Bower runs over Git, and is package-agnostic. A packaged component can be made u
 
 [View all packages available through Bower's registry](http://bower.io/search/).
 
+Visit our sponsors, [Icons8](https://icons8.com/icon/new-icons/all) and [Heroku](https://www.heroku.com/). [Become one](https://opencollective.com/bower)
+
 ## Install
 
 ```sh
@@ -118,6 +120,8 @@ Note that on Windows for tests to pass you need to configure Git before cloning:
 ```
 git config --global core.autocrlf input
 ```
+
+
 
 ## License
 
