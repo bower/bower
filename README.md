@@ -1,9 +1,10 @@
 # Bower - A package manager for the web
 
-> Bower needs your help. If you're willing to help, please say hello to team@bower.io or [donate](https://opencollective.com/bower/donate) to our open collective.
-
 [![Backers on Open Collective](https://opencollective.com/bower/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/bower/sponsors/badge.svg)](#sponsors)
+
+> ..psst! While Bower is maintained, we recommend [yarn](https://yarnpkg.com/) and [webpack](https://webpack.js.org/) for new front-end projects!
+
 [![Unix CI](https://img.shields.io/travis/bower/bower/master.svg?maxAge=2592000)](https://travis-ci.org/bower/bower)
 [![Windows CI](https://img.shields.io/appveyor/ci/bower/bower/master.svg)](https://ci.appveyor.com/project/bower/bower)
 [![Coverage Status](https://img.shields.io/coveralls/bower/bower.svg)](https://coveralls.io/r/bower/bower?branch=master)
