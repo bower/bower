@@ -14,9 +14,9 @@
 
 ---
 
-Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
+Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There is no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
-Bower runs over Git, and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
+Bower runs over Git and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
 
 **View complete docs on [bower.io](http://bower.io)**
 
@@ -28,7 +28,7 @@ Bower runs over Git, and is package-agnostic. A packaged component can be made u
 $ npm install -g bower
 ```
 
-Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). Also make sure that [git](http://git-scm.com/) is installed as some bower
+Bower depends on [Node.js](http://nodejs.org/) and [npm](http://npmjs.org/). Also, make sure that [git](http://git-scm.com/) is installed as some bower
 packages require it to be fetched and installed.
 
 
@@ -39,7 +39,7 @@ See complete command line reference at [bower.io/docs/api/](http://bower.io/docs
 ### Installing packages and dependencies
 
 ```sh
-# install dependencies listed in bower.json
+# install dependencies listed in the bower.json
 $ bower install
 
 # install a package and add it to bower.json
@@ -51,7 +51,7 @@ $ bower install <package>#<version> --save
 
 ### Using packages
 
-We discourage using bower components statically for performance and security reasons (if component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
+We discourage using bower components statically for performance and security reasons (if a component has an `upload.php` file that is not ignored, that can be easily exploited to do malicious stuff).
 
 The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using a module loader (like [RequireJS](http://requirejs.org/)).
 
