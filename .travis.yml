@@ -18,8 +18,8 @@ install:
   - npm --version
   - git --version
   - svn --version | head -n 1
-  - npm install -g grunt-cli
-  - npm install
+  - npm install -g grunt-cli yarn
+  - yarn
 
 os:
   - osx

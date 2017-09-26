@@ -27,7 +27,8 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - node --version && npm --version
   - git --version && svn --version
-  - npm install
+  - npm install -g yarn
+  - yarn
 
 # Post-install test scripts.
 test_script:
