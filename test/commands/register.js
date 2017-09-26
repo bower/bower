@@ -124,7 +124,7 @@ describe('bower register', function () {
         return helpers.expectEvent(promise.logger, 'confirm')
         .spread(function (e) {
             expect(e.type).to.be('confirm');
-            expect(e.message).to.be('Registering a package will make it installable via the registry (https://registry.bower.io, continue?');
+            expect(e.message).to.be('Registering a package will make it installable via the registry (https://registry.bower.io), continue?');
             expect(e.default).to.be(true);
         });
     });
