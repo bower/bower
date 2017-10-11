@@ -10,7 +10,7 @@
       "registry": {
         "search": [
           "http://localhost:8000",
-          "https://bower.herokuapp.com"
+          "https://registry.bower.io"
         ]
       }
     }
