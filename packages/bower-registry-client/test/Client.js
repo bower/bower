@@ -8,7 +8,7 @@ var Config = require('bower-config');
 
 describe('RegistryClient', function () {
     beforeEach(function () {
-        this.uri = 'https://bower.herokuapp.com';
+        this.uri = 'https://registry.bower.io';
         this.timeoutVal = 5000;
         this.registry = new RegistryClient(Config.read(process.cwd(), {
             strictSsl: false,
@@ -104,7 +104,7 @@ describe('RegistryClient', function () {
 
         describe('cache', function () {
             beforeEach(function () {
-                nock('https://bower.herokuapp.com:443')
+                nock('https://registry.bower.io:443')
                   .get('/packages/search/jquery')
                   .replyWithFile(200, __dirname + '/fixtures/search.json');
 
@@ -114,7 +114,7 @@ describe('RegistryClient', function () {
                 }));
 
                 this.cacheDir = this.client._config.cache;
-                this.host = 'bower.herokuapp.com';
+                this.host = 'registry.bower.io';
                 this.method = 'search';
                 this.pkg = 'jquery';
 
@@ -164,7 +164,7 @@ describe('RegistryClient', function () {
     //
     describe('calling the lookup instance method with argument', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages/jquery')
               .reply(200, {
                 name: 'jquery',
@@ -260,7 +260,7 @@ describe('RegistryClient', function () {
 
     describe('calling the lookup instance method with three registries', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages/jquery')
               .reply(404);
 
@@ -283,7 +283,7 @@ describe('RegistryClient', function () {
                 force: true,
                 registry: {
                     search: [
-                        'https://bower.herokuapp.com',
+                        'https://registry.bower.io',
                         'http://custom-registry.com',
                         'http://custom-registry2.com'
                     ]
@@ -311,7 +311,7 @@ describe('RegistryClient', function () {
 
         it('should respect order', function (next) {
             this.registry._config.registry.search = [
-                'https://bower.herokuapp.com',
+                'https://registry.bower.io',
                 'http://custom-registry2.com',
                 'http://custom-registry.com'
             ];
@@ -330,7 +330,7 @@ describe('RegistryClient', function () {
     //
     describe('calling the register instance method with argument', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .post('/packages', 'name=test-ba&url=git%3A%2F%2Fgithub.com%2Ftest-ba%2Ftest-ba.git')
               .reply(201);
 
@@ -368,7 +368,7 @@ describe('RegistryClient', function () {
 
     describe('calling the register instance method without arguments', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .post('/packages', 'name=&url=')
               .reply(400);
         });
@@ -392,7 +392,7 @@ describe('RegistryClient', function () {
             this.accessToken = '12345678';
             this.registry._config.accessToken = this.accessToken;
 
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .delete('/packages/' + this.pkg + '?access_token=' + this.accessToken)
               .reply(204);
         });
@@ -420,7 +420,7 @@ describe('RegistryClient', function () {
             this.pkg = 'testfoo';
             this.registry._config.accessToken = '';
 
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .delete('/packages/' + this.pkg)
               .reply(403);
         });
@@ -440,7 +440,7 @@ describe('RegistryClient', function () {
             this.accessToken = '12345678';
             this.registry._config.accessToken = this.accessToken;
 
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .delete('/packages/' + this.notpkg + '?access_token=' + this.accessToken)
               .reply(404);
         });
@@ -459,7 +459,7 @@ describe('RegistryClient', function () {
     //
     describe('calling the search instance method with argument', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages/search/jquery')
               .replyWithFile(200, __dirname + '/fixtures/search.json');
 
@@ -505,7 +505,7 @@ describe('RegistryClient', function () {
 
     describe('calling the search instance method with two registries', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages/search/jquery')
               .reply(200, []);
 
@@ -526,7 +526,7 @@ describe('RegistryClient', function () {
                 force: true,
                 registry: {
                     search: [
-                        'https://bower.herokuapp.com',
+                        'https://registry.bower.io',
                         'http://custom-registry.com'
                     ]
                 }
@@ -566,7 +566,7 @@ describe('RegistryClient', function () {
 
     describe('calling the search instance method without argument', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages/search/')
               .reply(404);
         });
@@ -585,7 +585,7 @@ describe('RegistryClient', function () {
     //
     describe('calling the list instance method', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages')
               .reply(200, [], {});
 
@@ -610,7 +610,7 @@ describe('RegistryClient', function () {
 
     describe('calling the list instance method with two registries', function () {
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages')
               .reply(200, []);
 
@@ -628,7 +628,7 @@ describe('RegistryClient', function () {
                 force: true,
                 registry: {
                     search: [
-                        'https://bower.herokuapp.com',
+                        'https://registry.bower.io',
                         'http://custom-registry.com'
                     ]
                 }
@@ -669,7 +669,7 @@ describe('RegistryClient', function () {
     describe('calling the list instance method', function () {
 
         beforeEach(function () {
-            nock('https://bower.herokuapp.com:443')
+            nock('https://registry.bower.io:443')
               .get('/packages')
               .reply(200, [], {});
         });
