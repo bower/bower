@@ -447,7 +447,7 @@ describe('.normalize', function () {
 describe('packages from bower registry', function () {
 
     var packageList,
-        packageListUrl = 'http://bower.herokuapp.com/packages';
+        packageListUrl = 'http://registry.bower.io/packages';
 
     this.timeout(60000);
 
