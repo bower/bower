@@ -3,7 +3,10 @@
 [![Backers on Open Collective](https://opencollective.com/bower/backers/badge.svg)](#backers)
 [![Sponsors on Open Collective](https://opencollective.com/bower/sponsors/badge.svg)](#sponsors)
 
-> ..psst! While Bower is maintained, we recommend [yarn](https://yarnpkg.com/) and [webpack](https://webpack.js.org/) for new front-end projects!
+> ..psst! While Bower is maintained, we recommend [yarn](https://yarnpkg.com/)
+> with [webpack](https://webpack.js.org/) for new front-end js projects and
+> [psc-package](https://github.com/purescript/psc-package) for purescript
+> projects!
 
 [![Unix CI](https://img.shields.io/travis/bower/bower/master.svg?maxAge=2592000)](https://travis-ci.org/bower/bower)
 [![Windows CI](https://img.shields.io/appveyor/ci/bower/bower/master.svg)](https://ci.appveyor.com/project/bower/bower)
