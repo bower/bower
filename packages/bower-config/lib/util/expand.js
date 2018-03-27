@@ -86,7 +86,7 @@ function expand(config) {
             publish: config.registry
         };
     } else if (typeof config.registry === 'object') {
-        config.registry.default = config.registry.default || 'https://bower.herokuapp.com';
+        config.registry.default = config.registry.default || 'https://registry.bower.io';
 
         config.registry = {
             default: config.registry.default,
