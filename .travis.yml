@@ -8,6 +8,8 @@ node_js:
   - "5"
   - "6"
   - "7"
+  - "8"
+  - "9"
 
 install:
   - node --version
