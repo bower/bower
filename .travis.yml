@@ -24,9 +24,9 @@ cache:
 
 install:
   - yarn
-  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - nvm install $TRAVIS_NODE_VERSION
+  - nvm use $TRAVIS_NODE_VERSION
   - npm install -g grunt
-  - node --version && npm --version && git --version && svn --version | head -n 1
 
 os:
   - osx
@@ -39,4 +39,6 @@ matrix:
     - env: "NODE_VERSION=7"
 
 script:
+  - nvm use $TRAVIS_NODE_VERSION
+  - node --version && npm --version && git --version && svn --version | head -n 1
   - grunt travis
