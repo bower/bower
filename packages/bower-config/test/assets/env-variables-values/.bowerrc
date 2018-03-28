@@ -4,7 +4,12 @@
    },
    "storage" : {
       "packages" : "${_BOWERRC_MY_PACKAGES}",
-      "registry" : "~/.bower-test/registry"
+      "registry" : {
+        "register": "~/.bower-test/registry",
+        "search": [
+          "${_BOWERRC_MY_USER}:${_BOWERRC_MY_PASS}"
+        ]
+      }
    },
    "tmp" : "${_BOWERRC_MY_TMP}"
 }
