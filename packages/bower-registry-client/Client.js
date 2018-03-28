@@ -7,12 +7,16 @@ function RegistryClient(config, logger) {
     this._config = config;
 
     if (!this._config.registry) {
-        throw new Error("You need to pass config as read by bower-config module. Registry field is missing.");
+        throw new Error(
+            'You need to pass config as read by bower-config module. Registry field is missing.'
+        );
     }
 
     // Cache defaults to storage registry
     if (!Object.prototype.hasOwnProperty.call(this._config, 'cache')) {
-        this._config.cache = this._config.storage ? this._config.storage.registry : null;
+        this._config.cache = this._config.storage
+            ? this._config.storage.registry
+            : null;
     }
 
     // Init the cache
@@ -26,20 +30,23 @@ RegistryClient.prototype.list = methods.list;
 RegistryClient.prototype.register = methods.register;
 RegistryClient.prototype.unregister = methods.unregister;
 
-RegistryClient.prototype.clearCache = function (name, callback) {
+RegistryClient.prototype.clearCache = function(name, callback) {
     if (typeof name === 'function') {
         callback = name;
         name = null;
     }
 
-    async.parallel([
-        this.lookup.clearCache.bind(this, name),
-        this.search.clearCache.bind(this, name),
-        this.list.clearCache.bind(this)
-    ], callback);
+    async.parallel(
+        [
+            this.lookup.clearCache.bind(this, name),
+            this.search.clearCache.bind(this, name),
+            this.list.clearCache.bind(this)
+        ],
+        callback
+    );
 };
 
-RegistryClient.prototype.resetCache = function (name) {
+RegistryClient.prototype.resetCache = function(name) {
     this.lookup.resetCache.call(this, name);
     this.search.resetCache.call(this, name);
     this.list.resetCache.call(this);
@@ -47,13 +54,13 @@ RegistryClient.prototype.resetCache = function (name) {
     return this;
 };
 
-RegistryClient.clearRuntimeCache = function () {
+RegistryClient.clearRuntimeCache = function() {
     Cache.clearRuntimeCache();
 };
 
 // -----------------------------
 
-RegistryClient.prototype._initCache = function () {
+RegistryClient.prototype._initCache = function() {
     var cache;
     var dir = this._config.cache;
 

@@ -16,32 +16,40 @@ function unregister(name, callback) {
         requestUrl += '?access_token=' + config.accessToken;
     }
 
-    request.del({
-        url: requestUrl,
-        headers: headers,
-        ca: config.ca.register,
-        strictSSL: config.strictSsl,
-        timeout: config.timeout
-    }, function (err, response) {
-        // If there was an internal error (e.g. timeout)
-        if (err) {
-            return callback(createError('Request to ' + requestUrl + ' failed: ' + err.message, err.code));
-        }
+    request.del(
+        {
+            url: requestUrl,
+            headers: headers,
+            ca: config.ca.register,
+            strictSSL: config.strictSsl,
+            timeout: config.timeout
+        },
+        function(err, response) {
+            // If there was an internal error (e.g. timeout)
+            if (err) {
+                return callback(
+                    createError(
+                        'Request to ' + requestUrl + ' failed: ' + err.message,
+                        err.code
+                    )
+                );
+            }
 
-        // Forbidden
-        if (response.statusCode === 403) {
-            return callback(createError(response.body, 'EFORBIDDEN'));
-        }
+            // Forbidden
+            if (response.statusCode === 403) {
+                return callback(createError(response.body, 'EFORBIDDEN'));
+            }
 
-        // Everything other than 204 is unknown
-        if (response.statusCode !== 204) {
-            return callback(createError(response.body, 'EUNKNOWN'));
-        }
+            // Everything other than 204 is unknown
+            if (response.statusCode !== 204) {
+                return callback(createError(response.body, 'EUNKNOWN'));
+            }
 
-        callback(null, {
-            name: name
-        });
-    });
+            callback(null, {
+                name: name
+            });
+        }
+    );
 }
 
 module.exports = unregister;

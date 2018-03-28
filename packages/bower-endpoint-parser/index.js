@@ -59,10 +59,10 @@ function json2decomposed(key, value) {
     // If # was found, the source was specified
     if (split.length > 1) {
         endpoint += (split[0] || key) + '#' + split[1];
-    // Check if value looks like a source
+        // Check if value looks like a source
     } else if (isSource(value)) {
         endpoint += value + '#*';
-    // Otherwise use the key as the source
+        // Otherwise use the key as the source
     } else {
         endpoint += key + '#' + split[0];
     }
@@ -85,7 +85,7 @@ function decomposed2json(decEndpoint) {
     }
 
     // Add source only if different than the name
-    if  (source !== name) {
+    if (source !== name) {
         value += source;
     }
 
@@ -100,7 +100,7 @@ function decomposed2json(decEndpoint) {
                 value += target;
             }
         }
-    // Otherwise append only if not a wildcard or source does not look like a source
+        // Otherwise append only if not a wildcard or source does not look like a source
     } else if (!isWildcard(target) || !isSource(source)) {
         value += '#' + (target || '*');
     }
@@ -119,7 +119,7 @@ function isWildcard(target) {
 }
 
 function isSource(value) {
-    return (/[\/\\@]/).test(value);
+    return /[\/\\@]/.test(value);
 }
 
 module.exports.decompose = decompose;

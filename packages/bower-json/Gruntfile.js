@@ -1,10 +1,7 @@
-'use strict';
-
-module.exports = function (grunt) {
+module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
     // Project configuration.
     grunt.initConfig({
-
         jshint: {
             files: [
                 'Gruntfile.js',
@@ -38,19 +35,19 @@ module.exports = function (grunt) {
 
         exec: {
             cover: {
-                command: 'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
+                command:
+                    'STRICT_REQUIRE=1 node node_modules/istanbul/lib/cli.js cover --dir ./test/reports node_modules/mocha/bin/_mocha -- --timeout 30000 -R dot test/test.js'
             },
             coveralls: {
-                command: 'node node_modules/.bin/coveralls < test/reports/lcov.info'
+                command:
+                    'node node_modules/.bin/coveralls < test/reports/lcov.info'
             }
         },
-
 
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'simplemocha:short']
         }
-
     });
 
     // Default task.

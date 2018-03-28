@@ -29,7 +29,6 @@ describe('rc', function() {
         '.bowerrc/foo': {
             key: 'bar'
         }
-
     });
 
     it('correctly reads .bowerrc files', function() {
@@ -60,22 +59,21 @@ describe('rc', function() {
         expect(config.key2).to.eql(undefined);
     });
 
-    it('loads the .bowerrc file from the cwd specified on the command line', function(){
+    it('loads the .bowerrc file from the cwd specified on the command line', function() {
         var argv = {
-            'config': {
-                'cwd': tempDir.path + '/other_dir/'
+            config: {
+                cwd: tempDir.path + '/other_dir/'
             }
         };
 
         var config = rc('bower', tempDir.path, argv);
 
         expect(config.key).to.eql('othervalue');
-
     });
 
     it('throws an easy to understand error if .bowerrc is a dir', function() {
         // Gotta wrap this to catch the error
-        var config = function () {
+        var config = function() {
             rc('bower', tempDirBowerrc.path);
         };
 

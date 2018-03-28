@@ -22,7 +22,7 @@ function Cache(dir, options) {
     }
 }
 
-Cache.prototype.get = function (key, callback) {
+Cache.prototype.get = function(key, callback) {
     var file;
     var json = this._cache.get(key);
 
@@ -43,35 +43,38 @@ Cache.prototype.get = function (key, callback) {
     }
 
     file = this._getFile(key);
-    fs.readFile(file, function (err, contents) {
-        var json;
+    fs.readFile(
+        file,
+        function(err, contents) {
+            var json;
 
-        // Check if there was an error reading
-        // Note that if the file does not exist then
-        // we don't have its value
-        if (err) {
-            return callback(err.code === 'ENOENT' ? null : err);
-        }
+            // Check if there was an error reading
+            // Note that if the file does not exist then
+            // we don't have its value
+            if (err) {
+                return callback(err.code === 'ENOENT' ? null : err);
+            }
 
-        // If there was an error reading the file as json
-        // simply assume it doesn't exist
-        try {
-            json = JSON.parse(contents.toString());
-        } catch (e) {
-            return this.del(key, callback);  // If so, delete it
-        }
+            // If there was an error reading the file as json
+            // simply assume it doesn't exist
+            try {
+                json = JSON.parse(contents.toString());
+            } catch (e) {
+                return this.del(key, callback); // If so, delete it
+            }
 
-        // Check if it has expired
-        if (this._hasExpired(json)) {
-            return this.del(key, callback);
-        }
+            // Check if it has expired
+            if (this._hasExpired(json)) {
+                return this.del(key, callback);
+            }
 
-        this._cache.set(key, json);
-        callback(null, json.value);
-    }.bind(this));
+            this._cache.set(key, json);
+            callback(null, json.value);
+        }.bind(this)
+    );
 };
 
-Cache.prototype.set = function (key, value, maxAge, callback) {
+Cache.prototype.set = function(key, value, maxAge, callback) {
     var file;
     var entry;
     var str;
@@ -102,7 +105,7 @@ Cache.prototype.set = function (key, value, maxAge, callback) {
     fs.writeFile(file, str, callback);
 };
 
-Cache.prototype.del = function (key, callback) {
+Cache.prototype.del = function(key, callback) {
     // Delete from memory
     this._cache.del(key);
 
@@ -111,7 +114,7 @@ Cache.prototype.del = function (key, callback) {
         return callback(null);
     }
 
-    fs.unlink(this._getFile(key), function (err) {
+    fs.unlink(this._getFile(key), function(err) {
         if (err && err.code !== 'ENOENT') {
             return callback(err);
         }
@@ -120,7 +123,7 @@ Cache.prototype.del = function (key, callback) {
     });
 };
 
-Cache.prototype.clear = function (callback) {
+Cache.prototype.clear = function(callback) {
     var dir = this._dir;
 
     // Clear in memory cache
@@ -131,35 +134,39 @@ Cache.prototype.clear = function (callback) {
         return callback(null);
     }
 
-    fs.readdir(dir, function (err, files) {
+    fs.readdir(dir, function(err, files) {
         if (err) {
             return callback(err);
         }
 
         // Delete every file in parallel
-        async.forEach(files, function (file, next) {
-            fs.unlink(path.join(dir, file), function (err) {
-                if (err && err.code !== 'ENOENT') {
-                    return next(err);
-                }
+        async.forEach(
+            files,
+            function(file, next) {
+                fs.unlink(path.join(dir, file), function(err) {
+                    if (err && err.code !== 'ENOENT') {
+                        return next(err);
+                    }
 
-                next();
-            });
-        }, callback);
+                    next();
+                });
+            },
+            callback
+        );
     });
 };
 
-Cache.prototype.reset = function () {
+Cache.prototype.reset = function() {
     this._cache.reset();
 };
 
-Cache.clearRuntimeCache = function () {
+Cache.clearRuntimeCache = function() {
     // Note that _cache refers to the static _cache variable
     // that holds other caches per dir!
     // Do not confuse it with the instance cache
 
     // Clear cache of each directory
-    this._cache.forEach(function (cache) {
+    this._cache.forEach(function(cache) {
         cache.reset();
     });
 
@@ -169,7 +176,7 @@ Cache.clearRuntimeCache = function () {
 
 //-------------------------------
 
-Cache.prototype._hasExpired = function (json) {
+Cache.prototype._hasExpired = function(json) {
     var expires = json.expires;
 
     if (!expires || this._options.useStale) {
@@ -180,16 +187,19 @@ Cache.prototype._hasExpired = function (json) {
     return Date.now() > expires;
 };
 
-Cache.prototype._getFile = function (key) {
+Cache.prototype._getFile = function(key) {
     // Append a truncated md5 to the end of the file to solve case issues
     // on case insensitive file systems
     // See: https://github.com/bower/bower/issues/859
-    return path.join(this._dir, encodeURIComponent(key) + '_' + md5(key).substr(0, 5));
+    return path.join(
+        this._dir,
+        encodeURIComponent(key) + '_' + md5(key).substr(0, 5)
+    );
 };
 
 Cache._cache = new LRU({
     max: 5,
-    maxAge: 60 * 30 * 1000  // 30 minutes
+    maxAge: 60 * 30 * 1000 // 30 minutes
 });
 
 module.exports = Cache;

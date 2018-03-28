@@ -1,3 +1,3 @@
-describe('util', function () {
+describe('util', function() {
     require('./rc');
 });

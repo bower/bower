@@ -28,59 +28,63 @@ function search(name, callback) {
 
     // Search package in series in each registry,
     // merging results together
-    async.doUntil(function (next) {
-        var remote = url.parse(registry[index]);
-        var searchCache = that._searchCache[remote.host];
+    async.doUntil(
+        function(next) {
+            var remote = url.parse(registry[index]);
+            var searchCache = that._searchCache[remote.host];
 
-        // If offline flag is passed, only query the cache
-        if (that._config.offline) {
-            return searchCache.get(name, function (err, results) {
+            // If offline flag is passed, only query the cache
+            if (that._config.offline) {
+                return searchCache.get(name, function(err, results) {
+                    if (err || !results || !results.length) {
+                        return next(err);
+                    }
+
+                    // Add each result
+                    results.forEach(function(result) {
+                        addResult.call(that, data, result);
+                    });
+
+                    next();
+                });
+            }
+
+            // Otherwise make a request to always obtain fresh data
+            doRequest.call(that, name, index, function(err, results) {
                 if (err || !results || !results.length) {
                     return next(err);
                 }
 
                 // Add each result
-                results.forEach(function (result) {
+                results.forEach(function(result) {
                     addResult.call(that, data, result);
                 });
 
-                next();
+                // Store in cache for future offline usage
+                searchCache.set(name, results, getMaxAge(), next);
             });
-        }
+        },
+        function() {
+            // Until the data is unknown or there's still registries to test
+            return ++index === total;
+        },
+        function(err) {
+            // Clear runtime cache, keeping the persistent data
+            // in files for future offline usage
+            resetCache();
 
-        // Otherwise make a request to always obtain fresh data
-        doRequest.call(that, name, index, function (err, results) {
-            if (err || !results || !results.length) {
-                return next(err);
+            // If some of the registry entries failed, error out
+            if (err) {
+                return callback(err);
             }
 
-            // Add each result
-            results.forEach(function (result) {
-                addResult.call(that, data, result);
-            });
-
-            // Store in cache for future offline usage
-            searchCache.set(name, results, getMaxAge(), next);
-        });
-    }, function () {
-        // Until the data is unknown or there's still registries to test
-        return ++index === total;
-    }, function (err) {
-        // Clear runtime cache, keeping the persistent data
-        // in files for future offline usage
-        resetCache();
-
-        // If some of the registry entries failed, error out
-        if (err) {
-            return callback(err);
+            callback(null, data);
         }
-
-        callback(null, data);
-    });
+    );
 }
 
 function addResult(accumulated, result) {
-    var exists = accumulated.some(function (current) {
+    var exists = accumulated.some(function(current) {
         return current.name === result.name;
     });
 
@@ -92,7 +96,10 @@ function addResult(accumulated, result) {
 function doRequest(name, index, callback) {
     var req;
     var msg;
-    var requestUrl = this._config.registry.search[index] + '/packages/search/' + encodeURIComponent(name);
+    var requestUrl =
+        this._config.registry.search[index] +
+        '/packages/search/' +
+        encodeURIComponent(name);
     var remote = url.parse(requestUrl);
     var headers = {};
     var that = this;
@@ -101,35 +108,69 @@ function doRequest(name, index, callback) {
         headers['User-Agent'] = this._config.userAgent;
     }
 
-    req = replay(request.get(requestUrl, {
-        headers: headers,
-        ca: this._config.ca.search[index],
-        strictSSL: this._config.strictSsl,
-        timeout: this._config.timeout,
-        json: true
-    }, function (err, response, body) {
-        // If there was an internal error (e.g. timeout)
-        if (err) {
-            return callback(createError('Request to ' + requestUrl + ' failed: ' + err.message, err.code));
-        }
+    req = replay(
+        request.get(
+            requestUrl,
+            {
+                headers: headers,
+                ca: this._config.ca.search[index],
+                strictSSL: this._config.strictSsl,
+                timeout: this._config.timeout,
+                json: true
+            },
+            function(err, response, body) {
+                // If there was an internal error (e.g. timeout)
+                if (err) {
+                    return callback(
+                        createError(
+                            'Request to ' +
+                                requestUrl +
+                                ' failed: ' +
+                                err.message,
+                            err.code
+                        )
+                    );
+                }
 
-        // Abort if there was an error (range different than 2xx)
-        if (response.statusCode < 200 || response.statusCode > 299) {
-            return callback(createError('Request to ' + requestUrl + ' failed with ' + response.statusCode, 'EINVRES'));
-        }
+                // Abort if there was an error (range different than 2xx)
+                if (response.statusCode < 200 || response.statusCode > 299) {
+                    return callback(
+                        createError(
+                            'Request to ' +
+                                requestUrl +
+                                ' failed with ' +
+                                response.statusCode,
+                            'EINVRES'
+                        )
+                    );
+                }
 
-        // Validate response body, since we are expecting a JSON object
-        // If the server returns an invalid JSON, it's still a string
-        if (typeof body !== 'object') {
-            return callback(createError('Response of request to ' + requestUrl + ' is not a valid json', 'EINVRES'));
-        }
+                // Validate response body, since we are expecting a JSON object
+                // If the server returns an invalid JSON, it's still a string
+                if (typeof body !== 'object') {
+                    return callback(
+                        createError(
+                            'Response of request to ' +
+                                requestUrl +
+                                ' is not a valid json',
+                            'EINVRES'
+                        )
+                    );
+                }
 
-        callback(null, body);
-    }));
+                callback(null, body);
+            }
+        )
+    );
 
     if (this._logger) {
-        req.on('replay', function (replay) {
-            msg = 'Request to ' + requestUrl + ' failed with ' + replay.error.code + ', ';
+        req.on('replay', function(replay) {
+            msg =
+                'Request to ' +
+                requestUrl +
+                ' failed with ' +
+                replay.error.code +
+                ', ';
             msg += 'retrying in ' + (replay.delay / 1000).toFixed(1) + 's';
             that._logger.warn('retry', msg);
         });
@@ -145,7 +186,7 @@ function initCache() {
     this._searchCache = this._cache.search || {};
 
     // Generate a cache instance for each registry endpoint
-    this._config.registry.search.forEach(function (registry) {
+    this._config.registry.search.forEach(function(registry) {
         var cacheDir;
         var host = url.parse(registry).host;
 
@@ -155,7 +196,11 @@ function initCache() {
         }
 
         if (this._config.cache) {
-            cacheDir = path.join(this._config.cache, encodeURIComponent(host), 'search');
+            cacheDir = path.join(
+                this._config.cache,
+                encodeURIComponent(host),
+                'search'
+            );
         }
 
         this._searchCache[host] = new Cache(cacheDir, {
@@ -180,9 +225,13 @@ function clearCache(name, callback) {
     // One possible solution would be to read every entry from the cache and
     // delete if the package is contained in the search results
     // But this is too expensive
-    async.forEach(remotes, function (remote, next) {
-        searchCache[remote].clear(next);
-    }, callback);
+    async.forEach(
+        remotes,
+        function(remote, next) {
+            searchCache[remote].clear(next);
+        },
+        callback
+    );
 }
 
 function resetCache() {

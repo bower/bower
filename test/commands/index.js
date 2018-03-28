@@ -1,4 +1,4 @@
-describe('integration tests', function () {
+describe('integration tests', function() {
     require('./cache/list');
     require('./cache/clean');
     require('./help');

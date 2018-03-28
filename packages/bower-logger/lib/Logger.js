@@ -10,18 +10,18 @@ function Logger() {
 
 util.inherits(Logger, EventEmitter);
 
-Logger.prototype.intercept = function (fn) {
+Logger.prototype.intercept = function(fn) {
     this._interceptors.push(fn);
     return this;
 };
 
-Logger.prototype.emit = function () {
+Logger.prototype.emit = function() {
     var ret;
     var args = slice.call(arguments);
 
     // Run interceptors before
     if (args[0] === 'log') {
-        this._interceptors.forEach(function (interceptor) {
+        this._interceptors.forEach(function(interceptor) {
             interceptor.apply(this, args.slice(1));
         });
     }
@@ -29,27 +29,27 @@ Logger.prototype.emit = function () {
     ret = EventEmitter.prototype.emit.apply(this, args);
 
     // Pipe
-    this._piped.forEach(function (emitter) {
+    this._piped.forEach(function(emitter) {
         emitter.emit.apply(emitter, args);
     });
 
     return ret;
 };
 
-Logger.prototype.pipe = function (emitter) {
+Logger.prototype.pipe = function(emitter) {
     this._piped.push(emitter);
 
     return emitter;
 };
 
-Logger.prototype.geminate = function () {
+Logger.prototype.geminate = function() {
     var logger = new Logger();
 
     logger.pipe(this);
     return logger;
 };
 
-Logger.prototype.log = function (level, id, message, data) {
+Logger.prototype.log = function(level, id, message, data) {
     var log = {
         level: level,
         id: id,
@@ -63,7 +63,7 @@ Logger.prototype.log = function (level, id, message, data) {
     return this;
 };
 
-Logger.prototype.prompt = function (prompts, callback) {
+Logger.prototype.prompt = function(prompts, callback) {
     var fn;
     var one;
     var invalid;
@@ -78,7 +78,7 @@ Logger.prototype.prompt = function (prompts, callback) {
     }
 
     // Validate prompt types
-    invalid = prompts.some(function (prompt) {
+    invalid = prompts.some(function(prompt) {
         return validPrompts.indexOf(prompt.type) === -1;
     });
 
@@ -88,20 +88,20 @@ Logger.prototype.prompt = function (prompts, callback) {
         return callback(error);
     }
 
-    fn = function (answers) {
+    fn = function(answers) {
         // Run callback only once
         if (runned) {
             return;
         }
 
         // Trim answers automatically
-        Object.keys(answers).forEach(function (key) {
+        Object.keys(answers).forEach(function(key) {
             var value = answers[key];
 
             if (typeof value === 'string') {
                 answers[key] = value.trim();
             } else if (Array.isArray(value)) {
-                answers[key] = value.map(function (item) {
+                answers[key] = value.map(function(item) {
                     if (typeof item === 'string') {
                         return item.trim();
                     }
@@ -124,25 +124,20 @@ Logger.prototype.prompt = function (prompts, callback) {
 
 // ------------------
 
-Logger._validPrompts = [
-    'input',
-    'confirm',
-    'password',
-    'checkbox'
-];
+Logger._validPrompts = ['input', 'confirm', 'password', 'checkbox'];
 
 Logger.LEVELS = {
-    'error': 5,
-    'conflict': 4,
-    'warn': 3,
-    'action': 2,
-    'info': 1,
-    'debug': 0
+    error: 5,
+    conflict: 4,
+    warn: 3,
+    action: 2,
+    info: 1,
+    debug: 0
 };
 
 // Add helpful log methods
-Object.keys(Logger.LEVELS).forEach(function (level) {
-    Logger.prototype[level] = function (id, message, data) {
+Object.keys(Logger.LEVELS).forEach(function(level) {
+    Logger.prototype[level] = function(id, message, data) {
         this.log(level, id, message, data);
     };
 });

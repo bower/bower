@@ -1,16 +1,11 @@
-'use strict';
-module.exports = function (grunt) {
+module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-simple-mocha');
 
     grunt.initConfig({
         jshint: {
-            files: [
-                'Gruntfile.js',
-                'lib/**/*.js',
-                'test/**/*.js'
-            ],
+            files: ['Gruntfile.js', 'lib/**/*.js', 'test/**/*.js'],
             options: {
                 jshintrc: '.jshintrc'
             }
