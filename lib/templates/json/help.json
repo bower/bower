@@ -69,6 +69,10 @@
         {
             "flag":        "--no-color",
             "description": "Disable colors"
+        },
+        {
+            "flag":        "--config.interactive=false",
+            "description": "Disable prompts"
         }
     ]
 }

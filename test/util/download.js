@@ -108,7 +108,7 @@ describe('download', function () {
                 nock.get('/package.tar.gz').times(6).delayConnection(1000).replyWithFile(200, source);
             },
             expectError: function (e) {
-                expect(e.code).to.be('ETIMEDOUT');
+                expect(e.code).to.be('ESOCKETTIMEDOUT');
                 expect(fs.readdirSync(tempDir.path)).to.be.empty();
             },
             downloadOpts: {

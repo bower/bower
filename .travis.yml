@@ -2,20 +2,31 @@ sudo: false
 
 language: node_js
 
+# Use node 8 for build
 node_js:
-  - "0.10"
-  - "4"
-  - "5"
-  - "6"
-  - "7"
+  - "8"
+
+# Then test with specific node version
+env:
+  - TEST_NODE_VERSION="0.10"
+  - TEST_NODE_VERSION="0.12"
+  - TEST_NODE_VERSION="4"
+  - TEST_NODE_VERSION="6"
+  - TEST_NODE_VERSION="8"
+  - TEST_NODE_VERSION="9"
+
+before_install:
+  - node --version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.5.1
+  - export PATH=$HOME/.yarn/bin:$PATH
+
+cache:
+  yarn: true
 
 install:
-  - node --version
-  - npm --version
-  - git --version
-  - svn --version | head -n 1
-  - npm install -g grunt yarn
   - yarn
+  - nvm install $TEST_NODE_VERSION
+  - npm install -g grunt
 
 os:
   - osx
@@ -25,7 +36,8 @@ matrix:
   fast_finish: true
   allow_failures:
     - os: osx
-    - env: "NODE_VERSION=7"
 
 script:
+  - nvm use $TEST_NODE_VERSION
+  - node --version && npm --version && git --version && svn --version | head -n 1
   - grunt travis
