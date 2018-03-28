@@ -310,6 +310,26 @@ describe('ResolveCache', function () {
                 next();
             }).done();
         });
+
+        it('should move the canonical dir to source-md5/source:_version folder if package meta has version and _release is updated due to e-tag', function (next) {
+            var pkgMetaTmp = {
+                name: 'foo',
+                version: '0.0.1',
+                _source: 'foo',
+                _target: '*',
+                _release: '123',
+            };
+            resolveCache.store(tempPackage, pkgMetaTmp)
+            .then(function (dir) {
+                expect(dir).to.equal(path.join(cacheDir, md5('foo'), pkgMetaTmp.version + ':' + pkgMetaTmp._release));
+                expect(fs.existsSync(dir)).to.be(true);
+                expect(fs.existsSync(path.join(dir, 'baz'))).to.be(true);
+                expect(fs.existsSync(tempPackage)).to.be(false);
+
+                next();
+            })
+            .done();
+        });        
     });
 
     describe('.versions', function () {
