@@ -96,7 +96,7 @@
     "coveralls": "coveralls",
     "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
     "format": "prettier --write --single-quote --tab-width 4 '**/*.js'",
-    "precommit": "lint-staged && npm test"
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [

@@ -1,5 +1,9 @@
 # Changelog
 
+## Newer releases
+
+Please see: https://github.com/bower/bower/releases
+
 ## 1.8.0 - 2016-11-07
 
 - Download tar archives from GitHub when possible (#2263)
