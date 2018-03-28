@@ -8,11 +8,11 @@ node_js:
 
 # Then test with specific node version
 env:
-  - TRAVIS_NODE_VERSION="0.10"
-  - TRAVIS_NODE_VERSION="0.12"
-  - TRAVIS_NODE_VERSION="4"
-  - TRAVIS_NODE_VERSION="6"
-  - TRAVIS_NODE_VERSION="8"
+  - TEST_NODE_VERSION="0.10"
+  - TEST_NODE_VERSION="0.12"
+  - TEST_NODE_VERSION="4"
+  - TEST_NODE_VERSION="6"
+  - TEST_NODE_VERSION="8"
 
 before_install:
   - node --version
@@ -24,8 +24,7 @@ cache:
 
 install:
   - yarn
-  - nvm install $TRAVIS_NODE_VERSION
-  - nvm use $TRAVIS_NODE_VERSION
+  - nvm install $TEST_NODE_VERSION
   - npm install -g grunt
 
 os:
