@@ -348,12 +348,8 @@ describe('resolverFactory', function () {
 
         endpoints = {
             // svn:
-            'svn://hostname.com/user/project': 'http://hostname.com/user/project',
-            'svn://hostname.com/user/project/': 'http://hostname.com/user/project',
-
-            // svn@:
-            'svn://svn@hostname.com:user/project': 'http://svn@hostname.com:user/project',
-            'svn://svn@hostname.com:user/project/': 'http://svn@hostname.com:user/project',
+            'svn://hostname.com/user/project': 'svn://hostname.com/user/project',
+            'svn://hostname.com/user/project/': 'svn://hostname.com/user/project',
 
             // svn+http
             'svn+http://hostname.com/project/blah': 'http://hostname.com/project/blah',
