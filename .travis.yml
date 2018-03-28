@@ -13,6 +13,7 @@ env:
   - TEST_NODE_VERSION="4"
   - TEST_NODE_VERSION="6"
   - TEST_NODE_VERSION="8"
+  - TEST_NODE_VERSION="9"
 
 before_install:
   - node --version
@@ -35,7 +36,6 @@ matrix:
   fast_finish: true
   allow_failures:
     - os: osx
-    - env: "NODE_VERSION=7"
 
 script:
   - nvm use $TEST_NODE_VERSION
