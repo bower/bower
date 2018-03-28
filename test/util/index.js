@@ -1,4 +1,4 @@
-describe('util', function () {
+describe('util', function() {
     require('./removeIgnores');
     require('./download');
     require('./isPathAbsolute');

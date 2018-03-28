@@ -3,7 +3,7 @@ var intersect = require('intersect');
 
 // Function to check if a file is a component(1) file
 function isComponent(file, callback) {
-    fs.readFile(file, function (err, contents) {
+    fs.readFile(file, function(err, contents) {
         var json;
         var keys;
         var common;

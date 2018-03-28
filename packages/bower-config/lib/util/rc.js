@@ -16,7 +16,7 @@ function rc(name, cwd, argv) {
     argv = argv || optimist.argv;
 
     // Parse --config.foo=false
-    argvConfig = object.map(argv.config || {}, function (value) {
+    argvConfig = object.map(argv.config || {}, function(value) {
         return value === 'false' ? false : value;
     });
 
@@ -106,14 +106,14 @@ function env(prefix) {
 
     prefix = prefix.toLowerCase();
 
-    object.forOwn(process.env, function (value, key) {
+    object.forOwn(process.env, function(value, key) {
         key = key.toLowerCase();
 
         if (string.startsWith(key, prefix)) {
             var parsedKey = key
-                           .substr(prefixLength)
-                           .replace(/__/g, '.')   // __ is used for nesting
-                           .replace(/_/g, '-');   // _ is used as a - separator
+                .substr(prefixLength)
+                .replace(/__/g, '.') // __ is used for nesting
+                .replace(/_/g, '-'); // _ is used as a - separator
 
             //use a convention patern to accept array from process.env
             //e.g. export bower_registry__search='["http://abc.com","http://def.com"]'
@@ -122,10 +122,9 @@ function env(prefix) {
             if (!match || match.length === 0) {
                 targetValue = value;
             } else {
-                targetValue = match[1].split(',')
-                    .map(function(m) {
-                        return m.trim();
-                    });
+                targetValue = match[1].split(',').map(function(m) {
+                    return m.trim();
+                });
             }
             object.set(obj, parsedKey, targetValue);
         }
@@ -137,7 +136,7 @@ function env(prefix) {
 function find(filename, dir) {
     var files = [];
 
-    var walk = function (filename, dir) {
+    var walk = function(filename, dir) {
         var file = path.join(dir, filename);
         var parent = path.dirname(dir);
 

@@ -14,14 +14,14 @@ function read(file, options, callback) {
     }
 
     // Check if file is a directory
-    fs.stat(file, function (err, stat) {
+    fs.stat(file, function(err, stat) {
         if (err) {
             return callback(err);
         }
 
         // It's a directory, so we find the json inside it
         if (stat.isDirectory()) {
-            return find(file, function (err, file) {
+            return find(file, function(err, file) {
                 if (err) {
                     return callback(err);
                 }
@@ -31,7 +31,7 @@ function read(file, options, callback) {
         }
 
         // Otherwise read it
-        fs.readFile(file, function (err, contents) {
+        fs.readFile(file, function(err, contents) {
             var json;
 
             if (err) {
@@ -99,11 +99,14 @@ function readSync(file, options) {
 }
 
 function parse(json, options) {
-    options = deepExtend({
-        normalize: false,
-        validate: true,
-        clone: false
-    }, options || {});
+    options = deepExtend(
+        {
+            normalize: false,
+            validate: true,
+            clone: false
+        },
+        options || {}
+    );
 
     // Clone
     if (options.clone) {
@@ -137,7 +140,9 @@ function getIssues(json) {
         errors.push('No "name" property set');
     } else {
         if (!/^[a-zA-Z0-9_@][a-zA-Z0-9_@\.\- \/]*$/.test(json.name)) {
-            errors.push('Name must be lowercase, can contain digits, dots, dashes, "@" or spaces');
+            errors.push(
+                'Name must be lowercase, can contain digits, dots, dashes, "@" or spaces'
+            );
         }
 
         if (json.name.length > 50) {
@@ -145,7 +150,9 @@ function getIssues(json) {
         }
 
         if (!/^[a-z0-9_][a-z0-9_\.\-]*$/.test(json.name)) {
-            warnings.push('The "name" is recommended to be lowercase, can contain digits, dots, dashes');
+            warnings.push(
+                'The "name" is recommended to be lowercase, can contain digits, dots, dashes'
+            );
         }
 
         if (/^[\.-]/.test(json.name)) {
@@ -158,7 +165,9 @@ function getIssues(json) {
     }
 
     if (json.description && json.description.length > 140) {
-        warnings.push('The "description" is too long, the limit is 140 characters');
+        warnings.push(
+            'The "description" is too long, the limit is 140 characters'
+        );
     }
 
     if (json.main !== undefined) {
@@ -167,21 +176,29 @@ function getIssues(json) {
             main = [main];
         }
         if (!(main instanceof Array)) {
-            errors.push('The "main" field has to be either an Array or a String');
+            errors.push(
+                'The "main" field has to be either an Array or a String'
+            );
         } else {
             var ext2files = {};
-            main.forEach(function (filename) {
+            main.forEach(function(filename) {
                 if (typeof filename !== 'string') {
                     errors.push('The "main" Array has to contain only Strings');
                 }
                 if (/[*]/.test(filename)) {
-                    warnings.push('The "main" field cannot contain globs (example: "*.js")');
+                    warnings.push(
+                        'The "main" field cannot contain globs (example: "*.js")'
+                    );
                 }
                 if (/[.]min[.][^/]+$/.test(filename)) {
-                    warnings.push('The "main" field cannot contain minified files');
+                    warnings.push(
+                        'The "main" field cannot contain minified files'
+                    );
                 }
                 if (isAsset(filename)) {
-                    warnings.push('The "main" field cannot contain font, image, audio, or video files');
+                    warnings.push(
+                        'The "main" field cannot contain font, image, audio, or video files'
+                    );
                 }
                 var ext = path.extname(filename);
                 if (ext.length >= 2) {
@@ -192,10 +209,15 @@ function getIssues(json) {
                     files.push(filename);
                 }
             });
-            Object.keys(ext2files).forEach(function (ext) {
+            Object.keys(ext2files).forEach(function(ext) {
                 var files = ext2files[ext];
                 if (files.length > 1) {
-                    warnings.push('The "main" field has to contain only 1 file per filetype; found multiple ' + ext + ' files: ' + JSON.stringify(files));
+                    warnings.push(
+                        'The "main" field has to contain only 1 file per filetype; found multiple ' +
+                            ext +
+                            ' files: ' +
+                            JSON.stringify(files)
+                    );
                 }
             });
         }
@@ -234,12 +256,15 @@ function find(folder, files, callback) {
     }
 
     if (!files.length) {
-        err = createError('None of ' + possibleJsons.join(', ') + ' were found in ' + folder, 'ENOENT');
+        err = createError(
+            'None of ' + possibleJsons.join(', ') + ' were found in ' + folder,
+            'ENOENT'
+        );
         return callback(err);
     }
 
     file = path.resolve(path.join(folder, files[0]));
-    fs.exists(file, function (exists) {
+    fs.exists(file, function(exists) {
         if (!exists) {
             return find(folder, files.slice(1), callback);
         }
@@ -250,7 +275,7 @@ function find(folder, files, callback) {
 
         // If the file is component.json, check it it's a component(1) file
         // If it is, we ignore it and keep searching
-        isComponent(file, function (is) {
+        isComponent(file, function(is) {
             if (is) {
                 return find(folder, files.slice(1), callback);
             }
@@ -269,14 +294,16 @@ function findSync(folder, files) {
     }
 
     if (!files.length) {
-        return createError('None of ' + possibleJsons.join(', ') + ' were found in ' + folder, 'ENOENT');
+        return createError(
+            'None of ' + possibleJsons.join(', ') + ' were found in ' + folder,
+            'ENOENT'
+        );
     }
 
     file = path.resolve(path.join(folder, files[0]));
-    try{
+    try {
         exists = fs.statSync(file);
-    }
-    catch (err) {
+    } catch (err) {
         exists = false;
     }
     if (exists && exists.isFile()) {

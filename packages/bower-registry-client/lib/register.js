@@ -16,43 +16,61 @@ function register(name, url, callback) {
         requestUrl += '?access_token=' + config.accessToken;
     }
 
-    request.post({
-        url: requestUrl,
-        headers: headers,
-        ca: config.ca.register,
-        strictSSL: config.strictSsl,
-        timeout: config.timeout,
-        json: true,
-        form: {
-            name: name,
-            url: url
-        }
-    }, function (err, response) {
-        // If there was an internal error (e.g. timeout)
-        if (err) {
-            return callback(createError('Request to ' + requestUrl + ' failed: ' + err.message, err.code));
-        }
+    request.post(
+        {
+            url: requestUrl,
+            headers: headers,
+            ca: config.ca.register,
+            strictSSL: config.strictSsl,
+            timeout: config.timeout,
+            json: true,
+            form: {
+                name: name,
+                url: url
+            }
+        },
+        function(err, response) {
+            // If there was an internal error (e.g. timeout)
+            if (err) {
+                return callback(
+                    createError(
+                        'Request to ' + requestUrl + ' failed: ' + err.message,
+                        err.code
+                    )
+                );
+            }
 
-        // Duplicate
-        if (response.statusCode === 403) {
-            return callback(createError('Duplicate package', 'EDUPLICATE'));
-        }
+            // Duplicate
+            if (response.statusCode === 403) {
+                return callback(createError('Duplicate package', 'EDUPLICATE'));
+            }
 
-        // Invalid format
-        if (response.statusCode === 400) {
-            return callback(createError('Invalid URL format', 'EINVFORMAT'));
-        }
+            // Invalid format
+            if (response.statusCode === 400) {
+                return callback(
+                    createError('Invalid URL format', 'EINVFORMAT')
+                );
+            }
 
-        // Everything other than 201 is unknown
-        if (response.statusCode !== 201) {
-            return callback(createError('Unknown error: ' + response.statusCode + ' - ' + response.body, 'EUNKNOWN'));
-        }
+            // Everything other than 201 is unknown
+            if (response.statusCode !== 201) {
+                return callback(
+                    createError(
+                        'Unknown error: ' +
+                            response.statusCode +
+                            ' - ' +
+                            response.body,
+                        'EUNKNOWN'
+                    )
+                );
+            }
 
-        callback(null, {
-            name: name,
-            url: url
-        });
-    });
+            callback(null, {
+                name: name,
+                url: url
+            });
+        }
+    );
 }
 
 module.exports = register;

@@ -4,8 +4,16 @@ var osenv = require('osenv');
 var crypto = require('crypto');
 
 function generateFakeUser() {
-    var uid = process.pid + '-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
-    return crypto.createHash('md5').update(uid).digest('hex');
+    var uid =
+        process.pid +
+        '-' +
+        Date.now() +
+        '-' +
+        Math.floor(Math.random() * 1000000);
+    return crypto
+        .createHash('md5')
+        .update(uid)
+        .digest('hex');
 }
 
 // Assume XDG defaults
@@ -30,7 +38,7 @@ if (process.platform === 'win32') {
     paths.config = paths.config || path.join(base, 'config');
     paths.data = paths.data || path.join(base, 'data');
     paths.cache = paths.cache || path.join(base, 'cache');
-// Fallbacks for other operating systems
+    // Fallbacks for other operating systems
 } else {
     base = path.resolve(home || tmp);
 

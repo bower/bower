@@ -10,7 +10,9 @@ var fs = require('../lib/util/fs');
 var glob = require('glob');
 var os = require('os');
 var which = require('which');
-var proxyquire = require('proxyquire').noCallThru().noPreserveCache();
+var proxyquire = require('proxyquire')
+    .noCallThru()
+    .noPreserveCache();
 var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
 var nock = require('nock');
@@ -21,13 +23,13 @@ Q.longStackSupport = true;
 
 // Those are needed for Travis or not configured git environment
 var env = {
-    'GIT_AUTHOR_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
-    'GIT_AUTHOR_NAME': 'André Cruz',
-    'GIT_AUTHOR_EMAIL': 'amdfcruz@gmail.com',
-    'GIT_COMMITTER_DATE': 'Sun Apr 7 22:13:13 2013 +0000',
-    'GIT_COMMITTER_NAME': 'André Cruz',
-    'GIT_COMMITTER_EMAIL': 'amdfcruz@gmail.com',
-    'NODE_ENV': 'test'
+    GIT_AUTHOR_DATE: 'Sun Apr 7 22:13:13 2013 +0000',
+    GIT_AUTHOR_NAME: 'André Cruz',
+    GIT_AUTHOR_EMAIL: 'amdfcruz@gmail.com',
+    GIT_COMMITTER_DATE: 'Sun Apr 7 22:13:13 2013 +0000',
+    GIT_COMMITTER_NAME: 'André Cruz',
+    GIT_COMMITTER_EMAIL: 'amdfcruz@gmail.com',
+    NODE_ENV: 'test'
 };
 
 object.mixIn(process.env, env);
@@ -38,7 +40,7 @@ var tmpLocation = path.join(
     uuid.v4().slice(0, 8)
 );
 
-exports.require = function (name, stubs) {
+exports.require = function(name, stubs) {
     if (stubs) {
         return proxyquire(path.join(__dirname, '../', name), stubs);
     } else {
@@ -47,27 +49,27 @@ exports.require = function (name, stubs) {
 };
 
 // We need to reset cache because tests are reusing temp directories
-beforeEach(function () {
+beforeEach(function() {
     config.reset();
 });
 
-after(function () {
+after(function() {
     rimraf.sync(tmpLocation);
 });
 
-exports.TempDir = (function () {
+exports.TempDir = (function() {
     function TempDir(defaults) {
         this.path = path.join(tmpLocation, uuid.v4());
         this.defaults = defaults;
     }
 
-    TempDir.prototype.create = function (files, defaults) {
+    TempDir.prototype.create = function(files, defaults) {
         var that = this;
 
         defaults = defaults || this.defaults || {};
         files = object.merge(files || {}, defaults);
 
-        this.meta = function (tag) {
+        this.meta = function(tag) {
             if (tag) {
                 return files[tag]['bower.json'];
             } else {
@@ -76,7 +78,7 @@ exports.TempDir = (function () {
         };
 
         if (files) {
-            object.forOwn(files, function (contents, filepath) {
+            object.forOwn(files, function(contents, filepath) {
                 if (typeof contents === 'object') {
                     contents = JSON.stringify(contents, null, ' ') + '\n';
                 }
@@ -90,7 +92,7 @@ exports.TempDir = (function () {
         return this;
     };
 
-    TempDir.prototype.prepare = function (files) {
+    TempDir.prototype.prepare = function(files) {
         rimraf.sync(this.path);
         mkdirp.sync(this.path);
         this.create(files);
@@ -99,7 +101,7 @@ exports.TempDir = (function () {
     };
 
     // TODO: Rewrite to synchronous form
-    TempDir.prototype.prepareGit = function (revisions) {
+    TempDir.prototype.prepareGit = function(revisions) {
         var that = this;
 
         revisions = object.merge(revisions || {}, this.defaults);
@@ -110,42 +112,45 @@ exports.TempDir = (function () {
 
         this.git('init');
 
-        this.glob('./!(.git)').map(function (removePath) {
+        this.glob('./!(.git)').map(function(removePath) {
             var fullPath = path.join(that.path, removePath);
 
             rimraf.sync(fullPath);
         });
 
-        object.forOwn(revisions, function (files, tag) {
-            this.create(files, {});
-            this.git('add', '-A');
-            this.git('commit', '-m"commit"');
-            this.git('tag', tag);
-        }.bind(this));
+        object.forOwn(
+            revisions,
+            function(files, tag) {
+                this.create(files, {});
+                this.git('add', '-A');
+                this.git('commit', '-m"commit"');
+                this.git('tag', tag);
+            }.bind(this)
+        );
 
         return this;
     };
 
-    TempDir.prototype.glob = function (pattern) {
+    TempDir.prototype.glob = function(pattern) {
         return glob.sync(pattern, {
             cwd: this.path,
             dot: true
         });
     };
 
-    TempDir.prototype.getPath = function (name) {
+    TempDir.prototype.getPath = function(name) {
         return path.join(this.path, name);
     };
 
-    TempDir.prototype.read = function (name) {
+    TempDir.prototype.read = function(name) {
         return fs.readFileSync(this.getPath(name), 'utf8');
     };
 
-    TempDir.prototype.readJson = function (name) {
+    TempDir.prototype.readJson = function(name) {
         return JSON.parse(this.read(name));
     };
 
-    TempDir.prototype.git = function () {
+    TempDir.prototype.git = function() {
         var args = Array.prototype.slice.call(arguments);
         var result = spawnSync('git', args, { cwd: this.path });
 
@@ -156,10 +161,12 @@ exports.TempDir = (function () {
         }
     };
 
-    TempDir.prototype.latestGitTag = function () {
+    TempDir.prototype.latestGitTag = function() {
         var versions = this.git('tag')
             .split(/\r?\n/)
-            .map(function (t) { return t[0] == 'v' ? t.slice(1) : t; })
+            .map(function(t) {
+                return t[0] == 'v' ? t.slice(1) : t;
+            })
             .filter(semver.valid)
             .sort(semver.compare);
 
@@ -170,7 +177,7 @@ exports.TempDir = (function () {
         }
     };
 
-    TempDir.prototype.exists = function (name) {
+    TempDir.prototype.exists = function(name) {
         return fs.existsSync(path.join(this.path, name));
     };
 
@@ -180,18 +187,18 @@ exports.TempDir = (function () {
 exports.expectEvent = function expectEvent(emitter, eventName) {
     var deferred = Q.defer();
 
-    emitter.once(eventName, function () {
+    emitter.once(eventName, function() {
         deferred.resolve(arguments);
     });
 
-    emitter.once('error', function (reason) {
+    emitter.once('error', function(reason) {
         deferred.reject(reason);
     });
 
     return deferred.promise;
 };
 
-exports.command = function (command, stubs) {
+exports.command = function(command, stubs) {
     var rawCommand;
     var commandStubs = {};
 
@@ -199,19 +206,18 @@ exports.command = function (command, stubs) {
     var cwd = stubs.cwd;
     delete stubs.cwd;
 
-    rawCommand = exports.require(
-        'lib/commands/' + command, stubs
-    );
+    rawCommand = exports.require('lib/commands/' + command, stubs);
 
-    commandStubs['./' + command] = function () {
+    commandStubs['./' + command] = function() {
         var args = [].slice.call(arguments);
-        args[rawCommand.length - 1] = object.merge({ cwd: cwd }, args[rawCommand.length - 1] || {});
+        args[rawCommand.length - 1] = object.merge(
+            { cwd: cwd },
+            args[rawCommand.length - 1] || {}
+        );
         return rawCommand.apply(null, args);
     };
 
-    var instance = exports.require(
-        'lib/commands/index', commandStubs
-    );
+    var instance = exports.require('lib/commands/index', commandStubs);
 
     var commandParts = command.split('/');
 
@@ -224,7 +230,7 @@ exports.command = function (command, stubs) {
     }
 
     // TODO: refactor tests, so they can use readOptions directly
-    instance.readOptions = function (argv) {
+    instance.readOptions = function(argv) {
         argv = ['node', 'bower'].concat(argv);
         argv = command.split('/').concat(argv);
 
@@ -234,11 +240,11 @@ exports.command = function (command, stubs) {
     return instance;
 };
 
-exports.run = function (command, args) {
+exports.run = function(command, args) {
     var logger = command.apply(null, args || []);
 
     // Hack so we can intercept prompring for data
-    logger.prompt = function (data) {
+    logger.prompt = function(data) {
         logger.emit('confirm', data);
     };
 
@@ -250,35 +256,37 @@ exports.run = function (command, args) {
 };
 
 // Captures all stdout and stderr
-exports.capture = function (callback) {
+exports.capture = function(callback) {
     var oldStdout = process.stdout.write;
     var oldStderr = process.stderr.write;
 
     var stdout = '';
     var stderr = '';
 
-    process.stdout.write = function (text) {
+    process.stdout.write = function(text) {
         stdout += text;
     };
 
-    process.stderr.write = function (text) {
+    process.stderr.write = function(text) {
         stderr += text;
     };
 
-    return Q.fcall(callback).then(function () {
-        process.stdout.write = oldStdout;
-        process.stderr.write = oldStderr;
+    return Q.fcall(callback)
+        .then(function() {
+            process.stdout.write = oldStdout;
+            process.stderr.write = oldStderr;
 
-        return [stdout, stderr];
-    }).fail(function (e) {
-        process.stdout.write = oldStdout;
-        process.stderr.write = oldStderr;
+            return [stdout, stderr];
+        })
+        .fail(function(e) {
+            process.stdout.write = oldStdout;
+            process.stderr.write = oldStderr;
 
-        throw e;
-    });
+            throw e;
+        });
 };
 
-exports.hasSvn = function () {
+exports.hasSvn = function() {
     try {
         which.sync('svn');
         return true;
@@ -287,11 +295,11 @@ exports.hasSvn = function () {
     }
 };
 
-exports.isWin = function () {
+exports.isWin = function() {
     return process.platform === 'win32';
 };
 
-exports.localSource = function (localPath) {
+exports.localSource = function(localPath) {
     localPath = path.normalize(localPath);
 
     if (!exports.isWin()) {
@@ -302,7 +310,7 @@ exports.localSource = function (localPath) {
 };
 
 // Used for example by "svn checkout" and "svn export"
-exports.localUrl = function (localPath) {
+exports.localUrl = function(localPath) {
     localPath = path.normalize(localPath);
 
     if (!exports.isWin()) {
@@ -316,13 +324,12 @@ exports.localUrl = function (localPath) {
 
 // Returns the result of executing the bower binary + args
 // example: runBin('install') --> $ bower install
-exports.runBin = function (args) {
-    args = args || [];
+exports.runBin = function(args) {
+    args = args || [];
     args.unshift(path.resolve(__dirname, '../bin/bower'));
     return spawnSync('node', args);
 };
 
-
-afterEach(function () {
+afterEach(function() {
     nock.cleanAll();
 });

@@ -12,12 +12,12 @@ function Config(cwd) {
     this._config = {};
 }
 
-Config.prototype.load = function (overwrites) {
+Config.prototype.load = function(overwrites) {
     this._config = rc('bower', this._cwd);
 
     this._config = object.merge(
-      expand(this._config || {}),
-      expand(overwrites || {})
+        expand(this._config || {}),
+        expand(overwrites || {})
     );
 
     this._config = normalise(this._config);
@@ -27,8 +27,8 @@ Config.prototype.load = function (overwrites) {
     return this;
 };
 
-Config.prototype.restore = function () {
-  this._proxy.restore();
+Config.prototype.restore = function() {
+    this._proxy.restore();
 };
 
 function readCertFile(path) {
@@ -44,10 +44,14 @@ function readCertFile(path) {
         certificates = path;
     }
 
-    return certificates.
-      split(sep).
-      filter(function(s) { return !s.match(/^\s*$/); }).
-      map(function(s) { return s + sep; });
+    return certificates
+        .split(sep)
+        .filter(function(s) {
+            return !s.match(/^\s*$/);
+        })
+        .map(function(s) {
+            return s + sep;
+        });
 }
 
 function loadCAs(caConfig) {
@@ -68,15 +72,15 @@ function loadCAs(caConfig) {
     }
 }
 
-Config.prototype.toObject = function () {
+Config.prototype.toObject = function() {
     return lang.deepClone(this._config);
 };
 
-Config.create = function (cwd) {
+Config.create = function(cwd) {
     return new Config(cwd);
 };
 
-Config.read = function (cwd, overrides) {
+Config.read = function(cwd, overrides) {
     var config = Config.create(cwd);
     return config.load(overrides).toObject();
 };
@@ -86,13 +90,13 @@ function normalise(config) {
 
     // Some backwards compatible things..
     if (config.shorthandResolver) {
-      config.shorthandResolver = config.shorthandResolver
-        .replace(/\{\{\{/g, '{{')
-        .replace(/\}\}\}/g, '}}');
+        config.shorthandResolver = config.shorthandResolver
+            .replace(/\{\{\{/g, '{{')
+            .replace(/\}\}\}/g, '}}');
     }
 
     // Ensure that every registry endpoint does not end with /
-    config.registry.search = config.registry.search.map(function (url) {
+    config.registry.search = config.registry.search.map(function(url) {
         return url.replace(/\/+$/, '');
     });
     config.registry.register = config.registry.register.replace(/\/+$/, '');
