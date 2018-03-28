@@ -2,20 +2,31 @@ sudo: false
 
 language: node_js
 
+# Use node 8 for build
 node_js:
-  - "0.10"
-  - "4"
-  - "5"
-  - "6"
-  - "7"
+  - "8"
+
+# Then test with specific node version
+env:
+  - TRAVIS_NODE_VERSION="0.10"
+  - TRAVIS_NODE_VERSION="0.12"
+  - TRAVIS_NODE_VERSION="4"
+  - TRAVIS_NODE_VERSION="6"
+  - TRAVIS_NODE_VERSION="8"
+
+before_install:
+  - node --version
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.5.1
+  - export PATH=$HOME/.yarn/bin:$PATH
+
+cache:
+  yarn: true
 
 install:
-  - node --version
-  - npm --version
-  - git --version
-  - svn --version | head -n 1
-  - npm install -g grunt yarn
   - yarn
+  - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+  - npm install -g grunt
+  - node --version && npm --version && git --version && svn --version | head -n 1
 
 os:
   - osx
