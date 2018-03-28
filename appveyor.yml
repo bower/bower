@@ -10,9 +10,11 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
+    - nodejs_version: "0.10"
+    - nodejs_version: "0.12"
     - nodejs_version: "4"
-    - nodejs_version: "5"
     - nodejs_version: "6"
+    - nodejs_version: "8"
 
 # Finish on first failed build
 matrix:
@@ -20,11 +22,12 @@ matrix:
 
 # Install node, display versions, install dependencies
 install:
-  - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node 8
   - node --version && npm --version
   - git --version && svn --version
   - npm install -g yarn grunt
   - yarn
+  - ps: Install-Product node $env:nodejs_version
 
 # Post-install test scripts.
 test_script:
@@ -39,4 +42,4 @@ deploy: off
 
 # Cache node modules, and refresh if package.json changes
 cache:
-  - node_modules -> package.json
+  - "%LOCALAPPDATA%\\Yarn"
