@@ -75,52 +75,7 @@ module.exports = function(grunt) {
         'publish',
         'Perform final checks and publish Bower',
         function() {
-            var npmVersion = JSON.parse(
-                childProcess.execSync('npm version --json').toString()
-            ).npm.split('.');
-            var npmMajor = parseInt(npmVersion[0], 10);
-            var npmMinor = parseInt(npmVersion[1], 10);
-
             var jsonPackage = require('./package');
-
-            if (npmMajor !== 3 || npmMinor < 5) {
-                grunt.log.writeln(
-                    'You need to use at least npm@3.5 to publish bower.'
-                );
-                grunt.log.writeln(
-                    'It is because npm 2.x produces too long paths that Windows does not handle.'
-                );
-                grunt.log.writeln('Please upgrade it: npm install -g npm');
-                process.exit(1);
-            }
-
-            var version = jsonPackage.version;
-            var changelog = fs.readFileSync('./CHANGELOG.md');
-
-            if (changelog.indexOf('## ' + version) === -1) {
-                grunt.log.writeln(
-                    'Please add changelog.md entry for this bower version (' +
-                        version +
-                        ')'
-                );
-
-                var lastRelease = childProcess
-                    .execSync('git tag | tail -1')
-                    .toString()
-                    .trim();
-
-                grunt.log.writeln(
-                    'Commits since last release (' + lastRelease + '): \n'
-                );
-
-                grunt.log.writeln(
-                    childProcess
-                        .execSync('git log --oneline ' + lastRelease + '..')
-                        .toString()
-                );
-
-                process.exit(1);
-            }
 
             if (
                 childProcess
@@ -137,12 +92,12 @@ module.exports = function(grunt) {
 
             if (process.env.SKIP_TESTS !== '1') {
                 grunt.log.writeln('Reinstalling dependencies...');
-                childProcess.execSync('rm -rf node_modules && npm install', {
+                childProcess.execSync('rm -rf node_modules && yarn', {
                     stdio: [0, 1, 2]
                 });
 
                 grunt.log.writeln('Running test suite...');
-                childProcess.execSync('grunt test', { stdio: [0, 1, 2] });
+                childProcess.execSync('yarn test', { stdio: [0, 1, 2] });
             }
 
             var dir = tmp.dirSync().name;
@@ -155,7 +110,7 @@ module.exports = function(grunt) {
             });
 
             grunt.log.writeln('Installing production dependencies...');
-            childProcess.execSync('npm install --production --silent', {
+            childProcess.execSync('yarn --production', {
                 cwd: dir,
                 stdio: [0, 1, 2]
             });
@@ -222,13 +177,6 @@ module.exports = function(grunt) {
                 },
                 {
                     type: 'confirm',
-                    name: 'changelog',
-                    message:
-                        'Are you sure the CHANGELOG.md contains all changes?',
-                    default: false
-                },
-                {
-                    type: 'confirm',
                     name: 'tests',
                     message:
                         'Are you sure all tests are passing on Travis and Appveyor?',
@@ -264,10 +212,13 @@ module.exports = function(grunt) {
                 }
 
                 grunt.log.writeln(
-                    '\nPlease remember to tag this relese, and add a release on Github!'
+                    '\nPlease remember to tag this release, and add a release with changelog on Github!'
                 );
                 grunt.log.writeln(
                     '\nAlso, please remember to test published Bower one more time!'
+                );
+                grunt.log.writeln(
+                    '\nYou can promote this bower release with "npm dist-tag add bower@' + jsonPackage.version + ' latest"'
                 );
                 grunt.log.writeln('\nPublishing Bower...');
 
