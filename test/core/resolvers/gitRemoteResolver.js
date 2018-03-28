@@ -356,6 +356,26 @@ describe('GitRemoteResolver', function () {
             });
         });
 
+        it('should evaluate to true when source is a ssh protocol and host is defined to support shallow cloning', function (next) {
+            var testSource = 'git@foo:bar.git';
+
+            var MyGitRemoteResolver = gitRemoteResolverFactory(
+                createCmdHandlerFn(testSource, multiline(function () {/*
+                    foo: bar
+                    Content-Type: application/x-git-upload-pack-advertisement
+                    1234: 5678
+                */}))
+            );
+
+            var resolver = new MyGitRemoteResolver({ source: testSource }, defaultConfig({ shallowCloneHosts: ['foo'] }), logger);
+
+            resolver._shallowClone().then(function (shallowCloningSupported) {
+                expect(shallowCloningSupported).to.be(true);
+
+                next();
+            });
+        });
+
         it('should cache hosts that support shallow cloning', function (next) {
             var testSource = 'https://foo/bar.git';
 

@@ -43,6 +43,9 @@ function doEnvReplaceStr (f) {
 
 function envReplace(config) {
     var envReplaced = {};
+    if ( lang.isArray(config) ) {
+        envReplaced = [];
+    }
 
     object.forOwn(config, function (value, key) {
 
@@ -61,6 +64,9 @@ function envReplace(config) {
 
         // Perform variable replacements based on var type
         if ( lang.isPlainObject(value) ) {
+            envReplaced[key] = envReplace(value);
+        }
+        else if ( lang.isArray(value) ) {
             envReplaced[key] = envReplace(value);
         }
         else if ( lang.isString(value) ) {
