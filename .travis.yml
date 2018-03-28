@@ -38,6 +38,6 @@ matrix:
     - env: "NODE_VERSION=7"
 
 script:
-  - nvm use $TRAVIS_NODE_VERSION
+  - nvm use $TEST_NODE_VERSION
   - node --version && npm --version && git --version && svn --version | head -n 1
   - grunt travis
