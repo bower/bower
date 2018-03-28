@@ -17,7 +17,7 @@
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "1.0.0",
-    "bower-config": "^1.4.0",
+    "bower-config": "^1.4.1",
     "bower-endpoint-parser": "^0.2.2",
     "bower-json": "^0.8.1",
     "bower-logger": "^0.2.2",
@@ -81,7 +81,7 @@
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.5.3",
     "multiline": "^1.0.2",
-    "nock": "^7.7.2",
+    "nock": "^9.2.3",
     "node-uuid": "^1.4.7",
     "proxyquire": "^1.7.9",
     "spawn-sync": "1.0.15",

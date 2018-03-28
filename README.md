@@ -1,6 +1,9 @@
 # Bower - A package manager for the web
 
-> Bower needs your help. If you're willing to help, please say hello to team@bower.io or [donate](https://salt.bountysource.com/teams/bower)
+[![Backers on Open Collective](https://opencollective.com/bower/backers/badge.svg)](#backers)
+[![Sponsors on Open Collective](https://opencollective.com/bower/sponsors/badge.svg)](#sponsors)
+
+> ..psst! While Bower is maintained, we recommend [yarn](https://yarnpkg.com/) and [webpack](https://webpack.js.org/) for new front-end projects!
 
 [![Unix CI](https://img.shields.io/travis/bower/bower/master.svg?maxAge=2592000)](https://travis-ci.org/bower/bower)
 [![Windows CI](https://img.shields.io/appveyor/ci/bower/bower/master.svg)](https://ci.appveyor.com/project/bower/bower)
@@ -117,8 +120,81 @@ Note that on Windows for tests to pass you need to configure Git before cloning:
 git config --global core.autocrlf input
 ```
 
+
+## Backers
+
+Support us with a monthly donation and help us continue our activities. [[Become a backer](https://opencollective.com/bower#backer)]
+
+<a href="https://opencollective.com/bower/backer/0/website" target="_blank"><img src="https://opencollective.com/bower/backer/0/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/1/website" target="_blank"><img src="https://opencollective.com/bower/backer/1/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/2/website" target="_blank"><img src="https://opencollective.com/bower/backer/2/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/3/website" target="_blank"><img src="https://opencollective.com/bower/backer/3/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/4/website" target="_blank"><img src="https://opencollective.com/bower/backer/4/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/5/website" target="_blank"><img src="https://opencollective.com/bower/backer/5/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/6/website" target="_blank"><img src="https://opencollective.com/bower/backer/6/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/7/website" target="_blank"><img src="https://opencollective.com/bower/backer/7/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/8/website" target="_blank"><img src="https://opencollective.com/bower/backer/8/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/9/website" target="_blank"><img src="https://opencollective.com/bower/backer/9/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/10/website" target="_blank"><img src="https://opencollective.com/bower/backer/10/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/11/website" target="_blank"><img src="https://opencollective.com/bower/backer/11/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/12/website" target="_blank"><img src="https://opencollective.com/bower/backer/12/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/13/website" target="_blank"><img src="https://opencollective.com/bower/backer/13/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/14/website" target="_blank"><img src="https://opencollective.com/bower/backer/14/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/15/website" target="_blank"><img src="https://opencollective.com/bower/backer/15/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/16/website" target="_blank"><img src="https://opencollective.com/bower/backer/16/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/17/website" target="_blank"><img src="https://opencollective.com/bower/backer/17/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/18/website" target="_blank"><img src="https://opencollective.com/bower/backer/18/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/19/website" target="_blank"><img src="https://opencollective.com/bower/backer/19/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/20/website" target="_blank"><img src="https://opencollective.com/bower/backer/20/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/21/website" target="_blank"><img src="https://opencollective.com/bower/backer/21/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/22/website" target="_blank"><img src="https://opencollective.com/bower/backer/22/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/23/website" target="_blank"><img src="https://opencollective.com/bower/backer/23/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/24/website" target="_blank"><img src="https://opencollective.com/bower/backer/24/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/25/website" target="_blank"><img src="https://opencollective.com/bower/backer/25/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/26/website" target="_blank"><img src="https://opencollective.com/bower/backer/26/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/27/website" target="_blank"><img src="https://opencollective.com/bower/backer/27/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/28/website" target="_blank"><img src="https://opencollective.com/bower/backer/28/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/29/website" target="_blank"><img src="https://opencollective.com/bower/backer/29/avatar.svg"></a>
+
+
+## Sponsors
+
+Become a sponsor and get your logo on our README on Github with a link to your site. [[Become a sponsor](https://opencollective.com/bower#sponsor)]
+
+<a href="https://opencollective.com/bower/sponsor/0/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/1/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/2/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/3/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/4/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/5/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/6/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/7/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/8/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/9/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/9/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/10/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/10/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/11/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/11/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/12/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/12/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/13/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/13/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/14/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/14/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/15/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/15/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/16/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/16/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/17/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/17/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/18/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/18/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/19/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/19/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/20/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/20/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/21/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/21/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/22/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/22/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/23/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/23/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/24/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/24/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/25/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/25/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/26/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/26/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/27/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/27/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/28/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/28/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/29/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/29/avatar.svg"></a>
+
+
 ## License
 
-Copyright (c) 2016 Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
+Copyright (c) 2012-present Twitter and [other contributors](https://github.com/bower/bower/graphs/contributors)
 
 Licensed under the MIT License

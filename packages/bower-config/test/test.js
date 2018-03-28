@@ -12,12 +12,12 @@ describe('NPM Config on package.json', function () {
         var config = require('../lib/Config').read(null, {});
 
         assert.deepEqual(config.registry, {
-          'default': 'https://bower.herokuapp.com',
+          'default': 'https://registry.bower.io',
           'search': [
-            'https://bower.herokuapp.com'
+            'https://registry.bower.io'
           ],
-          'register': 'https://bower.herokuapp.com',
-          'publish': 'https://bower.herokuapp.com'
+          'register': 'https://registry.bower.io',
+          'publish': 'https://registry.bower.io'
         });
     });
 
@@ -38,12 +38,12 @@ describe('NPM Config on package.json', function () {
         var config = require('../lib/Config').read(null, { registry: { search: 'https://foobar' } });
 
         assert.deepEqual(config.registry, {
-          'default': 'https://bower.herokuapp.com',
+          'default': 'https://registry.bower.io',
           'search': [
             'https://foobar',
           ],
-          'register': 'https://bower.herokuapp.com',
-          'publish': 'https://bower.herokuapp.com'
+          'register': 'https://registry.bower.io',
+          'publish': 'https://registry.bower.io'
         });
     });
 
@@ -70,12 +70,12 @@ describe('NPM Config on package.json', function () {
         assert.deepEqual(config, {
           'directory': 'bower_components',
           'registry': {
-            'default': 'https://bower.herokuapp.com',
+            'default': 'https://registry.bower.io',
             'search': [
-              'https://bower.herokuapp.com'
+              'https://registry.bower.io'
             ],
-            'register': 'https://bower.herokuapp.com',
-            'publish': 'https://bower.herokuapp.com'
+            'register': 'https://registry.bower.io',
+            'publish': 'https://registry.bower.io'
           },
           'shorthandResolver': 'https://github.com/{{owner}}/{{package}}.git',
           'tmp': '/foo/bar',
