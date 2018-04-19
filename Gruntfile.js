@@ -75,7 +75,24 @@ module.exports = function(grunt) {
         'publish',
         'Perform final checks and publish Bower',
         function() {
+            var npmVersion = JSON.parse(
+                childProcess.execSync('npm version --json').toString()
+            ).npm.split('.');
+            var npmMajor = parseInt(npmVersion[0], 10);
+            var npmMinor = parseInt(npmVersion[1], 10);
+
             var jsonPackage = require('./package');
+
+            if (npmMajor !== 3 || npmMinor < 5) {
+                grunt.log.writeln(
+                    'You need to use at npm@3.5 to publish bower.'
+                );
+                grunt.log.writeln(
+                    'It is because npm 2.x produces too long paths that Windows does not handle and newer npm drops lib/node_modules'
+                );
+                grunt.log.writeln('Please upgrade it: npm install -g npm@3');
+                process.exit(1);
+            }
 
             if (
                 childProcess
@@ -200,7 +217,6 @@ module.exports = function(grunt) {
             inquirer.prompt(questions, function(answers) {
                 if (
                     !answers.review ||
-                    !answers.changelog ||
                     !answers.tests ||
                     !answers.publish
                 ) {
@@ -218,7 +234,7 @@ module.exports = function(grunt) {
                     '\nAlso, please remember to test published Bower one more time!'
                 );
                 grunt.log.writeln(
-                    '\nYou can promote this bower release with "npm dist-tag add bower@' + jsonPackage.version + ' latest"'
+                    '\nYou can promote this bower release with "npm dist-tag add bower@' + jsonPackage.version + ' latest'
                 );
                 grunt.log.writeln('\nPublishing Bower...');
 
