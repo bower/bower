@@ -977,10 +977,10 @@ decode-uri-component@^0.2.0:
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
   integrity sha1-6zkTMzRYd1y4TNGh+uBiEGu4dUU=
 
-decompress-zip@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/decompress-zip/-/decompress-zip-0.3.2.tgz#f3fa2841666abce394604f4a9e8a7085c202d464"
-  integrity sha512-Ab1QY4LrWMrUuo53lLnmGOby7v8ryqxJ+bKibKSiPisx+25mhut1dScVBXAYx14i/PqSrFZvR2FRRazhLbvL+g==
+decompress-zip@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/decompress-zip/-/decompress-zip-0.2.2.tgz#f03eaa719914868d7f5ccbdfb36930cc98cfb260"
+  integrity sha512-v+Na3Ck86Px7s2ix+f77pMQC3GlkxHHN+YyvnkEW7+xX5F39pcDpIV/VFvGYk8MznTFcMoPjL3XNWEJLXWoSPw==
   dependencies:
     binary "^0.3.0"
     graceful-fs "^4.1.3"
