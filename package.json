@@ -94,7 +94,7 @@
     "test": "grunt test",
     "ci": "grunt travis",
     "coveralls": "coveralls",
-    "prepublish": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
+    "prepublishOnly": "in-publish && echo 'You need to use \"grunt publish\" to publish bower' && false || not-in-publish",
     "format": "prettier --write --single-quote --tab-width 4 '**/*.js'",
     "precommit": "lint-staged"
   },
