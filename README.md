@@ -155,7 +155,12 @@ Support us with a monthly donation and help us continue our activities. [[Become
 <a href="https://opencollective.com/bower/backer/27/website" target="_blank"><img src="https://opencollective.com/bower/backer/27/avatar.svg"></a>
 <a href="https://opencollective.com/bower/backer/28/website" target="_blank"><img src="https://opencollective.com/bower/backer/28/avatar.svg"></a>
 <a href="https://opencollective.com/bower/backer/29/website" target="_blank"><img src="https://opencollective.com/bower/backer/29/avatar.svg"></a>
-
+<a href="https://opencollective.com/bower/backer/30/website" target="_blank"><img src="https://opencollective.com/bower/backer/30/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/31/website" target="_blank"><img src="https://opencollective.com/bower/backer/31/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/32/website" target="_blank"><img src="https://opencollective.com/bower/backer/32/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/33/website" target="_blank"><img src="https://opencollective.com/bower/backer/33/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/34/website" target="_blank"><img src="https://opencollective.com/bower/backer/34/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/35/website" target="_blank"><img src="https://opencollective.com/bower/backer/35/avatar.svg"></a>
 
 ## Sponsors
 
