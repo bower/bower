@@ -42,3 +42,4 @@ script:
   - node --version && npm --version && git --version && svn --version | head -n 1
   - grunt travis
   - (cd packages/bower-json && npm install && grunt test)
+  - (cd packages/bower-registry-client && npm install && grunt test)
