@@ -13,7 +13,7 @@
     "async": "^0.2.8",
     "graceful-fs": "^4.0.0",
     "lru-cache": "^2.3.0",
-    "request": "^2.51.0",
+    "request": ">=2.51.0 <=2.67.0",
     "request-replay": "^0.2.0",
     "rimraf": "^2.2.0",
     "mkdirp": "^0.3.5"
@@ -21,12 +21,12 @@
   "devDependencies": {
     "bower-config": "^1.1.2",
     "expect.js": "~0.2.0",
-    "grunt": "~0.4.1",
-    "grunt-cli": "^0.1.13",
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-watch": "~0.5.0",
-    "grunt-simple-mocha": "~0.4.0",
-    "mocha": "~1.12.0",
+    "grunt": ">=1.0.0 <=1.0.2",
+    "grunt-cli": "^1.1.0",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-simple-mocha": "^0.4.1",
+    "mocha": "^2.5.3",
     "nock": "~0.22.0"
   },
   "scripts": {
