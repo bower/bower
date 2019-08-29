@@ -217,6 +217,16 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/bower/sponsor/48/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/48/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/49/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/49/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/50/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/50/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/51/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/51/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/52/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/52/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/53/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/53/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/54/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/54/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/55/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/55/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/56/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/56/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/57/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/57/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/58/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/58/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/59/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/59/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/60/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/60/avatar.svg"></a>
 
 ## License
 
