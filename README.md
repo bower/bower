@@ -212,6 +212,11 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/bower/sponsor/43/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/43/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/44/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/44/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/45/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/45/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/46/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/46/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/47/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/47/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/48/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/48/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/49/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/49/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/50/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/50/avatar.svg"></a>
 
 ## License
 
