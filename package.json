@@ -83,7 +83,7 @@
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.5.3",
     "multiline": "^1.0.2",
-    "nock-legacy": "npm:nock@^9.2.3",
+    "nock-legacy": "npm:nock@9.2.3",
     "nock": "^11.7.0",
     "node-uuid": "^1.4.7",
     "prettier": "^1.11.1",
