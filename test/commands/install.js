@@ -708,8 +708,8 @@ describe('bower install', function() {
             cwd: tempDir.path
         });
 
-        nock('http://dummy.local')
-            .get('http://github.com/yahoo/pure/archive/v0.6.0.tar.gz')
+        nock('http://dummy.local/')
+            .get(function(uri) { return true; })
             .reply(500);
 
         return helpers
