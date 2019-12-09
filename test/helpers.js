@@ -15,7 +15,7 @@ var proxyquire = require('proxyquire')
     .noPreserveCache();
 var spawnSync = require('spawn-sync');
 var config = require('../lib/config');
-var nock = require('nock');
+var nock = require('./util/nock');
 var semver = require('semver');
 
 // For better promise errors

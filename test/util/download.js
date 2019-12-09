@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
-var nock = require('nock');
+var nock = require('../util/nock');
 var path = require('path');
 var Q = require('q');
 

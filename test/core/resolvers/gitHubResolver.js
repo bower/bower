@@ -1,5 +1,5 @@
 var path = require('path');
-var nock = require('nock');
+var nock = require('../../util/nock');
 var fs = require('../../../lib/util/fs');
 var expect = require('expect.js');
 var Logger = require('bower-logger');
