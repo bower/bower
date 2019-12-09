@@ -146,7 +146,7 @@ describe('GitFsResolver', function() {
             var dir = path.join(testPackage, 'new-dir');
 
             fs.writeFileSync(file, 'foo');
-            fs.mkdir(dir);
+            fs.mkdirSync(dir);
 
             function cleanup(err) {
                 fs.unlinkSync(file);
