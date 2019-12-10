@@ -66,8 +66,7 @@ module.exports = function(grunt) {
     grunt.registerTask('travis', [
         'eslint',
         'exec:assets',
-        'exec:cover',
-        'exec:coveralls'
+        'simplemocha:full'
     ]);
     grunt.registerTask('default', 'test');
 
