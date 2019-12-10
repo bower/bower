@@ -33,7 +33,7 @@ install:
 
 # Post-install test scripts.
 test_script:
-  - npm run ci
+  - grunt travis
   - (cd packages/bower-logger && npm install && npm test)
   - (cd packages/bower-config && npm install && npm test)
   - (cd packages/bower-endpoint-parser && npm install && npm test)
