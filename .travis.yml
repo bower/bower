@@ -42,5 +42,8 @@ script:
   - nvm use $TEST_NODE_VERSION
   - node --version && npm --version && git --version && svn --version | head -n 1
   - grunt travis
+  - (cd packages/bower-logger && npm install && npm test)
+  - (cd packages/bower-config && npm install && npm test)
+  - (cd packages/bower-endpoint-parser && npm install && npm test)
   - (cd packages/bower-json && npm install && npm test)
   - (cd packages/bower-registry-client && npm install && npm test)

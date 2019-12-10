@@ -22,6 +22,6 @@
     "test": "mocha -R spec"
   },
   "files": [
-    "lib"  
+    "lib"
   ]
 }
