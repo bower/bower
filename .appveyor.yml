@@ -34,11 +34,21 @@ install:
 # Post-install test scripts.
 test_script:
   - grunt travis
-  - ps: cd packages/bower-logger && npm install && npm test
-  - ps: cd packages/bower-config && npm install && npm test
-  - ps: cd packages/bower-endpoint-parser && npm install && npm test
-  - ps: cd packages/bower-json && npm install && npm test
-  - ps: cd packages/bower-registry-client && npm install && npm test
+  - cd packages/bower-logger
+  - npm install
+  - npm test
+  - cd ../../packages/bower-config
+  - npm install
+  - npm test
+  - cd ../../packages/bower-endpoint-parser
+  - npm install
+  - npm test
+  - cd ../../packages/bower-json
+  - npm install
+  - npm test
+  - cd ../../packages/bower-registry-client
+  - npm install
+  - npm test
 
 
 # Make clone much faster
