@@ -13,7 +13,8 @@ env:
   - TEST_NODE_VERSION="4"
   - TEST_NODE_VERSION="6"
   - TEST_NODE_VERSION="8"
-  - TEST_NODE_VERSION="9"
+  - TEST_NODE_VERSION="10"
+  - TEST_NODE_VERSION="12"
 
 before_install:
   - node --version

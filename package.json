@@ -79,11 +79,12 @@
     "husky": "^0.14.3",
     "in-publish": "^2.0.0",
     "istanbul": "^0.4.3",
-    "lint-staged": "^7.0.0",
+    "lint-staged": "^9.5.0",
     "load-grunt-tasks": "^3.5.0",
     "mocha": "^2.5.3",
     "multiline": "^1.0.2",
-    "nock": "^9.2.3",
+    "nock-legacy": "npm:nock@9.2.3",
+    "nock": "^11.7.0",
     "node-uuid": "^1.4.7",
     "prettier": "^1.11.1",
     "proxyquire": "^1.7.9",
@@ -100,8 +101,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --single-quote --tab-width 4",
-      "git add"
+      "prettier --single-quote --tab-width 4"
     ]
   },
   "files": [

@@ -1,6 +1,6 @@
 var expect = require('expect.js');
 var helpers = require('../helpers');
-var nock = require('nock');
+var nock = require('../util/nock');
 var path = require('path');
 var Q = require('q');
 
@@ -13,13 +13,11 @@ describe('download', function() {
         destination = tempDir.getPath('package.tar.gz');
 
     function downloadTest(opts) {
-        var deferred = Q.defer();
-
         tempDir.prepare();
 
         opts.response(nock('http://bower.io', opts.nockOpts));
 
-        download(
+        return download(
             opts.sourceUrl || 'http://bower.io/package.tar.gz',
             opts.destinationPath || destination,
             opts.downloadOpts
@@ -28,27 +26,20 @@ describe('download', function() {
                 function(result) {
                     if (opts.expect) {
                         opts.expect(result);
-                        deferred.resolve();
                     } else {
-                        deferred.reject(
-                            new Error(
-                                'Error expected. Got successful response.'
-                            )
+                        throw new Error(
+                            'Error expected. Got successful response.'
                         );
                     }
                 },
                 function(error) {
                     if (opts.expectError) {
                         opts.expectError(error);
-                        deferred.resolve();
                     } else {
-                        deferred.reject(error);
+                        throw error
                     }
                 }
             )
-            .done();
-
-        return deferred.promise;
     }
 
     it('download file to directory', function() {

@@ -1,7 +1,7 @@
 var expect = require('expect.js');
 var path = require('path');
 var helpers = require('../helpers');
-var nock = require('nock');
+var nock = require('../util/nock');
 var rimraf = require('rimraf');
 var fs = require('../../lib/util/fs');
 var tar = require('tar-fs');
@@ -708,8 +708,8 @@ describe('bower install', function() {
             cwd: tempDir.path
         });
 
-        nock('http://dummy.local')
-            .get('http://github.com/yahoo/pure/archive/v0.6.0.tar.gz')
+        nock('http://dummy.local/')
+            .get(function(uri) { return true; })
             .reply(500);
 
         return helpers
