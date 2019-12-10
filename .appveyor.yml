@@ -33,9 +33,7 @@ install:
 
 # Post-install test scripts.
 test_script:
-  - cmd: npm run ci
-  - cmd: (cd packages/bower-json && npm install && grunt test)
-  - cmd: (cd packages/bower-registry-client && npm install && grunt test)
+  - cmd: npm run ci && (cd packages/bower-json && npm install && npm test) && (cd packages/bower-registry-client && npm install && npm test)
 
 
 # Make clone much faster
