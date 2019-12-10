@@ -22,8 +22,7 @@
     "bower-config": "^1.1.2",
     "expect.js": "~0.2.0",
     "mocha": "^2.5.3",
-    "nock-legacy": "npm:nock@9.2.3",
-    "nock": "^11.7.0"
+    "nock": "9.2.3"
   },
   "scripts": {
     "test": "mocha"

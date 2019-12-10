@@ -4,9 +4,7 @@ var expect = require('expect.js');
 var md5 = require('../lib/util/md5');
 var http = require('http');
 var Config = require('bower-config');
-
-var NODE_MAJOR_VERSION = process.versions.node.split('.')[0];
-var nock = NODE_MAJOR_VERSION >= 12 ? require('nock') : require('nock-legacy')
+var nock = require('nock')
 
 describe('RegistryClient', function() {
     beforeEach(function() {
