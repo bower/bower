@@ -83,7 +83,7 @@ module.exports = function(grunt) {
 
             var jsonPackage = require('./package');
 
-            if (npmMajor !== 3 || npmMinor < 5) {
+            if (npmMajor < 3 || (npmMajor === 3 && npmMinor < 5)) {
                 grunt.log.writeln(
                     'You need to use at npm@3.5 to publish bower.'
                 );

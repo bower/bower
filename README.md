@@ -14,6 +14,8 @@
 
 ---
 
+**This is a fork, which extends bower by a maven resolver**
+
 Bower offers a generic, unopinionated solution to the problem of **front-end package management**, while exposing the package dependency model via an API that can be consumed by a more opinionated build stack. There are no system wide dependencies, no dependencies are shared between different apps, and the dependency tree is flat.
 
 Bower runs over Git, and is package-agnostic. A packaged component can be made up of any type of asset, and use any type of transport (e.g., AMD, CommonJS, etc.).
@@ -55,12 +57,42 @@ We discourage using bower components statically for performance and security rea
 
 The best approach is to process components installed by bower with build tool (like [Grunt](http://gruntjs.com/) or [gulp](http://gulpjs.com/)), and serve them concatenated or using a module loader (like [RequireJS](http://requirejs.org/)).
 
+**Maven extension**: package URLs can use maven+http://... or maven+https://... to access a maven repository (URL up to the package name, not including the version number)
+
 ### Uninstalling packages
 
 To uninstall a locally installed package:
 
 ```sh
 $ bower uninstall <package-name>
+```
+
+### Extended usage with Maven support
+
+Use case: you have a (private) maven repository (like [artifactory](http://www.jfrog.com/artifactory)), where you deploy bower packages to with a maven build (e.g. by [Jenkins](http://jenkins-ci.org/)).
+
+Install [private bower](http://hacklone.github.io/private-bower/) on one of your servers.
+
+Use this fork of bower on your development machines/continuous build servers:
+```sh
+$ npm install -g cns-bower
+```
+
+Point your bower to the private bower registry by creating a file .bowerrc in your user directory (replace your server name):
+```json
+{
+    "registry": "http://private.bower.server:5678/"
+}
+```
+
+After the first successful deployment of a bower package to your maven repository, register the package on your private bower registry:
+```sh
+$ bower register <package> maven+http://your.maven.repository//.../<package>
+```
+
+If you use grunt, there is a patched [fork](https://github.com/mvlcek/grunt-bower-task) of [grunt-bower-task](https://github.com/yatskevich/grunt-bower-task), which uses cns-bower:
+```sh
+$ npm install grunt-cns-bower-task
 ```
 
 ### prezto and oh-my-zsh users
