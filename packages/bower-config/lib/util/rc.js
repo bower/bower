@@ -1,6 +1,6 @@
 var path = require('path');
 var fs = require('graceful-fs');
-var optimist = require('optimist');
+var yargs = require('yargs');
 var osenv = require('osenv');
 var object = require('mout/object');
 var string = require('mout/string');
@@ -13,7 +13,7 @@ var home = osenv.home();
 function rc(name, cwd, argv) {
     var argvConfig;
 
-    argv = argv || optimist.argv;
+    argv = argv || yargs.argv;
 
     // Parse --config.foo=false
     argvConfig = object.map(argv.config || {}, function(value) {
