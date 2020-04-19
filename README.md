@@ -161,6 +161,11 @@ Support us with a monthly donation and help us continue our activities. [[Become
 <a href="https://opencollective.com/bower/backer/33/website" target="_blank"><img src="https://opencollective.com/bower/backer/33/avatar.svg"></a>
 <a href="https://opencollective.com/bower/backer/34/website" target="_blank"><img src="https://opencollective.com/bower/backer/34/avatar.svg"></a>
 <a href="https://opencollective.com/bower/backer/35/website" target="_blank"><img src="https://opencollective.com/bower/backer/35/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/36/website" target="_blank"><img src="https://opencollective.com/bower/backer/36/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/37/website" target="_blank"><img src="https://opencollective.com/bower/backer/37/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/38/website" target="_blank"><img src="https://opencollective.com/bower/backer/38/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/39/website" target="_blank"><img src="https://opencollective.com/bower/backer/39/avatar.svg"></a>
+<a href="https://opencollective.com/bower/backer/40/website" target="_blank"><img src="https://opencollective.com/bower/backer/40/avatar.svg"></a>
 
 ## Sponsors
 
@@ -227,6 +232,26 @@ Become a sponsor and get your logo on our README on Github with a link to your s
 <a href="https://opencollective.com/bower/sponsor/58/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/58/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/59/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/59/avatar.svg"></a>
 <a href="https://opencollective.com/bower/sponsor/60/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/60/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/61/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/61/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/62/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/62/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/63/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/63/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/64/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/64/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/65/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/65/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/66/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/66/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/67/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/67/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/68/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/68/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/69/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/69/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/70/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/70/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/71/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/71/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/72/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/72/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/73/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/73/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/74/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/74/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/75/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/75/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/76/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/76/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/77/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/77/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/78/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/78/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/79/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/79/avatar.svg"></a>
+<a href="https://opencollective.com/bower/sponsor/80/website" target="_blank"><img src="https://opencollective.com/bower/sponsor/80/avatar.svg"></a>
 
 ## License
 
