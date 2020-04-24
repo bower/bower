@@ -975,14 +975,13 @@ describe('GitResolver', function() {
             var dst = path.join(tempDir, '.git');
 
             // Copy .git folder to the tempDir
-            copy
-                .copyDir(
-                    path.resolve(__dirname, '../../assets/package-a/.git'),
-                    dst,
+            copy.copyDir(
+                path.resolve(__dirname, '../../assets/package-a/.git'),
+                dst,
                 {
                     mode: 0777
                 }
-                )
+            )
                 .then(function() {
                     resolver._tempDir = tempDir;
 

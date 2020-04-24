@@ -709,7 +709,9 @@ describe('bower install', function() {
         });
 
         nock('http://dummy.local/')
-            .get(function(uri) { return true; })
+            .get(function(uri) {
+                return true;
+            })
             .reply(500);
 
         return helpers

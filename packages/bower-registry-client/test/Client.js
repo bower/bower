@@ -4,7 +4,7 @@ var expect = require('expect.js');
 var md5 = require('../lib/util/md5');
 var http = require('http');
 var Config = require('bower-config');
-var nock = require('nock')
+var nock = require('nock');
 
 describe('RegistryClient', function() {
     beforeEach(function() {

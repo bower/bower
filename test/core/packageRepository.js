@@ -268,8 +268,7 @@ describe('PackageRepository', function() {
                 return Q.resolve([tempPackage, json]);
             };
 
-            copy
-                .copyDir(testPackage, tempPackage, { ignore: ['.git'] })
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
                 .then(function() {
                     fs.writeFileSync(
                         path.join(tempPackage, '.bower.json'),
@@ -316,8 +315,7 @@ describe('PackageRepository', function() {
                 return Q.resolve([tempPackage, json]);
             };
 
-            copy
-                .copyDir(testPackage, tempPackage, { ignore: ['.git'] })
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
                 .then(function() {
                     fs.writeFileSync(
                         path.join(tempPackage, '.bower.json'),
@@ -364,8 +362,7 @@ describe('PackageRepository', function() {
                 return Q.resolve([tempPackage, json]);
             };
 
-            copy
-                .copyDir(testPackage, tempPackage, { ignore: ['.git'] })
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
                 .then(function() {
                     fs.writeFileSync(
                         path.join(tempPackage, '.bower.json'),
@@ -410,8 +407,7 @@ describe('PackageRepository', function() {
                 return Q.resolve([tempPackage, json]);
             };
 
-            copy
-                .copyDir(testPackage, tempPackage, { ignore: ['.git'] })
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] })
                 .then(function() {
                     fs.writeFileSync(
                         path.join(tempPackage, '.bower.json'),

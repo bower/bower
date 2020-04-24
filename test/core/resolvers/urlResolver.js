@@ -530,64 +530,64 @@ describe('UrlResolver', function() {
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-zip.zip'),
-                {
-                    'Content-Type': 'application/zip'
-                }
+                    {
+                        'Content-Type': 'application/zip'
+                    }
                 )
 
                 .get('/package-zip2')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-zip.zip'),
-                {
-                    'Content-Type': 'application/zip; charset=UTF-8'
-                }
+                    {
+                        'Content-Type': 'application/zip; charset=UTF-8'
+                    }
                 )
 
                 .get('/package-zip3')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-zip.zip'),
-                {
-                    'Content-Type': ' application/zip ; charset=UTF-8'
-                }
+                    {
+                        'Content-Type': ' application/zip ; charset=UTF-8'
+                    }
                 )
 
                 .get('/package-zip4')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-zip.zip'),
-                {
-                    'Content-Type': '"application/x-zip"' // Test with quotes
-                }
+                    {
+                        'Content-Type': '"application/x-zip"' // Test with quotes
+                    }
                 )
 
                 .get('/package-tar')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-tar.tar.gz'),
-                {
-                    'Content-Type': ' application/x-tgz ; charset=UTF-8'
-                }
+                    {
+                        'Content-Type': ' application/x-tgz ; charset=UTF-8'
+                    }
                 )
 
                 .get('/package-tar.tar.gz')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-tar.tar.gz'),
-                {
-                    'Content-Type': ' application/x-tgz ; charset=UTF-8'
-                }
+                    {
+                        'Content-Type': ' application/x-tgz ; charset=UTF-8'
+                    }
                 )
 
                 .get('/package-tar2.tar.gz')
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-tar.tar.gz'),
-                {
-                    'Content-Type':
+                    {
+                        'Content-Type':
                             ' application/octet-stream ; charset=UTF-8'
-                }
+                    }
                 );
 
             resolver = create('http://bower.io/package-zip');
@@ -698,10 +698,10 @@ describe('UrlResolver', function() {
                 .replyWithFile(
                     200,
                     path.resolve(__dirname, '../../assets/package-zip.zip'),
-                {
-                    'Content-Disposition':
+                    {
+                        'Content-Disposition':
                             'attachment; filename="package-zip.zip"'
-                }
+                    }
                 );
 
             resolver = create('http://bower.io/package-zip');
@@ -857,9 +857,9 @@ describe('UrlResolver', function() {
                     .replyWithFile(
                         200,
                         path.resolve(__dirname, '../../assets/package-zip.zip'),
-                    {
-                        'Content-Disposition': header
-                    }
+                        {
+                            'Content-Disposition': header
+                        }
                     );
 
                 resolver = create('http://bower.io/package-zip');

@@ -88,9 +88,10 @@ describe('ResolveCache', function() {
 
             // Create a fresh copy of the test package into temp
             rimraf.sync(tempPackage);
-            copy
-                .copyDir(testPackage, tempPackage, { ignore: ['.git'] })
-                .then(next.bind(next, null), next);
+            copy.copyDir(testPackage, tempPackage, { ignore: ['.git'] }).then(
+                next.bind(next, null),
+                next
+            );
         });
 
         it('should move the canonical dir to source-md5/version/ folder if package meta has a version', function(next) {
@@ -158,8 +159,7 @@ describe('ResolveCache', function() {
             var pkgMeta = path.join(tempPackage, '.bower.json');
 
             // Copy bower.json to .bower.json and add some props
-            copy
-                .copyFile(path.join(tempPackage, 'component.json'), pkgMeta)
+            copy.copyFile(path.join(tempPackage, 'component.json'), pkgMeta)
                 .then(function() {
                     return Q.nfcall(fs.readFile, pkgMeta).then(function(
                         contents
