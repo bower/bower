@@ -177,18 +177,25 @@ describe('NPM Config on package.json', function() {
             assert.equal(process.env.HTTPS_PROXY, 'http://HTTPS_PROXY');
             assert.equal(process.env.NO_PROXY, 'google.com');
 
-            assert.equal(process.env.http_proxy, undefined);
-            assert.equal(process.env.https_proxy, undefined);
-            assert.equal(process.env.no_proxy, undefined);
+            // On windows env is case insensitive
+            if (process.platform === 'win32') {
+                assert.equal(process.env.http_proxy, 'http://HTTP_PROXY');
+                assert.equal(process.env.https_proxy, 'http://HTTPS_PROXY');
+                assert.equal(process.env.no_proxy, 'google.com');
+            } else {
+                assert.equal(process.env.http_proxy, undefined);
+                assert.equal(process.env.https_proxy, undefined);
+                assert.equal(process.env.no_proxy, undefined);
+            }
         });
 
         it('restores env variables', function() {
-            process.env.HTTP_PROXY = 'a';
-            process.env.HTTPS_PROXY = 'b';
-            process.env.NO_PROXY = 'c';
             process.env.http_proxy = 'd';
             process.env.https_proxy = 'e';
             process.env.no_proxy = 'f';
+            process.env.HTTP_PROXY = 'a';
+            process.env.HTTPS_PROXY = 'b';
+            process.env.NO_PROXY = 'c';
 
             var config = require('../lib/Config')
                 .create('test/assets/env-variables')
@@ -199,9 +206,16 @@ describe('NPM Config on package.json', function() {
             assert.equal(process.env.HTTPS_PROXY, 'b');
             assert.equal(process.env.NO_PROXY, 'c');
 
-            assert.equal(process.env.http_proxy, 'd');
-            assert.equal(process.env.https_proxy, 'e');
-            assert.equal(process.env.no_proxy, 'f');
+            // On windows precedence for restoring is for capital case
+            if (process.platform === 'win32') {
+                assert.equal(process.env.http_proxy, 'a');
+                assert.equal(process.env.https_proxy, 'b');
+                assert.equal(process.env.no_proxy, 'c');
+            } else {
+                assert.equal(process.env.http_proxy, 'd');
+                assert.equal(process.env.https_proxy, 'e');
+                assert.equal(process.env.no_proxy, 'f');
+            }
         });
 
         it('restores env variables if they are undefined', function() {
@@ -241,7 +255,7 @@ describe('Allow ${ENV} variables in .bowerrc', function() {
             'test/assets/env-variables-values'
         );
         assert.equal('a', config.storage.packages);
-        assert.equal('/tmp/b', config.tmp);
+        assert.equal(path.resolve('/tmp/b'), config.tmp);
         assert.equal('username:password', config.storage.registry.search[0]);
         assert.equal('${_myshellvar}', config.scripts.postinstall);
     });
