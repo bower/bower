@@ -19,7 +19,6 @@
     "comma-spacing": 2,
     "quote-props": [2, "as-needed"],
     "quotes": [2, "single", "avoid-escape"],
-    "indent": [2, 4],
     "no-cond-assign": [ 2, "except-parens" ],
     "no-debugger": 2,
     "no-dupe-args": 2,
