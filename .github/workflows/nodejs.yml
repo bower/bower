@@ -28,12 +28,12 @@ jobs:
         if: runner.os == 'Windows'
 
       - uses: actions/checkout@v2
+      - name: install
+        run: yarn && npm install -g grunt
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install
-        run: yarn && npm install -g grunt
       - name: bower tests
         run: grunt travis
         env:
