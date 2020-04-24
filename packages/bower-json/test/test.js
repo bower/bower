@@ -162,7 +162,7 @@ describe('.read', function() {
                 return done(err);
             }
 
-            expect(file).to.equal(__dirname + '/pkg-bower-json/bower.json');
+            expect(file).to.equal(path.resolve(__dirname + '/pkg-bower-json/bower.json'));
             done();
         });
     });
