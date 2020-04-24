@@ -34,8 +34,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: lint
+        run: npm run lint
       - name: bower tests
-        run: grunt travis
+        run: npm test
         env:
           CI: true
       - name: bower-logger tests
