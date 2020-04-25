@@ -1,4 +1,4 @@
-# bower-registry-client [![Build Status](https://travis-ci.org/bower/registry-client.png?branch=master)](https://travis-ci.org/bower/registry-client)
+# bower-registry-client
 
 > Provides easy interaction with the Bower registry
 

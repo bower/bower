@@ -119,7 +119,7 @@ var questions = [
     {
         type: 'confirm',
         name: 'tests',
-        message: 'Are you sure all tests are passing on Travis and Appveyor?',
+        message: 'Are you sure all tests are passing on CI?',
         default: false
     },
     {
