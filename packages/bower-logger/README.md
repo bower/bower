@@ -1,4 +1,4 @@
-# bower-logger [![Build Status](https://secure.travis-ci.org/bower/logger.png?branch=master)](http://travis-ci.org/bower/logger)
+# bower-logger
 
 The logger used in the various architecture components of Bower.
 

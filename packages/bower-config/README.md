@@ -1,4 +1,4 @@
-# bower-config [![Build Status](https://secure.travis-ci.org/bower/config.png?branch=master)](http://travis-ci.org/bower/config)
+# bower-config
 
 > The Bower config (`.bowerrc`) reader and writer.
 
