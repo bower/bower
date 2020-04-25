@@ -16,12 +16,12 @@
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
-    "mocha": "~1.12.0"
+    "mocha": "^2.5.3"
   },
   "scripts": {
     "test": "mocha -R spec"
   },
   "files": [
-    "lib"  
+    "lib"
   ]
 }

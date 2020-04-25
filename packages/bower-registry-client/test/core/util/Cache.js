@@ -3,7 +3,7 @@ var expect = require('expect.js');
 
 describe('Cache', function() {
     beforeEach(function() {
-        this.cache = new Cache();
+        this.cache = new Cache(__dirname);
     });
 
     describe('Constructor', function() {

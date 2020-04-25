@@ -105,9 +105,9 @@ function createRelease(dir, release, files) {
         cmd('git', ['checkout', 'master', '-f'], { cwd: dir })
             // Attempt to delete branch, ignoring the error
             .then(function() {
-                return cmd('git', ['branch', '-D', branch], { cwd: dir }).fail(
-                    function() {}
-                );
+                return cmd('git', ['branch', '-D', branch], {
+                    cwd: dir
+                }).fail(function() {});
             })
             // Checkout based on master
             .then(

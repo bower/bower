@@ -179,11 +179,10 @@ describe('FsResolver', function() {
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
 
-            copy
-                .copyFile(
-                    path.join(testPackage, 'foo'),
-                    path.join(tempSource, 'foo')
-                )
+            copy.copyFile(
+                path.join(testPackage, 'foo'),
+                path.join(tempSource, 'foo')
+            )
                 .then(resolver.resolve.bind(resolver))
                 .then(function(dir) {
                     expect(fs.existsSync(path.join(dir, 'index'))).to.be(true);
@@ -202,11 +201,10 @@ describe('FsResolver', function() {
             mkdirp.sync(tempSource);
             resolver = create(tempSource);
 
-            copy
-                .copyFile(
-                    path.join(testPackage, 'bower.json'),
-                    path.join(tempSource, 'bower.json')
-                )
+            copy.copyFile(
+                path.join(testPackage, 'bower.json'),
+                path.join(tempSource, 'bower.json')
+            )
                 .then(resolver.resolve.bind(resolver))
                 .then(function(dir) {
                     expect(fs.existsSync(path.join(dir, 'bower.json'))).to.be(
@@ -244,8 +242,7 @@ describe('FsResolver', function() {
             tempSource = path.resolve(__dirname, '../../assets/package-a-copy');
             resolver = create(tempSource);
 
-            copy
-                .copyDir(testPackage, tempSource)
+            copy.copyDir(testPackage, tempSource)
                 .then(function() {
                     // Change tempSource dir to 0777
                     fs.chmodSync(tempSource, 0777);
@@ -269,8 +266,7 @@ describe('FsResolver', function() {
             tempSource = path.resolve(__dirname, '../../tmp/temp-source');
             resolver = create(tempSource);
 
-            copy
-                .copyFile(path.join(testPackage, 'foo'), tempSource)
+            copy.copyFile(path.join(testPackage, 'foo'), tempSource)
                 .then(function() {
                     // Change tempSource dir to 0777
                     fs.chmodSync(tempSource, 0777);

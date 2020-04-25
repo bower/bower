@@ -1,4 +1,4 @@
-# bower-config [![Build Status](https://secure.travis-ci.org/bower/config.png?branch=master)](http://travis-ci.org/bower/config)[![Coverage Status](https://coveralls.io/repos/bower/config/badge.svg?branch=master&service=github)](https://coveralls.io/github/bower/config?branch=master)
+# bower-config [![Build Status](https://secure.travis-ci.org/bower/config.png?branch=master)](http://travis-ci.org/bower/config)
 
 > The Bower config (`.bowerrc`) reader and writer.
 

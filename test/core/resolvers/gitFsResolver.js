@@ -213,8 +213,7 @@ describe('GitFsResolver', function() {
             tempSource = path.resolve(__dirname, '../../assets/package-a-copy');
             resolver = create({ source: tempSource, target: 'some-branch' });
 
-            copy
-                .copyDir(testPackage, tempSource)
+            copy.copyDir(testPackage, tempSource)
                 .then(function() {
                     // Change tempSource dir to 0777
                     fs.chmodSync(tempSource, 0777);
