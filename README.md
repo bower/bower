@@ -97,9 +97,11 @@ Bower can be configured using JSON in a `.bowerrc` file. Read over available opt
 
 ## Support
 
-* [Discord chat](https://discord.gg/0fFM7QF0KpZRh2cY)
+You can ask questions on following channels in order:
+
 * [StackOverflow](http://stackoverflow.com/questions/tagged/bower)
-* [Mailinglist](http://groups.google.com/group/twitter-bower) - twitter-bower@googlegroups.com
+* [Issue Tracker](https://github.com/bower/bower/issues)
+* team@bower.io
 
 ## Contributing
 
