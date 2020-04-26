@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1
+
+- Update minimist to 0.2.1 to fix security issue
+
 ## 1.4.0
 
 - Change default shorthand resolver from git:// to https://
