@@ -1,5 +1,9 @@
 # 0.8.1
 
+- Drop dependency on meow (vendor ext-name)
+
+# 0.8.1
+
 - Revert strict name validations and allow @, spaces and slashes
 
 # 0.8.0
