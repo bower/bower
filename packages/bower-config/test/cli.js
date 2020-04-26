@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-const path = require('path');
-const bowerConfig = require('..');
+var path = require('path');
+var bowerConfig = require('..');
 
-const config = bowerConfig.read(
+var config = bowerConfig.read(
     path.join(__dirname + '/assets/env-variables'),
     { foo: 'bar' }
 );
+
 console.log(config);
