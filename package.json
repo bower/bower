@@ -69,7 +69,7 @@
     "arr-diff": "^2.0.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.9",
-    "eslint": "^2.0.0",
+    "eslint": "^4.18.2",
     "expect.js": "^0.3.1",
     "husky": "^0.14.3",
     "in-publish": "^2.0.0",
