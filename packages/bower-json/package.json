@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "deep-extend": "^0.4.0",
-    "ext-name": "^3.0.0",
+    "ends-with": "^0.2.0",
+    "ext-list": "^2.0.0",
+    "sort-keys-length": "^1.0.0",
     "graceful-fs": "^4.1.3",
     "intersect": "^1.0.1"
   },

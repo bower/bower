@@ -29,7 +29,7 @@ jobs:
 
       - uses: actions/checkout@v2
       - name: install
-        run: yarn
+        run: yarn && (cd packages/bower-json && yarn link) && yarn link bower-json
       - name: lint
         run: npm run lint
       - name: Use Node.js ${{ matrix.node-version }}
