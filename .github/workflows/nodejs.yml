@@ -30,12 +30,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: install
         run: yarn
+      - name: lint
+        run: npm run lint
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: lint
-        run: npm run lint
       - name: bower tests
         run: npm test
         env:
