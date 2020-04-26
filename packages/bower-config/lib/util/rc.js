@@ -1,6 +1,6 @@
 var path = require('path');
 var fs = require('graceful-fs');
-var optimist = require('optimist');
+var optimist = require('../vendor/optimist');
 var osenv = require('osenv');
 var object = require('mout/object');
 var string = require('mout/string');
