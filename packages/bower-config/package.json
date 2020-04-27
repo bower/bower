@@ -1,6 +1,6 @@
 {
   "name": "bower-config",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "The Bower config reader and writer.",
   "author": "Twitter",
   "license": "MIT",

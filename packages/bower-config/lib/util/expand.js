@@ -33,9 +33,7 @@ function doEnvReplaceStr(f) {
         esc = esc.length && esc.length % 2;
         if (esc) return orig;
         if (undefined === process.env[name]) {
-            throw new Error(
-                'Environment variable used in .bowerrc is not defined: ' + orig
-            );
+            return '${' + name + '}';
         }
 
         return process.env[name];
