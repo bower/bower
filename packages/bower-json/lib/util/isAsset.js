@@ -1,4 +1,4 @@
-var extName = require('ext-name');
+var extName = require('../vendor/ext-name');
 
 function isAsset(filename) {
     var info = extName(filename);

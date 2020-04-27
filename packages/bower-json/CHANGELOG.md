@@ -1,3 +1,7 @@
+# 0.8.2
+
+- Fix requires
+
 # 0.8.1
 
 - Drop dependency on meow (vendor ext-name)
