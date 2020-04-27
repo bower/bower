@@ -326,12 +326,12 @@ bower-endpoint-parser@^0.2.2:
   resolved "https://registry.yarnpkg.com/bower-endpoint-parser/-/bower-endpoint-parser-0.2.2.tgz#00b565adbfab6f2d35addde977e97962acbcb3f6"
   integrity sha1-ALVlrb+rby01rd3pd+l5Yqy8s/Y=
 
-bower-json@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/bower-json/-/bower-json-0.8.3.tgz#ad51b443e04b1d748af883fba89a8e5064cdf5c0"
-  integrity sha512-EiWjB6vCVoUZUVL1/Hgy6ysxwwDz/K7hvv0pBbvpHFZWkh+Zpw9UTYYyY3rSPnQj8kBNXbGJStVTfsKG3mo7Ew==
+bower-json@^0.8.4:
+  version "0.8.4"
+  resolved "https://registry.yarnpkg.com/bower-json/-/bower-json-0.8.4.tgz#9c3b375870dcd9581350c1f403f6383dbf6a18b1"
+  integrity sha512-mMKghvq9ivbuzSsY5nrOLnDtZIJMUCpysqbGaGW3mj88JAcuSi8ZAzIt34vNZjohy0aR9VXLwgPTZGnBX2Vpjg==
   dependencies:
-    deep-extend "^0.4.0"
+    deep-extend "^0.5.1"
     ends-with "^0.2.0"
     ext-list "^2.0.0"
     graceful-fs "^4.1.3"
@@ -774,15 +774,10 @@ deep-equal@^1.0.0:
     object-keys "^1.1.1"
     regexp.prototype.flags "^1.2.0"
 
-deep-extend@^0.4.0, deep-extend@~0.4.0:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
-  integrity sha1-SLaZwn4zS/ifEIkr5DL25MfTSn8=
-
-deep-extend@~0.2.5:
-  version "0.2.11"
-  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.2.11.tgz#7a16ba69729132340506170494bc83f7076fe08f"
-  integrity sha1-eha6aXKRMjQFBhcElLyD9wdv4I8=
+deep-extend@0.5.1, deep-extend@^0.5.1, deep-extend@~0.2.5, deep-extend@~0.4.0:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.5.1.tgz#b894a9dd90d3023fbf1c55a394fb858eb2066f1f"
+  integrity sha512-N8vBdOa+DF7zkRrDCsaOXoCs/E2fJfx9B9MrKnnSiHNh4ws7eSys6YQE4KvT1cecKmOASYQBhbKjeuDD9lT81w==
 
 deep-is@~0.1.3:
   version "0.1.3"
