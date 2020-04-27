@@ -309,10 +309,10 @@ boom@2.x.x:
   dependencies:
     hoek "2.x.x"
 
-bower-config@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/bower-config/-/bower-config-1.4.2.tgz#86b08b52d2e606e13287913f193eeec528d6b135"
-  integrity sha512-2VPME1Znaqs/KwNaHCT1uzocxIXSOhZLUoEFrH1i8vWgK+tjmNnAwQirOems/uFWiozuEBDCui+CIHyf+etQQA==
+bower-config@^1.4.3:
+  version "1.4.3"
+  resolved "https://registry.yarnpkg.com/bower-config/-/bower-config-1.4.3.tgz#3454fecdc5f08e7aa9cc6d556e492be0669689ae"
+  integrity sha512-MVyyUk3d1S7d2cl6YISViwJBc2VXCkxF5AUFykvN0PQj5FsUiMNSgAYTso18oRFfyZ6XEtjrgg9MAaufHbOwNw==
   dependencies:
     graceful-fs "^4.1.3"
     minimist "^0.2.1"
