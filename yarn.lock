@@ -326,10 +326,10 @@ bower-endpoint-parser@^0.2.2:
   resolved "https://registry.yarnpkg.com/bower-endpoint-parser/-/bower-endpoint-parser-0.2.2.tgz#00b565adbfab6f2d35addde977e97962acbcb3f6"
   integrity sha1-ALVlrb+rby01rd3pd+l5Yqy8s/Y=
 
-bower-json@^0.8.2:
-  version "0.8.2"
-  resolved "https://registry.yarnpkg.com/bower-json/-/bower-json-0.8.2.tgz#bbcd69cf485f10cd68a7100f42fe99a87a4ef5bb"
-  integrity sha512-ONRbSNdr6o1G3fMBoETnNxJqP2vVmxqMd2vAIwHaPmpxUYokJdI6IPandZMBAqYNzvGhfqAWzKlfk3vVwiDg9Q==
+bower-json@^0.8.3:
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/bower-json/-/bower-json-0.8.3.tgz#ad51b443e04b1d748af883fba89a8e5064cdf5c0"
+  integrity sha512-EiWjB6vCVoUZUVL1/Hgy6ysxwwDz/K7hvv0pBbvpHFZWkh+Zpw9UTYYyY3rSPnQj8kBNXbGJStVTfsKG3mo7Ew==
   dependencies:
     deep-extend "^0.4.0"
     ends-with "^0.2.0"
