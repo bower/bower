@@ -1,5 +1,9 @@
 # 0.8.2
 
+- Update deep-extend (security fix)
+
+# 0.8.2
+
 - Fix requires
 
 # 0.8.1
