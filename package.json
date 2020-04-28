@@ -101,7 +101,8 @@
     "lib"
   ],
   "resolutions": {
-    "deep-extend": "0.5.1"
+    "deep-extend": "0.5.1",
+    "minimist": "0.2.1"
   },
   "workspaces": {
     "packages": [
