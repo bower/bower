@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "bower",
   "version": "1.8.8",
   "description": "The browser package manager",
@@ -73,7 +74,7 @@
     "husky": "^0.14.3",
     "in-publish": "^2.0.0",
     "lint-staged": "^9.5.0",
-    "mocha": "^2.5.3",
+    "mocha": "^3.5.3",
     "multiline": "^1.0.2",
     "nock": "^11.7.0",
     "nock-legacy": "npm:nock@9.2.3",
@@ -101,5 +102,10 @@
   ],
   "resolutions": {
     "deep-extend": "0.5.1"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   }
 }
