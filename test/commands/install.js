@@ -692,7 +692,7 @@ describe('bower install', function() {
         });
     });
 
-    it('recognizes proxy option in config', function(done) {
+    it('recognizes proxy option in config', function() {
         this.timeout(10000);
 
         tempDir.prepare({
@@ -722,7 +722,6 @@ describe('bower install', function() {
             ])
             .fail(function(error) {
                 expect(error.message).to.equal('Status code of 500');
-                done();
             });
     });
 
