@@ -16,12 +16,6 @@ Bower is a large community project with many different developers contributing a
   * Read [Architecture doc](https://github.com/bower/bower/wiki/Rewrite-architecture)
   * Triage, close, fix and resolve [issues](https://github.com/bower/bower/issues)
 
-## Team Meetings
-
-We communicate through a channel on Discord https://discord.gg/0fFM7QF0KpZRh2cY 
-
-If you'd like to attend the meetings, please fill the [support form](http://goo.gl/forms/P1ndzCNoiG), and you'll get an invite.
-
 ## Using the issue tracker
 
 The issue tracker is the preferred channel for [bug reports](#bugs),
@@ -29,12 +23,9 @@ The issue tracker is the preferred channel for [bug reports](#bugs),
 requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests. Use
-  [Stack Overflow](http://stackoverflow.com/questions/tagged/bower),
-  [Discord Channel](https://discordapp.com/channels/119103197720739842/123728452816732160),
-  [Mailing List](http://groups.google.com/group/twitter-bower),
-  (twitter-bower@googlegroups.com), or
-  [#bower](http://webchat.freenode.net/?channels=bower) on Freenode.
-
+  [Stack Overflow](http://stackoverflow.com/questions/tagged/bower), or in serious cases
+  send an e-mail to team@bower.io
+  
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
 
