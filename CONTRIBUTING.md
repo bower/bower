@@ -1,6 +1,6 @@
 # Contributing to Bower
 
-Bower is a large community project with many different developers contributing at all levels to the project. We're **actively** looking for more contributors right now. If you're interested in becoming a Bower maintainer or supporting in any way, please fill the following form: http://goo.gl/forms/P1ndzCNoiG. There is more information about [contributing](https://github.com/bower/bower/wiki/Contributor-Guidelines) in the Wiki.
+Bower is a large community project with many different developers contributing at all levels to the project. There is more information about [contributing](https://github.com/bower/bower/wiki/Contributor-Guidelines) in the Wiki.
 
 <a name="bugs"></a>
 ## 🐛 [Bug reports](https://github.com/bower/bower/wiki/Report-a-Bug)
