@@ -21,7 +21,7 @@
   "devDependencies": {
     "bower-config": "^1.1.2",
     "expect.js": "~0.2.0",
-    "mocha": "^2.5.3",
+    "mocha": "^3.5.3",
     "nock": "9.2.3"
   },
   "scripts": {
