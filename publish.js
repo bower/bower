@@ -5,24 +5,8 @@ var path = require('path');
 var childProcess = require('child_process');
 var arraydiff = require('arr-diff');
 var wrench = require('wrench');
-var inquirer = require('inquirer');
-
-var npmVersion = JSON.parse(
-    childProcess.execSync('npm version --json').toString()
-).npm.split('.');
-var npmMajor = parseInt(npmVersion[0], 10);
-var npmMinor = parseInt(npmVersion[1], 10);
 
 var jsonPackage = require('./package');
-
-if (npmMajor !== 3 || npmMinor < 5) {
-    console.log('You need to use at npm@3.5 to publish bower.');
-    console.log(
-        'It is because npm 2.x produces too long paths that Windows does not handle and newer npm drops lib/node_modules'
-    );
-    console.log('Please upgrade it: npm install -g npm@3');
-    process.exit(1);
-}
 
 if (
     childProcess
@@ -35,17 +19,11 @@ if (
     process.exit(1);
 }
 
-if (process.env.SKIP_TESTS !== '1') {
-    console.log('Reinstalling dependencies...');
-    childProcess.execSync('rm -rf node_modules && yarn', {
-        stdio: [0, 1, 2]
-    });
-
-    console.log('Running test suite...');
-    childProcess.execSync('yarn test', { stdio: [0, 1, 2] });
-}
-
 var dir = tmp.dirSync().name;
+
+
+console.log('\nInstalling production bundle in:');
+console.log(dir + '\n');
 
 wrench.copyDirSyncRecursive(__dirname, dir, {
     forceDelete: true,
@@ -54,15 +32,22 @@ wrench.copyDirSyncRecursive(__dirname, dir, {
     }
 });
 
+jsonPackage.workspaces.nohoist = jsonPackage.workspaces.packages;
+delete jsonPackage.workspaces.packages;
+delete jsonPackage.scripts;
+fs.writeFileSync(
+    path.resolve(dir, 'package.json'),
+    JSON.stringify(jsonPackage, null, '  ') + '\n'
+);
+
 console.log('Installing production dependencies...');
-childProcess.execSync('yarn --production', {
+childProcess.execSync('yarn --production -s', {
     cwd: dir,
     stdio: [0, 1, 2]
 });
 
 delete jsonPackage.dependencies;
 delete jsonPackage.devDependencies;
-delete jsonPackage.scripts;
 
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
@@ -106,61 +91,9 @@ if (installedDiff.length > 0) {
     process.exit(1);
 }
 
-console.log('\nBower production bundle installed in:');
-console.log(dir + '\n');
-
-var questions = [
-    {
-        type: 'confirm',
-        name: 'review',
-        message: 'Did you review all the changes with "git diff"?',
-        default: false
-    },
-    {
-        type: 'confirm',
-        name: 'tests',
-        message: 'Are you sure all tests are passing on CI?',
-        default: false
-    },
-    {
-        type: 'confirm',
-        name: 'publish',
-        message:
-            'Are you SURE you want to publish ' +
-            jsonPackage.name +
-            '@' +
-            jsonPackage.version +
-            '?',
-        default: false
-    }
-];
-
-var done = this.async();
-
-inquirer.prompt(questions, function(answers) {
-    if (!answers.review || !answers.tests || !answers.publish) {
-        console.log('Please publish bower after you fix this issue');
-
-        process.exit(1);
-    }
-
-    console.log(
-        '\nPlease remember to tag this release, and add a release with changelog on Github!'
-    );
-    console.log(
-        '\nAlso, please remember to test published Bower one more time!'
-    );
-    console.log(
-        '\nYou can promote this bower release with "npm dist-tag add bower@' +
-            jsonPackage.version +
-            ' latest'
-    );
-    console.log('\nPublishing Bower...');
-
-    childProcess.execSync('npm publish --tag beta', {
-        cwd: dir,
-        stdio: [0, 1, 2]
-    });
-
-    done();
-});
+console.log('All done!')
+console.log('You need to publish prerelease and release manually:')
+console.log('')
+console.log('- cd ' + dir)
+console.log('- npm publish --tag beta')
+console.log('- npm dist-tag add bower@' + jsonPackage.version + ' latest')
