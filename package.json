@@ -104,9 +104,5 @@
     "deep-extend": "0.5.1",
     "minimist": "0.2.1"
   },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  }
+  "workspaces": ["packages/*"]
 }

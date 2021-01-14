@@ -32,8 +32,6 @@ wrench.copyDirSyncRecursive(__dirname, dir, {
     }
 });
 
-jsonPackage.workspaces.nohoist = jsonPackage.workspaces.packages;
-delete jsonPackage.workspaces.packages;
 delete jsonPackage.scripts;
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
@@ -46,21 +44,18 @@ childProcess.execSync('yarn --production -s', {
     stdio: [0, 1, 2]
 });
 
+delete jsonPackage.private;
+jsonPackage.bundledDependencies = Object.keys(jsonPackage.dependencies)
 delete jsonPackage.dependencies;
 delete jsonPackage.devDependencies;
+
 
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
     JSON.stringify(jsonPackage, null, '  ') + '\n'
 );
 
-console.log('Moving node_modules to lib directory...');
-
-wrench.copyDirSyncRecursive(
-    path.resolve(dir, 'node_modules'),
-    path.resolve(dir, 'lib', 'node_modules')
-);
-wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
+fs.writeFileSync(path.resolve(dir, '.npmignore'), '');
 
 console.log('Testing bower on sample project...');
 
