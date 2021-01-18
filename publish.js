@@ -35,9 +35,9 @@ wrench.copyDirSyncRecursive(__dirname, dir, {
 
 delete jsonPackage.scripts;
 delete jsonPackage.private;
-for (var name of jsonPackage.workspaces) {
-    jsonPackage.dependencies[name.split('/').reverse()[0]] = "file:./" + name
-}
+jsonPackage.workspaces.forEach(function(name) {
+    jsonPackage.dependencies[name.split('/').reverse()[0]] = 'file:./' + name;
+})
 delete jsonPackage.workspaces;
 
 fs.writeFileSync(
@@ -53,7 +53,7 @@ childProcess.execSync('yarn --production', {
 
 delete jsonPackage.dependencies;
 delete jsonPackage.resolutions;
-delete jsonPackage["lint-staged"];
+delete jsonPackage['lint-staged'];
 delete jsonPackage.devDependencies;
 delete jsonPackage.files;
 
@@ -62,7 +62,7 @@ fs.writeFileSync(
     JSON.stringify(jsonPackage, null, '  ') + '\n'
 );
 
-glob.sync(path.join(dir, '**', '.npmignore')).forEach(function (file) {
+glob.sync(path.join(dir, '**', '.npmignore')).forEach(function(file) {
     fs.rmSync(file)
 });
 
@@ -76,9 +76,9 @@ wrench.copyDirSyncRecursive(
 );
 wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
 
-glob.sync(path.join(dir, '**', 'package.json')).forEach(function (file) {
+glob.sync(path.join(dir, '**', 'package.json')).forEach(function(file) {
     console.log(file);
-    const json = JSON.parse(fs.readFileSync(file));
+    var json = JSON.parse(fs.readFileSync(file));
     delete json.files;
     fs.writeFileSync(file, JSON.stringify(json, null, '  ') + '\n');
 });
