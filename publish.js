@@ -1,6 +1,7 @@
 var tmp = require('tmp');
 var fs = require('fs');
 var path = require('path');
+var glob = require('glob');
 
 var childProcess = require('child_process');
 var arraydiff = require('arr-diff');
@@ -54,6 +55,7 @@ delete jsonPackage.dependencies;
 delete jsonPackage.resolutions;
 delete jsonPackage["lint-staged"];
 delete jsonPackage.devDependencies;
+delete jsonPackage.files;
 
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
@@ -69,6 +71,16 @@ wrench.copyDirSyncRecursive(
     path.resolve(dir, 'lib', 'node_modules')
 );
 wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
+
+glob.sync(path.join(dir, '**', 'package.json')).forEach(function (file) {
+    console.log(file);
+    const json = JSON.parse(fs.readFileSync(file));
+    delete json.files;
+    fs.writeFileSync(
+        path.resolve(file),
+        JSON.stringify(json, null, '  ') + '\n'
+    );
+});
 
 console.log('Testing bower on sample project...');
 
@@ -100,10 +112,13 @@ if (installedDiff.length > 0) {
 }
 
 var tgzName = 'bower-' + jsonPackage.version + '.tgz'
-childProcess.execSync('tar -C ' + path.resolve(dir, '..') + ' -czf ' + path.join(__dirname, tgzName) + ' ' + path.basename(dir), {
+
+childProcess.execSync('npm pack', {
     cwd: dir,
     stdio: [0, 1, 2]
 });
+
+fs.copyFileSync(path.join(dir, tgzName), path.join(__dirname, tgzName))
 
 console.log('All done!')
 console.log('You need to publish prerelease and release manually:')
