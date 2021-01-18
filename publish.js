@@ -35,7 +35,7 @@ wrench.copyDirSyncRecursive(__dirname, dir, {
 
 delete jsonPackage.scripts;
 delete jsonPackage.private;
-for (let name of jsonPackage.workspaces) {
+for (var name of jsonPackage.workspaces) {
     jsonPackage.dependencies[name.split('/').reverse()[0]] = "file:./" + name
 }
 delete jsonPackage.workspaces;
