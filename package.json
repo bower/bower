@@ -18,11 +18,6 @@
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "1.0.0",
-    "bower-config": "^1.4.3",
-    "bower-endpoint-parser": "^0.2.2",
-    "bower-json": "^0.8.4",
-    "bower-logger": "^0.2.2",
-    "bower-registry-client": "^1.0.0",
     "cardinal": "0.4.4",
     "chalk": "^1.0.0",
     "chmodr": "1.0.2",
@@ -104,5 +99,11 @@
     "deep-extend": "0.5.1",
     "minimist": "0.2.1"
   },
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/bower-config",
+    "packages/bower-endpoint-parser",
+    "packages/bower-json",
+    "packages/bower-logger",
+    "packages/bower-registry-client"
+  ]
 }

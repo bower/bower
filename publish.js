@@ -33,22 +33,28 @@ wrench.copyDirSyncRecursive(__dirname, dir, {
 });
 
 delete jsonPackage.scripts;
+delete jsonPackage.private;
+for (let name of jsonPackage.workspaces) {
+    jsonPackage.dependencies[name.split('/').reverse()[0]] = "file:./" + name
+}
+delete jsonPackage.workspaces;
+
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
     JSON.stringify(jsonPackage, null, '  ') + '\n'
 );
 
 console.log('Installing production dependencies...');
-childProcess.execSync('yarn --production -s', {
+childProcess.execSync('yarn --production', {
     cwd: dir,
     stdio: [0, 1, 2]
 });
 
-delete jsonPackage.private;
 jsonPackage.bundledDependencies = Object.keys(jsonPackage.dependencies)
 delete jsonPackage.dependencies;
+delete jsonPackage.resolutions;
+delete jsonPackage["lint-staged"];
 delete jsonPackage.devDependencies;
-
 
 fs.writeFileSync(
     path.resolve(dir, 'package.json'),
