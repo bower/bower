@@ -19,7 +19,7 @@ if (
     process.exit(1);
 }
 
-var dir = tmp.dirSync().name;
+var dir = path.join(tmp.dirSync().name, 'package');
 
 
 console.log('\nInstalling production bundle in:');
@@ -50,7 +50,6 @@ childProcess.execSync('yarn --production', {
     stdio: [0, 1, 2]
 });
 
-jsonPackage.bundledDependencies = Object.keys(jsonPackage.dependencies)
 delete jsonPackage.dependencies;
 delete jsonPackage.resolutions;
 delete jsonPackage["lint-staged"];
@@ -62,6 +61,14 @@ fs.writeFileSync(
 );
 
 fs.writeFileSync(path.resolve(dir, '.npmignore'), '');
+
+console.log('Moving node_modules to lib directory...');
+
+wrench.copyDirSyncRecursive(
+    path.resolve(dir, 'node_modules'),
+    path.resolve(dir, 'lib', 'node_modules')
+);
+wrench.rmdirSyncRecursive(path.resolve(dir, 'node_modules'));
 
 console.log('Testing bower on sample project...');
 
@@ -92,9 +99,15 @@ if (installedDiff.length > 0) {
     process.exit(1);
 }
 
+var tgzName = 'bower-' + jsonPackage.version + '.tgz'
+childProcess.execSync('tar -C ' + path.resolve(dir, '..') + ' -czf ' + path.join(__dirname, tgzName) + ' ' + path.basename(dir), {
+    cwd: dir,
+    stdio: [0, 1, 2]
+});
+
 console.log('All done!')
 console.log('You need to publish prerelease and release manually:')
 console.log('')
-console.log('- cd ' + dir)
-console.log('- npm publish --tag beta')
+console.log('- npm install -g ' + tgzName)
+console.log('- npm publish ' + tgzName + ' --tag beta')
 console.log('- npm dist-tag add bower@' + jsonPackage.version + ' latest')
