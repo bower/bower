@@ -62,6 +62,10 @@ fs.writeFileSync(
     JSON.stringify(jsonPackage, null, '  ') + '\n'
 );
 
+glob.sync(path.join(dir, '**', '.npmignore')).forEach(function (file) {
+    fs.rmSync(file)
+});
+
 fs.writeFileSync(path.resolve(dir, '.npmignore'), '');
 
 console.log('Moving node_modules to lib directory...');
@@ -76,10 +80,7 @@ glob.sync(path.join(dir, '**', 'package.json')).forEach(function (file) {
     console.log(file);
     const json = JSON.parse(fs.readFileSync(file));
     delete json.files;
-    fs.writeFileSync(
-        path.resolve(file),
-        JSON.stringify(json, null, '  ') + '\n'
-    );
+    fs.writeFileSync(file, JSON.stringify(json, null, '  ') + '\n');
 });
 
 console.log('Testing bower on sample project...');
