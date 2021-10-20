@@ -13,7 +13,7 @@
     "async": "^0.2.8",
     "graceful-fs": "^4.0.0",
     "lru-cache": "^2.3.0",
-    "request": "^2.51.0",
+    "request": "^2.88.2",
     "request-replay": "^0.2.0",
     "rimraf": "^2.2.0",
     "mkdirp": "^0.3.5"

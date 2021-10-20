@@ -20,7 +20,7 @@
   "devDependencies": {
     "expect.js": "^0.3.1",
     "mocha": "^3.5.3",
-    "request": "^2.64.0",
+    "request": "^2.88.2",
     "underscore.string": "^3.0.3"
   },
   "scripts": {
