@@ -22,7 +22,6 @@ if (
 
 var dir = path.join(tmp.dirSync().name, 'package');
 
-
 console.log('\nInstalling production bundle in:');
 console.log(dir + '\n');
 
@@ -37,7 +36,7 @@ delete jsonPackage.scripts;
 delete jsonPackage.private;
 jsonPackage.workspaces.forEach(function(name) {
     jsonPackage.dependencies[name.split('/').reverse()[0]] = 'file:./' + name;
-})
+});
 delete jsonPackage.workspaces;
 
 fs.writeFileSync(
@@ -63,7 +62,7 @@ fs.writeFileSync(
 );
 
 glob.sync(path.join(dir, '**', '.npmignore')).forEach(function(file) {
-    fs.rmSync(file)
+    fs.rmSync(file);
 });
 
 fs.writeFileSync(path.resolve(dir, '.npmignore'), '');
@@ -112,18 +111,18 @@ if (installedDiff.length > 0) {
     process.exit(1);
 }
 
-var tgzName = 'bower-' + jsonPackage.version + '.tgz'
+var tgzName = 'bower-' + jsonPackage.version + '.tgz';
 
 childProcess.execSync('npm pack', {
     cwd: dir,
     stdio: [0, 1, 2]
 });
 
-fs.copyFileSync(path.join(dir, tgzName), path.join(__dirname, tgzName))
+fs.copyFileSync(path.join(dir, tgzName), path.join(__dirname, tgzName));
 
-console.log('All done!')
-console.log('You need to publish prerelease and release manually:')
-console.log('')
-console.log('- npm install -g ' + tgzName)
-console.log('- npm publish ' + tgzName + ' --tag beta')
-console.log('- npm dist-tag add bower@' + jsonPackage.version + ' latest')
+console.log('All done!');
+console.log('You need to publish prerelease and release manually:');
+console.log('');
+console.log('- npm install -g ' + tgzName);
+console.log('- npm publish ' + tgzName + ' --tag beta');
+console.log('- npm dist-tag add bower@' + jsonPackage.version + ' latest');
