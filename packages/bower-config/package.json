@@ -13,7 +13,7 @@
   "dependencies": {
     "graceful-fs": "^4.1.3",
     "minimist": "^0.2.1",
-    "mout": "^1.0.0",
+    "mout": "^1.2.3",
     "osenv": "^0.1.3",
     "untildify": "^2.1.0",
     "wordwrap": "^0.0.3"
