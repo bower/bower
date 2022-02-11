@@ -2320,6 +2320,7 @@ nested-error-stacks@~2.0.0:
     inherits "~2.0.1"
 
 "nock-legacy@npm:nock@9.2.3", nock@9.2.3:
+  name nock-legacy
   version "9.2.3"
   resolved "https://registry.yarnpkg.com/nock/-/nock-9.2.3.tgz#39738087d6a0497d3a165fb352612b38a2f9b92f"
   integrity sha512-4XYNSJDJ/PvNoH+cCRWcGOOFsq3jtZdNTRIlPIBA7CopGWJO56m5OaPEjjJ3WddxNYfe5HL9sQQAtMt8oyR9AA==
@@ -2569,9 +2570,9 @@ path-type@^4.0.0:
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
 pathval@^1.0.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.0.tgz#b942e6d4bde653005ef6b71361def8727d0645e0"
-  integrity sha1-uULm1L3mUwBe9rcTYd74cn0GReA=
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/pathval/-/pathval-1.1.1.tgz#8534e77a77ce7ac5a2512ea21e0fdb8fcf6c3d8d"
+  integrity sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==
 
 performance-now@^0.2.0:
   version "0.2.0"
