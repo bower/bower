@@ -37,19 +37,19 @@ describe('GitHub', function() {
         it('should ensure .git in the source', function() {
             var resolver;
 
-            resolver = create('git://github.com/twitter/bower');
+            resolver = create('https://github.com/twitter/bower');
             expect(resolver.getSource()).to.equal(
-                'git://github.com/twitter/bower.git'
+                'https://github.com/twitter/bower.git'
             );
 
-            resolver = create('git://github.com/twitter/bower.git');
+            resolver = create('https://github.com/twitter/bower.git');
             expect(resolver.getSource()).to.equal(
-                'git://github.com/twitter/bower.git'
+                'https://github.com/twitter/bower.git'
             );
 
-            resolver = create('git://github.com/twitter/bower.git/');
+            resolver = create('https://github.com/twitter/bower.git/');
             expect(resolver.getSource()).to.equal(
-                'git://github.com/twitter/bower.git'
+                'https://github.com/twitter/bower.git'
             );
         });
     });
@@ -66,7 +66,7 @@ describe('GitHub', function() {
                 );
 
             resolver = create({
-                source: 'git://github.com/IndigoUnited/js-events-emitter.git',
+                source: 'https://github.com/IndigoUnited/js-events-emitter.git',
                 target: '0.1.0'
             });
 
@@ -106,7 +106,7 @@ describe('GitHub', function() {
             });
 
             resolver = create({
-                source: 'git://github.com/IndigoUnited/js-events-emitter.git',
+                source: 'https://github.com/IndigoUnited/js-events-emitter.git',
                 target: '0.1.0'
             });
 
@@ -142,7 +142,7 @@ describe('GitHub', function() {
             });
 
             resolver = create({
-                source: 'git://github.com/IndigoUnited/js-events-emitter.git',
+                source: 'https://github.com/IndigoUnited/js-events-emitter.git',
                 target: '0.1.0'
             });
 
@@ -163,7 +163,7 @@ describe('GitHub', function() {
 
         it('should fallback to the GitRemoteResolver mechanism if resolution is not a tag', function(next) {
             var resolver = create({
-                source: 'git://github.com/foo/bar.git',
+                source: 'https://github.com/foo/bar.git',
                 target: '2af02ac6ddeaac1c2f4bead8d6287ce54269c039'
             });
             var originalCheckout = GitRemoteResolver.prototype._checkout;

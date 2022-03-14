@@ -205,13 +205,13 @@ describe('resolverFactory', function() {
         gitHub = {
             // git:
             'git://github.com/user/project':
-                'git://github.com/user/project.git',
+                'https://github.com/user/project.git',
             'git://github.com/user/project/':
-                'git://github.com/user/project.git',
+                'https://github.com/user/project.git',
             'git://github.com/user/project.git':
-                'git://github.com/user/project.git',
+                'https://github.com/user/project.git',
             'git://github.com/user/project.git/':
-                'git://github.com/user/project.git',
+                'https://github.com/user/project.git',
 
             // git@:
             'git@github.com:user/project': 'git@github.com:user/project.git',
