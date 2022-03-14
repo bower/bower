@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "bower",
-  "version": "1.8.13",
+  "version": "1.8.14",
   "description": "The browser package manager",
   "author": "Twitter",
   "license": "MIT",
