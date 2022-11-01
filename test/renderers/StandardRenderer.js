@@ -614,7 +614,7 @@ describe('StandardRenderer', function() {
                                     name: 'ember'
                                 },
                                 dependencies: {
-                                    // Should be ingored (only one level)
+                                    // Should be ignored (only one level)
                                     react: {
                                         canonicalDir: '/tmp/components/react',
                                         pkgMeta: {

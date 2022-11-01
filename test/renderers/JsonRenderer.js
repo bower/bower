@@ -10,7 +10,7 @@ var jsonRendererWithPrompt = function(stubs) {
     });
 };
 
-// When cloning on Windows it's possible carrets are used
+// When cloning on Windows it's possible carets are used
 var normalize = function(string) {
     return string.replace(/\r\n|\r/g, '\n');
 };
