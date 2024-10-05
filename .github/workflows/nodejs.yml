@@ -17,6 +17,31 @@ jobs:
         # https://github.com/actions/setup-node/issues/27
         node-version: [6.x, 8.x, 10.x, 12.x, 14.x, 16.x, 18.x, 20.x, 22.x]
         os: [ubuntu-latest, macOS-latest, windows-latest]
+        include:
+        # Pin deprecated Node.js versions on Mac to specific MacOS,
+        # as later OS architecture wont support them anymore.
+        - node-version: 6.x
+          os: macOS-13
+        - node-version: 8.x
+          os: macOS-13
+        - node-version: 10.x
+          os: macOS-13
+        - node-version: 12.x
+          os: macOS-13
+        - node-version: 14.x
+          os: macOS-13
+        exclude:
+        # Exclude older Node.js versions from macOS-latest
+        - node-version: 6.x
+          os: macOS-latest
+        - node-version: 8.x
+          os: macOS-latest
+        - node-version: 10.x
+          os: macOS-latest
+        - node-version: 12.x
+          os: macOS-latest
+        - node-version: 14.x
+          os: macOS-latest
     runs-on: ${{ matrix.os }}
 
     steps:
