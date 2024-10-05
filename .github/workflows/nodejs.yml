@@ -52,13 +52,13 @@ jobs:
           git config --global core.symlinks true
         if: runner.os == 'Windows'
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: install
         run: yarn && (cd packages/bower-json && yarn link) && yarn link bower-json
       - name: lint
         run: npm run lint
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: bower tests
