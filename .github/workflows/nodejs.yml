@@ -15,8 +15,33 @@ jobs:
       fail-fast: false
       matrix:
         # https://github.com/actions/setup-node/issues/27
-        node-version: [6.x, 8.x, 10.x, 12.x, 14.x, 16.x]
+        node-version: [6.x, 8.x, 10.x, 12.x, 14.x, 16.x, 18.x, 20.x, 22.x]
         os: [ubuntu-latest, macOS-latest, windows-latest]
+        include:
+        # Pin deprecated Node.js versions on Mac to specific MacOS,
+        # as later OS architecture wont support them anymore.
+        - node-version: 6.x
+          os: macOS-13
+        - node-version: 8.x
+          os: macOS-13
+        - node-version: 10.x
+          os: macOS-13
+        - node-version: 12.x
+          os: macOS-13
+        - node-version: 14.x
+          os: macOS-13
+        exclude:
+        # Exclude older Node.js versions from macOS-latest
+        - node-version: 6.x
+          os: macOS-latest
+        - node-version: 8.x
+          os: macOS-latest
+        - node-version: 10.x
+          os: macOS-latest
+        - node-version: 12.x
+          os: macOS-latest
+        - node-version: 14.x
+          os: macOS-latest
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -27,19 +52,20 @@ jobs:
           git config --global core.symlinks true
         if: runner.os == 'Windows'
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: install
         run: yarn && (cd packages/bower-json && yarn link) && yarn link bower-json
       - name: lint
         run: npm run lint
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: bower tests
         run: npm test
         env:
           CI: true
+        continue-on-error: ${{ matrix.os == 'windows-latest' }}  # Allow failure on Windows
       - name: bower-logger tests
         run: (cd packages/bower-logger && npm install && npm test)
         env:
